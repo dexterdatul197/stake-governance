@@ -1,0 +1,33 @@
+:root {
+  .button {
+    background-color: var(--btn-background-color);
+    padding: 10px;
+    border-radius: 10px;
+    color: var(--color-text-white);
+    cursor: pointer;
+  }
+  .select {
+    background: #dedede;
+    border-radius: 10px;
+    padding: 10px;
+    top: 60px;
+    position: absolute;
+    width: 13%;
+    cursor: pointer;
+    z-index: 10;
+    right: 0;
+    .wallet-item {
+      margin: 3px 0;
+    }
+    .wallet-item:hover {
+      background-color: rgb(164, 196, 185);
+    }
+    z-index: 100;
+    .btn-add-wallet {
+      cursor: pointer;
+    }
+  }
+  .close {
+    display: none;
+  }
+}

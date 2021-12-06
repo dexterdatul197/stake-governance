@@ -1,0 +1,29 @@
+:root {
+  .balances {
+    text-align: center;
+    margin: 20px 0;
+    div {
+      padding: 5px 0;
+    }
+    button {
+      padding: 10px;
+      border-radius: 8px;
+      width: 10%;
+      cursor: pointer;
+      color: #fff;
+    }
+    .btn-stake {
+      margin-right: 10px;
+      background-color: #1a88c9;
+    }
+    .btn-withdraw {
+      background-color: #1a88;
+    }
+    div span {
+      padding: 3px;
+      border-radius: 3px;
+      border: solid 1px;
+      background: #5ec1fb;
+    }
+  }
+}

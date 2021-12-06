@@ -1,0 +1,26 @@
+:root {
+  .header-parent {
+    background-color: var(--main-background-color);
+    padding: 20px 100px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .logo img {
+    width: 140px;
+    height: 45px;
+  }
+  .stake-governance {
+    font-size: 24px;
+    text-transform: uppercase;
+    font-weight: 700;
+    display: flex;
+    div {
+      padding: 0 10px;
+      cursor: pointer;
+      color: #fff;
+    }
+    div:hover {
+      text-decoration: underline;
+    }
+  }
+}

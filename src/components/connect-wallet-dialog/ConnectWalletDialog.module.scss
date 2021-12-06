@@ -1,0 +1,42 @@
+:root {
+  .hidden {
+    visibility: hidden;
+    margin-top: 32px;
+    margin-left: 32px;
+  }
+  .title {
+    font-size: 26px;
+    font-weight: 500;
+    color: var(--color-dialog-title);
+    margin: 30px 0;
+    text-align: center;
+  }
+  .close-button {
+    margin-top: 32px;
+    margin-right: 32px;
+    color: var(--color-dialog-label);
+  }
+  .button {
+    margin: 0 30px 30px 30px;
+    padding: 16px;
+    color: var(--color-dialog-label);
+    text-transform: none;
+    justify-content: flex-start;
+    border-radius: 15px;
+    background-color: var(--color-dialog-btn-bg);
+    border: 2px solid var(--color-dialog-btn-bg);
+
+    svg {
+      margin-right: 12px;
+    }
+
+    p {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    &:hover {
+      border: 2px solid var(--color-primary);
+    }
+  }
+}
