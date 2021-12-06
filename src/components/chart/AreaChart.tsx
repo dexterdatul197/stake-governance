@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import classNames from 'classnames/bind';
-import styles from './AreaChart.module.scss';
-import ReactApexChart from 'react-apexcharts';
 import { ApexOptions } from 'apexcharts';
-import axiosCoinBaseInstance from '../../config/config';
+import classNames from 'classnames/bind';
 import { CoinGeckoClient } from 'coingecko-api-v3';
+import React, { useEffect, useState } from 'react';
+import ReactApexChart from 'react-apexcharts';
+import styles from './AreaChart.module.scss';
+import { useAppSelector } from '../../store/hooks';
 
 const coinGeckoClient = new CoinGeckoClient({
   timeout: 10000,
@@ -12,10 +12,11 @@ const coinGeckoClient = new CoinGeckoClient({
 });
 
 const cx = classNames.bind(styles);
-const defaultSeries = [{ data: [1, 2, 3], name: 'Price' }];
 
 const AreaChart: React.FC = () => {
-  const [series, setSeries] = useState(defaultSeries);
+  const [series, setSeries] = useState([{ data: [], name: 'Price' }]);
+  const selectedCurrency = useAppSelector((state) => state.currency.selectedCurrency);
+  
   const [option, setOption] = useState<ApexOptions>({
     chart: {
       height: 280,
@@ -32,7 +33,7 @@ const AreaChart: React.FC = () => {
     legend: {
       show: false,
     },
-    colors: ['#2E93fA', '#F3950D'],
+    colors: ['#F78939', '#72BF65'],
     stroke: {
       show: true,
       curve: 'smooth',
@@ -97,17 +98,17 @@ const AreaChart: React.FC = () => {
   };
 
   const getCoinGecko = async() => {
-    const aa = await coinGeckoClient.coinIdOHLC({
+    const getOHCL = await coinGeckoClient.coinIdOHLC({
       id: "chain",
-      vs_currency: "usd",
+      vs_currency: `${selectedCurrency}`,
       days: 30
     })
-    chainPriceDataForChart(aa)
+    chainPriceDataForChart(getOHCL)
   }
 
   useEffect(() => {
     getCoinGecko();
-  },[]);
+  },[selectedCurrency]);
 
   return (
     <div className={cx('area-chart')}>

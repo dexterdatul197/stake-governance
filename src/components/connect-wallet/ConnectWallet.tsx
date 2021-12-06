@@ -14,7 +14,6 @@ const cx = classnames.bind(styles);
 const ConnectWallet: React.FC = () => {
   const dispatch = useDispatch();
   const handleOpenConnectWalletDialog = () => {
-    console.log('ADD WALLET');
     dispatch(setOpenConnectDialog(true));
   };
   const wallet = useAppSelector((state) => state.wallet);
