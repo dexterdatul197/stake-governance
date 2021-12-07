@@ -5,22 +5,22 @@ import {
   Dialog,
   IconButton,
   TextField,
-  Typography,
+  Typography
 } from '@mui/material';
 import { Box } from '@mui/system';
 import classnames from 'classnames/bind';
 import React, { useState } from 'react';
-import BscSVG from '../../assets/icon/BscSVG';
 import CoinBaseSVG from '../../assets/icon/CoinBaseSVG';
+import MetamaskSVG from '../../assets/icon/MetamaskSVG';
 import TrustSVG from '../../assets/icon/TrustSVG';
+import WalletConnectSVG from '../../assets/icon/WalletConnectSVG';
 import { MISSING_EXTENSION_ERROR } from '../../constant/uninstallExtentionException';
 import { connectCoinbase, connectMetaMask, connectTrust } from '../../helpers/connectWallet';
 import { openSnackbar, SnackbarVariant } from '../../store/snackbar';
 import {
-  setEthereumAddress,
+  setCoinbaseAddress, setEthereumAddress,
   setOpenConnectDialog,
-  setTrustAddress,
-  setCoinbaseAddress
+  setTrustAddress
 } from '../connect-wallet/redux/wallet';
 import { useAppDispatch, useAppSelector } from './../../store/hooks';
 import styles from './ConnectWalletDialog.module.scss';
@@ -182,7 +182,7 @@ const ConnectWalletDialog: React.FC = () => {
             </IconButton>
           </Typography>
           <Typography component={'div'} className={cx('title')}>
-            <Box>Connect wallet</Box>
+            <Box><div className={cx('connect-wallet-text')}>Connect your wallet</div></Box>
           </Typography>
           <Typography component={'div'}>
             <IconButton
@@ -200,8 +200,8 @@ const ConnectWalletDialog: React.FC = () => {
           className={cx('button')}
           onClick={handleConnectMetaMask}
         >
-          <BscSVG size={'xl'} />
-          <p>MetaMask</p>
+          <MetamaskSVG size={'xl'} />
+          <p className={cx('connect-wallet-text')}>MetaMask</p>
         </ButtonBase>
         <ButtonBase
           disableRipple={true}
@@ -209,7 +209,7 @@ const ConnectWalletDialog: React.FC = () => {
           onClick={handleConnectTrust}
         >
           <TrustSVG size={'xl'} />
-          <p>Trust</p>
+          <p className={cx('connect-wallet-text')}>Trust Wallet</p>
         </ButtonBase>
         <ButtonBase
           disableRipple={true}
@@ -217,15 +217,15 @@ const ConnectWalletDialog: React.FC = () => {
           onClick={handleConnectCoinBase}
         >
           <CoinBaseSVG size={'xl'} />
-          <p>CoinBase</p>
+          <p className={cx('connect-wallet-text')}>Coinbase</p>
         </ButtonBase>
         <ButtonBase
           disableRipple={true}
           className={cx('button')}
           onClick={handleConnectTrust}
         >
-          <BscSVG size={'xl'} />
-          <p>WalletConnect</p>
+          <WalletConnectSVG size={'xl'} />
+          <p className={cx('connect-wallet-text')}>Wallet Connect</p>
         </ButtonBase>
       </Dialog>
       {/* Coinbase login dialog */}

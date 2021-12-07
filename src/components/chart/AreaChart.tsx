@@ -92,7 +92,12 @@ const AreaChart: React.FC = () => {
       ...option,
       xaxis: {
         categories: categories
-      }
+      },
+      tooltip: {
+        custom: function({series, seriesIndex, dataPointIndex, w}) {
+          return '<div style="padding: 10px; text-transform: uppercase">' + `$${series[seriesIndex][dataPointIndex]} ${selectedCurrency}` + '</div>';
+        }
+      },
     });
     setSeries(series);
   };
@@ -112,7 +117,7 @@ const AreaChart: React.FC = () => {
 
   return (
     <div className={cx('area-chart')}>
-      <div id="chart" style={{ height: 500 }}>
+      <div id="chart" style={{ height: 480 }}>
         <ReactApexChart
           options={option}
           series={series}

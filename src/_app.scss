@@ -45,28 +45,47 @@ body {
   padding: 20px 0;
   text-align: center;
 }
-.text-head span {
+.text-head-child {
+  display: flex;
+  justify-content: center;
+}
+.text-head .price {
   font-size: 25px;
   font-weight: 700;
   color: #72BF65;
+  margin-right: 10px;
 }
 .securing-chain {
   color: #eceff9;
 }
-.MuiOutlinedInput-input .MuiInputBase-input {
-  color: #fff;
-}
 .menu-item {
-  color: #72BF65;
-  text-transform: uppercase;
-}
-.MuiPaper-root {
-  background-color: #001C4E !important;
+  text-transform: uppercase !important;
 }
 .mui-select {
   height: 2.5em !important;
   line-height: 2em !important;
   margin-left: 50px;
   border-radius: 35px !important;
+}
+.combo-box-demo {
+  width: 40% !important;
+}
+.css-17vbkzs-MuiFormControl-root-MuiTextField-root {
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+}
+.MuiAutocomplete-root {
+  width: 10%;
+}
+.MuiFormControl-root {
+  height: 2em;
+}
+.css-154xyx0-MuiInputBase-root-MuiOutlinedInput-root {
+  height: 2em;
+}
+.MuiOutlinedInput-input {
+  color: #fff !important;
+  text-transform: uppercase;
+  height: 0.5em !important;
 }
 
