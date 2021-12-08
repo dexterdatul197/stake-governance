@@ -22,4 +22,17 @@
       text-decoration: underline;
     }
   }
+  .link-style {
+    color: #fff;
+    margin-right: 10px;
+    text-decoration-line: none;
+    line-height: 40px;
+  }
+  .link-style-border {
+    color: #fff;
+    margin-right: 10px;
+    text-decoration-line: none;
+    border-bottom: solid 1px var(--btn-background-color);
+    line-height: 40px;
+  }
 }

@@ -1,29 +1,31 @@
 :root {
-  .balances {
+  .balances-history {
     text-align: center;
-    // margin: 20px 0;
-    div {
-      padding: 5px 0;
-    }
-    button {
-      padding: 10px;
-      border-radius: 8px;
-      width: 10%;
-      cursor: pointer;
-      color: #fff;
-    }
-    .btn-stake {
-      margin-right: 10px;
-      background-color: #1a88c9;
-    }
-    .btn-withdraw {
-      background-color: #1a88;
-    }
-    div span {
-      padding: 3px;
-      border-radius: 3px;
-      border: solid 1px;
-      background: #5ec1fb;
-    }
+  }
+  .balance {
+    display: flex;
+    justify-content: center;
+  }
+  .balance-style {
+    width: 400px;
+    height: 280px;
+    padding: 15px;
+    background-color: #01163D;
+    border-radius: 15px;
+  }
+  .balance-style h4 {
+    color: #fff;
+  }
+  .balance-style-content {
+    display: flex;
+  }
+  .balance-style-content {
+    display: flex;
+    justify-content: space-around;
+    height: 3em;
+    line-height: 2.5;
+  }
+  .history {
+    margin-top: 20px;
   }
 }

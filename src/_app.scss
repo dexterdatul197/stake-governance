@@ -30,16 +30,16 @@ body {
   }
 }
 .area-chart-main {
-  padding: 0 100px;
+  padding: 20px 100px;
   background-color: var(--main-background-color);
-  height: calc(100% - 160px);
-  margin-top: -20px;
+  height: calc(100% - 50px);
+  // margin-top: -20px;
 }
 .footer {
   height: 100px;
   background: var(--footer-background-color);
-  position: absolute;
-  bottom: 0;
+  // position: absolute;
+  // bottom: 0;
   width: 100%;
 }
 

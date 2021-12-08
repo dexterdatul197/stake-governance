@@ -15,8 +15,10 @@ const cx = classNames.bind(styles);
 
 const AreaChart: React.FC = () => {
   const [series, setSeries] = useState([{ data: [], name: 'Price' }]);
-  const selectedCurrency = useAppSelector((state) => state.currency.selectedCurrency);
-  
+  const selectedCurrency = useAppSelector(
+    (state) => state.currency.selectedCurrency
+  );
+
   const [option, setOption] = useState<ApexOptions>({
     chart: {
       height: 280,
@@ -83,37 +85,43 @@ const AreaChart: React.FC = () => {
     const categories: any = res.map((item: number[]) => convertToDate(item[0]));
     const seriesPrice = res.map((item: number[]) => item[2]);
 
-    const series = [{
-      name: 'Price',
-      data: seriesPrice
-    }];
+    const series = [
+      {
+        name: 'Price',
+        data: seriesPrice,
+      },
+    ];
 
     setOption({
       ...option,
       xaxis: {
-        categories: categories
+        categories: categories,
       },
       tooltip: {
-        custom: function({series, seriesIndex, dataPointIndex, w}) {
-          return '<div style="padding: 10px; text-transform: uppercase">' + `$${series[seriesIndex][dataPointIndex]} ${selectedCurrency}` + '</div>';
-        }
+        custom: function ({ series, seriesIndex, dataPointIndex, w }) {
+          return (
+            '<div style="padding: 10px; text-transform: uppercase">' +
+            `$${series[seriesIndex][dataPointIndex]} <strong>${selectedCurrency}</strong>` +
+            '</div>'
+          );
+        },
       },
     });
     setSeries(series);
   };
 
-  const getCoinGecko = async() => {
+  const getCoinGecko = async () => {
     const getOHCL = await coinGeckoClient.coinIdOHLC({
-      id: "chain",
+      id: 'chain',
       vs_currency: `${selectedCurrency}`,
-      days: 30
-    })
-    chainPriceDataForChart(getOHCL)
-  }
+      days: 30,
+    });
+    chainPriceDataForChart(getOHCL);
+  };
 
   useEffect(() => {
     getCoinGecko();
-  },[selectedCurrency]);
+  }, [selectedCurrency]);
 
   return (
     <div className={cx('area-chart')}>

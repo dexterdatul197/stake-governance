@@ -1,7 +1,6 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import Balances from './components/balances/Balances';
-import AreaChart from './components/chart/AreaChart';
 import ConnectWalletDialog from './components/connect-wallet-dialog/ConnectWalletDialog';
 import Footer from './components/footer/Footer';
 import Governance from './components/governance/Governance';
