@@ -174,6 +174,11 @@ const ConnectWalletDialog: React.FC = () => {
         fullWidth={true}
         maxWidth={'xs'}
         disableEscapeKeyDown={true}
+        PaperProps={{
+          style: {
+            backgroundColor: '#001C4E',
+          },
+        }}
       >
         <Box display={'flex'} justifyContent={'space-between'}>
           <Typography component={'div'}>
@@ -234,6 +239,12 @@ const ConnectWalletDialog: React.FC = () => {
         fullWidth={true}
         maxWidth={'xs'}
         disableEscapeKeyDown={true}
+        PaperProps={{
+          style: {
+            backgroundColor: '#001C4E',
+            color: '#fff'
+          },
+        }}
       >
         <Box display={'flex'} justifyContent={'space-between'}>
           <Typography component={'div'}>
@@ -242,7 +253,7 @@ const ConnectWalletDialog: React.FC = () => {
             </IconButton>
           </Typography>
           <Typography component={'div'} className={cx('title')}>
-            <Box>Connect Coinbase</Box>
+            <Box><div className={cx('connect-wallet-text')}>Connect Coinbase</div></Box>
           </Typography>
           <Typography component={'div'}>
             <IconButton
@@ -282,7 +293,7 @@ const ConnectWalletDialog: React.FC = () => {
           size="medium"
           style={{
             borderRadius: 20,
-            backgroundColor: '#21b6ae',
+            backgroundColor: '#72BF65',
             padding: '18px 36px',
             color: '#fff',
             fontWeight: 'bold',

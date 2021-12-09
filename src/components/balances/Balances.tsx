@@ -9,7 +9,6 @@ import {
   TableFooter,
   TableHead,
   TablePagination,
-  TablePaginationClasses,
   TableRow,
   TableSortLabel,
   TextField,
@@ -25,13 +24,19 @@ const cx = classNames.bind(styles);
 
 const useStyles: any = makeStyles(() => ({
   root: {
-    width: '50%',
+    // width: '50%',
     '& > .css-17vbkzs-MuiFormControl-root-MuiTextField-root': {
       marginTop: 0,
     },
+    '& > .MuiOutlinedInput-root': {
+      height: '2em',
+      paddingRight: '25px'
+    }
   },
   inputRoot: {
     background: 'rgba(114, 191, 101, 0.1);',
+    height: '2em',
+    paddingRight: '25px !important',
     '&.MuiOutlinedInput-root': {
       borderRadius: '18px',
     },
@@ -39,6 +44,9 @@ const useStyles: any = makeStyles(() => ({
   input: {
     textTransform: 'uppercase',
     color: '#72bf65 !important',
+    width: '50px !important',
+    paddingTop: '1px !important',
+    paddingBottom: '0px !important'
   },
   endAdornment: {
     '& > .MuiAutocomplete-clearIndicator': {
@@ -50,12 +58,21 @@ const useStyles: any = makeStyles(() => ({
   },
 }));
 
-const TablePaginationClass: any = makeStyles(() => ({
-    root: {
-        color: '#fff'
-    }
-}))
-
+const paginationStyle = makeStyles(() => ({
+  toolbar: {
+    color: 'rgba(255, 255, 255, 0.6);',
+  },
+  input: {
+    '& > .MuiTablePagination-selectIcon': {
+      color: 'rgba(255, 255, 255, 0.6);',
+    },
+  },
+  actions: {
+    '& > .Mui-disabled .MuiSvgIcon-fontSizeMedium': {
+      color: 'rgba(255, 255, 255, 0.38);',
+    },
+  },
+}));
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.root}`]: {
     backgroundColor: '#01163D',
@@ -63,6 +80,16 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   },
   border: 0,
   padding: 15,
+}));
+const tableSortStyles = makeStyles(() => ({
+  root: {
+    '&:hover': {
+      color: '#fff !important',
+    },
+    '&:focus': {
+      color: '#fff !important',
+    },
+  },
 }));
 
 interface Data {
@@ -83,9 +110,11 @@ interface HeadCell {
 const Balances: React.FC = () => {
   type Order = 'asc' | 'desc';
   const classes = useStyles();
+  const paginationClasses = paginationStyle();
+  const tableSortClasses = tableSortStyles();
   const currencies = useAppSelector((state) => state.currency.currenciesList);
   const [order, setOrder] = useState<Order>('asc');
-  const [orderBy, setOrderBy] = useState<keyof Data>('transactionHash');
+  const [orderBy, setOrderBy] = useState<keyof Data>('id');
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -274,46 +303,87 @@ const Balances: React.FC = () => {
   return (
     <div className={cx('balances-history')}>
       <div className={cx('balance')}>
-        <div></div>
-        <div className={cx('balance-style')}>
-          <h4>Balances</h4>
-          <div className={cx('balance-style-content')}>
-            <div>Stake:</div>
-            <div>754.2</div>
-            <div>
-              <Autocomplete
-                classes={classes}
-                options={currencies}
-                defaultValue={'chn'}
-                //   onChange={handleOnChangeSelectCurrency}
-                renderInput={(item) => (
-                  <TextField {...item} margin="normal" fullWidth />
-                )}
-                size={'small'}
-                id="combo-box-demo"
-              />
-            </div>
+        <div className={cx('balance-head-text')}>Balances</div>
+        <div className={cx('balance-row')}>
+          <div></div>
+          <div className={cx('balance-key')}>Stake:</div>
+          <div className={cx('balance-value')}>754.2</div>
+          <div>
+            <Autocomplete
+              classes={classes}
+              options={currencies}
+              defaultValue={'usd'}
+              // onChange={handleOnChangeSelectCurrency}
+              renderInput={(item) => (
+                <TextField {...item} margin="normal" fullWidth />
+              )}
+              size={'small'}
+              id="combo-box-demo"
+            />
           </div>
+          <div></div>
         </div>
-        <div></div>
+        <div className={cx('balance-row')}>
+          <div></div>
+          <div className={cx('balance-key')}>Wallet:</div>
+          <div className={cx('balance-value')}>754.2</div>
+          <div>
+            <Autocomplete
+              classes={classes}
+              options={currencies}
+              defaultValue={'usd'}
+              // onChange={handleOnChangeSelectCurrency}
+              renderInput={(item) => (
+                <TextField {...item} margin="normal" fullWidth />
+              )}
+              size={'small'}
+              id="combo-box-demo"
+            />
+          </div>
+          <div></div>
+        </div>
+        <div className={cx('balance-row')}>
+          <div></div>
+          <div className={cx('balance-key')}>Earned:</div>
+          <div className={cx('balance-value')}>754.2</div>
+          <div>
+            <Autocomplete
+              classes={classes}
+              options={currencies}
+              defaultValue={'usd'}
+              // onChange={handleOnChangeSelectCurrency}
+              renderInput={(item) => (
+                <TextField {...item} margin="normal" fullWidth />
+              )}
+              size={'small'}
+              id="combo-box-demo"
+            />
+          </div>
+          <div></div>
+        </div>
+        <div className={cx('balance-button')}>
+            <div className={cx('btn-stake')}>Stake</div>
+            <div className={cx('btn-withdraw')}>Withdraw</div>
+        </div>
       </div>
       <div className={cx('history')}>
-        <Paper sx={{ width: '100%', overflow: 'hidden', maxHeight: 450 }}>
+        <Paper sx={{ width: '100%', overflow: 'hidden' }}>
           <TableContainer sx={{ maxHeight: 440 }}>
-            <Table>
+            <Table stickyHeader aria-label="sticky table">
               <TableHead>
                 <TableRow>
                   {headCells.map((headCell) => (
                     <StyledTableCell
                       key={headCell.id}
-                      align={headCell.numeric ? 'right' : 'left'}
+                      align={'left'}
                       padding={headCell.disablePadding ? 'none' : 'normal'}
                       sortDirection={orderBy === headCell.id ? order : false}
                     >
                       <TableSortLabel
-                        active={orderBy === headCell.id}
+                        // active={orderBy === headCell.id}
                         direction={orderBy === headCell.id ? order : 'asc'}
                         onClick={createSortHandler(headCell.id)}
+                        classes={tableSortClasses}
                       >
                         {headCell.label}
                       </TableSortLabel>
@@ -326,34 +396,30 @@ const Balances: React.FC = () => {
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row, index) => {
                     const labelId = `enhanced-table-checkbox-${index}`;
-
                     return (
-                      <TableRow
-                        tabIndex={-1}
-                        key={row.id}
-                      >
+                      <TableRow tabIndex={-1} key={row.id}>
                         <StyledTableCell
                           component="th"
                           id={labelId}
-                          scope="row"
-                          padding="none"
+                          // scope="row"
+                          align={'left'}
                         >
                           {row.id}
                         </StyledTableCell>
-                        <StyledTableCell align="right">
+                        <StyledTableCell align={'left'}>
                           {row.transactionHash}
                         </StyledTableCell>
-                        <StyledTableCell align="right">
+                        <StyledTableCell align={'left'}>
                           {row.type}
                         </StyledTableCell>
-                        <StyledTableCell align="right">
+                        <StyledTableCell align={'left'}>
                           {row.amount}
                         </StyledTableCell>
-                        <StyledTableCell align="right">
+                        <StyledTableCell align={'left'}>
                           {row.date}
                         </StyledTableCell>
-                        <StyledTableCell align="right">
-                          {row.status} 
+                        <StyledTableCell align={'left'}>
+                          {row.status}
                         </StyledTableCell>
                       </TableRow>
                     );
@@ -375,7 +441,7 @@ const Balances: React.FC = () => {
                       page={page}
                       onPageChange={handleChangePage}
                       onRowsPerPageChange={handleChangeRowsPerPage}
-                      classes={TablePaginationClass}
+                      classes={paginationClasses}
                     />
                   </StyledTableCell>
                 </TableRow>

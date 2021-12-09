@@ -3,27 +3,53 @@
     text-align: center;
   }
   .balance {
-    display: flex;
-    justify-content: center;
-  }
-  .balance-style {
-    width: 400px;
+    width: 350px;
     height: 280px;
-    padding: 15px;
-    background-color: #01163D;
+    background: #01163d;
+    padding: 10px;
     border-radius: 15px;
+    margin: 0 auto;
   }
-  .balance-style h4 {
-    color: #fff;
-  }
-  .balance-style-content {
-    display: flex;
-  }
-  .balance-style-content {
+  .balance-row {
     display: flex;
     justify-content: space-around;
-    height: 3em;
-    line-height: 2.5;
+    height: 2em;
+    line-height: 1.8;
+    padding: 5px 0;
+  }
+  .balance-head-text {
+    color: #fff;
+    padding-top: 5px;
+    padding-bottom: 10px;
+    font-size: 24px;
+  }
+  .balance-key {
+    color: #ccc;
+  }
+  .balance-value {
+    color: #fff;
+  }
+  .balance-button {
+    display: flex;
+    justify-content: center;
+    text-transform: uppercase;
+    font-weight: 600;
+    padding-top: 20px;
+  }
+  .balance-button div {
+    padding: 15px 50px;
+    cursor: pointer;
+  }
+  .btn-stake {
+    color: #fff;
+    background-color: var(--btn-background-color);
+    border-radius: 20px;
+  }
+  .btn-withdraw {
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    background-image: linear-gradient(to right, #001C4E, #7693c7);
+    color: var(--btn-background-color);
   }
   .history {
     margin-top: 20px;
