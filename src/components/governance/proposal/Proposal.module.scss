@@ -1,0 +1,42 @@
+:root {
+  .governance-proposal {
+    width: 65%;
+    background-color: #01163d;
+    padding: 10px;
+    border-radius: 20px;
+    // text-align: center;
+  }
+  .text-header {
+    color: #fff;
+    padding: 10px 0;
+    font-size: 1.3em;
+    padding-left: 20px;
+  }
+  .row-content {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    border: solid 1px #001C4E;
+    border-radius: 10px;
+    color: #ccc;
+    margin: 10px 0;
+  }
+  .row-content-left:nth-child(1) {
+      width: 60%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+  }
+  .row-content-btn {
+      display: flex;
+      justify-content: space-between;
+      width: 28%;
+      color: #fff;
+  }
+  .btn-upvote, .btn-downvote {
+      padding: 10px 20px;
+      border-radius: 10px;
+      background-color: #107DEF;
+      cursor: pointer;
+  }
+}

@@ -1,8 +1,15 @@
+import classNames from "classnames/bind";
+import styles from './Governance.module.scss'
 import React from "react";
-
+import Vote from "./vote/Vote";
+import Proposal from "./proposal/Proposal";
+const cx = classNames.bind(styles)
 const Governance: React.FC = () => {
     return (
-        <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis itaque repellat vitae minus mollitia quia id expedita eum exercitationem? Molestias, suscipit quia! Similique alias cum quas. Praesentium excepturi fugit culpa!</div>
+        <div className={cx('governance')}>
+            <Vote />
+            <Proposal />
+        </div>
     )
 }
 export default Governance;
