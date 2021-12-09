@@ -362,7 +362,7 @@ const Balances: React.FC = () => {
           <div></div>
         </div>
         <div className={`${cx('switcher')} ${cx('switcher-1')}`}>
-          <input className={cx('switcher_input')} type="checkbox" id="switcher-1" />
+          <input  className={cx('switcher_input')} type="checkbox" id="switcher-1" />
           <label className={cx('switcher_label')} htmlFor="switcher-1"></label>
         </div>
       </div>

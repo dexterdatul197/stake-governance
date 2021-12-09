@@ -53,17 +53,24 @@
       outline: none;
       transition: .25s -.1s;
 
+
       &:checked {
         background: linear-gradient(90.04deg, #001C4E 0.96%, #042F7C 91.92%);
+        cursor: pointer;
+
 
         &::before {
           color: #fff;
           transition: color .5s .2s;
+          cursor: pointer;
+
         }
 
         &::after {
           color: #3EE046;
           transition: color .5s;
+          cursor: pointer;
+
         }
 
         &+label {
@@ -72,22 +79,29 @@
           background: linear-gradient(90deg, #2AC031 13.55%, #3EE046 90.32%);
           transition: left .5s, right .4s .2s;
           top: 2px;
+          cursor: pointer;
+
         }
       }
 
       &:not(:checked) {
         background: linear-gradient(90.04deg, #001C4E 0.96%, #042F7C 91.92%);
         transition: background .5s -.1s;
+        cursor: pointer;
+
 
         &::before {
           color: #3EE046;
-          ;
+          cursor: pointer;
+
           transition: color .5s;
         }
 
         &:after {
           color: #fff;
           transition: color .5s .2s;
+          cursor: pointer;
+
         }
 
         &+label {
@@ -96,6 +110,8 @@
           top: 3px;
           background: linear-gradient(90deg, #2AC031 13.55%, #3EE046 90.32%);
           transition: left .4s .2s, right .5s, background .35s -.1s;
+          cursor: pointer;
+
         }
       }
 
@@ -105,16 +121,22 @@
         top: 50%;
         transform: translateY(-50%);
         color: white;
+        cursor: pointer;
+
       }
 
       &::before {
         content: 'STAKE';
         left: 20px;
+        cursor: pointer;
+
       }
 
       &::after {
         content: 'WITHDRAW';
         right: 20px;
+        cursor: pointer;
+
       }
     }
 
