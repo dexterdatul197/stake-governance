@@ -2,6 +2,7 @@
   .balances-history {
     text-align: center;
   }
+
   .balance {
     width: 350px;
     height: 280px;
@@ -10,6 +11,7 @@
     border-radius: 15px;
     margin: 0 auto;
   }
+
   .balance-row {
     display: flex;
     justify-content: space-around;
@@ -17,40 +19,117 @@
     line-height: 1.8;
     padding: 5px 0;
   }
+
   .balance-head-text {
     color: #fff;
     padding-top: 5px;
     padding-bottom: 10px;
     font-size: 24px;
   }
+
   .balance-key {
     color: #ccc;
   }
+
   .balance-value {
     color: #fff;
   }
-  .balance-button {
-    display: flex;
-    justify-content: center;
-    text-transform: uppercase;
-    font-weight: 600;
-    padding-top: 20px;
+
+  .switcher {
+    position: relative;
+    width: 260px;
+    height: 65px;
+    border-radius: 25px;
+    margin: auto;
+    margin-top: 33px;
+
+    &_input {
+      appearance: none;
+      position: relative;
+      width: 260px;
+      height: 50px;
+      border-radius: 25px;
+      background-color: black;
+      outline: none;
+      transition: .25s -.1s;
+
+      &:checked {
+        background: linear-gradient(90.04deg, #001C4E 0.96%, #042F7C 91.92%);
+
+        &::before {
+          color: #fff;
+          transition: color .5s .2s;
+        }
+
+        &::after {
+          color: #3EE046;
+          transition: color .5s;
+        }
+
+        &+label {
+          left: 3px;
+          right: 100px;
+          background: linear-gradient(90deg, #2AC031 13.55%, #3EE046 90.32%);
+          transition: left .5s, right .4s .2s;
+          top: 2px;
+        }
+      }
+
+      &:not(:checked) {
+        background: linear-gradient(90.04deg, #001C4E 0.96%, #042F7C 91.92%);
+        transition: background .5s -.1s;
+
+        &::before {
+          color: #3EE046;
+          ;
+          transition: color .5s;
+        }
+
+        &:after {
+          color: #fff;
+          transition: color .5s .2s;
+        }
+
+        &+label {
+          left: 100px;
+          right: -3px;
+          top: 3px;
+          background: linear-gradient(90deg, #2AC031 13.55%, #3EE046 90.32%);
+          transition: left .4s .2s, right .5s, background .35s -.1s;
+        }
+      }
+
+      &::before, &::after {
+        z-index: 2;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        color: white;
+      }
+
+      &::before {
+        content: 'STAKE';
+        left: 20px;
+      }
+
+      &::after {
+        content: 'WITHDRAW';
+        right: 20px;
+      }
+    }
+
+    &_label {
+      z-index: 1;
+      position: absolute;
+      top: 10px;
+      bottom: 10px;
+      border-radius: 20px;
+    }
+
+
   }
-  .balance-button div {
-    padding: 15px 50px;
-    cursor: pointer;
-  }
-  .btn-stake {
-    color: #fff;
-    background-color: var(--btn-background-color);
-    border-radius: 20px;
-  }
-  .btn-withdraw {
-    border-top-right-radius: 20px;
-    border-bottom-right-radius: 20px;
-    background-image: linear-gradient(to right, #001C4E, #7693c7);
-    color: var(--btn-background-color);
-  }
+
+
   .history {
     margin-top: 20px;
   }

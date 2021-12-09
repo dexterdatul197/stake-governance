@@ -272,9 +272,9 @@ const Balances: React.FC = () => {
     order: Order,
     orderBy: Key
   ): (
-    a: { [key in Key]: number | string },
-    b: { [key in Key]: number | string }
-  ) => number {
+      a: { [key in Key]: number | string },
+      b: { [key in Key]: number | string }
+    ) => number {
     return order === 'desc'
       ? (a, b) => descendingComparator(a, b, orderBy)
       : (a, b) => -descendingComparator(a, b, orderBy);
@@ -361,9 +361,9 @@ const Balances: React.FC = () => {
           </div>
           <div></div>
         </div>
-        <div className={cx('balance-button')}>
-            <div className={cx('btn-stake')}>Stake</div>
-            <div className={cx('btn-withdraw')}>Withdraw</div>
+        <div className={`${cx('switcher')} ${cx('switcher-1')}`}>
+          <input className={cx('switcher_input')} type="checkbox" id="switcher-1" />
+          <label className={cx('switcher_label')} htmlFor="switcher-1"></label>
         </div>
       </div>
       <div className={cx('history')}>
