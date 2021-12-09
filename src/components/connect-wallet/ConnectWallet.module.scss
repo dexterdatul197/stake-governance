@@ -1,10 +1,11 @@
 :root {
   .button {
-    background-color: var(--btn-background-color);
+    background-color: var(--btn-background-connect-color);
     padding: 10px;
     border-radius: 10px;
     color: var(--color-text-white);
     cursor: pointer;
+    height: 20px;
   }
   .select {
     background: #dedede;
