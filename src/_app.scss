@@ -6,7 +6,7 @@ body {
   flex-direction: column;
 }
 .App {
-  height: 100vh;
+  height: 100%;
 }
 
 :root {
@@ -57,7 +57,7 @@ body {
   background-color: var(--main-background-color);
   height: calc(100% - 50px);
   // margin-top: -20px;
-  padding-bottom: 129px;
+  padding-bottom: 42px;
 }
 .footer {
   height: 100px;

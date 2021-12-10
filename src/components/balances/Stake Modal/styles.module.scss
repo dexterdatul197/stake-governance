@@ -1,0 +1,49 @@
+.dialog{
+    padding-left: 34px;
+    padding-right: 34px;
+    .title-dialog{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .text-stake{
+            font-size: 20px;
+            font-weight: 600;
+        }
+    }
+    .dialog-content{
+        &__amount{
+            background: #00163D;
+            border-radius: 10px;
+            padding: 32px;
+            .title{
+                font-size: 16px;
+                font-weight: 600;
+                color: rgba(255, 255, 255, 0.38);
+            }
+            .input{
+                border-bottom: none !important;
+                font-size: 48px;
+                color: rgba(255, 255, 255, 0.87);
+                font-weight: 600;
+            }
+            .slider {
+                color: #72BF65!important;
+            }
+        }
+        &__percent{
+            display: flex;
+            align-items: center;
+            .percent-number{
+                color:#72BF65;
+                width: 92px;
+                height:33px;
+                line-height:33px;
+                background: rgba(114, 191, 101, 0.15);
+                border-radius: 30px;
+                text-align: center;
+                margin-right: 8px;
+                cursor: pointer;
+            }
+        }
+    }
+}

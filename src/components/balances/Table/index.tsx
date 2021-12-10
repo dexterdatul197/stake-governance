@@ -97,7 +97,6 @@ const TableComponent = () => {
                                     sortDirection={orderBy === headCell.id ? order : false}
                                     className={cx('table-head__cell')}
                                 >
-
                                     {headCell.label}
                                 </TableCell>
                             ))}
