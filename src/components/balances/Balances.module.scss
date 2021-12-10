@@ -4,154 +4,85 @@
   }
 
   .balance {
-    width: 350px;
-    height: 280px;
+    width: 543px;
+    height: 387px;
     background-color: var(--background-governance-color);
     padding: 10px;
     border-radius: 15px;
     margin: 0 auto;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    margin-bottom: 47px;
+
+    .balance-head-text {
+      color: var(--color-text-white-black);
+      padding-top: 20px;
+      // padding-bottom: 44px;
+      font-size: 24px;
+      font-weight: 600;
+    }
+
+    .balance-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 5px 0;
+
+      .balance-key {
+        color: #ccc;
+        font-size: 20px;
+        font-weight: 500;
+        margin-right: 35px;
+        text-align: left;
+       
+      }
+    
+      .balance-value {
+        color: #fff;
+        font-size: 24px;
+        font-weight: 600;
+        text-align: left;
+        margin-right: 15px;
+      }
+    }
   }
 
-  .balance-row {
+  .switcher{
+    margin-top: 31px;
     display: flex;
     justify-content: space-around;
-    height: 2em;
-    line-height: 1.8;
-    padding: 5px 0;
-  }
-
-  .balance-head-text {
-    color: var(--color-text-white-black);
-    padding-top: 5px;
-    padding-bottom: 10px;
-    font-size: 24px;
-  }
-
-  .balance-key {
-    color: #ccc;
-  }
-
-  .balance-value {
-    color: #fff;
-  }
-
-  .switcher {
-    position: relative;
-    width: 260px;
-    height: 65px;
-    border-radius: 25px;
-    margin: auto;
-    margin-top: 33px;
-
-    &_input {
-      appearance: none;
-      position: relative;
-      width: 260px;
-      height: 50px;
-      border-radius: 25px;
-      background-color: black;
-      outline: none;
-      transition: .25s -.1s;
-
-
-      &:checked {
-        background: linear-gradient(90.04deg, #001C4E 0.96%, #042F7C 91.92%);
-        cursor: pointer;
-
-
-        &::before {
-          color: #fff;
-          transition: color .5s .2s;
-          cursor: pointer;
-
-        }
-
-        &::after {
-          color: #3EE046;
-          transition: color .5s;
-          cursor: pointer;
-
-        }
-
-        &+label {
-          left: 3px;
-          right: 100px;
-          background: linear-gradient(90deg, #2AC031 13.55%, #3EE046 90.32%);
-          transition: left .5s, right .4s .2s;
-          top: 2px;
-          cursor: pointer;
-
-        }
-      }
-
-      &:not(:checked) {
-        background: linear-gradient(90.04deg, #001C4E 0.96%, #042F7C 91.92%);
-        transition: background .5s -.1s;
-        cursor: pointer;
-
-
-        &::before {
-          color: #3EE046;
-          cursor: pointer;
-
-          transition: color .5s;
-        }
-
-        &:after {
-          color: #fff;
-          transition: color .5s .2s;
-          cursor: pointer;
-
-        }
-
-        &+label {
-          left: 100px;
-          right: -3px;
-          top: 3px;
-          background: linear-gradient(90deg, #2AC031 13.55%, #3EE046 90.32%);
-          transition: left .4s .2s, right .5s, background .35s -.1s;
-          cursor: pointer;
-
-        }
-      }
-
-      &::before, &::after {
-        z-index: 2;
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        color: white;
-        cursor: pointer;
-
-      }
-
-      &::before {
-        content: 'STAKE';
-        left: 20px;
-        cursor: pointer;
-
-      }
-
-      &::after {
-        content: 'WITHDRAW';
-        right: 20px;
-        cursor: pointer;
-
-      }
+    &_stake,
+    &_withdraw{
+      background: linear-gradient(90.04deg, #001C4E 0.96%, #042F7C 91.92%);
+      border-radius: 26px;
+      text-transform: capitalize;
+      color: #3EE046;
     }
 
-    &_label {
-      z-index: 1;
-      position: absolute;
-      top: 10px;
-      bottom: 10px;
-      border-radius: 20px;
+    &_stake {
+      width: 221px;
+      height:65px;
+      line-height:65px;
+      font-size: 18px;
+      font-weight: 700;
+    }
+    
+    &_withdraw {
+      width: 221px;
+      height:65px;
+      line-height:65px;
+      font-size: 16px;
+      font-weight: 700;
     }
 
-
+    .button-active {
+      background: linear-gradient(90deg, #2AC031 13.55%, #3EE046 90.32%);
+      color: #fff
+    }
+    .button-deactive {
+      background: linear-gradient(90.04deg, #001C4E 0.96%, #042F7C 91.92%);
+      color: #3EE046;
+    }
   }
-
 
   .history {
     margin-top: 20px;
