@@ -362,12 +362,12 @@ const Balances: React.FC = () => {
           <div></div>
         </div>
         <div className={`${cx('switcher')} ${cx('switcher-1')}`}>
-          <input  className={cx('switcher_input')} type="checkbox" id="switcher-1" />
+          <input className={cx('switcher_input')} type="checkbox" id="switcher-1" />
           <label className={cx('switcher_label')} htmlFor="switcher-1"></label>
         </div>
       </div>
       <div className={cx('history')}>
-        <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+        <Paper sx={{ width: '100%', overflow: 'hidden', backgroundColor: 'transparent!important', borderRadius: '19px' }}>
           <TableContainer sx={{ maxHeight: 440 }}>
             <Table stickyHeader aria-label="sticky table">
               <TableHead>
