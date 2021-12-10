@@ -37,12 +37,18 @@
 
     &:hover {
       border: 2px solid var(--color-primary);
-      background-color: #3EE046;
+      background-color: var(--btn-hover-blue-green);
+    }
+    &:hover p {
+      color: var(--color-text-black-white);
     }
   }
-  .connect-wallet-text {
-    color: var(--color-text-white);
+  .connect-wallet-text-title {
+    color: var(--color-text-white-black);
     font-size: 24px;
     font-weight: 700;
+  }
+  .connect-wallet-text {
+    color: var(--color-text-white-black);
   }
 }

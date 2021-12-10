@@ -176,7 +176,7 @@ const ConnectWalletDialog: React.FC = () => {
         disableEscapeKeyDown={true}
         PaperProps={{
           style: {
-            backgroundColor: '#001C4E',
+            backgroundColor: 'var(--background-dialog-color)',
           },
         }}
       >
@@ -187,7 +187,7 @@ const ConnectWalletDialog: React.FC = () => {
             </IconButton>
           </Typography>
           <Typography component={'div'} className={cx('title')}>
-            <Box><div className={cx('connect-wallet-text')}>Connect your wallet</div></Box>
+            <Box><div className={cx('connect-wallet-text-title')}>Connect your wallet</div></Box>
           </Typography>
           <Typography component={'div'}>
             <IconButton
