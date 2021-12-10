@@ -7,16 +7,16 @@ import { makeStyles } from '@material-ui/styles';
 const cx = classNames.bind(styles);
 const paginationStyle = makeStyles(() => ({
   toolbar: {
-    color: 'rgba(255, 255, 255, 0.6);',
+    color: 'var(--pagination-color)',
   },
   input: {
     '& > .MuiTablePagination-selectIcon': {
-      color: 'rgba(255, 255, 255, 0.6);',
+      color: 'var(--pagination-action-color)',
     },
   },
   actions: {
     '& > .Mui-disabled .MuiSvgIcon-fontSizeMedium': {
-      color: 'rgba(255, 255, 255, 0.38);',
+      color: 'var(--pagination-action-color)',
     },
   },
 }));
@@ -33,7 +33,7 @@ const Proposal: React.FC = () => {
           </div>
           <div className={cx('row-content-btn')}>
               <div></div>
-              <div>Voted</div>
+              <div className={cx('vote')}>Voted</div>
           </div>
       </div>
       <div className={cx('row-content')}>
@@ -53,7 +53,7 @@ const Proposal: React.FC = () => {
           </div>
           <div className={cx('row-content-btn')}>
               <div></div>
-              <div>Voted</div>
+              <div className={cx('vote')}>Voted</div>
           </div>
       </div>
       <div className={cx('row-content')}>
@@ -73,7 +73,7 @@ const Proposal: React.FC = () => {
           </div>
           <div className={cx('row-content-btn')}>
               <div></div>
-              <div>Voted</div>
+              <div className={cx('vote')}>Voted</div>
           </div>
       </div>
       <div className={cx('row-content')}>

@@ -1,13 +1,13 @@
 :root {
   .governance-proposal {
     width: 65%;
-    background-color: #01163d;
+    background-color: var(--background-governance-color);
     padding: 10px;
     border-radius: 20px;
-    // text-align: center;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   }
   .text-header {
-    color: #fff;
+    color: var(--color-text-white-black);
     padding: 10px 0;
     font-size: 1.3em;
     padding-left: 20px;
@@ -21,6 +21,9 @@
     color: #ccc;
     margin: 10px 0;
   }
+  .row-content-left {
+    color: var(--color-text-white-black);
+  }
   .row-content-left:nth-child(1) {
       width: 60%;
       text-overflow: ellipsis;
@@ -32,6 +35,9 @@
       justify-content: space-between;
       width: 28%;
       color: #fff;
+  }
+  .row-content-btn .vote {
+    color: var(--color-text-white-black);
   }
   .btn-upvote, .btn-downvote {
       padding: 10px 20px;
