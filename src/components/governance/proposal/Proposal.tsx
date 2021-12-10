@@ -20,71 +20,72 @@ const paginationStyle = makeStyles(() => ({
     },
   },
 }));
+
 const Proposal: React.FC = () => {
   const paginationClasses = paginationStyle();
-  const handleChangePage = () => {};
+  const handleChangePage = () => { };
   return (
     <div className={cx('governance-proposal')}>
       <div className={cx('text-header')}>Proposal</div>
       <div className={cx('row-content')}>
-          <div className={cx('row-content-left')}>
-              <div>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Commodi, omnis.</div>
-              <div>1 November 29, 2021</div>
-          </div>
-          <div className={cx('row-content-btn')}>
-              <div></div>
-              <div>Voted</div>
-          </div>
+        <div className={cx('row-content-left')}>
+          <div>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Commodi, omnis.</div>
+          <div>1 November 29, 2021</div>
+        </div>
+        <div className={cx('row-content-btn')}>
+          <div></div>
+          <div>Voted</div>
+        </div>
       </div>
       <div className={cx('row-content')}>
-          <div className={cx('row-content-left')}>
-              <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor ipsam maxime illum beatae vel, illo, et nobis doloremque numquam unde modi, blanditiis facere? Eaque, non voluptatem in rem possimus eius.</div>
-              <div>1 November 29, 2021</div>
-          </div>
-          <div className={cx('row-content-btn')}>
-              <div className={cx('btn-upvote')}>Up Vote</div>
-              <div className={cx('btn-downvote')}>Down Vote</div>
-          </div>
+        <div className={cx('row-content-left')}>
+          <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor ipsam maxime illum beatae vel, illo, et nobis doloremque numquam unde modi, blanditiis facere? Eaque, non voluptatem in rem possimus eius.</div>
+          <div>1 November 29, 2021</div>
+        </div>
+        <div className={cx('row-content-btn')}>
+          <div className={cx('btn-upvote')}>Up Vote</div>
+          <div className={cx('btn-downvote')}>Down Vote</div>
+        </div>
       </div>
       <div className={cx('row-content')}>
-          <div className={cx('row-content-left')}>
-              <div>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Commodi, omnis.</div>
-              <div>1 November 29, 2021</div>
-          </div>
-          <div className={cx('row-content-btn')}>
-              <div></div>
-              <div>Voted</div>
-          </div>
+        <div className={cx('row-content-left')}>
+          <div>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Commodi, omnis.</div>
+          <div>1 November 29, 2021</div>
+        </div>
+        <div className={cx('row-content-btn')}>
+          <div></div>
+          <div>Voted</div>
+        </div>
       </div>
       <div className={cx('row-content')}>
-          <div className={cx('row-content-left')}>
-              <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor ipsam maxime illum beatae vel, illo, et nobis doloremque numquam unde modi, blanditiis facere? Eaque, non voluptatem in rem possimus eius.</div>
-              <div>1 November 29, 2021</div>
-          </div>
-          <div className={cx('row-content-btn')}>
-              <div className={cx('btn-upvote')}>Up Vote</div>
-              <div className={cx('btn-downvote')}>Down Vote</div>
-          </div>
+        <div className={cx('row-content-left')}>
+          <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor ipsam maxime illum beatae vel, illo, et nobis doloremque numquam unde modi, blanditiis facere? Eaque, non voluptatem in rem possimus eius.</div>
+          <div>1 November 29, 2021</div>
+        </div>
+        <div className={cx('row-content-btn')}>
+          <div className={cx('btn-upvote')}>Up Vote</div>
+          <div className={cx('btn-downvote')}>Down Vote</div>
+        </div>
       </div>
       <div className={cx('row-content')}>
-          <div className={cx('row-content-left')}>
-              <div>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Commodi, omnis.</div>
-              <div>1 November 29, 2021</div>
-          </div>
-          <div className={cx('row-content-btn')}>
-              <div></div>
-              <div>Voted</div>
-          </div>
+        <div className={cx('row-content-left')}>
+          <div>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Commodi, omnis.</div>
+          <div>1 November 29, 2021</div>
+        </div>
+        <div className={cx('row-content-btn')}>
+          <div></div>
+          <div>Voted</div>
+        </div>
       </div>
       <div className={cx('row-content')}>
-          <div className={cx('row-content-left')}>
-              <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor ipsam maxime illum beatae vel, illo, et nobis doloremque numquam unde modi, blanditiis facere? Eaque, non voluptatem in rem possimus eius.</div>
-              <div>1 November 29, 2021</div>
-          </div>
-          <div className={cx('row-content-btn')}>
-              <div className={cx('btn-upvote')}>Up Vote</div>
-              <div className={cx('btn-downvote')}>Down Vote</div>
-          </div>
+        <div className={cx('row-content-left')}>
+          <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor ipsam maxime illum beatae vel, illo, et nobis doloremque numquam unde modi, blanditiis facere? Eaque, non voluptatem in rem possimus eius.</div>
+          <div>1 November 29, 2021</div>
+        </div>
+        <div className={cx('row-content-btn')}>
+          <div className={cx('btn-upvote')}>Up Vote</div>
+          <div className={cx('btn-downvote')}>Down Vote</div>
+        </div>
       </div>
       <TablePagination
         rowsPerPageOptions={[5, 10, 25]}
