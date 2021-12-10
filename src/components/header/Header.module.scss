@@ -13,26 +13,21 @@
     font-size: 24px;
     font-weight: 700;
     display: flex;
-    div {
-      padding: 0 10px;
-      cursor: pointer;
-      color: #fff;
-    }
-    div:hover {
-      text-decoration: underline;
-    }
   }
   .link-style {
-    color: #fff;
+    color: var(--color-text-white-blue);
     margin-right: 10px;
     text-decoration-line: none;
     line-height: 40px;
   }
   .link-style-border {
-    color: #fff;
+    color: var(--color-text-white-blue);
     margin-right: 10px;
     text-decoration-line: none;
-    border-bottom: solid 1px var(--btn-background-color);
+    border-bottom: solid 2px var(--btn-header-border-color);
     line-height: 40px;
+  }
+  .group-connect-theme {
+    display: flex;
   }
 }

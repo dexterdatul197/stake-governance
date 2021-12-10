@@ -17,21 +17,21 @@ const useStyles: any = makeStyles(() => ({
     },
   },
   inputRoot: {
-    background: 'rgba(114, 191, 101, 0.1);',
+    background: 'var(--main-background-dropdow)',
     '&.MuiOutlinedInput-root': {
       borderRadius: '18px',
     },
   },
   input: {
     textTransform: 'uppercase',
-    color: '#72bf65 !important',
+    color: 'var(--btn-hover-blue-green) !important',
   },
   endAdornment: {
     '& > .MuiAutocomplete-clearIndicator': {
       display: 'none',
     },
     '& > .MuiAutocomplete-popupIndicator': {
-      color: '#72bf65',
+      color: 'var(--btn-hover-blue-green)',
     },
   },
 }));

@@ -16,10 +16,10 @@
   .text-head .price {
     font-size: 25px;
     font-weight: 700;
-    color: #72bf65;
+    color: var(--btn-hover-blue-green);
     margin-right: 10px;
   }
   .securing-chain {
-    color: #eceff9;
+    color: var(--color-text-footer);
   }
 }
