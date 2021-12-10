@@ -7,16 +7,16 @@ import { makeStyles } from '@material-ui/styles';
 const cx = classNames.bind(styles);
 const paginationStyle = makeStyles(() => ({
   toolbar: {
-    color: 'rgba(255, 255, 255, 0.6);',
+    color: 'var(--pagination-color)',
   },
   input: {
     '& > .MuiTablePagination-selectIcon': {
-      color: 'rgba(255, 255, 255, 0.6);',
+      color: 'var(--pagination-action-color)',
     },
   },
   actions: {
     '& > .Mui-disabled .MuiSvgIcon-fontSizeMedium': {
-      color: 'rgba(255, 255, 255, 0.38);',
+      color: 'var(--pagination-action-color)',
     },
   },
 }));
@@ -28,14 +28,14 @@ const Proposal: React.FC = () => {
     <div className={cx('governance-proposal')}>
       <div className={cx('text-header')}>Proposal</div>
       <div className={cx('row-content')}>
-        <div className={cx('row-content-left')}>
-          <div>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Commodi, omnis.</div>
-          <div>1 November 29, 2021</div>
-        </div>
-        <div className={cx('row-content-btn')}>
-          <div></div>
-          <div>Voted</div>
-        </div>
+          <div className={cx('row-content-left')}>
+              <div>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Commodi, omnis.</div>
+              <div>1 November 29, 2021</div>
+          </div>
+          <div className={cx('row-content-btn')}>
+              <div></div>
+              <div className={cx('vote')}>Voted</div>
+          </div>
       </div>
       <div className={cx('row-content')}>
         <div className={cx('row-content-left')}>
@@ -48,14 +48,14 @@ const Proposal: React.FC = () => {
         </div>
       </div>
       <div className={cx('row-content')}>
-        <div className={cx('row-content-left')}>
-          <div>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Commodi, omnis.</div>
-          <div>1 November 29, 2021</div>
-        </div>
-        <div className={cx('row-content-btn')}>
-          <div></div>
-          <div>Voted</div>
-        </div>
+          <div className={cx('row-content-left')}>
+              <div>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Commodi, omnis.</div>
+              <div>1 November 29, 2021</div>
+          </div>
+          <div className={cx('row-content-btn')}>
+              <div></div>
+              <div className={cx('vote')}>Voted</div>
+          </div>
       </div>
       <div className={cx('row-content')}>
         <div className={cx('row-content-left')}>
@@ -68,14 +68,14 @@ const Proposal: React.FC = () => {
         </div>
       </div>
       <div className={cx('row-content')}>
-        <div className={cx('row-content-left')}>
-          <div>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Commodi, omnis.</div>
-          <div>1 November 29, 2021</div>
-        </div>
-        <div className={cx('row-content-btn')}>
-          <div></div>
-          <div>Voted</div>
-        </div>
+          <div className={cx('row-content-left')}>
+              <div>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Commodi, omnis.</div>
+              <div>1 November 29, 2021</div>
+          </div>
+          <div className={cx('row-content-btn')}>
+              <div></div>
+              <div className={cx('vote')}>Voted</div>
+          </div>
       </div>
       <div className={cx('row-content')}>
         <div className={cx('row-content-left')}>

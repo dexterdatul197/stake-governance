@@ -20,14 +20,12 @@ body {
   --btn-hover-blue-green: #3EE046;
   --color-text-black-white: #000;
   --main-background-dropdow: rgba(114, 191, 101, 0.1);
-
-  --background-color: #f5f5f5;
-  --background-header-color: #eceff9;
-  --primary-button-bg: #1a88c9;
+  --background-governance-color: #01163d;
+  --pagination-color: rgba(255, 255, 255, 0.6);
+  --pagination-action-color: rgba(255, 255, 255, 0.38);
   --color-text-white-blue: #fff;
   --color-dialog-title: #4e4b66;
   --color-primary: #1a88c9;
-  --background-color-main: #39496a;
   --footer-background-color: #01163D;
 }
 [data-theme='dark'] {
@@ -41,11 +39,9 @@ body {
   --btn-hover-blue-green: #107DEF;
   --color-text-black-white: #fff;
   --main-background-dropdow: #ECF3FB;
-  
-  --background-color-main: #39496a;
-  --background-color: #f5f5f5;
-  --background-header-color: #eceff9;
-  --primary-button-bg: #1a88c9;
+  --background-governance-color: #fff;
+  --pagination-color: rgba(78, 78, 78, 0.6);
+  --pagination-action-color: rgba(156, 155, 155, 0.38);
   --color-text-white-blue: #107DEF;
   --color-dialog-title: #4e4b66;
   --color-primary: #1a88c9;

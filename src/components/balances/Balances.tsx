@@ -93,24 +93,14 @@ const tableSortStyles = makeStyles(() => ({
   },
 }));
 
-interface Data {
-  id: number;
-  transactionHash: string;
-  type: string;
-  amount: string;
-  date: string;
-  status: string;
-}
-interface HeadCell {
-  disablePadding: boolean;
-  id: keyof Data;
-  label: string;
-  numeric: boolean;
-}
+
 
 const Balances: React.FC = () => {
   const classes = useStyles();
+  const paginationClasses = paginationStyle();
+  const tableSortClasses = tableSortStyles();
   const currencies = useAppSelector((state) => state.currency.currenciesList);
+
 
   return (
     <div className={cx('balances-history')}>

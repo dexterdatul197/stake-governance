@@ -6,10 +6,11 @@
   .balance {
     width: 350px;
     height: 280px;
-    background: #01163d;
+    background-color: var(--background-governance-color);
     padding: 10px;
     border-radius: 15px;
     margin: 0 auto;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   }
 
   .balance-row {
@@ -21,7 +22,7 @@
   }
 
   .balance-head-text {
-    color: #fff;
+    color: var(--color-text-white-black);
     padding-top: 5px;
     padding-bottom: 10px;
     font-size: 24px;
@@ -154,5 +155,6 @@
 
   .history {
     margin-top: 20px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   }
 }
