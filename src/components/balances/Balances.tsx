@@ -30,11 +30,11 @@ const useStyles: any = makeStyles(() => ({
     },
     '& > .MuiOutlinedInput-root': {
       height: '2em',
-      paddingRight: '25px'
-    }
+      paddingRight: '25px',
+    },
   },
   inputRoot: {
-    background: 'rgba(114, 191, 101, 0.1);',
+    background: 'var(--main-background-dropdow)',
     height: '2em',
     paddingRight: '25px !important',
     '&.MuiOutlinedInput-root': {
@@ -43,40 +43,40 @@ const useStyles: any = makeStyles(() => ({
   },
   input: {
     textTransform: 'uppercase',
-    color: '#72bf65 !important',
+    color: 'var(--btn-hover-blue-green) !important',
     width: '50px !important',
     paddingTop: '1px !important',
-    paddingBottom: '0px !important'
+    paddingBottom: '0px !important',
   },
   endAdornment: {
     '& > .MuiAutocomplete-clearIndicator': {
       display: 'none',
     },
     '& > .MuiAutocomplete-popupIndicator': {
-      color: '#72bf65',
+      color: 'var(--btn-hover-blue-green)',
     },
   },
 }));
 
 const paginationStyle = makeStyles(() => ({
   toolbar: {
-    color: 'rgba(255, 255, 255, 0.6);',
+    color: 'var(--pagination-color)',
   },
   input: {
     '& > .MuiTablePagination-selectIcon': {
-      color: 'rgba(255, 255, 255, 0.6);',
+      color: 'var(--pagination-action-color)',
     },
   },
   actions: {
     '& > .Mui-disabled .MuiSvgIcon-fontSizeMedium': {
-      color: 'rgba(255, 255, 255, 0.38);',
+      color: 'var(--pagination-action-color)',
     },
   },
 }));
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.root}`]: {
-    backgroundColor: '#01163D',
-    color: '#fff',
+    backgroundColor: 'var(--background-governance-color)',
+    color: 'var(--color-text-white-black)',
   },
   border: 0,
   padding: 15,
@@ -84,10 +84,10 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 const tableSortStyles = makeStyles(() => ({
   root: {
     '&:hover': {
-      color: '#fff !important',
+      color: 'var(--color-text-white-black) !important',
     },
     '&:focus': {
-      color: '#fff !important',
+      color: 'var(--color-text-white-black) !important',
     },
   },
 }));
@@ -362,8 +362,8 @@ const Balances: React.FC = () => {
           <div></div>
         </div>
         <div className={cx('balance-button')}>
-            <div className={cx('btn-stake')}>Stake</div>
-            <div className={cx('btn-withdraw')}>Withdraw</div>
+          <div className={cx('btn-stake')}>Stake</div>
+          <div className={cx('btn-withdraw')}>Withdraw</div>
         </div>
       </div>
       <div className={cx('history')}>

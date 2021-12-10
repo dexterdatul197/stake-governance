@@ -2,14 +2,15 @@
   .governance-vote {
     width: 30%;
     padding: 10px;
-    background-color: #01163d;
+    background-color: var(--background-governance-color);
     border-radius: 20px;
     text-align: center;
     padding-bottom: 20px;
     height: fit-content;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   }
   .vote-title {
-    color: #fff;
+    color: var(--color-text-white-black);
     padding: 10px 0;
     font-size: 1.3em;
   }
@@ -20,12 +21,12 @@
     line-height: 1.7;
   }
   .vote-value, .rank {
-      color: #fff;
+      color: var(--color-text-white-blue);
       font-size: 1.1em;
   }
   .create-proposal {
     padding: 15px 40px;
-    background: #3ee046;
+    background: var(--btn-background-connect-color);
     width: 50%;
     margin: 0 auto;
     border-radius: 20px;
@@ -42,8 +43,8 @@
   .view-leader-board {
       padding: 15px 40px;
       border-radius: 20px;
-      border: solid 1px #3ee046;
-      color: #3ee046;
+      border: solid 1px var(--btn-hover-blue-green);
+      color: var(--btn-hover-blue-green);
       width: 50%;
       margin: 0 auto;
       cursor: pointer;
