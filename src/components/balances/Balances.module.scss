@@ -2,53 +2,88 @@
   .balances-history {
     text-align: center;
   }
+
   .balance {
-    width: 350px;
-    height: 280px;
+    width: 543px;
+    height: 387px;
     background-color: var(--background-governance-color);
     padding: 10px;
     border-radius: 15px;
     margin: 0 auto;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    margin-bottom: 47px;
+
+    .balance-head-text {
+      color: var(--color-text-white-black);
+      padding-top: 20px;
+      // padding-bottom: 44px;
+      font-size: 24px;
+      font-weight: 600;
+    }
+
+    .balance-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 5px 0;
+
+      .balance-key {
+        color: #ccc;
+        font-size: 20px;
+        font-weight: 500;
+        margin-right: 35px;
+        text-align: left;
+       
+      }
+    
+      .balance-value {
+        color: #fff;
+        font-size: 24px;
+        font-weight: 600;
+        text-align: left;
+        margin-right: 15px;
+      }
+    }
   }
-  .balance-row {
+
+  .switcher{
+    margin-top: 31px;
     display: flex;
     justify-content: space-around;
-    height: 2em;
-    line-height: 1.8;
-    padding: 5px 0;
+    &_stake,
+    &_withdraw{
+      background: linear-gradient(90.04deg, #001C4E 0.96%, #042F7C 91.92%);
+      border-radius: 26px;
+      text-transform: capitalize;
+      color: #3EE046;
+    }
+
+    &_stake {
+      width: 221px;
+      height:65px;
+      line-height:65px;
+      font-size: 18px;
+      font-weight: 700;
+    }
+    
+    &_withdraw {
+      width: 221px;
+      height:65px;
+      line-height:65px;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .button-active {
+      background: linear-gradient(90deg, #2AC031 13.55%, #3EE046 90.32%);
+      color: #fff
+    }
+    .button-deactive {
+      background: linear-gradient(90.04deg, #001C4E 0.96%, #042F7C 91.92%);
+      color: #3EE046;
+    }
   }
-  .balance-head-text {
-    color: var(--color-text-white-black);
-    padding-top: 5px;
-    padding-bottom: 10px;
-    font-size: 24px;
-  }
-  .balance-key, .balance-value {
-    color: var(--color-text-white-black);
-  }
-  .balance-button {
-    display: flex;
-    justify-content: center;
-    text-transform: uppercase;
-    font-weight: 600;
-    padding-top: 20px;
-  }
-  .balance-button div {
-    padding: 15px 50px;
-    cursor: pointer;
-  }
-  .btn-stake {
-    color: #fff;
-    background-color: var(--btn-background-color);
-    border-radius: 20px;
-  }
-  .btn-withdraw {
-    border-top-right-radius: 20px;
-    border-bottom-right-radius: 20px;
-    background-image: linear-gradient(to right, #001C4E, #7693c7);
-    color: var(--btn-background-color);
-  }
+
   .history {
     margin-top: 20px;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;

@@ -5,29 +5,40 @@
     display: flex;
     justify-content: space-between;
   }
-  .logo img {
-    width: 140px;
-    height: 45px;
+
+  .logo {
+    flex: 1;
+    img {
+      width: 140px;
+      height: 45px;
+    }
   }
+
   .stake-governance {
     font-size: 24px;
     font-weight: 700;
     display: flex;
-  }
-  .link-style {
-    color: var(--color-text-white-blue);
-    margin-right: 10px;
-    text-decoration-line: none;
-    line-height: 40px;
-  }
-  .link-style-border {
-    color: var(--color-text-white-blue);
-    margin-right: 10px;
-    text-decoration-line: none;
-    border-bottom: solid 2px var(--btn-header-border-color);
-    line-height: 40px;
+    flex: 1;
+    justify-content:center;
+    .link-style {
+      color: var(--color-text-white-blue);
+      margin-right: 28px;
+      text-decoration-line: none;
+      font-size: 24px;
+      font-weight: 700;
+    }
+  
+    .link-style-border {
+      color: var(--color-text-white-blue);
+      margin-right: 28px;
+      text-decoration-line: none;
+      border-bottom: solid 2px var(--btn-header-border-color);
+    }
   }
   .group-connect-theme {
     display: flex;
+    flex: 1;
+    justify-content: flex-end;
+    align-items: center;
   }
 }
