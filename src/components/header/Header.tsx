@@ -5,13 +5,14 @@ import classnames from 'classnames/bind';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import ChnLogoSVG from '../../assets/icon/ChnLogoSVG';
 import { THEME_MODE } from '../../constant/constants';
 import { isConnected } from '../../helpers/connectWallet';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { useAppSelector } from '../../store/hooks';
 import { setTheme } from '../../store/theme';
 import ConnectWallet from '../connect-wallet/ConnectWallet';
 import { setOpenConnectDialog } from '../connect-wallet/redux/wallet';
-import logo from './../../assets/imgs/logo.052a772b.png';
+import logo from './../../assets/imgs/CHN_logo.png';
 import style from './Header.module.scss';
 const cx = classnames.bind(style);
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
