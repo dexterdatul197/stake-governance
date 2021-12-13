@@ -4,6 +4,8 @@ import React from 'react';
 import { Autocomplete, TextField } from '@material-ui/core';
 import { useAppSelector } from '../../../store/hooks';
 import { makeStyles } from '@material-ui/styles';
+import { useDispatch } from 'react-redux';
+import { setOpenCreateProposalDialog } from '../redux/Governance';
 
 const useStyles: any = makeStyles(() => ({
   root: {
@@ -43,8 +45,12 @@ const useStyles: any = makeStyles(() => ({
 const cx = classNames.bind(styles);
 
 const Vote: React.FC = () => {
+  const dispatch = useDispatch();
   const classes = useStyles();
   const currencies = useAppSelector((state) => state.currency.currenciesList);
+  const handleOpenCreateForm = () => {
+    dispatch(setOpenCreateProposalDialog(true));
+  }
   return (
     <div className={cx('governance-vote')}>
       <div className={cx('vote-title')}>Vote Weight</div>
@@ -64,7 +70,7 @@ const Vote: React.FC = () => {
           />
         </div>
       </div>
-      <div className={cx('create-proposal')}>Create Proposal</div>
+      <div className={cx('create-proposal')} onClick={handleOpenCreateForm}>Create Proposal</div>
       <div className={cx('border-bottom')}></div>
       <div className={cx('rank')}>Rank: 43</div>
       <div className={cx('view-leader-board')}>View leader board</div>

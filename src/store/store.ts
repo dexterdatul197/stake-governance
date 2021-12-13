@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import currencyReducer from '../components/chart/redux/currency';
 import walletReducer from '../components/connect-wallet/redux/wallet';
+import governanceReducer from '../components/governance/redux/Governance';
 import snackbarReducer from './snackbar';
 import themeReducer from './theme';
 const store = configureStore({
@@ -8,7 +9,8 @@ const store = configureStore({
         wallet: walletReducer,
         snackbar: snackbarReducer,
         currency: currencyReducer,
-        theme: themeReducer
+        theme: themeReducer,
+        governance: governanceReducer
     }
 });
 export type AppDispatch = typeof store.dispatch;
