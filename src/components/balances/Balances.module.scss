@@ -49,7 +49,7 @@
   .switcher{
     margin-top: 31px;
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     &_stake,
     &_withdraw{
       background: linear-gradient(90.04deg, #001C4E 0.96%, #042F7C 91.92%);
@@ -64,6 +64,7 @@
       line-height:65px;
       font-size: 18px;
       font-weight: 700;
+      margin-right: 10px;
     }
     
     &_withdraw {
