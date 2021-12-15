@@ -25,7 +25,7 @@ const useStyles: any = makeStyles(() => ({
     }
   },
   inputRoot: {
-    background: 'rgba(114, 191, 101, 0.1);',
+    background: 'var(--main-background-dropdow)',
     height: '2em',
     paddingRight: '25px !important',
     '&.MuiOutlinedInput-root': {
@@ -34,7 +34,7 @@ const useStyles: any = makeStyles(() => ({
   },
   input: {
     textTransform: 'uppercase',
-    color: '#72bf65 !important',
+    color: 'var(--btn-hover-blue-green) !important',
     width: '50px !important',
     paddingTop: '1px !important',
     paddingBottom: '0px !important'
@@ -44,7 +44,7 @@ const useStyles: any = makeStyles(() => ({
       display: 'none',
     },
     '& > .MuiAutocomplete-popupIndicator': {
-      color: '#72bf65',
+      color: 'var(--btn-hover-blue-green)',
     },
   },
 }));
