@@ -19,3 +19,12 @@ svg.MuiSvgIcon-root.MuiSvgIcon-fontSizeMedium.MuiTablePagination-selectIcon.MuiS
 .css-zylse7-MuiButtonBase-root-MuiIconButton-root.Mui-disabled{
   color: #ffffff!important;
 }
+
+/* .css-a88p61-MuiInputBase-root-MuiInput-root:before {
+  border-bottom: none !important;
+} */
+
+.css-nz481w-MuiInputBase-input-MuiInput-input.Mui-disabled {
+  -webkit-text-fill-color: rgba(255,255,255, 0.9)!important;
+  opacity: 1!important;
+}
