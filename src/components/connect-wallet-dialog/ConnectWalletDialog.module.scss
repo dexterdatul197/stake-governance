@@ -16,33 +16,34 @@
     margin-right: 32px;
     color: var(--color-dialog-label);
   }
-  .button {
-    margin: 0 30px 30px 30px;
-    padding: 16px;
-    color: var(--color-dialog-label);
-    text-transform: none;
-    justify-content: flex-start;
-    border-radius: 15px;
-    background-color: var(--color-dialog-btn-bg);
-    border: 2px solid var(--color-dialog-btn-bg);
 
-    svg {
-      margin-right: 12px;
-    }
+  .list-wallet {
+    display: flex;
+    align-items: center;
+    padding: 30px 32px 37px 32px;
+    
+    .button {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      background: #022461;
+      border-radius: 15px;
+      height: 82px;
 
-    p {
-      margin: 0;
-      font-size: 20px;
-    }
+      .icon {
+        padding: 21px 22px 22px 23px;
+      }
 
-    &:hover {
-      border: 2px solid var(--color-primary);
-      background-color: var(--btn-hover-blue-green);
-    }
-    &:hover p {
-      color: var(--color-text-black-white);
+      .title {
+        text-transform: capitalize;
+        color: var(--color-text-white-black);
+        font-size: 24px;
+        font-weight: 700;
+      }
     }
   }
+
   .connect-wallet-text-title {
     color: var(--color-text-white-black);
     font-size: 24px;
