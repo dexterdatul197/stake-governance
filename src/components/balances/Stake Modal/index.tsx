@@ -1,4 +1,4 @@
-import React, { useCallback, memo, useState } from "react";
+import React, { useCallback, useEffect, memo, useState } from "react";
 import {
   DialogContent,
   DialogTitle,
@@ -85,10 +85,17 @@ const Modal = memo((props: Props) => {
 
   return (
     <Dialog
-      maxWidth="xs"
+      maxWidth="sm"
       className={cx("dialog")}
       open={openStake}
       onClose={handleCloseModal}
+      PaperProps={{
+        style: {
+          backgroundColor: "var(--background-dialog-color)",
+          overflowY: "unset",
+          borderRadius: '20px'
+        },
+      }}
     >
       <DialogTitle className={cx("title-dialog")}>
         <Typography className={cx("text-stake")}>Stake</Typography>
@@ -144,11 +151,12 @@ const Modal = memo((props: Props) => {
         </Box>
         <Box className={cx("balance")}>
           <Box className={cx("balance__wallet-balance")}>
-            <Typography>Wallet Balance: 42</Typography>
+            <Typography className={cx('title')}>Wallet Balance: 42</Typography>
             <Autocomplete
               classes={classes}
               options={currencies}
               defaultValue={"chn"}
+              className={cx('autocomplete')}
               renderInput={(item) => (
                 <TextField {...item} margin="normal" fullWidth />
               )}
@@ -156,9 +164,25 @@ const Modal = memo((props: Props) => {
               id="combo-box-demo"
             />
           </Box>
-          <Box className={cx("staked-balance")}></Box>
+          <Box className={cx("balance__stake-balance")}>
+            <Typography className={cx('title')}>Stake Balance: 42</Typography>
+            <Autocomplete
+              classes={classes}
+              options={currencies}
+              defaultValue={"chn"}
+              className={cx('autocomplete')}
+              renderInput={(item) => (
+                <TextField {...item} margin="normal" fullWidth />
+              )}
+              size={"small"}
+              id="combo-box-demo"
+            />
+          </Box>
         </Box>
       </DialogContent>
+      <DialogActions className={cx('dialog-action')}>
+        <Button className={cx("button-stake")}>Stake</Button>
+      </DialogActions>
     </Dialog>
   );
 });
