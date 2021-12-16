@@ -1,18 +1,9 @@
-import React, { useCallback, useEffect, memo, useState } from "react";
 import {
-  DialogContent,
-  DialogTitle,
-  DialogActions,
-  Dialog,
-  Typography,
-  Slider,
-  Input,
-  Box,
-  Autocomplete,
-  Button,
-  TextField,
+  Autocomplete, Box, Button, Dialog, DialogActions, DialogContent,
+  DialogTitle, Input, Slider, TextField, Typography
 } from "@material-ui/core";
 import classNames from "classnames/bind";
+import React, { memo, useCallback, useState } from "react";
 import styles from "./styles.module.scss";
 
 const cx = classNames.bind(styles);
@@ -20,8 +11,8 @@ const cx = classNames.bind(styles);
 interface Props {
   openStake: boolean;
   handleCloseModal: () => void;
-  classes: any;
-  currencies: any;
+  classes?: any;
+  currencies?: any;
 }
 
 const Modal = memo((props: Props) => {
