@@ -9,7 +9,8 @@
   .logo {
     flex: 1;
     img {
-      height: 50px;
+      width: 140px;
+      height: 45px;
     }
   }
 
@@ -18,7 +19,7 @@
     font-weight: 700;
     display: flex;
     flex: 1;
-    justify-content:center;
+    justify-content: center;
     .link-style {
       color: var(--color-text-white-blue);
       margin-right: 28px;
@@ -26,7 +27,7 @@
       font-size: 24px;
       font-weight: 700;
     }
-  
+
     .link-style-border {
       color: var(--color-text-white-blue);
       margin-right: 28px;
@@ -38,6 +39,67 @@
     display: flex;
     flex: 1;
     justify-content: flex-end;
-    align-items: center;
+    .app {
+      margin-right: 10px;
+    }
+    .body {
+      position: relative;
+      width: 233px;
+      height: 70px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: background-color 0.1s;
+    }
+    label,
+    .toggle {
+      height: 2.8rem;
+      border-radius: 100px;
+    }
+    label {
+      width: 100%;
+      background-color: rgba(0, 0, 0, 0.1);
+      border-radius: 100px;
+      position: relative;
+      margin: 1.8rem 0 4rem 0;
+      cursor: pointer;
+    }
+    .toggle {
+      position: absolute;
+      width: 50%;
+      background-color: #fff;
+      box-shadow: 0 2px 15px rgba(0, 0, 0, 0.15);
+      transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .names {
+      font-size: 90%;
+      font-weight: bolder;
+      width: 65%;
+      margin-left: 17.5%;
+      margin-top: 0.5%;
+      position: absolute;
+      display: flex;
+      justify-content: space-between;
+      user-select: none;
+    }
+    .dark {
+      opacity: 0.5;
+    }
+
+    [type="checkbox"] {
+      display: none;
+    }
+    /* Toggle */
+    [type="checkbox"]:checked + .app .toggle {
+      transform: translateX(100%);
+      background-color: #34323d;
+    }
+    [type="checkbox"]:checked + .app .dark {
+      opacity: 1;
+      color: #fff;
+    }
+    [type="checkbox"]:checked + .app .light {
+      opacity: 0.5;
+    }
   }
 }
