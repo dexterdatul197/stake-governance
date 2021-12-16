@@ -1,11 +1,13 @@
-import classNames from 'classnames/bind';
-import styles from './Vote.module.scss';
-import React from 'react';
 import { Autocomplete, TextField } from '@material-ui/core';
-import { useAppSelector } from '../../../store/hooks';
 import { makeStyles } from '@material-ui/styles';
+import classNames from 'classnames/bind';
+import React from 'react';
 import { useDispatch } from 'react-redux';
+import { isConnected } from '../../../helpers/connectWallet';
+import { useAppSelector } from '../../../store/hooks';
+import { openSnackbar, SnackbarVariant } from '../../../store/snackbar';
 import { setOpenCreateProposalDialog } from '../redux/Governance';
+import styles from './Vote.module.scss';
 
 const useStyles: any = makeStyles(() => ({
   root: {
@@ -48,8 +50,16 @@ const Vote: React.FC = () => {
   const dispatch = useDispatch();
   const classes = useStyles();
   const currencies = useAppSelector((state) => state.currency.currenciesList);
-  const handleOpenCreateForm = () => {
-    dispatch(setOpenCreateProposalDialog(true));
+  const wallet = useAppSelector((state) => state.wallet);
+  const handleOpenCreateForm = async () => {
+    if (isConnected(wallet)) {
+      const connectedAddress = Object.values(wallet).filter((item) => typeof(item) === 'string').filter(item => item.length > 0)[0];
+      console.log('ADDRESS: ', connectedAddress);
+      
+      dispatch(setOpenCreateProposalDialog(true));
+    } else {
+      dispatch(openSnackbar({ variant: SnackbarVariant.ERROR, message: 'Need connect wallet to create proposal!' }));
+    }
   }
   return (
     <div className={cx('governance-vote')}>

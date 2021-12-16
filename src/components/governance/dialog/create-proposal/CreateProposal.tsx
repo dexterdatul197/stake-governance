@@ -1,10 +1,10 @@
 import { Dialog, IconButton, Typography } from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
 import { Box } from '@material-ui/system';
+import classNames from 'classnames/bind';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../../../store/hooks';
 import { setOpenCreateProposalDialog } from '../../redux/Governance';
-import CloseIcon from '@material-ui/icons/Close';
-import classNames from 'classnames/bind';
 import styles from './CreateProposal.module.scss';
 
 const cx = classNames.bind(styles);
@@ -71,7 +71,7 @@ const CreateProposal: React.FC = () => {
       }}>
         <div className={cx('box-title')} >Details</div>
         <div className={cx('div-input')} >
-            <input type="text" name="" id="" className={cx('input-style')} />
+            <textarea name="" id="" cols={50} rows={10} className={cx('input-style', 'text-area-style')}></textarea>
         </div>
       </Box>
       <Box sx={{
