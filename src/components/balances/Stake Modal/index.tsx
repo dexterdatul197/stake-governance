@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, memo, useState } from "react";
 import {
   DialogContent,
   DialogTitle,
@@ -24,7 +24,7 @@ interface Props {
   currencies: any;
 }
 
-const Modal = (props: Props) => {
+const Modal = memo((props: Props) => {
   const { openStake, handleCloseModal, classes, currencies } = props;
   const [value, setValue] = useState({
     default: 0,
@@ -161,6 +161,6 @@ const Modal = (props: Props) => {
       </DialogContent>
     </Dialog>
   );
-};
+});
 
 export default Modal;
