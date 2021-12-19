@@ -10,7 +10,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { isConnected } from '../../../helpers/connectWallet';
 import {
-  getStrikeBalance,
+  getCHNBalance,
   governance
 } from '../../../helpers/ContractService';
 import { useAppSelector } from '../../../store/hooks';
@@ -71,19 +71,22 @@ const Vote: React.FC = () => {
         .filter((item) => typeof item === 'string')
         .filter((item) => item.length > 0)[0];
       // check amount strike in wallet > proposalThreshold()
-      const strikeAmount = await getStrikeBalance()
+      const chnAmount = await getCHNBalance()
         .methods.balanceOf(connectedAddress)
         .call();
       const proposalThreshold = await governance()
         .methods.proposalThreshold()
         .call();
-      const checkSTRKamount = new BigNumber(strikeAmount).comparedTo(new BigNumber(proposalThreshold));
+      const checkCHNamount = new BigNumber(chnAmount).comparedTo(new BigNumber(proposalThreshold));
+      console.log('CHN amount: ', chnAmount, proposalThreshold);
+      
       setOpenLoading(false);
-      if (checkSTRKamount !== 1) {
-        dispatch(openSnackbar({message: 'Your STRK amount not enought to create proposal', variant: SnackbarVariant.ERROR}));
+      if (checkCHNamount !== 1) {
+        dispatch(openSnackbar({message: 'Your CHN amount not enought to create proposal', variant: SnackbarVariant.ERROR}));
         createProposal = false;
       }
       // check user dont have any proposal with status active or pending
+      
       if (createProposal) {
         dispatch(setOpenCreateProposalDialog(true));
       }

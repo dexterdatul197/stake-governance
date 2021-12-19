@@ -36,16 +36,16 @@ export const governance = () => {
   );
 };
 
-export const getStrikeBalance = () => {
+export const getCHNBalance = () => {
   if (enviroment === 'prod') {
     return new web3.eth.Contract(
       JSON.parse(STRIKE_TOKEN_MAINNET_ABI),
-      process.env.REACT_APP_MAIN_STRK_TOKEN_ADDRESS
+      process.env.REACT_APP_MAIN_CHN_TOKEN_ADDRESS
     );
   } else {
     return new web3.eth.Contract(
       JSON.parse(STRIKE_TOKEN_ROPSTEN_ABI),
-      process.env.REACT_APP_TEST_STRK_TOKEN_ADDRESS
+      process.env.REACT_APP_TEST_CHN_TOKEN_ADDRESS
     );
   }
 };
