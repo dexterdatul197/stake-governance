@@ -12,6 +12,8 @@ import { setTheme } from "../../store/theme";
 import ConnectWallet from "../connect-wallet/ConnectWallet";
 import { setOpenConnectDialog } from "../connect-wallet/redux/wallet";
 import logo from "./../../assets/imgs/logo.052a772b.png";
+import lightIcon from "./../../assets/icon/light.svg"
+import darkIcon from "./../../assets/icon/dark.svg"
 import style from "./Header.module.scss";
 const cx = classnames.bind(style);
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
@@ -134,8 +136,13 @@ const Header: React.FC = () => {
             <label htmlFor="switch">
               <div className={cx("toggle")}></div>
               <div className={cx("names")}>
-                <p className={cx("light")}>Light</p>
-                <p className={cx("dark")}>Dark</p>
+                <p className={cx("light")}>
+                  <img className={cx('icon-theme')} src={lightIcon}/>
+                  light
+                  </p>
+                <p className={cx("dark")}>
+                  <img className={cx('icon-theme')} src={darkIcon} alt="" />
+                  dark</p>
               </div>
             </label>
           </div>
