@@ -8,8 +8,8 @@ import classNames from 'classnames/bind';
 import React, { useState } from 'react';
 import { useAppSelector } from '../../store/hooks';
 import styles from './Balances.module.scss';
-import Modal from './Stake Modal';
-import ModalWithDraw from './WithDraw Modal'
+import Modal from './StakeModal';
+import ModalWithDraw from './WithDrawModal'
 import TableComponent from './Table';
 
 const cx = classNames.bind(styles);

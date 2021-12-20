@@ -11,7 +11,7 @@ import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { setTheme } from "../../store/theme";
 import ConnectWallet from "../connect-wallet/ConnectWallet";
 import { setOpenConnectDialog } from "../connect-wallet/redux/wallet";
-import logo from "./../../assets/imgs/logo.052a772b.png";
+import logo from "./../../assets/imgs/CHN_logo.png";
 import lightIcon from "./../../assets/icon/light.svg";
 import light_whiteIcon from "./../../assets/icon/light-white.svg"
 import darkIcon from "./../../assets/icon/dark.svg"
