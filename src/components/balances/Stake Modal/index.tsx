@@ -91,7 +91,7 @@ const Modal = memo((props: Props) => {
       onClose={handleCloseModal}
       PaperProps={{
         style: {
-          backgroundColor: "var(--background-dialog-color)",
+          backgroundColor: "var(--background-stake-modal)",
           overflowY: "unset",
           borderRadius: '20px'
         },

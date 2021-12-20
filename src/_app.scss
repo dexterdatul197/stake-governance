@@ -10,31 +10,15 @@ body {
 }
 
 :root {
-  --btn-header-border-color: #72BF65;
-  --main-background-color: #001C4E;
-  --btn-background-connect-color: #72BF65;
-  --color-text-white: #FFF;
-  --color-text-footer: #FFF;
-  --background-dialog-color: #001C4E;
-  --color-text-white-black: #fff;
-  --btn-hover-blue-green: #3EE046;
-  --color-text-black-white: #000;
-  --main-background-dropdow: rgba(114, 191, 101, 0.1);
-  --background-governance-color: #01163d;
-  --pagination-color: rgba(255, 255, 255, 0.6);
-  --pagination-action-color: rgba(255, 255, 255, 0.38);
-  --color-text-white-blue: #fff;
-  --color-dialog-title: #4e4b66;
-  --color-primary: #1a88c9;
-  --footer-background-color: #01163D;
-}
-[data-theme='light'] {
+
+
   --btn-header-border-color: #107DEF;
+  --header-bar-color:#FFFFFF;
   --main-background-color: #FFF;
   --btn-background-connect-color: #107DEF;
   --color-text-white: #FFF;
   --color-text-footer: #001C4E;
-  --background-dialog-color: #FFF;
+  --background-dialog-color: #E4E4E4;
   --color-text-white-black: #000;
   --btn-hover-blue-green: #107DEF;
   --color-text-black-white: #fff;
@@ -46,6 +30,37 @@ body {
   --color-dialog-title: #4e4b66;
   --color-primary: #1a88c9;
   --footer-background-color: #FFF;
+  --background-wallet-connect: #FFFFFF;
+  --color-table: #FFFFFF;
+  --background-stake-color:#EDF1F8;
+  --text-color-stake:#107DEF;
+  --background-stake-modal: #FFFFFF;
+}
+[data-theme='dark'] {
+  --btn-header-border-color: #72BF65;
+  --header-bar-color:#1B1C1F;
+  --main-background-color: #121316;
+  --btn-background-connect-color: #72BF65;
+  --color-text-white: #FFF;
+  --color-text-footer: #FFF;
+  --background-dialog-color: #1B1C1F;
+  --color-text-white-black: #fff;
+  --btn-hover-blue-green: #107DEF;
+  --color-text-black-white: rgba(0, 28, 78, 0.87);
+  --main-background-dropdow: rgba(114, 191, 101, 0.1);
+  --background-governance-color: #1B1C1F;
+  --pagination-color: rgba(255, 255, 255, 0.6);
+  --pagination-action-color: rgba(255, 255, 255, 0.38);
+  --color-text-white-blue: #fff;
+  --color-dialog-title: #4e4b66;
+  --color-primary: #1a88c9;
+  --footer-background-color: #1B1C1F;
+  --background-wallet-connect: #282B32;
+  --color-table: #1B1C1F;
+  --background-stake-color:#121316;
+  --text-color-stake:#107DEF;
+  --background-stake-modal: #1B1C1F;
+ 
 }
 .Snackbar {
   .css-zzms1-MuiSnackbar-root {

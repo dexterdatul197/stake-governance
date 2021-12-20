@@ -25,6 +25,6 @@ svg.MuiSvgIcon-root.MuiSvgIcon-fontSizeMedium.MuiTablePagination-selectIcon.MuiS
 } */
 
 .css-nz481w-MuiInputBase-input-MuiInput-input.Mui-disabled {
-  -webkit-text-fill-color: rgba(255,255,255, 0.9)!important;
+  -webkit-text-fill-color: var(--color-text-white-black)!important;
   opacity: 1!important;
 }

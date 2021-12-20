@@ -21,13 +21,12 @@
     display: flex;
     align-items: center;
     padding: 10px 32px 37px 32px;
-    
     .button {
       width: 100%;
       display: flex;
       align-items: center;
       justify-content: flex-start;
-      background: #022461;
+      background: var(--background-wallet-connect);
       border-radius: 15px;
       height: 82px;
 
