@@ -147,9 +147,8 @@ const Balances: React.FC = () => {
         <TableComponent />
       </div>
 
-      <Modal openStake={openStake} handleCloseModal={handleCloseModal} />
+      <Modal currencies={currencies} classes={classes} openStake={openStake} handleCloseModal={handleCloseModal} />
 
-     
     </div>
   );
 };
