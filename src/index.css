@@ -13,11 +13,12 @@ code {
 }
 
 svg.MuiSvgIcon-root.MuiSvgIcon-fontSizeMedium.MuiTablePagination-selectIcon.MuiSelect-icon.MuiSelect-iconStandard.css-pqjvzy-MuiSvgIcon-root-MuiSelect-icon {
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(255, 255, 255, 0.6)!important;
+  background-color: none !important;
 }
 
 .css-zylse7-MuiButtonBase-root-MuiIconButton-root.Mui-disabled{
-  color: #ffffff!important;
+  color: rgba(255, 255, 255, 0.6)!important;
 }
 
 /* .css-a88p61-MuiInputBase-root-MuiInput-root:before {
