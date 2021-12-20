@@ -11,6 +11,7 @@ import { useDispatch } from 'react-redux';
 import { isConnected } from '../../../helpers/connectWallet';
 import {
   getCHNBalance,
+  getVoteContract,
   governance
 } from '../../../helpers/ContractService';
 import { useAppSelector } from '../../../store/hooks';
@@ -65,11 +66,12 @@ const Vote: React.FC = () => {
   const [openLoading, setOpenLoading] = useState(false);
   const handleOpenCreateForm = async () => {
     if (isConnected(wallet)) {
+      
       let createProposal = true;
       setOpenLoading(true);
       const connectedAddress = Object.values(wallet)
-        .filter((item) => typeof item === 'string')
-        .filter((item) => item.length > 0)[0];
+      .filter((item) => typeof item === 'string')
+      .filter((item) => item.length > 0)[0];
       // check amount strike in wallet > proposalThreshold()
       const chnAmount = await getCHNBalance()
         .methods.balanceOf(connectedAddress)
@@ -78,14 +80,19 @@ const Vote: React.FC = () => {
         .methods.proposalThreshold()
         .call();
       const checkCHNamount = new BigNumber(chnAmount).comparedTo(new BigNumber(proposalThreshold));
-      console.log('CHN amount: ', chnAmount, proposalThreshold);
+      
+      // check user dont have any proposal with status active or pending
+      const voteContract = await governance();
+      const lastestProposalId = await voteContract.methods.latestProposalIds(connectedAddress).call();
+      console.log('PROPOSAL ID: ', lastestProposalId);
+      
       
       setOpenLoading(false);
       if (checkCHNamount !== 1) {
-        dispatch(openSnackbar({message: 'Your CHN amount not enought to create proposal', variant: SnackbarVariant.ERROR}));
+        dispatch(openSnackbar({message: `You can't create proposal. Your voting power should be ${proposalThreshold} CHN at least`, variant: SnackbarVariant.ERROR}));
         createProposal = false;
+        return;
       }
-      // check user dont have any proposal with status active or pending
       
       if (createProposal) {
         dispatch(setOpenCreateProposalDialog(true));

@@ -6,8 +6,10 @@ import {
 } from '../constant/uninstallExtentionException';
 import {
     GOVERNENCE_RINKEBY_ABI,
-    STRIKE_TOKEN_MAINNET_ABI,
-    STRIKE_TOKEN_ROPSTEN_ABI
+    STRIKE_TOKEN_MAINNET_ABI as CHN_TOKEN_MAINNET_ABI,
+    STRIKE_TOKEN_ROPSTEN_ABI as CHN_TOKEN_ROPSTEN_ABI,
+    VOTE_CONTRACT_MAIN_ABI,
+    VOTE_CONTRACT_ROPSTEN_ABI
 } from './../constant/constants';
 
 const web3 = new Web3(window.ethereum);
@@ -37,15 +39,13 @@ export const governance = () => {
 };
 
 export const getCHNBalance = () => {
-  if (enviroment === 'prod') {
-    return new web3.eth.Contract(
-      JSON.parse(STRIKE_TOKEN_MAINNET_ABI),
-      process.env.REACT_APP_MAIN_CHN_TOKEN_ADDRESS
-    );
-  } else {
-    return new web3.eth.Contract(
-      JSON.parse(STRIKE_TOKEN_ROPSTEN_ABI),
-      process.env.REACT_APP_TEST_CHN_TOKEN_ADDRESS
-    );
-  }
+  const chnABI = enviroment === 'prod' ? CHN_TOKEN_MAINNET_ABI : CHN_TOKEN_ROPSTEN_ABI;
+  const chnAddress = enviroment === 'prod' ? process.env.REACT_APP_MAIN_CHN_TOKEN_ADDRESS : process.env.REACT_APP_TEST_CHN_TOKEN_ADDRESS;
+  return new web3.eth.Contract(JSON.parse(chnABI), chnAddress);
 };
+
+export const getVoteContract = () => {
+  const voteContractABI = enviroment === 'prod' ? VOTE_CONTRACT_MAIN_ABI : VOTE_CONTRACT_ROPSTEN_ABI;
+  const voteContractAddress = enviroment === 'prod' ? process.env.VOTE_CONTRACT_ROPSTEN_ADDRESS : process.env.VOTE_CONTRACT_MAIN_ADDRESS;
+  return new web3.eth.Contract(JSON.parse(voteContractABI), voteContractAddress);
+}
