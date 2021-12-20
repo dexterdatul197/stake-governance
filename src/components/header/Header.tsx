@@ -1,4 +1,3 @@
-import { FormControlLabel } from "@material-ui/core";
 import { styled } from "@material-ui/styles";
 import { Switch } from "@mui/material";
 import classnames from "classnames/bind";
@@ -7,15 +6,16 @@ import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { THEME_MODE } from "../../constant/constants";
 import { isConnected } from "../../helpers/connectWallet";
-import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { useAppSelector } from "../../store/hooks";
 import { setTheme } from "../../store/theme";
 import ConnectWallet from "../connect-wallet/ConnectWallet";
 import { setOpenConnectDialog } from "../connect-wallet/redux/wallet";
-import logo from "./../../assets/imgs/CHN_logo.png";
+import dark_whiteIcon from "./../../assets/icon/dark-white.svg";
+import darkIcon from "./../../assets/icon/dark.svg";
+import light_whiteIcon from "./../../assets/icon/light-white.svg";
 import lightIcon from "./../../assets/icon/light.svg";
-import light_whiteIcon from "./../../assets/icon/light-white.svg"
-import darkIcon from "./../../assets/icon/dark.svg"
-import dark_whiteIcon from "./../../assets/icon/dark-white.svg"
+import logo from "./../../assets/imgs/CHN_logo.png";
+import dark_logo from "./../../assets/imgs/chn_dark_logo.png";
 import style from "./Header.module.scss";
 const cx = classnames.bind(style);
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
@@ -99,7 +99,7 @@ const Header: React.FC = () => {
     <div className={cx("header-parent")}>
       <div className={cx("logo")}>
         <Link to="/" onClick={disableBorderStyle}>
-          <img src={logo} alt="logo" />
+          <img src={theme === THEME_MODE.LIGHT ? dark_logo : logo} alt="logo" />
         </Link>
       </div>
       <div className={cx("stake-governance")}>
@@ -141,7 +141,7 @@ const Header: React.FC = () => {
                 {theme === THEME_MODE.LIGHT ? (
                   <>
                     <p className={cx("light")}>
-                      <img className={cx('icon-theme')} src={lightIcon} />
+                      <img className={cx('icon-theme')} src={lightIcon} alt="light icon"/>
                       light
                     </p>
                     <p className={cx("dark")}>
@@ -152,7 +152,7 @@ const Header: React.FC = () => {
                 ) : (
                   <>
                     <p className={cx("light")}>
-                      <img className={cx('icon-theme')} src={light_whiteIcon} />
+                      <img className={cx('icon-theme')} src={light_whiteIcon} alt="dark icon"/>
                       light
                     </p>
                     <p className={cx("dark")}>
