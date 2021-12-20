@@ -84,7 +84,6 @@ const TableComponent = () => {
 
 
     return (
-        <Paper className={cx('paper')}>
             <TableContainer className={cx('table-container')} >
                 <Table className={cx('table')}>
                     <TableHead className={cx('table-head')}>
@@ -161,7 +160,6 @@ const TableComponent = () => {
                     </TableFooter>
                 </Table>
             </TableContainer>
-        </Paper>
     )
 }
 

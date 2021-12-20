@@ -28,7 +28,7 @@
       padding: 5px 0;
 
       .balance-key {
-        color: #ccc;
+        color: var(--color-text-white-black);
         font-size: 20px;
         font-weight: 500;
         margin-right: 35px;
@@ -52,10 +52,10 @@
     justify-content: center;
     &_stake,
     &_withdraw{
-      background: linear-gradient(90.04deg, #001C4E 0.96%, #042F7C 91.92%);
+      background: #8196BB;
       border-radius: 26px;
       text-transform: capitalize;
-      color: #3EE046;
+      color: #FFFFFF;
     }
 
     &_stake {
@@ -76,12 +76,12 @@
     }
 
     .button-active {
-      background: linear-gradient(90deg, #2AC031 13.55%, #3EE046 90.32%);
+      background: #107DEF;
       color: #fff
     }
     .button-deactive {
-      background: linear-gradient(90.04deg, #001C4E 0.96%, #042F7C 91.92%);
-      color: #3EE046;
+      background: #8196BB;
+      color: #FFFFFF;
     }
   }
 

@@ -1,69 +1,115 @@
 .dialog {
-    padding-left: 34px;
-    padding-right: 34px;
-    .title-dialog {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      .text-stake {
-        font-size: 20px;
+  padding-left: 34px;
+  padding-right: 34px;
+  .title-dialog {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .text-stake {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--color-text-white-black);
+    }
+  }
+  .dialog-content {
+    overflow-y: unset;
+    &__amount {
+      background: var(--background-stake-color);
+      border-radius: 10px;
+      padding: 32px;
+      .title {
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--color-text-white-black);
+      }
+      .input {
+        border-bottom: none !important;
+        font-size: 48px;
+        color: var(--color-text-white-black);
         font-weight: 600;
       }
+      .slider {
+        color: var(--btn-background-connect-color)!important;
+      }
     }
-    .dialog-content {
-      &__amount {
-        background: #00163d;
-        border-radius: 10px;
-        padding: 32px;
+    &__percent {
+      display: flex;
+      align-items: center;
+      .percent-number {
+        color: var(--btn-background-connect-color);
+        width: 92px;
+        height: 33px;
+        line-height: 33px;
+        background: rgba(16, 125, 239, 0.1);
+        border-radius: 30px;
+        text-align: center;
+        margin-right: 8px;
+        text-align: center;
+
+        input {
+          text-align: center !important;
+          -webkit-text-fill-color: var(--btn-background-connect-color);
+          cursor: pointer;
+        }
+      }
+    }
+    .balance {
+      display: flex;
+      flex-direction: column;
+      margin-top: 42px;
+      padding-left: 20px;
+
+      &__wallet-balance {
+        display: flex;
+        align-items: center;
+        align-content: center;
+        justify-content: flex-start;
         .title {
           font-size: 16px;
           font-weight: 600;
-          color: rgba(255, 255, 255, 0.38);
+          color: var(--color-text-white-black);
         }
-        .input {
-          border-bottom: none !important;
-          font-size: 48px;
-          color: rgba(255, 255, 255, 0.87);
-          font-weight: 600;
-        }
-        .slider {
-          color: #72bf65 !important;
+        .autocomplete {
+          padding-left: 10px;
+          padding-bottom: 10px;
         }
       }
-      &__percent {
+
+      &__stake-balance {
         display: flex;
         align-items: center;
-        .percent-number {
-          color: #72bf65;
-          width: 92px;
-          height: 33px;
-          line-height: 33px;
-          background: rgba(114, 191, 101, 0.15);
-          border-radius: 30px;
-          text-align: center;
-          margin-right: 8px;
-          text-align: center;
-  
-          input {
-            text-align: center !important;
-            -webkit-text-fill-color: #72bf65;
-            cursor: pointer;
-          }
+        align-content: center;
+        justify-content: flex-start;
+        .title {
+          font-size: 16px;
+          font-weight: 600;
+          color: var(--color-text-white-black);
         }
-      }
-      .balance{
-          display: flex;
-          flex-direction: column;
-          margin-top: 42px;
-          padding-left: 20px;
-  
-          &__wallet-balance{
-              display: flex;
-              align-items: center;
-              align-content: center;
-              justify-content: flex-start;
-          }
+        .autocomplete {
+          padding-left: 10px;
+          padding-bottom: 10px;
+        }
       }
     }
   }
-  
+
+  .dialog-action {
+    justify-content: center;
+    padding-left: 34px;
+    padding-right: 34px;
+    padding-bottom: 58px;
+    .button-stake {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 455px;
+      background: rgba(31, 55, 100, 0.5);
+      border-radius: 10px;
+      padding-top: 20px;
+      padding-bottom: 20px;
+      font-size: 18px;
+      font-weight: 700;
+      color: #ffffff
+    }
+  }
+}

@@ -9,6 +9,7 @@ import React, { useState } from 'react';
 import { useAppSelector } from '../../store/hooks';
 import styles from './Balances.module.scss';
 import Modal from './Stake Modal';
+import ModalWithDraw from './WithDraw Modal'
 import TableComponent from './Table';
 
 const cx = classNames.bind(styles);
@@ -56,6 +57,7 @@ const Balances: React.FC = () => {
   const [active, setActive] = useState(false);
   const [activewithDraw, setActiveWithDraw] = useState(false);
   const [openStake, setOpenStake] = useState(false);
+  const [openWithdraw, setOpenWithdraw] = useState(false);
 
   const handleActiveClass = () => {
     setActive(!active);
@@ -71,6 +73,12 @@ const Balances: React.FC = () => {
   const handleActiveWithDraw = () => {
     setActiveWithDraw(!activewithDraw)
     setActive(false)
+    setOpenWithdraw(true)
+  }
+
+  const handleCloseModalWithDraw = () => {
+    setOpenWithdraw(false)
+    setActiveWithDraw(false)
   }
 
   return (
@@ -147,9 +155,9 @@ const Balances: React.FC = () => {
         <TableComponent />
       </div>
 
-      <Modal openStake={openStake} handleCloseModal={handleCloseModal} />
+      <Modal currencies={currencies} classes={classes} openStake={openStake} handleCloseModal={handleCloseModal} />
+      <ModalWithDraw openWithdraw={openWithdraw} handleCloseModalWithDraw={handleCloseModalWithDraw} />
 
-     
     </div>
   );
 };

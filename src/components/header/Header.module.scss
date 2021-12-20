@@ -1,15 +1,18 @@
 :root {
   .header-parent {
-    background-color: var(--main-background-color);
-    padding: 20px 100px;
+    background-color: var(--header-bar-color);
+    padding-left: 200px;
+    padding-right: 200px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
   }
 
   .logo {
     flex: 1;
     img {
-      height: 50px;
+      width: 140px;
+      height: 45px;
     }
   }
 
@@ -18,7 +21,7 @@
     font-weight: 700;
     display: flex;
     flex: 1;
-    justify-content:center;
+    justify-content: center;
     .link-style {
       color: var(--color-text-white-blue);
       margin-right: 28px;
@@ -26,7 +29,7 @@
       font-size: 24px;
       font-weight: 700;
     }
-  
+
     .link-style-border {
       color: var(--color-text-white-blue);
       margin-right: 28px;
@@ -39,5 +42,98 @@
     flex: 1;
     justify-content: flex-end;
     align-items: center;
+    .app {
+      margin-right: 10px;
+    }
+    .body {
+      position: relative;
+      width: 233px;
+      height: 70px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: background-color 0.1s;
+      top: 14px;
+    }
+    label,
+    .toggle {
+      height: 2.8rem;
+      border-radius: 100px;
+    }
+    label {
+      width: 100%;
+      background-color: rgba(0, 0, 0, 0.1);
+      border-radius: 100px;
+      position: relative;
+      margin: 1.8rem;
+      margin-top: 0;
+      cursor: pointer;
+    }
+    .toggle {
+      position: absolute;
+      width: 50%;
+      background-color: #fff;
+      box-shadow: 0 2px 15px rgba(0, 0, 0, 0.15);
+      transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      height: 86%;
+      top: 3px;
+      left:3px;
+    }
+    .names {
+      font-size: 90%;
+      font-weight: bolder;
+      width: 65%;
+      margin-left: 13.5%;
+      margin-top: 0.5%;
+      position: absolute;
+      display: flex;
+      justify-content: space-between;
+      user-select: none;
+    }
+    .light{
+      display: flex;
+      align-items: center;
+      text-transform: capitalize;
+      font-size: 12px;
+      font-weight: 500;
+      color: #000000;
+      .icon-theme{
+        margin-right: 11%;
+        margin-top: 2%;
+      }
+    }
+    .dark {
+      opacity: 0.5;
+      display: flex;
+      align-items: center;
+      text-transform: capitalize;
+      font-size: 12px;
+      font-weight: 500;
+      color: #000000;
+      .icon-theme{
+        margin-right: 11%;
+        margin-top: 2%;
+      }
+    }
+
+    [type="checkbox"] {
+      display: none;
+    }
+    /* Toggle */
+    [type="checkbox"]:checked + .app .toggle {
+      transform: translateX(100%);
+      background-color:#282B32;
+      height:86%;
+      top: 3px;
+      left:-3px;
+    }
+    [type="checkbox"]:checked + .app .dark {
+      opacity: 1;
+      color: #fff;
+    }
+    [type="checkbox"]:checked + .app .light {
+      opacity: 0.5;
+      color: rgba(255, 255, 255, 0.6);
+    }
   }
 }

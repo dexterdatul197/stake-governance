@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, memo, useState } from "react";
 import {
   DialogContent,
   DialogTitle,
@@ -24,7 +24,7 @@ interface Props {
   currencies: any;
 }
 
-const Modal = (props: Props) => {
+const Modal = memo((props: Props) => {
   const { openStake, handleCloseModal, classes, currencies } = props;
   const [value, setValue] = useState({
     default: 0,
@@ -36,22 +36,11 @@ const Modal = (props: Props) => {
 
   const handleChangeValue = useCallback(
     (event: any) => {
-      setValue({
-        ...value,
-        default: event.target.value,
-      });
+      let _value = { ...value };
+      _value = { ..._value, default: event.target.value };
+      setValue(_value);
     },
     [value.default]
-  );
-
-  const handleChangeValueInput = useCallback(
-    (event, newvalue) => {
-      setValue({
-        ...value,
-        default: event.target.value,
-      });
-    },
-    [value]
   );
 
   const valueText = (value: any) => {
@@ -60,28 +49,36 @@ const Modal = (props: Props) => {
 
   const handleChangeInputPercent = useCallback(
     (event: any) => {
-      setValue({ ...value, default: 25 });
+      let _value = { ...value };
+      _value = { ..._value, default: 25 };
+      setValue(_value);
     },
     [value]
   );
 
   const handkeChangeInputPercent2 = useCallback(
     (event: any) => {
-      setValue({ ...value, default: 50 });
+      let _value = { ...value };
+      _value = { ..._value, default: 50 };
+      setValue(_value);
     },
     [value]
   );
 
   const handkeChangeInputPercent3 = useCallback(
     (event: any) => {
-      setValue({ ...value, default: 75 });
+      let _value = { ...value };
+      _value = { ..._value, default: 75 };
+      setValue(_value);
     },
     [value]
   );
 
   const handkeChangeInputPercent4 = useCallback(
     (event: any) => {
-      setValue({ ...value, default: 100 });
+      let _value = { ...value };
+      _value = { ..._value, default: 100 };
+      setValue(_value);
     },
     [value]
   );
@@ -92,6 +89,13 @@ const Modal = (props: Props) => {
       className={cx("dialog")}
       open={openStake}
       onClose={handleCloseModal}
+      PaperProps={{
+        style: {
+          backgroundColor: "var(--background-stake-modal)",
+          overflowY: "unset",
+          borderRadius: '20px'
+        },
+      }}
     >
       <DialogTitle className={cx("title-dialog")}>
         <Typography className={cx("text-stake")}>Stake</Typography>
@@ -111,7 +115,7 @@ const Modal = (props: Props) => {
           <Slider
             className={cx("slider")}
             value={typeof value.default === "number" ? value.default : 0}
-            onChange={handleChangeValueInput}
+            onChange={handleChangeValue}
             getAriaValueText={valueText}
           />
           <Box className={cx("dialog-content__percent")}>
@@ -147,11 +151,12 @@ const Modal = (props: Props) => {
         </Box>
         <Box className={cx("balance")}>
           <Box className={cx("balance__wallet-balance")}>
-            <Typography>Wallet Balance: 42</Typography>
+            <Typography className={cx('title')}>Wallet Balance: 42</Typography>
             <Autocomplete
               classes={classes}
               options={currencies}
               defaultValue={"chn"}
+              className={cx('autocomplete')}
               renderInput={(item) => (
                 <TextField {...item} margin="normal" fullWidth />
               )}
@@ -159,11 +164,27 @@ const Modal = (props: Props) => {
               id="combo-box-demo"
             />
           </Box>
-          <Box className={cx("staked-balance")}></Box>
+          <Box className={cx("balance__stake-balance")}>
+            <Typography className={cx('title')}>Stake Balance: 42</Typography>
+            <Autocomplete
+              classes={classes}
+              options={currencies}
+              defaultValue={"chn"}
+              className={cx('autocomplete')}
+              renderInput={(item) => (
+                <TextField {...item} margin="normal" fullWidth />
+              )}
+              size={"small"}
+              id="combo-box-demo"
+            />
+          </Box>
         </Box>
       </DialogContent>
+      <DialogActions className={cx('dialog-action')}>
+        <Button className={cx("button-stake")}>Stake</Button>
+      </DialogActions>
     </Dialog>
   );
-};
+});
 
 export default Modal;

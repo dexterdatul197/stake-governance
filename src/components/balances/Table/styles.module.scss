@@ -1,16 +1,17 @@
-.paper {
-    background: #01163D!important;
-    border-radius: 19px!important;
+
+ 
     .table-container {
         overflow: unset;
         height: 511px!important;
+        background: var(--color-table)!important;
+        border-radius: 19px!important;
         .table {
             height: 511px!important;
 
             .table-head {
                 &__cell {
                     border-bottom: none;
-                    color: rgba(255, 255, 255, 0.6);
+                    color: var(--color-text-white-black);
                     text-transform: capitalize;
                     font-weight: 500;
                     font-size: 16px;
@@ -23,7 +24,7 @@
                 padding-bottom: 56px;
                 &__cell{
                     border-bottom: none;
-                    color: #FAFCFF;
+                    color: var(--color-text-white-black);
                     font-weight: 500;
                     font-size: 18px;
                     padding-left: 46px;
@@ -50,7 +51,7 @@
                 border-bottom: none;
                 .table-pagination{
                     padding-bottom: 23px;
-                    color:rgba(255, 255, 255, 0.6);
+                    color:var(--color-text-white-black);
                     font-size: 14px;
                     font-weight: 600;
                 }
@@ -59,4 +60,3 @@
 
     }
 
-}
