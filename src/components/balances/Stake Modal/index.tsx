@@ -85,7 +85,7 @@ const Modal = memo((props: Props) => {
 
   return (
     <Dialog
-      maxWidth="sm"
+      maxWidth="xs"
       className={cx("dialog")}
       open={openStake}
       onClose={handleCloseModal}
