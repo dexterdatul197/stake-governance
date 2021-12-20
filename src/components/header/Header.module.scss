@@ -82,8 +82,20 @@
       justify-content: space-between;
       user-select: none;
     }
+    .light{
+      display: flex;
+      align-items: center;
+      .icon-theme{
+        margin-right: 11%;
+      }
+    }
     .dark {
       opacity: 0.5;
+      display: flex;
+      align-items: center;
+      .icon-theme{
+        margin-right: 11%;
+      }
     }
 
     [type="checkbox"] {
