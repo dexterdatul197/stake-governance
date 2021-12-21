@@ -1,9 +1,8 @@
-import classNames from 'classnames/bind';
-import styles from './Proposal.module.scss';
-import React, { useEffect } from 'react';
 import { TablePagination } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
-import { governance } from '../../../helpers/ContractService';
+import classNames from 'classnames/bind';
+import React from 'react';
+import styles from './Proposal.module.scss';
 
 const cx = classNames.bind(styles);
 const paginationStyle = makeStyles(() => ({
@@ -25,13 +24,6 @@ const paginationStyle = makeStyles(() => ({
 const Proposal: React.FC = () => {
   const paginationClasses = paginationStyle();
   const handleChangePage = () => { };
-  useEffect(() => {
-    // call governance contract
-    const governan = governance();
-    // const proposalList = governan.methods.proposals().call();
-    console.log('GOVENANCE: ', governan);
-    
-  }, []);
   return (
     <div className={cx('governance-proposal')}>
       <div className={cx('text-header')}>Proposal</div>

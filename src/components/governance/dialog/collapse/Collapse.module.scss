@@ -1,0 +1,49 @@
+:root {
+  .collapse-item-style {
+    padding: 5px 0;
+  }
+  .action-style {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: var(--background-proposal);
+    border-radius: 10px;
+    line-height: 1.5em;
+    cursor: pointer;
+  }
+  .action-text {
+    color: var(--color-text-proposal-action);
+  }
+  .border-style {
+    border-bottom: dashed 1px #486eb1;
+    margin: 20px;
+    opacity: 0.3;
+  }
+  ::placeholder {
+    color: #107def;
+    opacity: 1; /* Firefox */
+  }
+
+  :-ms-input-placeholder {
+    /* Internet Explorer 10-11 */
+    color: #107def;
+  }
+
+  ::-ms-input-placeholder {
+    /* Microsoft Edge */
+    color: #107def;
+  }
+  .btn-add {
+    padding: 10px;
+  }
+  .btn-text {
+    padding: 10px 5px;
+    background: #107def;
+    width: 50%;
+    text-align: center;
+    color: #fff;
+    border-radius: 20px;
+    margin: 0 auto;
+    cursor: pointer;
+  }
+}

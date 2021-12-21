@@ -84,17 +84,30 @@ const Vote: React.FC = () => {
       // check user dont have any proposal with status active or pending
       const voteContract = await governance();
       const lastestProposalId = await voteContract.methods.latestProposalIds(connectedAddress).call();
-      console.log('PROPOSAL ID: ', lastestProposalId);
-      
-      
+      if (lastestProposalId !== '0') {
+        console.log('PROPOSAL ID', lastestProposalId);
+        const state = await voteContract.methods.state(lastestProposalId).call();
+        if (state === '0' || state === '1') {
+          setOpenLoading(false);
+          createProposal = false;
+          dispatch(openSnackbar({ message: `You can't create proposal. there is proposal in progress!`, variant: SnackbarVariant.ERROR }));
+          return;
+        } else {
+          createProposal = true;
+        }
+      } else {
+        // open popup
+        createProposal = true;
+      }
       setOpenLoading(false);
       if (checkCHNamount !== 1) {
         dispatch(openSnackbar({message: `You can't create proposal. Your voting power should be ${proposalThreshold} CHN at least`, variant: SnackbarVariant.ERROR}));
         createProposal = false;
-        return;
+        // TODO: need remove comment
+        // return;
       }
-      
-      if (createProposal) {
+      // TODO: should be createProposal
+      if (true) {
         dispatch(setOpenCreateProposalDialog(true));
       }
     } else {

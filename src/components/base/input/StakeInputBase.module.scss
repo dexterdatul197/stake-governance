@@ -1,0 +1,16 @@
+:root {
+    .error-message {
+        color: red;
+    }
+    .input-style {
+        padding: 10px;
+        border-radius: 8px;
+        background-color: var(--background-stake-color);
+        margin: 10px 0;
+        border: solid 1px #107def;
+        width: -webkit-fill-available;
+    }
+    .input-style:focus-visible {
+        outline:none!important;
+    }
+}
