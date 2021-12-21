@@ -27,6 +27,7 @@ const CreateProposal: React.FC = () => {
   const [maxOperation, setMaxOperation] = useState(0);
   const [description, setDescription] = useState('');
   const theme = useAppSelector((state) => state.theme.themeMode);
+  const [errorMsg, setErrorMsg] = useState('');
   const [formData, setFormData] = useState<SFormData[]>([
     {
       targetAddress: '',
@@ -56,6 +57,11 @@ const CreateProposal: React.FC = () => {
     setDescription(text.text);
   };
 
+  const childUpdateFormData = (newFormData: SFormData[]) => {
+    console.log('FORM DATA: ', newFormData);
+    setFormData([...JSON.parse(JSON.stringify(newFormData))]);
+  };
+
   useEffect(() => {
     getMaxOperation();
   }, [currentAccount]);
@@ -71,7 +77,7 @@ const CreateProposal: React.FC = () => {
         style: {
           backgroundColor: 'var(--background-dialog-color)',
           padding: '25px',
-          borderRadius: '20px'
+          borderRadius: '20px',
         },
       }}
     >
@@ -121,19 +127,30 @@ const CreateProposal: React.FC = () => {
                 renderHTML={(text) => mdParser.render(text)}
                 onChange={handleEditorChange}
               />
-
+              {errorMsg && <p className={cx('details-error-message')}>{errorMsg}</p>}
             </div>
           </div>
           <div className={cx('right-popup')}>
-            <div className={cx('sub-title-text', 'sub-title-action')}>Actions</div>
-            <div className={cx(`card-style`,  `${theme === 'dark' ? 'card-style-border' : ''}`)}>
-              {/* foreach here */}
+            <div className={cx('sub-title-text', 'sub-title-action')}>
+              Actions
+            </div>
+            <div
+              className={cx(
+                `card-style`,
+                `${theme === 'dark' ? 'card-style-border' : ''}`
+              )}
+            >
               {formData.map((f, index) => {
-                return <CollapseItem 
-                        index={index} 
-                        formData={formData} 
-                        maxOperation={maxOperation}
-                      />
+                return (
+                  <div key={index} >
+                    <CollapseItem
+                      index={index}
+                      formData={formData}
+                      maxOperation={maxOperation}
+                      setFormData={childUpdateFormData}
+                    />
+                  </div>
+                );
               })}
             </div>
           </div>
@@ -147,7 +164,14 @@ const CreateProposal: React.FC = () => {
         }}
       >
         <div className={cx('wrap-btn')}>
-          <div className={cx('btn-confirm')} onClick={handleClickConfirm}>Confirm</div>
+          {/* <div className={cx('btn-confirm')} onClick={handleClickConfirm}>
+            Confirm
+          </div> */}
+          <button
+            className={cx('btn-create')}
+            disabled={formData.length > maxOperation || description.trim().length === 0}
+            onClick={handleClickConfirm}
+          >Create</button>
         </div>
       </Box>
     </Dialog>

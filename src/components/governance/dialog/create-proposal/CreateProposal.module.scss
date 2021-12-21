@@ -27,20 +27,29 @@
   }
   .wrap-btn {
     padding: 10px;
-  }
-  .btn-confirm {
-    width: 50%;
-    padding: 15px;
-    border: none;
-    border-radius: 10px;
-    background: #8196BB;
-    color: #fff;
-    font-size: 18px;
-    cursor: pointer;
-    margin: 0 auto;
     text-align: center;
   }
-  .left-popup, .right-popup {
+  // .btn-confirm {
+  //   width: 50%;
+  //   padding: 15px;
+  //   border: none;
+  //   border-radius: 10px;
+  //   background: #8196BB;
+  //   color: #fff;
+  //   font-size: 18px;
+  //   cursor: pointer;
+  //   margin: 0 auto;
+  //   text-align: center;
+  // }
+  .btn-create {
+    padding: 10px 50px;
+    border-radius: 10px;
+    background-color: #107DEF;
+    color: #fff;
+    border: none;
+  }
+  .left-popup,
+  .right-popup {
     width: 100%;
   }
   .body-proposal {
@@ -68,5 +77,8 @@
     border: solid 1px rgb(53, 52, 52);
     border-radius: 10px;
     padding: 10px;
+  }
+  .details-error-message {
+    color: red;
   }
 }
