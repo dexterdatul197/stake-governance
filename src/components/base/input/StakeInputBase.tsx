@@ -5,24 +5,24 @@ const cx = classNames.bind(styles);
 
 interface Props {
     validate?: boolean;
-    type?: 'text'| 'password'| 'button'| 'date' | 'file' | 'radio'| 'search'| 'time'|'checkbox'|'email'|'hiddden'|'number'
+    type?: 'text' | 'password' | 'button' | 'date' | 'file' | 'radio' | 'search' | 'time' | 'checkbox' | 'email' | 'hiddden' | 'number'
     name?: string;
     width?: number | string | undefined;
     placeholder?: string;
-    onChange?: (v:any) => void;
+    onChange?: (v: any) => void;
     onKeyUp?: (e: any) => void;
 }
 
 
 
-const StakeInputBase:React.FC<Props> = ({
+const StakeInputBase: React.FC<Props> = ({
     type = 'text',
     validate = false,
     name = 'Field',
     width = '95%',
     placeholder = '',
-    onChange = () => {},
-    onKeyUp = () => {}
+    onChange = () => { },
+    onKeyUp = () => { }
 }) => {
     const [messageErr, setMessageErr] = useState('');
     const [value, setValue] = useState('');
@@ -41,9 +41,9 @@ const StakeInputBase:React.FC<Props> = ({
     }
     return (
         <div className={cx('wrap-input-base')}>
-            <input 
-                type={type} 
-                onChange={handleOnChange} 
+            <input
+                type={type}
+                onChange={handleOnChange}
                 value={value}
                 onBlur={handleBlur}
                 className={cx('input-style')}

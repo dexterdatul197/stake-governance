@@ -1,7 +1,7 @@
 import {
   Autocomplete,
   Button,
-  TextField,
+  TextField
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import classNames from 'classnames/bind';
@@ -9,8 +9,8 @@ import React, { useState } from 'react';
 import { useAppSelector } from '../../store/hooks';
 import styles from './Balances.module.scss';
 import Modal from './StakeModal';
-import ModalWithDraw from './WithDrawModal'
 import TableComponent from './Table';
+import ModalWithDraw from './WithDrawModal';
 
 const cx = classNames.bind(styles);
 

@@ -1,6 +1,15 @@
 import {
-  Autocomplete, Box, Button, Dialog, DialogActions, DialogContent,
-  DialogTitle, Input, Slider, TextField, Typography
+  Autocomplete,
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Input,
+  Slider,
+  TextField,
+  Typography
 } from "@material-ui/core";
 import classNames from "classnames/bind";
 import React, { memo, useCallback, useState } from "react";
@@ -31,7 +40,7 @@ const Modal = memo((props: Props) => {
       _value = { ..._value, default: event.target.value };
       setValue(_value);
     },
-    [value.default]
+    [value]
   );
 
   const valueText = (value: any) => {
@@ -84,7 +93,7 @@ const Modal = memo((props: Props) => {
         style: {
           backgroundColor: "var(--background-stake-modal)",
           overflowY: "unset",
-          borderRadius: '20px'
+          borderRadius: "20px",
         },
       }}
     >
@@ -142,12 +151,12 @@ const Modal = memo((props: Props) => {
         </Box>
         <Box className={cx("balance")}>
           <Box className={cx("balance__wallet-balance")}>
-            <Typography className={cx('title')}>Wallet Balance: 42</Typography>
+            <Typography className={cx("title")}>Wallet Balance: 42</Typography>
             <Autocomplete
               classes={classes}
               options={currencies}
               defaultValue={"chn"}
-              className={cx('autocomplete')}
+              className={cx("autocomplete")}
               renderInput={(item) => (
                 <TextField {...item} margin="normal" fullWidth />
               )}
@@ -156,12 +165,12 @@ const Modal = memo((props: Props) => {
             />
           </Box>
           <Box className={cx("balance__stake-balance")}>
-            <Typography className={cx('title')}>Stake Balance: 42</Typography>
+            <Typography className={cx("title")}>Stake Balance: 42</Typography>
             <Autocomplete
               classes={classes}
               options={currencies}
               defaultValue={"chn"}
-              className={cx('autocomplete')}
+              className={cx("autocomplete")}
               renderInput={(item) => (
                 <TextField {...item} margin="normal" fullWidth />
               )}
@@ -171,7 +180,7 @@ const Modal = memo((props: Props) => {
           </Box>
         </Box>
       </DialogContent>
-      <DialogActions className={cx('dialog-action')}>
+      <DialogActions className={cx("dialog-action")}>
         <Button className={cx("button-stake")}>Stake</Button>
       </DialogActions>
     </Dialog>
