@@ -1,4 +1,4 @@
-import { Dialog, IconButton, Typography } from '@material-ui/core';
+import { Button, CircularProgress, Dialog, IconButton, Typography } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import { Box } from '@material-ui/system';
 import classNames from 'classnames/bind';
@@ -7,9 +7,11 @@ import { useEffect, useState } from 'react';
 import MdEditor from 'react-markdown-editor-lite';
 import 'react-markdown-editor-lite/lib/index.css';
 import { useDispatch } from 'react-redux';
+import { currentAddress, encodeParameters, getArgs } from '../../../../helpers/common';
 import { governance } from '../../../../helpers/ContractService';
 import { SFormData } from '../../../../interfaces/SFormData';
 import { useAppSelector } from '../../../../store/hooks';
+import { openSnackbar, SnackbarVariant } from '../../../../store/snackbar';
 import StakeInputBase from '../../../base/input/StakeInputBase';
 import { setOpenCreateProposalDialog } from '../../redux/Governance';
 import CollapseItem from '../collapse/Collapse';
@@ -27,7 +29,9 @@ const CreateProposal: React.FC = () => {
   const [maxOperation, setMaxOperation] = useState(0);
   const [description, setDescription] = useState('');
   const theme = useAppSelector((state) => state.theme.themeMode);
+  const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+
   const [formData, setFormData] = useState<SFormData[]>([
     {
       targetAddress: '',
@@ -42,8 +46,52 @@ const CreateProposal: React.FC = () => {
   const handleCloseConnectDialog = () => {
     dispatch(setOpenCreateProposalDialog(false));
   };
-  const handleClickConfirm = () => {
-    dispatch(setOpenCreateProposalDialog(false));
+  const handleClickConfirm = async () => {
+    const targetAddresses = [];
+    const values = [];
+    const signatures = [];
+    const callDatas = [];
+    if (description.trim().length === 0) {
+      setErrorMsg('Description is required');
+    } else {
+      setErrorMsg('');
+    }
+    console.log('AAAAAAAA: ', formData);
+    try {
+      for (let i = 0; i < formData.length; i +=1) {
+        const callDataValues = [];
+        let callDataTypes = [];
+        targetAddresses.push(formData[i]['targetAddress']);
+        values.push(0); // Web3.utils.toWei(formValues[`value${i}`], 'ether')
+        signatures.push(formData[i]['signature']);
+        callDataTypes = getArgs(formData[i]['signature']);
+  
+        for (let j = 0; j < formData[i].callData.length; j += 1) {
+          if (callDataTypes[j].toLowerCase() === 'bool') {
+            callDataValues.push(formData[i].callData[j].toLowerCase() === 'true' ? true : false);
+          } else {
+            callDataValues.push(formData[i].callData[j]);
+          }
+        }
+        callDatas.push(encodeParameters(callDataTypes, callDataValues));
+      }
+    } catch (error) {
+      setErrorMsg('Proposal parameters are invalid!');
+      return;
+    }
+    setIsLoading(true);
+    const createProposal = governance();
+    console.log('ADDRESS: ', currentAddress(currentAccount), targetAddresses, values, signatures, callDatas, description);
+    try {
+      const responseCreate = await createProposal.methods.propose(targetAddresses, values, signatures, callDatas, description).send({from: currentAddress(currentAccount)});
+      console.log('CALL CONTRACT ROW 2: ', responseCreate);
+      setIsLoading(false);
+      dispatch(setOpenCreateProposalDialog(false));
+    } catch (error) {
+      console.log('ERROR RESPONSE: ', error);
+      dispatch(openSnackbar({message: 'Creating proposal is failed!', variant: SnackbarVariant.ERROR}));
+      setIsLoading(false);
+    }
   };
   const getMaxOperation = async () => {
     const voteContract = governance();
@@ -58,7 +106,6 @@ const CreateProposal: React.FC = () => {
   };
 
   const childUpdateFormData = (newFormData: SFormData[]) => {
-    console.log('FORM DATA: ', newFormData);
     setFormData([...JSON.parse(JSON.stringify(newFormData))]);
   };
 
@@ -123,7 +170,10 @@ const CreateProposal: React.FC = () => {
             <div className={cx('div-input')}>
               <MdEditor
                 value={description}
-                style={{ height: '200px' }}
+                style={{ 
+                  height: '300px',
+                  borderRadius: '15px',
+                }}
                 renderHTML={(text) => mdParser.render(text)}
                 onChange={handleEditorChange}
               />
@@ -167,11 +217,19 @@ const CreateProposal: React.FC = () => {
           {/* <div className={cx('btn-confirm')} onClick={handleClickConfirm}>
             Confirm
           </div> */}
-          <button
+          <Button
             className={cx('btn-create')}
-            disabled={formData.length > maxOperation || description.trim().length === 0}
+            // disabled={isLoading || formData.length > maxOperation || description.trim().length === 0}
             onClick={handleClickConfirm}
-          >Create</button>
+          >
+            {isLoading && (
+              <div>
+                <CircularProgress size={20} color='inherit' /> 
+                <span className={cx('btn-create-inloading')}>Create Proposal</span>
+              </div>
+            )}
+            {!isLoading && 'Create Proposal'}
+          </Button>
         </div>
       </Box>
     </Dialog>

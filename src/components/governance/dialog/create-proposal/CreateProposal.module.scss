@@ -81,4 +81,11 @@
   .details-error-message {
     color: red;
   }
+  .rc-md-editor .rc-md-navigation {
+    border-top-left-radius: 15px;
+  }
+  .btn-create-inloading {
+    color: #fff;
+    cursor: not-allowed;
+  }
 }

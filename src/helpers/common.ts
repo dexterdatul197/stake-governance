@@ -1,6 +1,11 @@
+import { WalletData } from './../interfaces/WalletData';
+const ethers = require('ethers');
+
 export const getArgs = (param: any) => {
-    // First match everything inside the function argument parens.
-  const args = param.toString().match(/.*?\(([^)]*)\)/) ? param.toString().match(/.*?\(([^)]*)\)/)[1] : '';
+  // First match everything inside the function argument parens.
+  const args = param.toString().match(/.*?\(([^)]*)\)/)
+    ? param.toString().match(/.*?\(([^)]*)\)/)[1]
+    : '';
   // Split the arguments string into an array comma delimited.
   return args
     .split(',')
@@ -12,4 +17,14 @@ export const getArgs = (param: any) => {
       // Ensure no undefined values are added.
       return arg;
     });
+};
+
+export const encodeParameters = (types: any, values: any) => {
+  const abi = new ethers.utils.AbiCoder();
+  return abi.encode(types, values);
+};
+
+export const currentAddress = (wallet: WalletData) => {
+    const allValue = Object.values(wallet);
+    return allValue.filter(item => typeof(item) === 'string' && item.length !== 0)[0];
 }

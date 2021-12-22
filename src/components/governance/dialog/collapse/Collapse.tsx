@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 import { Collapse } from '@material-ui/core';
 import classNames from 'classnames/bind';
 import React, { useState } from 'react';

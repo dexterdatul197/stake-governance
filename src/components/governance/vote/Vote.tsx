@@ -1,6 +1,6 @@
+import { BigNumber } from '@0x/utils';
 import {
-  Autocomplete,
-  Backdrop,
+  Autocomplete, Button,
   CircularProgress,
   TextField
 } from '@material-ui/core';
@@ -10,15 +10,12 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { isConnected } from '../../../helpers/connectWallet';
 import {
-  getCHNBalance,
-  getVoteContract,
-  governance
+  getCHNBalance, governance
 } from '../../../helpers/ContractService';
 import { useAppSelector } from '../../../store/hooks';
 import { openSnackbar, SnackbarVariant } from '../../../store/snackbar';
 import { setOpenCreateProposalDialog } from '../redux/Governance';
 import styles from './Vote.module.scss';
-import { BigNumber } from '@0x/utils';
 
 const useStyles: any = makeStyles(() => ({
   root: {
@@ -119,9 +116,6 @@ const Vote: React.FC = () => {
       );
     }
   };
-  const handleCloseLoading = () => {
-    setOpenLoading(false);
-  };
   return (
     <div className={cx('governance-vote')}>
       <div className={cx('vote-title')}>Vote Weight</div>
@@ -141,16 +135,15 @@ const Vote: React.FC = () => {
           />
         </div>
       </div>
-      <div className={cx('create-proposal')} onClick={handleOpenCreateForm}>
-        Create Proposal
-      </div>
-      <Backdrop
-        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={openLoading}
-        onClick={handleCloseLoading}
-      >
-        <CircularProgress color="inherit" />
-      </Backdrop>
+      <Button onClick={handleOpenCreateForm} className={cx('create-proposal')}>
+        {openLoading && (
+          <div>
+            <CircularProgress size={20} color='inherit' /> 
+            <span>Create Proposal</span>
+          </div>
+        )}
+        {!openLoading && 'Create Proposal'}
+      </Button>
       <div className={cx('border-bottom')}></div>
       <div className={cx('rank')}>Rank: 43</div>
       <div className={cx('view-leader-board')}>View leader board</div>
