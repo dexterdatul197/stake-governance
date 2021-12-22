@@ -18,8 +18,8 @@ body {
   --btn-background-connect-color: #107DEF;
   --color-text-white: #FFF;
   --color-text-footer: #001C4E;
-  --background-dialog-color: #E4E4E4;
-  --color-text-white-black: #000;
+  --background-dialog-color: #fff;
+  --color-text-white-black: #001C4E;
   --btn-hover-blue-green: #107DEF;
   --color-text-black-white: #fff;
   --main-background-dropdow: #ECF3FB;
@@ -35,6 +35,8 @@ body {
   --background-stake-color:#EDF1F8;
   --text-color-stake:#107DEF;
   --background-stake-modal: #FFFFFF;
+  --background-proposal: #EDF1F8;
+  --color-text-proposal-action: #001C4E;
 }
 [data-theme='dark'] {
   --btn-header-border-color: #72BF65;
@@ -60,7 +62,8 @@ body {
   --background-stake-color:#121316;
   --text-color-stake:#107DEF;
   --background-stake-modal: #1B1C1F;
- 
+  --background-proposal: #09090B;
+  --color-text-proposal-action: #fff;
 }
 .Snackbar {
   .css-zzms1-MuiSnackbar-root {

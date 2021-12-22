@@ -1,6 +1,6 @@
+import { BigNumber } from '@0x/utils';
 import {
-  Autocomplete,
-  Backdrop,
+  Autocomplete, Button,
   CircularProgress,
   TextField
 } from '@material-ui/core';
@@ -10,15 +10,12 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { isConnected } from '../../../helpers/connectWallet';
 import {
-  getCHNBalance,
-  getVoteContract,
-  governance
+  getCHNBalance, governance
 } from '../../../helpers/ContractService';
 import { useAppSelector } from '../../../store/hooks';
 import { openSnackbar, SnackbarVariant } from '../../../store/snackbar';
 import { setOpenCreateProposalDialog } from '../redux/Governance';
 import styles from './Vote.module.scss';
-import { BigNumber } from '@0x/utils';
 
 const useStyles: any = makeStyles(() => ({
   root: {
@@ -84,17 +81,30 @@ const Vote: React.FC = () => {
       // check user dont have any proposal with status active or pending
       const voteContract = await governance();
       const lastestProposalId = await voteContract.methods.latestProposalIds(connectedAddress).call();
-      console.log('PROPOSAL ID: ', lastestProposalId);
-      
-      
+      if (lastestProposalId !== '0') {
+        console.log('PROPOSAL ID', lastestProposalId);
+        const state = await voteContract.methods.state(lastestProposalId).call();
+        if (state === '0' || state === '1') {
+          setOpenLoading(false);
+          createProposal = false;
+          dispatch(openSnackbar({ message: `You can't create proposal. there is proposal in progress!`, variant: SnackbarVariant.ERROR }));
+          return;
+        } else {
+          createProposal = true;
+        }
+      } else {
+        // open popup
+        createProposal = true;
+      }
       setOpenLoading(false);
       if (checkCHNamount !== 1) {
         dispatch(openSnackbar({message: `You can't create proposal. Your voting power should be ${proposalThreshold} CHN at least`, variant: SnackbarVariant.ERROR}));
         createProposal = false;
-        return;
+        // TODO: need remove comment
+        // return;
       }
-      
-      if (createProposal) {
+      // TODO: should be createProposal
+      if (true) {
         dispatch(setOpenCreateProposalDialog(true));
       }
     } else {
@@ -105,9 +115,6 @@ const Vote: React.FC = () => {
         })
       );
     }
-  };
-  const handleCloseLoading = () => {
-    setOpenLoading(false);
   };
   return (
     <div className={cx('governance-vote')}>
@@ -128,16 +135,15 @@ const Vote: React.FC = () => {
           />
         </div>
       </div>
-      <div className={cx('create-proposal')} onClick={handleOpenCreateForm}>
-        Create Proposal
-      </div>
-      <Backdrop
-        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={openLoading}
-        onClick={handleCloseLoading}
-      >
-        <CircularProgress color="inherit" />
-      </Backdrop>
+      <Button onClick={handleOpenCreateForm} className={cx('create-proposal')}>
+        {openLoading && (
+          <div>
+            <CircularProgress size={20} color='inherit' /> 
+            <span>Create Proposal</span>
+          </div>
+        )}
+        {!openLoading && 'Create Proposal'}
+      </Button>
       <div className={cx('border-bottom')}></div>
       <div className={cx('rank')}>Rank: 43</div>
       <div className={cx('view-leader-board')}>View leader board</div>

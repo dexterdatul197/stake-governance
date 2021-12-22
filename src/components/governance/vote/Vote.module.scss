@@ -26,12 +26,12 @@
   }
   .create-proposal {
     padding: 15px 40px;
-    background: var(--btn-background-connect-color);
-    width: 50%;
-    margin: 0 auto;
+    background: #107DEF;
     border-radius: 20px;
     color: #fff;
-    cursor: pointer;
+  }
+  .create-proposal:hover {
+    background-color: #107DEF;
   }
   .border-bottom {
     border: solid 1px black;

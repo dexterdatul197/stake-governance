@@ -6,8 +6,8 @@ import {
 } from '../constant/uninstallExtentionException';
 import {
     GOVERNENCE_RINKEBY_ABI,
-    STRIKE_TOKEN_MAINNET_ABI as CHN_TOKEN_MAINNET_ABI,
-    STRIKE_TOKEN_ROPSTEN_ABI as CHN_TOKEN_ROPSTEN_ABI,
+    CHN_TOKEN_MAINNET_ABI,
+    CHN_TOKEN_ROPSTEN_ABI,
     VOTE_CONTRACT_MAIN_ABI,
     VOTE_CONTRACT_ROPSTEN_ABI
 } from './../constant/constants';
