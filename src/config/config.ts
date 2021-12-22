@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const axiosCoinBaseInstance = (options: any = {}) => {
+const axiosInstance = (options: any = {}) => {
     const {headers = {}, baseUrl = ''} = options;
     return axios.create({
         baseURL: `${baseUrl}`,
@@ -13,4 +13,4 @@ const axiosCoinBaseInstance = (options: any = {}) => {
         },
       });
 };
-export default axiosCoinBaseInstance;
+export default axiosInstance;

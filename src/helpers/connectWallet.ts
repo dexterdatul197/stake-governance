@@ -1,7 +1,7 @@
 import WalletConnectProvider from '@walletconnect/web3-provider';
 import Web3 from 'web3';
 import Web3Modal from 'web3modal';
-import axiosCoinBaseInstance from '../config/config';
+import axiosInstance from '../config/config';
 import {
   MISSING_EXTENSION_ERROR,
   SoftwareWalletType,
@@ -110,7 +110,7 @@ export const connectCoinbase = async (apiKey: string, apiSecret: string) => {
     baseUrl: process.env.REACT_APP_COIN_BASE_URL
   };
   let response: {code: number, data: any} = {code: 200, data: 'any'};
-  await axiosCoinBaseInstance(options)
+  await axiosInstance(options)
     .get('/v2/user')
     .then((res) => {response.code = 200; response.data = res.data})
     .catch((err) => {

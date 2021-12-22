@@ -1,15 +1,12 @@
 import Web3 from 'web3';
 import {
-    MISSING_EXTENSION_ERROR,
-    SoftwareWalletType,
-    UninstallExtensionException
+  MISSING_EXTENSION_ERROR,
+  SoftwareWalletType,
+  UninstallExtensionException
 } from '../constant/uninstallExtentionException';
 import {
-    GOVERNENCE_RINKEBY_ABI,
-    CHN_TOKEN_MAINNET_ABI,
-    CHN_TOKEN_ROPSTEN_ABI,
-    VOTE_CONTRACT_MAIN_ABI,
-    VOTE_CONTRACT_ROPSTEN_ABI
+  CHN_TOKEN_MAINNET_ABI, CHN_TOKEN_RINKEBY_ABI, GOVERNENCE_RINKEBY_ABI, VOTE_CONTRACT_MAIN_ABI,
+  VOTE_CONTRACT_ROPSTEN_ABI
 } from './../constant/constants';
 
 const web3 = new Web3(window.ethereum);
@@ -39,7 +36,7 @@ export const governance = () => {
 };
 
 export const getCHNBalance = () => {
-  const chnABI = enviroment === 'prod' ? CHN_TOKEN_MAINNET_ABI : CHN_TOKEN_ROPSTEN_ABI;
+  const chnABI = enviroment === 'prod' ? CHN_TOKEN_MAINNET_ABI : CHN_TOKEN_RINKEBY_ABI;
   const chnAddress = enviroment === 'prod' ? process.env.REACT_APP_MAIN_CHN_TOKEN_ADDRESS : process.env.REACT_APP_TEST_CHN_TOKEN_ADDRESS;
   return new web3.eth.Contract(JSON.parse(chnABI), chnAddress);
 };
