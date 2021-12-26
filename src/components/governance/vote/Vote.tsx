@@ -18,6 +18,7 @@ import { openSnackbar, SnackbarVariant } from '../../../store/snackbar';
 import { setOpenCreateProposalDialog } from '../redux/Governance';
 import styles from './Vote.module.scss';
 
+const commaNumber = require('comma-number');
 const useStyles: any = makeStyles(() => ({
   root: {
     // width: '50%',
@@ -54,6 +55,7 @@ const useStyles: any = makeStyles(() => ({
   },
 }));
 const cx = classNames.bind(styles);
+const format = commaNumber.bindWith(',', '.');
 
 const Vote: React.FC = () => {
   const dispatch = useDispatch();
@@ -76,8 +78,12 @@ const Vote: React.FC = () => {
         .call();
       const checkCHNamount = new BigNumber(chnAmount).comparedTo(new BigNumber(proposalThreshold));
       // check user dont have any proposal with status active or pending
+      console.log('COMPARE THRESHOLD: ', format(chnAmount), format(proposalThreshold), checkCHNamount);
+      
       const voteContract = governance();
       const lastestProposalId = await voteContract.methods.latestProposalIds(connectedAddress).call();
+      //TODO:need remove comment to cancel lastestProposalId
+      // const cancelLastestProposal = await voteContract.methods.cancel(lastestProposalId).send({from: connectedAddress});
       if (lastestProposalId !== '0') {
         const state = await voteContract.methods.state(lastestProposalId).call();
         if (state === '0' || state === '1') {
@@ -94,7 +100,7 @@ const Vote: React.FC = () => {
       }
       setOpenLoading(false);
       if (checkCHNamount !== 1) {
-        dispatch(openSnackbar({message: `You can't create proposal. Your voting power should be ${proposalThreshold} CHN at least`, variant: SnackbarVariant.ERROR}));
+        dispatch(openSnackbar({message: `You can't create proposal. Your voting power should be ${format(proposalThreshold)} CHN at least`, variant: SnackbarVariant.ERROR}));
         createProposal = false;
         return;
       }

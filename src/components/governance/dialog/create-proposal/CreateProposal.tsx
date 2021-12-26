@@ -33,6 +33,7 @@ const CreateProposal: React.FC = () => {
   const theme = useAppSelector((state) => state.theme.themeMode);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+  const [title, setTitle] = useState('');
 
   const [formData, setFormData] = useState<SFormData[]>([
     {
@@ -86,25 +87,27 @@ const CreateProposal: React.FC = () => {
       console.log('BEFORE CREATE PROPOSAL: ', currentAddress(currentAccount), targetAddresses, values, signatures);
       const responseCreate = await createProposal.methods.propose(targetAddresses, values, signatures, callDatas, description).send({from: currentAddress(currentAccount)});
       console.log('RESPONSE OF CREATE PROPOSAL: ', responseCreate);
-      // call API create proposal in DB
-      const options = {
-        baseUrl: process.env.REACT_APP_BACKEND
+      if (responseCreate) {
+        // call API create proposal in DB
+        const options = {
+          baseUrl: process.env.REACT_APP_BACKEND
+        }
+        const body = {
+          title: title,
+          description: description,
+          values: '',
+          signatures: signatures,
+          callDatas: callDatas,
+          proposer: currentAddress(currentAccount)
+        }
+        await axiosInstance(options)
+        .post('/governance/proposal', body)
+        .then((res) => console.log('[API]: RESPONSE: ', res))
+        .catch((err) => console.log('[API]: ERROR: ', err));
+        setIsLoading(false);
+        dispatch(setOpenCreateProposalDialog(false));
+        dispatch(openSnackbar({message: 'Create proposal successfully!', variant: SnackbarVariant.SUCCESS}));
       }
-      const body = {
-        title: 'a',
-        description: description,
-        values: 'values',
-        signatures: signatures,
-        callDatas: callDatas,
-        proposer: currentAddress(currentAccount)
-      }
-      await axiosInstance(options)
-      .post('/governance/proposal', body)
-      .then((res) => console.log('[API]: RESPONSE: ', res))
-      .catch((err) => console.log('[API]: ERROR: ', err));
-
-      setIsLoading(false);
-      dispatch(setOpenCreateProposalDialog(false));
     } catch (error) {
       console.log('ERROR RESPONSE WHEN CREATE PROPOSAL: ', error);
       dispatch(openSnackbar({message: 'Creating proposal is failed!', variant: SnackbarVariant.ERROR}));
@@ -128,7 +131,7 @@ const CreateProposal: React.FC = () => {
   };
 
   const handleChangeTitle = (value: string) => {
-    console.log('CHANGE TITLE: ', value);
+    setTitle(value);
   }
 
   useEffect(() => {

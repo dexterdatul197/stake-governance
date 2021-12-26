@@ -33,7 +33,7 @@ const Proposal: React.FC = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const minForUser = async () => {
     if (currentAddress(currentAccount))
-    await getCHNBalance().methods.mintForUser(new BigNumber('100000')).send({from: currentAddress(currentAccount)});
+    await getCHNBalance().methods.mintForUser(new BigNumber('100000000000000000000')).send({from: currentAddress(currentAccount)});
   }
   useEffect(() => {
     minForUser();
