@@ -22,10 +22,11 @@ interface Props {
   handleCloseModal: () => void;
   classes?: any;
   currencies?: any;
+  walletValue?: any;
 }
 
 const Modal = memo((props: Props) => {
-  const { openStake, handleCloseModal, classes, currencies } = props;
+  const { openStake, handleCloseModal, classes, currencies, walletValue } = props;
   const [value, setValue] = useState({
     default: 0,
     value1: 25,
@@ -164,7 +165,7 @@ const Modal = memo((props: Props) => {
         </Box>
         <Box className={cx("balance")}>
           <Box className={cx("balance__wallet-balance")}>
-            <Typography className={cx("title")}>Wallet Balance: 42</Typography>
+            <Typography className={cx("title")}>Wallet Balance: {walletValue}</Typography>
             <Autocomplete
               classes={classes}
               options={currencies}
@@ -178,7 +179,7 @@ const Modal = memo((props: Props) => {
             />
           </Box>
           <Box className={cx("balance__stake-balance")}>
-            <Typography className={cx("title")}>Stake Balance: 42</Typography>
+            <Typography className={cx("title")}>Stake Balance: {value.default * walletValue}</Typography>
             <Autocomplete
               classes={classes}
               options={currencies}

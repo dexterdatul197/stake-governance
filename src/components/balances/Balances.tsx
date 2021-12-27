@@ -5,12 +5,14 @@ import {
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import classNames from 'classnames/bind';
-import React, { useState } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 import { useAppSelector } from '../../store/hooks';
 import styles from './Balances.module.scss';
 import Modal from './StakeModal';
 import TableComponent from './Table';
 import ModalWithDraw from './WithDrawModal';
+import { getValueStake, getCHNBalance } from '../../helpers/ContractService'
+import { isConnected } from '../../helpers/connectWallet';
 
 const cx = classNames.bind(styles);
 
@@ -50,36 +52,94 @@ const useStyles: any = makeStyles(() => ({
   },
 }));
 
+const initialState = {
+  isActive: false,
+  isActiveWithDraw: false,
+  isOpenStake: false,
+  isOpenWithdraw: false,
+}
+
+const dataReducer = (state = initialState, action: any) => {
+  switch (action.type) {
+    case 'OPEN_STAKE':
+      return {
+        ...state,
+        isOpenStake: true,
+        isActive: true,
+      }
+    case 'CLOSE_STAKE':
+      return {
+        ...state,
+        isOpenStake: false,
+        isActive: false,
+      }
+    case 'OPEN_WITHDRAW':
+      return {
+        ...state,
+        isActiveWithDraw: true,
+        isOpenWithdraw: true
+      }
+    case 'CLOSE_WITHDRAW':
+      return {
+        ...state,
+        isActiveWithDraw: false,
+        isOpenWithdraw: false
+      }
+    default:
+      return state
+  }
+}
+
 
 const Balances: React.FC = () => {
+  const [state, dispatch] = useReducer(dataReducer, {
+    isActive: false,
+    isActiveWithDraw: false,
+    isOpenStake: false,
+    isOpenWithdraw: false
+  });
+  const { isActive, isActiveWithDraw, isOpenStake, isOpenWithdraw } = state
   const classes = useStyles();
   const currencies = useAppSelector((state) => state.currency.currenciesList);
-  const [active, setActive] = useState(false);
-  const [activewithDraw, setActiveWithDraw] = useState(false);
-  const [openStake, setOpenStake] = useState(false);
-  const [openWithdraw, setOpenWithdraw] = useState(false);
+  const wallet = useAppSelector((state) => state.wallet)
+  const [balance, setBalance] = useState(0);
+  const [walletValue, setWalletValue] = useState(0);
+  const [earn, setEarn] = useState((0))
 
   const handleActiveClass = () => {
-    setActive(!active);
-    setActiveWithDraw(false);
-    setOpenStake(true);
+    dispatch({ type: "OPEN_STAKE" })
   }
 
   const handleCloseModal = () => {
-    setOpenStake(false)
-    setActive(false);
+    dispatch({ type: "CLOSE_STAKE" })
   }
 
   const handleActiveWithDraw = () => {
-    setActiveWithDraw(!activewithDraw)
-    setActive(false)
-    setOpenWithdraw(true)
+    dispatch({ type: "OPEN_WITHDRAW" })
   }
 
   const handleCloseModalWithDraw = () => {
-    setOpenWithdraw(false)
-    setActiveWithDraw(false)
+    dispatch({ type: "CLOSE_WITHDRAW" })
   }
+
+  const getValueStakeFunction = async () => {
+    if (isConnected(wallet)) {
+      const contract = getValueStake();
+
+      const connectedAddress = Object.values(wallet)
+        .filter((item) => typeof item === 'string')
+        .filter((item) => item.length > 0)[0];
+
+      await getCHNBalance().methods.balanceOf(connectedAddress).call().then((value: any) => {
+        setWalletValue(value)
+      })
+    }
+
+  }
+
+  useEffect(() => {
+    getValueStakeFunction()
+  }, [getValueStakeFunction])
 
   return (
     <div className={cx('balances-history')}>
@@ -88,11 +148,11 @@ const Balances: React.FC = () => {
         <div className={cx('balance-row')}>
           <div></div>
           <span className={cx('balance-key')}>Stake:</span>
-          <span className={cx('balance-value')}>754.2</span>
+          <span className={cx('balance-value')}>{balance}</span>
           <Autocomplete
             classes={classes}
             options={currencies}
-            defaultValue={'usd'}
+            defaultValue={'chn'}
             // onChange={handleOnChangeSelectCurrency}
             renderInput={(item) => (
               <TextField {...item} margin="normal" fullWidth />
@@ -105,12 +165,12 @@ const Balances: React.FC = () => {
         <div className={cx('balance-row')}>
           <div></div>
           <div className={cx('balance-key')}>Wallet:</div>
-          <div className={cx('balance-value')}>754.2</div>
+          <div className={cx('balance-value')}>{walletValue}</div>
           <div>
             <Autocomplete
               classes={classes}
               options={currencies}
-              defaultValue={'usd'}
+              defaultValue={'chn'}
               // onChange={handleOnChangeSelectCurrency}
               renderInput={(item) => (
                 <TextField {...item} margin="normal" fullWidth />
@@ -124,12 +184,12 @@ const Balances: React.FC = () => {
         <div className={cx('balance-row')}>
           <div></div>
           <div className={cx('balance-key')}>Earned:</div>
-          <div className={cx('balance-value')}>754.2</div>
+          <div className={cx('balance-value')}>{earn}</div>
           <div>
             <Autocomplete
               classes={classes}
               options={currencies}
-              defaultValue={'usd'}
+              defaultValue={'chn'}
               // onChange={handleOnChangeSelectCurrency}
               renderInput={(item) => (
                 <TextField {...item} margin="normal" fullWidth />
@@ -142,12 +202,12 @@ const Balances: React.FC = () => {
         </div>
         <div className={`${cx('switcher')}`}>
           <Button onClick={handleActiveClass} className={cx('switcher_stake', {
-            'button-active': active,
-            'button-deactive': !active
+            'button-active': isActive,
+            'button-deactive': !isActive
           })}>Stake</Button>
           <Button onClick={handleActiveWithDraw} className={cx('switcher_withdraw', {
-            'button-active': activewithDraw,
-            'button-deactive': !activewithDraw
+            'button-active': isActiveWithDraw,
+            'button-deactive': !isActiveWithDraw
           })}>WithDraw</Button>
         </div>
       </div>
@@ -155,8 +215,8 @@ const Balances: React.FC = () => {
         <TableComponent />
       </div>
 
-      <Modal currencies={currencies} classes={classes} openStake={openStake} handleCloseModal={handleCloseModal} />
-      <ModalWithDraw openWithdraw={openWithdraw} handleCloseModalWithDraw={handleCloseModalWithDraw} />
+      <Modal walletValue={walletValue} currencies={currencies} classes={classes} openStake={isOpenStake} handleCloseModal={handleCloseModal} />
+      <ModalWithDraw openWithdraw={isOpenWithdraw} handleCloseModalWithDraw={handleCloseModalWithDraw} />
 
     </div>
   );
