@@ -82,23 +82,32 @@ const CreateProposal: React.FC = () => {
       return;
     }
     setIsLoading(true);
-    const createProposal = governance();
+    const governanceContract = governance();
     try {
       console.log('BEFORE CREATE PROPOSAL: ', currentAddress(currentAccount), targetAddresses, values, signatures);
-      const responseCreate = await createProposal.methods.propose(targetAddresses, values, signatures, callDatas, description).send({from: currentAddress(currentAccount)});
+      const responseCreate = await governanceContract.methods.propose(targetAddresses, values, signatures, callDatas, description).send({from: currentAddress(currentAccount)});
       console.log('RESPONSE OF CREATE PROPOSAL: ', responseCreate);
       if (responseCreate) {
+        const proposalId = Number(responseCreate.events.ProposalCreated.returnValues.id);
+        const proposalState = await governanceContract.methods.state(proposalId).call();
         // call API create proposal in DB
         const options = {
           baseUrl: process.env.REACT_APP_BACKEND
         }
         const body = {
+          proposalId: proposalId,
           title: title,
           description: description,
-          values: '',
+          values: values,
           signatures: signatures,
           callDatas: callDatas,
-          proposer: currentAddress(currentAccount)
+          targets: targetAddresses,
+          proposer: currentAddress(currentAccount),
+          startBlock: Number(responseCreate.events.ProposalCreated.returnValues.startBlock),
+          endBlock: Number(responseCreate.events.ProposalCreated.returnValues.endBlock),
+          createdBlock: responseCreate.blockNumber,
+          createdTxHash: responseCreate.transactionHash,
+          state: proposalState
         }
         await axiosInstance(options)
         .post('/governance/proposal', body)

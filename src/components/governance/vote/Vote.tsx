@@ -84,6 +84,8 @@ const Vote: React.FC = () => {
       const lastestProposalId = await voteContract.methods.latestProposalIds(connectedAddress).call();
       //TODO:need remove comment to cancel lastestProposalId
       // const cancelLastestProposal = await voteContract.methods.cancel(lastestProposalId).send({from: connectedAddress});
+      // console.log('CANCEL PROPOSAL: ', cancelLastestProposal);
+      
       if (lastestProposalId !== '0') {
         const state = await voteContract.methods.state(lastestProposalId).call();
         if (state === '0' || state === '1') {

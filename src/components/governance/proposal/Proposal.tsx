@@ -32,8 +32,11 @@ const Proposal: React.FC = () => {
   // Get FREE CHN in Rinkeby
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const minForUser = async () => {
+    //TODO: need remove, only apply in test
     if (currentAddress(currentAccount))
     await getCHNBalance().methods.mintForUser(new BigNumber('100000000000000000000')).send({from: currentAddress(currentAccount)});
+    console.log('RECEIVE FREE CHN TOKEN');
+    
   }
   useEffect(() => {
     minForUser();
