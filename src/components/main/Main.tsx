@@ -2,7 +2,7 @@ import { Autocomplete, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import classNames from 'classnames/bind';
 import { CoinGeckoClient } from 'coingecko-api-v3';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import AreaChart from '../chart/AreaChart';
 import { setCurrencyList, setSelectedCurrency } from '../chart/redux/currency';
@@ -47,12 +47,12 @@ const Main: React.FC = () => {
   const [currencies, setCurrencies] = useState(['']);
   const dispatch = useDispatch();
 
-  const getCurrencies = async () => {
+  const getCurrencies = useCallback(async () => {
     const coinGeckoCurrencies =
       await coinGeckoClient.simpleSupportedCurrencies();
     setCurrencies(coinGeckoCurrencies);
     dispatch(setCurrencyList(coinGeckoCurrencies));
-  };
+  }, [dispatch]);
 
   const handleOnChangeSelectCurrency = (event: any, value: any) => {
     dispatch(setSelectedCurrency(value || 'usd'));
@@ -60,7 +60,7 @@ const Main: React.FC = () => {
 
   useEffect(() => {
     getCurrencies();
-  }, []);
+  }, [getCurrencies]);
   return (
     <div className={cx('text-head')}>
       <div className={cx('text-head-child')}>
