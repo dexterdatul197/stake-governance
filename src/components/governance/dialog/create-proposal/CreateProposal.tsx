@@ -7,7 +7,9 @@ import { useEffect, useState } from 'react';
 import MdEditor from 'react-markdown-editor-lite';
 import 'react-markdown-editor-lite/lib/index.css';
 import { useDispatch } from 'react-redux';
+import axiosInstance from '../../../../config/config';
 import { currentAddress, encodeParameters, getArgs } from '../../../../helpers/common';
+import { isConnected } from '../../../../helpers/connectWallet';
 import { governance } from '../../../../helpers/ContractService';
 import { SFormData } from '../../../../interfaces/SFormData';
 import { useAppSelector } from '../../../../store/hooks';
@@ -31,6 +33,7 @@ const CreateProposal: React.FC = () => {
   const theme = useAppSelector((state) => state.theme.themeMode);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+  const [title, setTitle] = useState('');
 
   const [formData, setFormData] = useState<SFormData[]>([
     {
@@ -53,10 +56,10 @@ const CreateProposal: React.FC = () => {
     const callDatas = [];
     if (description.trim().length === 0) {
       setErrorMsg('Description is required');
+      return;
     } else {
       setErrorMsg('');
     }
-    console.log('AAAAAAAA: ', formData);
     try {
       for (let i = 0; i < formData.length; i +=1) {
         const callDataValues = [];
@@ -65,7 +68,6 @@ const CreateProposal: React.FC = () => {
         values.push(0); // Web3.utils.toWei(formValues[`value${i}`], 'ether')
         signatures.push(formData[i]['signature']);
         callDataTypes = getArgs(formData[i]['signature']);
-  
         for (let j = 0; j < formData[i].callData.length; j += 1) {
           if (callDataTypes[j].toLowerCase() === 'bool') {
             callDataValues.push(formData[i].callData[j].toLowerCase() === 'true' ? true : false);
@@ -80,15 +82,43 @@ const CreateProposal: React.FC = () => {
       return;
     }
     setIsLoading(true);
-    const createProposal = governance();
-    console.log('ADDRESS: ', currentAddress(currentAccount), targetAddresses, values, signatures, callDatas, description);
+    const governanceContract = governance();
     try {
-      const responseCreate = await createProposal.methods.propose(targetAddresses, values, signatures, callDatas, description).send({from: currentAddress(currentAccount)});
-      console.log('CALL CONTRACT ROW 2: ', responseCreate);
-      setIsLoading(false);
-      dispatch(setOpenCreateProposalDialog(false));
+      console.log('BEFORE CREATE PROPOSAL: ', currentAddress(currentAccount), targetAddresses, values, signatures);
+      const responseCreate = await governanceContract.methods.propose(targetAddresses, values, signatures, callDatas, description).send({from: currentAddress(currentAccount)});
+      console.log('RESPONSE OF CREATE PROPOSAL: ', responseCreate);
+      if (responseCreate) {
+        const proposalId = Number(responseCreate.events.ProposalCreated.returnValues.id);
+        const proposalState = await governanceContract.methods.state(proposalId).call();
+        // call API create proposal in DB
+        const options = {
+          baseUrl: process.env.REACT_APP_BACKEND
+        }
+        const body = {
+          proposalId: proposalId,
+          title: title,
+          description: description,
+          values: values,
+          signatures: signatures,
+          callDatas: callDatas,
+          targets: targetAddresses,
+          proposer: currentAddress(currentAccount),
+          startBlock: Number(responseCreate.events.ProposalCreated.returnValues.startBlock),
+          endBlock: Number(responseCreate.events.ProposalCreated.returnValues.endBlock),
+          createdBlock: responseCreate.blockNumber,
+          createdTxHash: responseCreate.transactionHash,
+          state: proposalState
+        }
+        await axiosInstance(options)
+        .post('/governance/proposal', body)
+        .then((res) => console.log('[API]: RESPONSE: ', res))
+        .catch((err) => console.log('[API]: ERROR: ', err));
+        setIsLoading(false);
+        dispatch(setOpenCreateProposalDialog(false));
+        dispatch(openSnackbar({message: 'Create proposal successfully!', variant: SnackbarVariant.SUCCESS}));
+      }
     } catch (error) {
-      console.log('ERROR RESPONSE: ', error);
+      console.log('ERROR RESPONSE WHEN CREATE PROPOSAL: ', error);
       dispatch(openSnackbar({message: 'Creating proposal is failed!', variant: SnackbarVariant.ERROR}));
       setIsLoading(false);
     }
@@ -109,8 +139,14 @@ const CreateProposal: React.FC = () => {
     setFormData([...JSON.parse(JSON.stringify(newFormData))]);
   };
 
+  const handleChangeTitle = (value: string) => {
+    setTitle(value);
+  }
+
   useEffect(() => {
-    getMaxOperation();
+    if (isConnected(currentAccount)) {
+      getMaxOperation();
+    }
   }, [currentAccount]);
 
   return (
@@ -164,7 +200,9 @@ const CreateProposal: React.FC = () => {
             <div className={cx('sub-title-text')}>Proposal Description</div>
             <div className={cx('box-title')}>Title</div>
             <div className={cx('div-input')}>
-              <StakeInputBase />
+              <StakeInputBase 
+                onChange={handleChangeTitle}
+              />
             </div>
             <div className={cx('box-title')}>Details</div>
             <div className={cx('div-input')}>
