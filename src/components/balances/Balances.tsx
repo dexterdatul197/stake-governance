@@ -125,14 +125,11 @@ const Balances: React.FC = () => {
   const getValueStakeFunction = async () => {
     if (isConnected(wallet)) {
       const contract = getValueStake();
-
       const connectedAddress = Object.values(wallet)
         .filter((item) => typeof item === 'string')
         .filter((item) => item.length > 0)[0];
-
-      await getCHNBalance().methods.balanceOf(connectedAddress).call().then((value: any) => {
-        setWalletValue(value)
-      })
+      const valueOfwallet = await getCHNBalance().methods.balanceOf(connectedAddress).call();
+      setWalletValue(valueOfwallet)
     }
 
   }

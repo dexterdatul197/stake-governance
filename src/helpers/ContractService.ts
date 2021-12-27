@@ -10,7 +10,6 @@ import {
   CHN_TOKEN_ROPSTEN_ABI,
   VOTE_CONTRACT_MAIN_ABI,
   VOTE_CONTRACT_ROPSTEN_ABI,
-  CHN_TOKEN_RINKEBY_ABI,
   STAKE_CONTRACT_ABI,
 } from "./../constant/constants";
 
@@ -41,16 +40,12 @@ export const governance = () => {
 };
 
 export const getCHNBalance = () => {
-  // do cái rpc + address cuả 2 cái đang khác nhau nên dùng testnet
-  // const chnABI =
-  //   enviroment === "prod" ? CHN_TOKEN_MAINNET_ABI : CHN_TOKEN_ROPSTEN_ABI;
-  const chnABI = CHN_TOKEN_RINKEBY_ABI;
-  // const chnAddress =
-  //   enviroment === "prod"
-  //     ? process.env.REACT_APP_MAIN_CHN_TOKEN_ADDRESS
-  //     : process.env.REACT_APP_TEST_CHN_TOKEN_ADDRESS
-
-  const chnAddress = process.env.REACT_APP_TEST_CHN_TOKEN_ADDRESS;
+  const chnABI =
+    enviroment === "prod" ? CHN_TOKEN_MAINNET_ABI : CHN_TOKEN_ROPSTEN_ABI;
+  const chnAddress =
+    enviroment === "prod"
+      ? process.env.REACT_APP_MAIN_CHN_TOKEN_ADDRESS
+      : process.env.REACT_APP_TEST_CHN_TOKEN_ADDRESS;
   return new web3.eth.Contract(JSON.parse(chnABI), chnAddress);
 };
 
