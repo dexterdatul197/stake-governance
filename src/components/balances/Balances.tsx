@@ -13,6 +13,9 @@ import TableComponent from './Table';
 import ModalWithDraw from './WithDrawModal';
 import { getValueStake, getCHNBalance } from '../../helpers/ContractService'
 import { isConnected } from '../../helpers/connectWallet';
+const commaNumber = require('comma-number');
+
+const format = commaNumber.bindWith(',', '.');
 
 const cx = classNames.bind(styles);
 
@@ -129,7 +132,8 @@ const Balances: React.FC = () => {
         .filter((item) => typeof item === 'string')
         .filter((item) => item.length > 0)[0];
       const valueOfwallet = await getCHNBalance().methods.balanceOf(connectedAddress).call();
-      setWalletValue(valueOfwallet)
+      
+      setWalletValue(format(valueOfwallet))
     }
 
   }

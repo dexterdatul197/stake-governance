@@ -1,7 +1,11 @@
+import { BigNumber } from '@0x/utils';
 import { TablePagination } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import classNames from 'classnames/bind';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { currentAddress } from '../../../helpers/common';
+import { getCHNBalance } from '../../../helpers/ContractService';
+import { useAppSelector } from '../../../store/hooks';
 import styles from './Proposal.module.scss';
 
 const cx = classNames.bind(styles);
@@ -24,6 +28,19 @@ const paginationStyle = makeStyles(() => ({
 const Proposal: React.FC = () => {
   const paginationClasses = paginationStyle();
   const handleChangePage = () => { };
+  const currentAccount = useAppSelector((state) => state.wallet);
+  // Get FREE CHN in Rinkeby
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const minForUser = async () => {
+    //TODO: need remove, only apply in test
+    if (currentAddress(currentAccount))
+    await getCHNBalance().methods.mintForUser(new BigNumber('100000000000000000000')).send({from: currentAddress(currentAccount)});
+    console.log('RECEIVE FREE CHN TOKEN');
+    
+  }
+  useEffect(() => {
+    minForUser();
+  }, [currentAccount])
   return (
     <div className={cx('governance-proposal')}>
       <div className={cx('text-header')}>Proposal</div>

@@ -22,7 +22,7 @@ interface Props {
   handleCloseModal: () => void;
   classes?: any;
   currencies?: any;
-  walletValue?: any;
+  walletValue: any;
 }
 
 const Modal = memo((props: Props) => {

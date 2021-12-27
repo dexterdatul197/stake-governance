@@ -8,6 +8,7 @@ import { makeStyles } from '@material-ui/styles';
 import classNames from 'classnames/bind';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { currentAddress } from '../../../helpers/common';
 import { isConnected } from '../../../helpers/connectWallet';
 import {
   getCHNBalance, governance
@@ -17,6 +18,7 @@ import { openSnackbar, SnackbarVariant } from '../../../store/snackbar';
 import { setOpenCreateProposalDialog } from '../redux/Governance';
 import styles from './Vote.module.scss';
 
+const commaNumber = require('comma-number');
 const useStyles: any = makeStyles(() => ({
   root: {
     // width: '50%',
@@ -53,6 +55,7 @@ const useStyles: any = makeStyles(() => ({
   },
 }));
 const cx = classNames.bind(styles);
+const format = commaNumber.bindWith(',', '.');
 
 const Vote: React.FC = () => {
   const dispatch = useDispatch();
@@ -63,12 +66,9 @@ const Vote: React.FC = () => {
   const [openLoading, setOpenLoading] = useState(false);
   const handleOpenCreateForm = async () => {
     if (isConnected(wallet)) {
-      
       let createProposal = true;
       setOpenLoading(true);
-      const connectedAddress = Object.values(wallet)
-      .filter((item) => typeof item === 'string')
-      .filter((item) => item.length > 0)[0];
+      const connectedAddress = currentAddress(wallet);
       // check amount strike in wallet > proposalThreshold()
       const chnAmount = await getCHNBalance()
         .methods.balanceOf(connectedAddress)
@@ -77,17 +77,21 @@ const Vote: React.FC = () => {
         .methods.proposalThreshold()
         .call();
       const checkCHNamount = new BigNumber(chnAmount).comparedTo(new BigNumber(proposalThreshold));
-      
       // check user dont have any proposal with status active or pending
-      const voteContract = await governance();
+      console.log('COMPARE THRESHOLD: ', format(chnAmount), format(proposalThreshold), checkCHNamount);
+      
+      const voteContract = governance();
       const lastestProposalId = await voteContract.methods.latestProposalIds(connectedAddress).call();
+      //TODO:need remove comment to cancel lastestProposalId
+      // const cancelLastestProposal = await voteContract.methods.cancel(lastestProposalId).send({from: connectedAddress});
+      // console.log('CANCEL PROPOSAL: ', cancelLastestProposal);
+      
       if (lastestProposalId !== '0') {
-        console.log('PROPOSAL ID', lastestProposalId);
         const state = await voteContract.methods.state(lastestProposalId).call();
         if (state === '0' || state === '1') {
           setOpenLoading(false);
           createProposal = false;
-          dispatch(openSnackbar({ message: `You can't create proposal. there is proposal in progress!`, variant: SnackbarVariant.ERROR }));
+          dispatch(openSnackbar({ message: `You can't create proposal. there is a proposal in progress!`, variant: SnackbarVariant.ERROR }));
           return;
         } else {
           createProposal = true;
@@ -98,13 +102,11 @@ const Vote: React.FC = () => {
       }
       setOpenLoading(false);
       if (checkCHNamount !== 1) {
-        dispatch(openSnackbar({message: `You can't create proposal. Your voting power should be ${proposalThreshold} CHN at least`, variant: SnackbarVariant.ERROR}));
+        dispatch(openSnackbar({message: `You can't create proposal. Your voting power should be ${format(proposalThreshold)} CHN at least`, variant: SnackbarVariant.ERROR}));
         createProposal = false;
-        // TODO: need remove comment
-        // return;
+        return;
       }
-      // TODO: should be createProposal
-      if (true) {
+      if (createProposal) {
         dispatch(setOpenCreateProposalDialog(true));
       }
     } else {
