@@ -5,15 +5,17 @@ import {
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import classNames from 'classnames/bind';
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useCallback, useEffect, useReducer, useState } from 'react';
+import { currentAddress } from '../../helpers/common';
+import { isConnected } from '../../helpers/connectWallet';
+import { getCHNBalance, getValueStake } from '../../helpers/ContractService';
 import { useAppSelector } from '../../store/hooks';
 import styles from './Balances.module.scss';
 import Modal from './StakeModal';
 import TableComponent from './Table';
 import ModalWithDraw from './WithDrawModal';
-import { getValueStake, getCHNBalance } from '../../helpers/ContractService'
-import { isConnected } from '../../helpers/connectWallet';
 const commaNumber = require('comma-number');
+
 
 const format = commaNumber.bindWith(',', '.');
 
@@ -103,8 +105,8 @@ const Balances: React.FC = () => {
   });
   const { isActive, isActiveWithDraw, isOpenStake, isOpenWithdraw } = state
   const classes = useStyles();
-  const currencies = useAppSelector((state) => state.currency.currenciesList);
-  const wallet = useAppSelector((state) => state.wallet)
+  const currencies = useAppSelector((state: any) => state.currency.currenciesList);
+  const wallet = useAppSelector((state: any) => state.wallet)
   const [balance, setBalance] = useState(0);
   const [walletValue, setWalletValue] = useState(0);
   const [earn, setEarn] = useState((0))
@@ -125,18 +127,18 @@ const Balances: React.FC = () => {
     dispatch({ type: "CLOSE_WITHDRAW" })
   }
 
-  const getValueStakeFunction = async () => {
-    if (isConnected(wallet)) {
-      const contract = getValueStake();
-      const connectedAddress = Object.values(wallet)
-        .filter((item) => typeof item === 'string')
-        .filter((item) => item.length > 0)[0];
+  const getValueStakeFunction = useCallback(async () => {
+    if(isConnected(wallet)){
+      const connectedAddress = currentAddress(wallet)
       const valueOfwallet = await getCHNBalance().methods.balanceOf(connectedAddress).call();
-      
-      setWalletValue(format(valueOfwallet))
+      setWalletValue(format(valueOfwallet));
+  
+      const TotalValueStake = getValueStake();
+  
+      console.log("function :",getCHNBalance)
     }
-
-  }
+   
+  }, [wallet])
 
   useEffect(() => {
     getValueStakeFunction()
