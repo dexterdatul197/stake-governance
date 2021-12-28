@@ -1,18 +1,14 @@
-import React, { useCallback, useEffect, memo, useState } from "react";
 import {
-    DialogContent,
-    DialogTitle,
-    DialogActions,
-    Dialog,
-    IconButton,
-    Typography,
     Box,
-    Button,
+    Button, Dialog, DialogActions, DialogContent,
+    DialogTitle, IconButton,
+    Typography
 } from "@material-ui/core";
-import styles from './styles.module.scss';
 import CloseIcon from '@mui/icons-material/Close';
 import classNames from "classnames/bind";
-import CHN_icon from '../../../assets/icon/CHN.svg'
+import React from "react";
+import CHN_icon from '../../../assets/icon/CHN.svg';
+import styles from './styles.module.scss';
 
 const cx = classNames.bind(styles);
 

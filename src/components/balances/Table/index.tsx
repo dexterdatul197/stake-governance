@@ -1,6 +1,4 @@
-import React, { useState, useCallback } from 'react'
 import {
-    Paper,
     Table,
     TableBody,
     TableCell,
@@ -8,14 +6,12 @@ import {
     TableFooter,
     TableHead,
     TablePagination,
-    TableRow,
-    CircularProgress,
-    Box
+    TableRow
 } from '@material-ui/core';
 import classNames from 'classnames/bind';
-import styles from './styles.module.scss'
-import { rows, headCells } from '../../../constant/constants'
-import { Typography } from '@mui/material';
+import React, { useState } from 'react';
+import { headCells, rows } from '../../../constant/constants';
+import styles from './styles.module.scss';
 const cx = classNames.bind(styles);
 
 

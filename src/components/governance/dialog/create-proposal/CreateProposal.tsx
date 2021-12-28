@@ -78,7 +78,7 @@ const CreateProposal: React.FC = () => {
         callDatas.push(encodeParameters(callDataTypes, callDataValues));
       }
     } catch (error) {
-      setErrorMsg('Proposal parameters are invalid!');
+      dispatch(openSnackbar({message: 'Proposal parameters are invalid!', variant: SnackbarVariant.ERROR}));
       return;
     }
     setIsLoading(true);
@@ -235,6 +235,7 @@ const CreateProposal: React.FC = () => {
                       index={index}
                       formData={formData}
                       maxOperation={maxOperation}
+                      fCallData={f.callData}
                       setFormData={childUpdateFormData}
                     />
                   </div>
