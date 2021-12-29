@@ -22,7 +22,7 @@ interface Props {
   handleCloseModal: () => void;
   classes?: any;
   currencies?: any;
-  walletValue: any;
+  walletValue?: any;
 }
 
 const Modal = memo((props: Props) => {
@@ -34,19 +34,6 @@ const Modal = memo((props: Props) => {
     value3: 75,
     all: 100,
   });
-
-  // const [userBalance, setUserBalance] = useState();
-
-
-  // const getAccountBalance = (account: any) => {
-  //   window.ethereum.request({ method: 'eth_getBalance', params: [account, 'latest'] })
-  //     .then((balance: any) => {
-  //       setUserBalance(ethers.utils.formatEther(balance));
-  //     })
-  //     .catch((error: any) => {
-  //       console.log(error)
-  //     });
-  // };
 
   const handleChangeValue = useCallback(
     (event: any) => {
