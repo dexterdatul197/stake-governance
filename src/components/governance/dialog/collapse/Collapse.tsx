@@ -10,7 +10,7 @@ import styles from './Collapse.module.scss';
 interface Props {
   index?: number;
   maxOperation?: number;
-  fCallData?: [];
+  fCallData?: any[];
   formData?: SFormData[];
   setFormData?: (v: any) => void;
 }
@@ -72,8 +72,8 @@ const CollapseItem: React.FC<Props> = ({
   const handleKeyupAddress = (e: any) => {
     handleKeyUpCommon('targetAddress', index, null, e.target.value);
   }
-  const handleKeyUpCallData = (e: any) => {
-    handleKeyUpCommon('calldata', index, null, e.target.value);
+  const handleKeyUpCallData = (e: any, cIndex: number) => {
+    handleKeyUpCommon('calldata', index, cIndex, e.target.value);
   }
   const handleKeyUpSignature = (e: any) => {
     handleParseFunc(e.target.value);
@@ -99,21 +99,21 @@ const CollapseItem: React.FC<Props> = ({
           />
           <StakeInputBase
             validate={true}
-            placeholder="aasumeOwnship(address.string.unit256)"
+            placeholder="aasumeOwnship(address,string,unit256)"
             name="Signature"
             onKeyUp={handleKeyUpSignature}
           />
-          {fCallData.map((c, cIdx) => {
-            <StakeInputBase
+          {fCallData.map((c: any, cIndex: number) => {
+            return <StakeInputBase key={cIndex}
               validate={true}
               placeholder={`${c}(callData)`}
               name="CallData"
-              onKeyUp={handleKeyUpCallData}
+              onKeyUp={(e) => handleKeyUpCallData(e, cIndex)}
             />;
           })}
           {formData.length < +maxOperation && (
             <div>
-              {index !== 0 && (
+              {/* {index !== 0 && (
                 <div className={cx('btn-add')}>
                   <div
                     className={cx('btn-text')}
@@ -122,7 +122,7 @@ const CollapseItem: React.FC<Props> = ({
                     Add to previous
                   </div>
                 </div>
-              )}
+              )} */}
               <div className={cx('btn-add')}>
                 <div
                   className={cx('btn-text')}

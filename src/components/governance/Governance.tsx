@@ -1,15 +1,59 @@
-import classNames from "classnames/bind";
-import styles from './Governance.module.scss'
-import React from "react";
-import Vote from "./vote/Vote";
-import Proposal from "./proposal/Proposal";
-const cx = classNames.bind(styles)
+import { CircularProgress } from '@material-ui/core';
+import classNames from 'classnames/bind';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { currentAddress } from '../../helpers/common';
+import { isConnected } from '../../helpers/connectWallet';
+import { getCHNBalance } from '../../helpers/ContractService';
+import { useAppSelector } from '../../store/hooks';
+import { openSnackbar, SnackbarVariant } from '../../store/snackbar';
+import styles from './Governance.module.scss';
+import Proposals from './proposals/Proposals';
+import { setVotingWeight } from './redux/Governance';
+import Vote from './vote/Vote';
+const cx = classNames.bind(styles);
 const Governance: React.FC = () => {
-    return (
-        <div className={cx('governance')}>
-            <Vote />
-            <Proposal />
+  const dispatch = useDispatch();
+  const wallet = useAppSelector((state) => state.wallet);
+  const [isLoading, setIsLoading] = useState(false);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const getBalanceOf = async () => {
+    if (isConnected(wallet)) {
+      const connectedAddress = currentAddress(wallet);
+      const chnAmount = await getCHNBalance()
+        .methods.balanceOf(connectedAddress)
+        .call();
+      dispatch(setVotingWeight(chnAmount));
+      setIsLoading(false);
+    } else {
+      setIsLoading(true);
+      dispatch(
+        openSnackbar({
+          message: 'Need connect wallet!',
+          variant: SnackbarVariant.ERROR,
+        })
+      );
+    }
+  };
+  useEffect(() => {
+    getBalanceOf();
+  }, [getBalanceOf]);
+  return (
+    <div className={cx('governance')}>
+      {isLoading ? (
+        <div className={cx('loading-page')}>
+          <CircularProgress size={50} color="primary" sx={{
+              position: 'absolute',
+              top: '50%'
+          }}/>
         </div>
-    )
-}
+      ) : (
+        <>
+          <Vote />
+          <Proposals />
+        </>
+      )}
+    </div>
+  );
+};
 export default Governance;

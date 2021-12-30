@@ -1,0 +1,94 @@
+import { TablePagination } from '@material-ui/core';
+import { makeStyles } from '@material-ui/styles';
+import classNames from 'classnames/bind';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { getProposalList } from '../../../apis/apis';
+import { Filter } from '../../../interfaces/SFormData';
+import { useAppSelector } from '../../../store/hooks';
+import Proposal from './proposal/Proposal';
+import styles from './Proposals.module.scss';
+
+const cx = classNames.bind(styles);
+const paginationStyle = makeStyles(() => ({
+  toolbar: {
+    color: 'var(--pagination-color)',
+  },
+  input: {
+    '& > .MuiTablePagination-selectIcon': {
+      color: 'var(--pagination-action-color)',
+    },
+  },
+  actions: {
+    '& > .Mui-disabled .MuiSvgIcon-fontSizeMedium': {
+      color: 'var(--pagination-action-color)',
+    },
+  },
+}));
+
+const Proposals: React.FC = () => {
+  const dispatch = useDispatch();
+  const paginationClasses = paginationStyle();
+  const handleChangePage = (e: any) => {
+    console.log('HANDLE CHANGE PAGE', e);
+    
+  };
+  const currentAccount = useAppSelector((state) => state.wallet);
+  const proposals = useAppSelector((state) => state.proposals.proposals);
+  const [count, setCount] = useState(0);
+  const [rowPerPage, setRowPerPage] = useState(5);
+  const [currentPage, setCurrentPage] = useState(1);
+  const handleChangeRowsPerPage = (item: any) => {
+    setRowPerPage(item.target.value);
+    conditionFilter.limit = item.target.value;
+    setConditionFilter(conditionFilter);
+  }
+  const [conditionFilter, setConditionFilter] = useState<Filter>({
+    page: 1,
+    limit: 5
+  });
+  // Get FREE CHN in Rinkeby
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const minForUser = async () => {
+    //TODO: need remove, only apply in test
+    // if (currentAddress(currentAccount))
+    // await getCHNBalance().methods.mintForUser(new BigNumber('100000000000000000000')).send({from: currentAddress(currentAccount)});
+    // console.log('RECEIVE FREE CHN TOKEN');
+  }
+
+  useEffect(() => {
+    setCount(proposals.metadata.totalItem);
+    setCurrentPage(proposals.metadata.page);
+  }, [proposals]);
+
+  useEffect(() => {
+    minForUser();
+    dispatch(getProposalList(conditionFilter));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [conditionFilter.limit, currentAccount, dispatch]);
+  
+  return (
+    <div className={cx('governance-proposal')}>
+      <div className={cx('text-header')}>Proposal</div>
+      {proposals && proposals.data.length !== 0 ? (
+        proposals.data.map((item, key) => {
+          return <Proposal 
+                    proposal={item}
+                    key={key}
+                  />
+        }
+      )) : (<div className={cx('no-proposal')}>No Proposals</div>)}
+      <TablePagination
+        rowsPerPageOptions={[1, 5, 10]}
+        component="div"
+        count={count}
+        rowsPerPage={rowPerPage}
+        page={currentPage}
+        onPageChange={(e) => handleChangePage(e)}
+        onRowsPerPageChange={(row) => handleChangeRowsPerPage(row)}
+        classes={paginationClasses}
+      />
+    </div>
+  );
+};
+export default Proposals;
