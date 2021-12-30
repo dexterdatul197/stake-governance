@@ -29,7 +29,7 @@
         font-weight: 600;
       }
       .slider {
-        color: var(--btn-background-connect-color)!important;
+        color: var(--btn-background-connect-color) !important;
       }
     }
     &__percent {
@@ -109,7 +109,79 @@
       padding-bottom: 20px;
       font-size: 18px;
       font-weight: 700;
-      color: #ffffff
+      color: #ffffff;
+    }
+  }
+
+  .dialog-title__transaction {
+    padding-top: 31px;
+    .children_content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .icon_right {
+        padding-right: 47px;
+        padding-left: 8px;
+        cursor: pointer;
+        color: #001c4e61;
+      }
+      .icon_left {
+        padding-left: 51px;
+        padding-right: 8px;
+        cursor: pointer;
+        color: #001c4e61;
+      }
+      .confirm-title {
+        font-size: 20px;
+        display: block;
+        font-weight: 600;
+        color: rgba(0, 28, 78, 0.87);
+        text-transform: capitalize;
+      }
+    }
+  }
+
+  .dialog-content__transaction {
+    padding-top: 40px !important;
+    padding-bottom: 39px;
+    text-align: center;
+
+    .children_content {
+      display: flex;
+      align-content: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    .token-quantity {
+      font-size: 48px;
+      font-weight: 600;
+      color: rgba(0, 28, 78, 0.87);
+    }
+    .token-stake {
+      font-size: 16px;
+      font-weight: 600;
+      color: rgba(0, 28, 78, 0.87);
+    }
+  }
+
+  .dialog-actions__transaction {
+    display: flex;
+    justify-content: center;
+    padding: 0px 34px 57px 34px;
+    &__confirm {
+      width: 455px;
+      font-size: 18px;
+      font-weight: normal;
+      color: #ffffff;
+      background: #107def;
+      border-radius: 10px;
+      text-transform: capitalize;
+
+      &:hover {
+        background-color: #107def;
+      }
     }
   }
 }

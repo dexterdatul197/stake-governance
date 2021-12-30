@@ -9,7 +9,7 @@ import {
   CHN_TOKEN_RINKEBY_ABI,
   GOVERNENCE_MAINNET_ABI,
   GOVERNENCE_RINKEBY_ABI,
-  STAKE_CONTRACT_ABI,
+  STAKING_RINKEBY_ABI,
 } from "./../constant/constants";
 
 const web3 = new Web3(window.ethereum);
@@ -44,11 +44,8 @@ export const getCHNBalance = () => {
   return new web3.eth.Contract(JSON.parse(chnABI), chnAddress);
 };
 
-export const getValueStake = () => {
-  const chnABI = STAKE_CONTRACT_ABI;
-  const stakeContractAddress =
-    enviroment === "prod"
-      ? process.env.REACT_APP_STAKE_MAINNET_ADDRESS
-      : process.env.REACT_APP_STAKE_TESTNET_ADDRESS;
-  return new web3.eth.Contract(JSON.parse(chnABI), stakeContractAddress, {});
+export const stakingToken = () => {
+  const stakeABI = STAKING_RINKEBY_ABI;
+  const stakeAddress = process.env.REACT_APP_STAKE_TESTNET_ADDRESS;
+  return new web3.eth.Contract(JSON.parse(stakeABI), stakeAddress);
 };

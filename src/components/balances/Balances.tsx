@@ -8,7 +8,7 @@ import classNames from 'classnames/bind';
 import React, { useCallback, useEffect, useReducer, useState } from 'react';
 import { currentAddress } from '../../helpers/common';
 import { isConnected } from '../../helpers/connectWallet';
-import { getCHNBalance, getValueStake } from '../../helpers/ContractService';
+import { getCHNBalance, stakingToken } from '../../helpers/ContractService';
 import { useAppSelector } from '../../store/hooks';
 import styles from './Balances.module.scss';
 import Modal from './StakeModal';
@@ -127,22 +127,37 @@ const Balances: React.FC = () => {
     dispatch({ type: "CLOSE_WITHDRAW" })
   }
 
-  const getValueStakeFunction = useCallback(async () => {
-    if(isConnected(wallet)){
-      const connectedAddress = currentAddress(wallet)
-      const valueOfwallet = await getCHNBalance().methods.balanceOf(connectedAddress).call();
-      setWalletValue(format(valueOfwallet));
-  
-      const TotalValueStake = getValueStake();
-  
-      console.log("function :",getCHNBalance)
+  const getValueBalance = useCallback(async () => {
+    try {
+      if (isConnected(wallet)) {
+        const connectedAddress = currentAddress(wallet);
+        const tokenBalance = await getCHNBalance().methods.balanceOf(connectedAddress).call();
+        setBalance(format(tokenBalance))
+      }
+    } catch (error) {
+      console.log(error)
     }
-   
+
   }, [wallet])
 
+  const getTotalStakeInPool = useCallback(async () => {
+    try {
+      const connectedAddress = currentAddress(wallet);
+      const getTotalValueStake = await stakingToken().methods.linearPoolInfo(0).call();
+      const getTotalValueEarned = await stakingToken().methods.getAmountRewardInPool(0, connectedAddress).call()
+      setWalletValue(getTotalValueStake);
+      setEarn(getTotalValueEarned)
+    } catch (error) {
+      console.log(error)
+    }
+  }, [])
+
+
+
   useEffect(() => {
-    getValueStakeFunction()
-  }, [getValueStakeFunction])
+    getValueBalance()
+    getTotalStakeInPool()
+  }, [getValueBalance, getTotalStakeInPool])
 
   return (
     <div className={cx('balances-history')}>
