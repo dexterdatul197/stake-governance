@@ -1,0 +1,18 @@
+:root {
+  .governance-proposal {
+    width: 65%;
+    background-color: var(--background-governance-color);
+    padding: 10px;
+    border-radius: 20px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  }
+  .text-header {
+    color: var(--color-text-white-black);
+    padding: 10px 0;
+    font-size: 1.3em;
+    padding-left: 20px;
+  }
+  .no-proposal {
+    text-align: center;
+  }
+}

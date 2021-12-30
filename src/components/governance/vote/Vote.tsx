@@ -62,6 +62,7 @@ const Vote: React.FC = () => {
   const classes = useStyles();
   const currencies = useAppSelector((state) => state.currency.currenciesList);
   const wallet = useAppSelector((state) => state.wallet);
+  const votingWeight = useAppSelector((state) => state.governance.voteingWeight);
 
   const [openLoading, setOpenLoading] = useState(false);
   const handleOpenCreateForm = async () => {
@@ -69,16 +70,13 @@ const Vote: React.FC = () => {
       let createProposal = true;
       setOpenLoading(true);
       const connectedAddress = currentAddress(wallet);
-      // check amount strike in wallet > proposalThreshold()
-      const chnAmount = await getCHNBalance()
-        .methods.balanceOf(connectedAddress)
-        .call();
+      // // check amount strike in wallet > proposalThreshold()
       const proposalThreshold = await governance()
         .methods.proposalThreshold()
         .call();
-      const checkCHNamount = new BigNumber(chnAmount).comparedTo(new BigNumber(proposalThreshold));
+      const checkCHNamount = new BigNumber(votingWeight).comparedTo(new BigNumber(proposalThreshold));
       // check user dont have any proposal with status active or pending
-      console.log('COMPARE THRESHOLD: ', format(chnAmount), format(proposalThreshold), checkCHNamount);
+      console.log('COMPARE THRESHOLD: ', format(votingWeight), format(proposalThreshold), checkCHNamount);
       
       const voteContract = governance();
       const lastestProposalId = await voteContract.methods.latestProposalIds(connectedAddress).call();

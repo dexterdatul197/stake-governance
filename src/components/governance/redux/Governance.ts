@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   openCreateProposalDialog: false,
+  voteingWeight: ''
 };
 export const GovernanceSlice = createSlice({
     name: 'governance',
@@ -8,9 +9,12 @@ export const GovernanceSlice = createSlice({
     reducers: {
         setOpenCreateProposalDialog: (state, action) => {
             state.openCreateProposalDialog = action.payload;
+        },
+        setVotingWeight: (state, action) => {
+            state.voteingWeight = action.payload;
         }
     }
 });
-export const { setOpenCreateProposalDialog } = GovernanceSlice.actions;
+export const { setOpenCreateProposalDialog, setVotingWeight } = GovernanceSlice.actions;
 const { reducer: governanceReducer } = GovernanceSlice;
 export default governanceReducer;

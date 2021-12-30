@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import MdEditor from 'react-markdown-editor-lite';
 import 'react-markdown-editor-lite/lib/index.css';
 import { useDispatch } from 'react-redux';
+import { getProposalList } from '../../../../apis/apis';
 import axiosInstance from '../../../../config/config';
 import { currentAddress, encodeParameters, getArgs } from '../../../../helpers/common';
 import { isConnected } from '../../../../helpers/connectWallet';
@@ -78,7 +79,7 @@ const CreateProposal: React.FC = () => {
         callDatas.push(encodeParameters(callDataTypes, callDataValues));
       }
     } catch (error) {
-      setErrorMsg('Proposal parameters are invalid!');
+      dispatch(openSnackbar({message: 'Proposal parameters are invalid!', variant: SnackbarVariant.ERROR}));
       return;
     }
     setIsLoading(true);
@@ -116,6 +117,7 @@ const CreateProposal: React.FC = () => {
         setIsLoading(false);
         dispatch(setOpenCreateProposalDialog(false));
         dispatch(openSnackbar({message: 'Create proposal successfully!', variant: SnackbarVariant.SUCCESS}));
+        dispatch(getProposalList({page: 1, limit: 5}));
       }
     } catch (error) {
       console.log('ERROR RESPONSE WHEN CREATE PROPOSAL: ', error);
@@ -235,6 +237,7 @@ const CreateProposal: React.FC = () => {
                       index={index}
                       formData={formData}
                       maxOperation={maxOperation}
+                      fCallData={f.callData}
                       setFormData={childUpdateFormData}
                     />
                   </div>
