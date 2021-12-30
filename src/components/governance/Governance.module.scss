@@ -3,4 +3,9 @@
         display: flex;
         justify-content: space-between;
     }
+    .loading-page {
+        margin: 0 auto;
+        height: calc(100vh - 170px);
+        position: relative;
+    }
 }

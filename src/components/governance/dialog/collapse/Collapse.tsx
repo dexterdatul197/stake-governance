@@ -99,7 +99,7 @@ const CollapseItem: React.FC<Props> = ({
           />
           <StakeInputBase
             validate={true}
-            placeholder="aasumeOwnship(address.string.unit256)"
+            placeholder="aasumeOwnship(address,string,unit256)"
             name="Signature"
             onKeyUp={handleKeyUpSignature}
           />
@@ -113,7 +113,7 @@ const CollapseItem: React.FC<Props> = ({
           })}
           {formData.length < +maxOperation && (
             <div>
-              {index !== 0 && (
+              {/* {index !== 0 && (
                 <div className={cx('btn-add')}>
                   <div
                     className={cx('btn-text')}
@@ -122,7 +122,7 @@ const CollapseItem: React.FC<Props> = ({
                     Add to previous
                   </div>
                 </div>
-              )}
+              )} */}
               <div className={cx('btn-add')}>
                 <div
                   className={cx('btn-text')}
