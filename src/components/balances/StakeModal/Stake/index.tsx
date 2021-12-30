@@ -170,7 +170,7 @@ const Stake = (props: Props) => {
             </DialogContent>
             <DialogActions className={cx("dialog-action")}>
                 <Button onClick={handleNext} className={cx("button-stake")}>
-                    {progress ? <CircularProgress style={{color: '#ffffff'}} /> : "Stake"}
+                    {progress ? <CircularProgress style={{ color: '#ffffff' }} /> : "Stake"}
 
                 </Button>
             </DialogActions>

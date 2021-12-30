@@ -1,8 +1,8 @@
 import {
-  Dialog,
+  Dialog
 } from "@material-ui/core";
 import classNames from "classnames/bind";
-import { memo, useCallback, useState } from "react";
+import { memo, useState } from "react";
 import { setTimeout } from "timers";
 import Stake from "./Stake";
 import styles from "./styles.module.scss";
@@ -46,7 +46,6 @@ const Modal = memo((props: Props) => {
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
-
 
   return (
     <Dialog

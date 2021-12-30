@@ -1,14 +1,15 @@
-import React from 'react'
 import {
     Box,
     Button,
     DialogActions,
     DialogContent,
     DialogTitle,
-    Typography,
+    Typography
 } from "@material-ui/core";
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import CloseIcon from "@material-ui/icons/Close";
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import React from 'react';
+
 
 interface Props {
     cx?: any;
@@ -22,7 +23,6 @@ const Transaction = (props: Props) => {
     const handleConfirmTransaction = () => {
         handleCloseModal();
         setActiveStep((prevActiveStep: any) => prevActiveStep - 1);
-
     }
     return (
         <React.Fragment>
