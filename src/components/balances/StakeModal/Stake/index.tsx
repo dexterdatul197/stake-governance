@@ -17,22 +17,18 @@ interface Props {
     classes?: any;
     currencies?: any;
     handleNext: () => void;
-    progress: Boolean
+    progress: Boolean;
+    value?: any;
+    setValue: (value: any) => void;
 }
 
 
 
 
 const Stake = (props: Props) => {
-    const { cx, walletValue, classes, currencies, handleNext, progress } = props;
+    const { cx, walletValue, classes, currencies, handleNext, progress, value, setValue } = props;
 
-    const [value, setValue] = useState({
-        default: 0,
-        value1: 25,
-        value2: 50,
-        value3: 75,
-        all: 100,
-    });
+
     const handleChangeValue = useCallback(
         (event: any) => {
             let _value = { ...value };
@@ -81,8 +77,6 @@ const Stake = (props: Props) => {
         },
         [value]
     );
-
-
 
 
     return (

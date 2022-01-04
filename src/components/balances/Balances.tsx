@@ -110,9 +110,10 @@ const Balances: React.FC = () => {
   const classes = useStyles();
   const currencies = useAppSelector((state: any) => state.currency.currenciesList);
   const wallet = useAppSelector((state: any) => state.wallet);
-  const [balance, setBalance] = useState(0);
+  const [stake, setStake] = useState(0);
   const [walletValue, setWalletValue] = useState(0);
   const [earn, setEarn] = useState((0))
+  const [pid, setPid] = useState({})
 
   const handleActiveClass = () => {
     dispatch({ type: "OPEN_STAKE" })
@@ -147,29 +148,40 @@ const Balances: React.FC = () => {
   const getTotalStakeInPool = useCallback(async () => {
     try {
       const connectedAddress = currentAddress(wallet);
-      const getLengthPool = await stakingToken().methods.getLengthPool().call()
-      const getTotalValueStake = await stakingToken().methods.linearPoolInfo(getLengthPool).call();
-      const getTotalValueEarned = await stakingToken().methods.getAmountRewardInPool(getLengthPool, connectedAddress).call()
-      setBalance(getTotalValueStake);
-      setEarn(getTotalValueEarned)
+
+      const getAllPool = await stakingToken().methods.getAllPool().call();
+      let pidObj = {}
+      getAllPool.forEach((pool: any) => {
+        pidObj = {
+          ...pidObj,
+          [pool.tokenStake]: stake
+        }
+      })
+      setPid(pidObj)
+
+      const getValueStake = await stakingToken().methods.linearPoolInfo().call()
+
     } catch (error) {
       console.log(error)
     }
-  }, [])
+  }, [wallet])
 
   useEffect(() => {
     getValueBalance()
     getTotalStakeInPool()
   }, [getValueBalance, getTotalStakeInPool])
 
+  useEffect(() => {
+    // console.log(stake,'??')
+  }, [pid])
+
   return (
     <div className={cx('balances-history')}>
       <div className={cx('balance')}>
         <div className={cx('balance-head-text')}>Balances</div>
         <div className={cx('balance-row')}>
-          <div></div>
           <span className={cx('balance-key')}>Stake:</span>
-          <span className={cx('balance-value')}>{balance}</span>
+          <span className={cx('balance-value')}>{stake}</span>
           <Autocomplete
             classes={classes}
             options={currencies}
@@ -181,10 +193,8 @@ const Balances: React.FC = () => {
             size={'small'}
             id="combo-box-demo"
           />
-          <div></div>
         </div>
         <div className={cx('balance-row')}>
-          <div></div>
           <div className={cx('balance-key')}>Wallet:</div>
           <div className={cx('balance-value')}>{walletValue}</div>
           <div>
@@ -200,10 +210,8 @@ const Balances: React.FC = () => {
               id="combo-box-demo"
             />
           </div>
-          <div></div>
         </div>
         <div className={cx('balance-row')}>
-          <div></div>
           <div className={cx('balance-key')}>Earned:</div>
           <div className={cx('balance-value')}>{earn}</div>
           <div>
@@ -219,7 +227,6 @@ const Balances: React.FC = () => {
               id="combo-box-demo"
             />
           </div>
-          <div></div>
         </div>
         <div className={`${cx('switcher')}`}>
           <Button onClick={handleActiveClass} className={cx('switcher_stake', {
@@ -237,7 +244,7 @@ const Balances: React.FC = () => {
       </div>
 
       <Modal walletValue={walletValue} currencies={currencies} classes={classes} openStake={isOpenStake} handleCloseModal={handleCloseModal} />
-      <ModalWithDraw openWithdraw={isOpenWithdraw} handleCloseModalWithDraw={handleCloseModalWithDraw} />
+      <ModalWithDraw openWithdraw={isOpenWithdraw} handleCloseModalWithDraw={handleCloseModalWithDraw} walletValue={walletValue} />
 
     </div>
   );

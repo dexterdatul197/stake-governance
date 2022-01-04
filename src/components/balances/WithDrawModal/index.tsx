@@ -6,8 +6,11 @@ import {
 } from "@material-ui/core";
 import CloseIcon from '@mui/icons-material/Close';
 import classNames from "classnames/bind";
-import React from "react";
+import { useCallback } from "react";
 import CHN_icon from '../../../assets/icon/CHN.svg';
+import { currentAddress } from '../../../helpers/common';
+import { stakingToken } from '../../../helpers/ContractService';
+import { useAppSelector } from '../../../store/hooks';
 import styles from './styles.module.scss';
 
 const cx = classNames.bind(styles);
@@ -15,6 +18,7 @@ const cx = classNames.bind(styles);
 interface Props {
     openWithdraw: boolean;
     handleCloseModalWithDraw: () => void;
+    walletValue?: any
 }
 
 const BootstrapDialogTitle = (props: any) => {
@@ -42,7 +46,25 @@ const BootstrapDialogTitle = (props: any) => {
 };
 
 const WithDraw = (props: Props) => {
-    const { openWithdraw, handleCloseModalWithDraw } = props
+    const { openWithdraw, handleCloseModalWithDraw, walletValue } = props;
+    const wallet = useAppSelector((state: any) => state.wallet);
+
+    const handleWithdraw = useCallback(async () => {
+        try {
+            const getPoolId = await stakingToken().methods.getLengthPool().call();
+
+            const getAllPool = await stakingToken().methods.getAllPool().call();
+
+
+            if (currentAddress(wallet)) {
+                await stakingToken().methods.withdraw(getPoolId, walletValue).send({ from: currentAddress(wallet) });
+            }
+
+        } catch (error) {
+            console.log(error);
+        }
+    }, [wallet])
+
     return (
         <Dialog className={cx('dialog-container')} open={openWithdraw} onClose={handleCloseModalWithDraw} maxWidth="md">
             <BootstrapDialogTitle id="customized-dialog-title" onClose={handleCloseModalWithDraw}>
@@ -63,12 +85,12 @@ const WithDraw = (props: Props) => {
                     </Box>
                     <Box className={cx('main-right')}>
                         <Typography className={cx('main-right__price')}>~$0.00</Typography>
-                        <Typography className={cx('main-right__quantity')}>0</Typography>
+                        <Typography className={cx('main-right__quantity')}>{walletValue}</Typography>
                     </Box>
                 </Box>
             </DialogContent>
             <DialogActions className={cx('dialog-actions')}>
-                <Button className={cx('button-action')}>Withdraw</Button>
+                <Button onClick={handleWithdraw} className={cx('button-action')}>Withdraw</Button>
             </DialogActions>
         </Dialog>
     )
