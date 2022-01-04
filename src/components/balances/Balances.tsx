@@ -134,8 +134,8 @@ const Balances: React.FC = () => {
       if (isConnected(wallet)) {
         const connectedAddress = currentAddress(wallet);
         const tokenBalance = await getCHNBalance().methods.balanceOf(connectedAddress).call();
-        console.log('tokenBalance: ', tokenBalance)
-        setWalletValue(format(tokenBalance))
+        console.log('tokenBalance: ',tokenBalance)
+        setWalletValue(format(+tokenBalance))
       }
     } catch (error) {
       console.log(error)
@@ -149,16 +149,12 @@ const Balances: React.FC = () => {
       const getLengthPool = await stakingToken().methods.getLengthPool().call()
       const getTotalValueStake = await stakingToken().methods.linearPoolInfo(getLengthPool).call();
       const getTotalValueEarned = await stakingToken().methods.getAmountRewardInPool(getLengthPool, connectedAddress).call()
-      setWalletValue(getTotalValueStake);
+      setBalance(getTotalValueStake);
       setEarn(getTotalValueEarned)
     } catch (error) {
       console.log(error)
     }
   }, [])
-
-
-
-
 
   useEffect(() => {
     getValueBalance()
