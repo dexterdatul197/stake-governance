@@ -21,6 +21,8 @@ interface Props {
 }
 
 
+
+
 const Stake = (props: Props) => {
     const { cx, walletValue, classes, currencies, handleNext, progress } = props;
 
@@ -153,7 +155,7 @@ const Stake = (props: Props) => {
                         />
                     </Box>
                     <Box className={cx("balance__stake-balance")}>
-                        <Typography className={cx("title")}>Stake Balance: {value.default * walletValue}</Typography>
+                        <Typography className={cx("title")}>Stake Balance: {value.default * walletValue / 100}</Typography>
                         <Autocomplete
                             classes={classes}
                             options={currencies}

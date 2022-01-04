@@ -14,6 +14,7 @@ import styles from './Balances.module.scss';
 import Modal from './StakeModal';
 import TableComponent from './Table';
 import ModalWithDraw from './WithDrawModal';
+import { BigNumber } from '@0x/utils';
 
 
 
@@ -134,8 +135,8 @@ const Balances: React.FC = () => {
       if (isConnected(wallet)) {
         const connectedAddress = currentAddress(wallet);
         const tokenBalance = await getCHNBalance().methods.balanceOf(connectedAddress).call();
-        console.log('tokenBalance: ',tokenBalance)
-        setWalletValue(format(+tokenBalance))
+        const formatToken = new BigNumber(tokenBalance).dividedBy('1e18');
+        setWalletValue(format(+formatToken))
       }
     } catch (error) {
       console.log(error)
