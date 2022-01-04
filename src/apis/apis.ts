@@ -13,3 +13,11 @@ export const getProposalList = createAsyncThunk(
     return res.data;
   }
 );
+
+export const getProposalDetail = async (id: number) => {
+  const options = {
+    baseUrl: process.env.REACT_APP_BACKEND,
+  };
+  const res = await axiosInstance(options).get(`/proposal/${id}`);
+  return res.data;
+}

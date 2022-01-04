@@ -49,3 +49,8 @@ export const stakingToken = () => {
   const stakeAddress = process.env.REACT_APP_STAKE_TESTNET_ADDRESS;
   return new web3.eth.Contract(JSON.parse(stakeABI), stakeAddress);
 };
+
+export const ethAddressPage = () => {
+  return enviroment === 'prod' ? 
+  process.env.REACT_APP_ETHEREUM_MAIN_ADDRESS : process.env.REACT_APP_ETHEREUM_TESTNET_ADDRESS
+}
