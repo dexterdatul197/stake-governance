@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 import styles from './AreaChart.module.scss';
 import { useAppSelector } from '../../store/hooks';
+import { CircularProgress } from '@material-ui/core';
 
 const coinGeckoClient = new CoinGeckoClient({
   timeout: 10000,
@@ -15,6 +16,7 @@ const cx = classNames.bind(styles);
 
 const AreaChart: React.FC = () => {
   const [series, setSeries] = useState([{ data: [], name: 'Price' }]);
+  const [isLoading, setIsLoading] = useState(true);
   const selectedCurrency = useAppSelector(
     (state) => state.currency.selectedCurrency
   );
@@ -117,6 +119,9 @@ const AreaChart: React.FC = () => {
       days: 30,
     });
     chainPriceDataForChart(getOHCL);
+    if (getOHCL) {
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -126,13 +131,14 @@ const AreaChart: React.FC = () => {
   return (
     <div className={cx('area-chart')}>
       <div id="chart" style={{ height: 480 }}>
-        <ReactApexChart
-          options={option}
-          series={series}
-          width="100%"
-          type="line"
-          height="100%"
-        />
+        {isLoading ? (
+          <CircularProgress size={50} color="primary" sx={{
+            position: 'absolute',
+            top: '50%'
+        }}/>
+        ) : (
+          <ReactApexChart options={option} series={series} width="100%" type="line" height="100%" />
+        )}
       </div>
     </div>
   );

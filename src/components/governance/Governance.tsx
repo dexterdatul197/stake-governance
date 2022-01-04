@@ -1,3 +1,4 @@
+import { BigNumber } from '@0x/utils';
 import { CircularProgress } from '@material-ui/core';
 import classNames from 'classnames/bind';
 import React, { useEffect, useState } from 'react';
@@ -16,6 +17,7 @@ const Governance: React.FC = () => {
   const dispatch = useDispatch();
   const wallet = useAppSelector((state) => state.wallet);
   const [isLoading, setIsLoading] = useState(false);
+  const [voting, setVoting] = useState('0');
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const getBalanceOf = async () => {
     if (isConnected(wallet)) {
@@ -24,6 +26,8 @@ const Governance: React.FC = () => {
         .methods.balanceOf(connectedAddress)
         .call();
       dispatch(setVotingWeight(chnAmount));
+      const vote = new BigNumber(chnAmount).div(1e18).toString();
+      setVoting(vote);
       setIsLoading(false);
     } else {
       setIsLoading(true);
