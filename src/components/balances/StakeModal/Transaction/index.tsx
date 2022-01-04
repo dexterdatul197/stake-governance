@@ -8,23 +8,55 @@ import {
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import React, { useCallback } from 'react';
-import { stakingToken } from '../../../../helpers/ContractService';
+import React, { useCallback, useState, useEffect, useMemo } from 'react';
+import { stakingToken, getCHNBalance } from '../../../../helpers/ContractService';
+import { currentAddress } from '../../../../helpers/common';
+import { useAppSelector } from '../../../../store/hooks';
 
 
 
 interface Props {
     cx?: any;
     handleBack: () => void;
-    handleNext: () => void
+    handleNext: () => void;
+    value?: any;
+    walletValue?: any;
+    handleCloseModal: () => void;
 }
 
 const Transaction = (props: Props) => {
-    const { cx, handleBack, handleNext } = props
+    const { cx, handleBack, handleNext, value, walletValue, handleCloseModal } = props;
+    const wallet = useAppSelector((state: any) => state.wallet);
+    const [isApprove, setApprove] = useState(false);
+
+    const amount = value.default * walletValue
+
     const handleConfirmTransaction = useCallback(async () => {
-        handleNext()
-        await stakingToken().methods.stake(0, 30).send({ from: '0xD655458D8A11D2DA50cfD2d5D7eAF3f804678588' })
+        try {
+            // handleNext()
+            setTimeout(() => {
+                setApprove(true)
+            }, 1000)
+            // handleCloseModal();
+            await getCHNBalance().methods.approve(process.env.REACT_APP_STAKE_TESTNET_ADDRESS, amount).send({ from: currentAddress(wallet) })
+        } catch (error) {
+            console.log(error);
+            setApprove(false)
+            handleCloseModal();
+        }
     }, [])
+
+    const checkApprove = async () => {
+        if (isApprove === true) {
+            handleCloseModal();
+            await stakingToken().methods.stake(0, walletValue).send({ from: currentAddress(wallet) })
+        }
+    }
+
+    useEffect(() => {
+        checkApprove()
+    }, [isApprove])
+
 
 
     return (
@@ -33,12 +65,12 @@ const Transaction = (props: Props) => {
                 <Box className={cx('children_content')}>
                     <ArrowBackIosIcon onClick={handleBack} className={cx('icon_right')} />
                     <Typography className={cx('confirm-title')}>Confirm Transaction</Typography>
-                    <CloseIcon onClick={handleConfirmTransaction} className={cx('icon_left')} />
+                    <CloseIcon onClick={handleCloseModal} className={cx('icon_left')} />
                 </Box>
             </DialogTitle>
             <DialogContent className={cx('dialog-content__transaction')}>
                 <Box className={cx('children_content')}>
-                    <Typography className={cx('token-quantity')}>37</Typography>
+                    <Typography className={cx('token-quantity')}>{value.default * walletValue / 100}</Typography>
                     <Typography className={cx('token-stake')}>CHN STAKE</Typography>
                 </Box>
             </DialogContent>
