@@ -12,7 +12,7 @@ const store = configureStore({
         currency: currencyReducer,
         theme: themeReducer,
         governance: governanceReducer,
-        proposals: proposalsReducer
+        proposals: proposalsReducer,
     }
 });
 export type AppDispatch = typeof store.dispatch;
