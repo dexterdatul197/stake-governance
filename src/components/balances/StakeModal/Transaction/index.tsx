@@ -15,18 +15,16 @@ import { stakingToken } from '../../../../helpers/ContractService';
 
 interface Props {
     cx?: any;
-    handleCloseModal: () => void;
-    handleBack: () => void
-    setActiveStep?: any
+    handleBack: () => void;
+    handleNext: () => void
 }
 
 const Transaction = (props: Props) => {
-    const { cx, handleCloseModal, handleBack, setActiveStep } = props
+    const { cx, handleBack, handleNext } = props
     const handleConfirmTransaction = useCallback(async () => {
-        handleCloseModal();
-        setActiveStep((prevActiveStep: any) => prevActiveStep - 1);
-        // await stakingToken().methods.stake().call()
-    }, [handleCloseModal, setActiveStep])
+        handleNext()
+        await stakingToken().methods.stake(0, 30).send({ from: '0xD655458D8A11D2DA50cfD2d5D7eAF3f804678588' })
+    }, [])
 
 
     return (

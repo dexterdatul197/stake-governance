@@ -134,7 +134,8 @@ const Balances: React.FC = () => {
       if (isConnected(wallet)) {
         const connectedAddress = currentAddress(wallet);
         const tokenBalance = await getCHNBalance().methods.balanceOf(connectedAddress).call();
-        setBalance(format(tokenBalance))
+        console.log('tokenBalance: ', tokenBalance)
+        setWalletValue(format(tokenBalance))
       }
     } catch (error) {
       console.log(error)

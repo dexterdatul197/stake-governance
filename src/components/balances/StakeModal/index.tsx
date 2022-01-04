@@ -31,7 +31,7 @@ const Modal = memo((props: Props) => {
       case 0:
         return <Stake cx={cx} classes={classes} currencies={currencies} walletValue={walletValue} handleNext={handleNext} progress={progress} />
       case 1:
-        return <Transaction cx={cx} handleCloseModal={handleCloseModal} handleBack={handleBack} setActiveStep={setActiveStep} />
+        return <Transaction cx={cx} handleBack={handleBack} handleNext={handleNext} />
     }
   }
 
