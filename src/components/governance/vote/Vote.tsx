@@ -1,70 +1,26 @@
 import { BigNumber } from '@0x/utils';
 import {
-  Autocomplete, Button,
-  CircularProgress,
-  TextField
+  Button,
+  CircularProgress
 } from '@material-ui/core';
-import { makeStyles } from '@material-ui/styles';
 import classNames from 'classnames/bind';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { currentAddress } from '../../../helpers/common';
+import { currentAddress, format } from '../../../helpers/common';
 import { isConnected } from '../../../helpers/connectWallet';
-import {
-  getCHNBalance, governance
-} from '../../../helpers/ContractService';
+import { governance } from '../../../helpers/ContractService';
 import { useAppSelector } from '../../../store/hooks';
 import { openSnackbar, SnackbarVariant } from '../../../store/snackbar';
 import { setOpenCreateProposalDialog } from '../redux/Governance';
 import styles from './Vote.module.scss';
 
-const commaNumber = require('comma-number');
-const useStyles: any = makeStyles(() => ({
-  root: {
-    // width: '50%',
-    '& > .css-17vbkzs-MuiFormControl-root-MuiTextField-root': {
-      marginTop: 0,
-    },
-    '& > .MuiOutlinedInput-root': {
-      height: '2em',
-      paddingRight: '25px',
-    },
-  },
-  inputRoot: {
-    background: 'var(--main-background-dropdow)',
-    height: '2em',
-    paddingRight: '25px !important',
-    '&.MuiOutlinedInput-root': {
-      borderRadius: '18px',
-    },
-  },
-  input: {
-    textTransform: 'uppercase',
-    color: 'var(--btn-hover-blue-green) !important',
-    width: '50px !important',
-    paddingTop: '1px !important',
-    paddingBottom: '0px !important',
-  },
-  endAdornment: {
-    '& > .MuiAutocomplete-clearIndicator': {
-      display: 'none',
-    },
-    '& > .MuiAutocomplete-popupIndicator': {
-      color: 'var(--btn-hover-blue-green)',
-    },
-  },
-}));
 const cx = classNames.bind(styles);
-const format = commaNumber.bindWith(',', '.');
-
 interface Props {
   voting?: string;
 }
 
 const Vote: React.FC<Props> = (props) => {
   const dispatch = useDispatch();
-  const classes = useStyles();
-  const currencies = useAppSelector((state) => state.currency.currenciesList);
   const wallet = useAppSelector((state) => state.wallet);
   const votingWeight = useAppSelector((state) => state.governance.voteingWeight);
   

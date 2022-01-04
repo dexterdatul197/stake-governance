@@ -25,24 +25,24 @@
       font-size: 1.1em;
   }
   .create-proposal {
-    padding: 15px 40px;
+    padding: 10px 15px;
     background: #107DEF;
-    border-radius: 20px;
+    border-radius: 15px;
     color: #fff;
   }
   .create-proposal:hover {
     background-color: #107DEF;
   }
   .border-bottom {
-    border: solid 1px black;
+    border: dashed 1px #C4C4C4;
     margin: 29px 0;
   }
   .rank {
       margin-bottom: 20px;
   }
   .view-leader-board {
-      padding: 15px 40px;
-      border-radius: 20px;
+      padding: 10px 0;
+      border-radius: 15px;
       border: solid 1px var(--btn-hover-blue-green);
       color: var(--btn-hover-blue-green);
       width: 50%;

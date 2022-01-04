@@ -72,7 +72,7 @@ const Proposal: React.FC<Props> = (props) => {
             <div className={cx(`proposal-status-${getStatus(proposal.state).toLowerCase()}`, 'proposal-status')}>{getStatus(proposal.state)}</div>
           </div>
         </div>
-        <div className={cx('row-content-btn')} onClick={() => alert('Click btn')}>
+        <div className={cx('row-content-btn')}>
           {voteStatus &&
             voteStatus === 'novoted' &&
             proposal.state !== 'Active' && (
