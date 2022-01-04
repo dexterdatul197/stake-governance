@@ -37,6 +37,8 @@ body {
   --background-stake-modal: #FFFFFF;
   --background-proposal: #EDF1F8;
   --color-text-proposal-action: #001C4E;
+  --background-proposal-detail-card: #fff;
+  --color-address-contract: rgba(0, 0, 0, 0.6)
 }
 [data-theme='dark'] {
   --btn-header-border-color: #72BF65;
@@ -64,6 +66,8 @@ body {
   --background-stake-modal: #1B1C1F;
   --background-proposal: #09090B;
   --color-text-proposal-action: #fff;
+  --background-proposal-detail-card: #1B1C1F;
+  --color-address-contract: rgba(255, 255, 255, 0.6)
 }
 .Snackbar {
   .css-zzms1-MuiSnackbar-root {
@@ -75,7 +79,7 @@ body {
   background-color: var(--main-background-color);
   height: calc(100% - 50px);
   // margin-top: -20px;
-  padding-bottom: 153px;
+  // padding-bottom: 153px;
 }
 .footer {
   height: 100px;
@@ -83,6 +87,23 @@ body {
   // position: absolute;
   // bottom: 0;
   width: 100%;
+}
+
+.text-black-white {
+  color: var(--color-text-white-black);
+}
+.mt-15 {
+  margin-top: 15px;
+}
+.mb-15 {
+  margin-bottom: 15px;
+}
+
+.pd-td-10 {
+  padding: 10px 0;
+}
+.pd-15 {
+  padding: 15px;
 }
 
 

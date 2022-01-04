@@ -1,3 +1,36 @@
 :root{
-    
+    .title {
+        margin-top: 55px;
+        font-size: 20px;
+        font-weight: bold;
+    }
+    .proposal-block, .detail-info {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 15px;
+    }
+    .proposer-id {
+        cursor: pointer;
+        color: var(--color-address-contract);
+    }
+    .block-right, .vote-card, .description {
+        border: solid 1px rgba(0, 28, 78, 0.38);
+        border-radius: 15px;
+        padding: 10px;
+        background-color: var(--background-proposal-detail-card);
+    }
+    .block-left {
+        width: 76%;
+    }
+    .block-right {
+        width: 20%;
+        height: 200px;
+    }
+    .description {
+        margin-top: 20px;
+    }
+    .vote-card {
+        width: 46%;
+        height: 300px;
+    }
 }

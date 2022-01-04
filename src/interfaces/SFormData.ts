@@ -48,3 +48,43 @@ export interface ProposalFormData {
     against_votes: string;
     eta: number
 }
+
+export interface ProposalDetailForm {
+    againstVotes: string;
+    callDatas: string[];
+    cancelBlock: number;
+    cancelTimestamp: number;
+    cancelTxHash: string;
+    canceled: boolean;
+    createdAt: string;
+    createdBlock: number;
+    createdTimestamp: number;
+    createdTxHash: string;
+    description: string;
+    endBlock: number;
+    endTimestamp: number;
+    endTxHash: string;
+    eta: number;
+    executed: boolean;
+    executedBlock: number;
+    executedTimestamp: number;
+    executedTxHash: string;
+    forVotes: string;
+    id: number;
+    params: string;
+    proposalId: number;
+    proposer: string;
+    queuedBlock: number;
+    queuedTimestamp: number;
+    queuedTxHash: string;
+    signatures: string[];
+    startBlock: number;
+    startTimestamp: number;
+    startTxHash: string;
+    state: string;
+    targets: string[];
+    title: string;
+    updatedAt: string;
+    values: string[];
+    voterCount: string;
+}

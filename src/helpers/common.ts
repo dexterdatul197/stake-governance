@@ -31,3 +31,16 @@ export const currentAddress = (wallet: WalletData) => {
 }
 
 export const format = commaNumber.bindWith(',', '.');
+
+export const getStatus = (state: string) => {
+  if (state === 'Executed') {
+    return 'Passed';
+  }
+  if (state === 'Active') {
+    return 'Active';
+  }
+  if (state === 'Defeated') {
+    return 'Failed';
+  }
+  return state;
+};

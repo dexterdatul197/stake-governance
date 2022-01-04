@@ -4,7 +4,7 @@ import classNames from 'classnames/bind';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { currentAddress } from '../../../../helpers/common';
+import { currentAddress, getStatus } from '../../../../helpers/common';
 import { isConnected } from '../../../../helpers/connectWallet';
 import { governance } from '../../../../helpers/ContractService';
 import { ProposalFormData } from '../../../../interfaces/SFormData';
@@ -39,19 +39,6 @@ const Proposal: React.FC<Props> = (props) => {
     setVoteType(support);
     await governance().methods.castVote(props.proposal.proposal_id, support === 'like').send({from: currentAddress(wallet)});
     setIsLoading(false);
-  };
-
-  const getStatus = (state: string) => {
-    if (state === 'Executed') {
-      return 'Passed';
-    }
-    if (state === 'Active') {
-      return 'Active';
-    }
-    if (state === 'Defeated') {
-      return 'Failed';
-    }
-    return state;
   };
 
   const redirectToProposalDetail = (proposalId: number) => {

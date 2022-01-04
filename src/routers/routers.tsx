@@ -1,7 +1,7 @@
-import Balances from "../components/balances/Balances";
 import { Route } from 'react-router-dom';
+import Balances from "../components/balances/Balances";
 import Governance from "../components/governance/Governance";
-import ProposalDetail from "../components/governance/proposals/proposal-detail/ProposalDetail";
+import ProposalDetail from '../components/governance/proposals/proposal-detail/ProposalDetail';
 const routers = {
     stake: {
         exact: true,
