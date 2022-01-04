@@ -4,7 +4,8 @@ import { CircularProgress, DialogContent, DialogActions } from '@mui/material';
 const isLoading = () => {
     return (
         <React.Fragment>
-            <DialogContent></DialogContent>
+            <DialogContent>
+            </DialogContent>
             <DialogActions></DialogActions>
         </React.Fragment>
     )
