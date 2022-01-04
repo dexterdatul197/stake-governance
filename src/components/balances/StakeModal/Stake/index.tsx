@@ -1,17 +1,15 @@
-import React, { useState, useCallback } from 'react'
 import {
     Autocomplete,
     Box,
-    Button,
-    DialogActions,
+    Button, CircularProgress, DialogActions,
     DialogContent,
     DialogTitle,
     Input,
     Slider,
     TextField,
-    Typography,
-    CircularProgress
+    Typography
 } from "@material-ui/core";
+import React, { useCallback, useState } from 'react';
 
 interface Props {
     cx?: any;
@@ -24,7 +22,6 @@ interface Props {
 
 
 const Stake = (props: Props) => {
-
     const { cx, walletValue, classes, currencies, handleNext, progress } = props;
 
     const [value, setValue] = useState({
@@ -82,6 +79,9 @@ const Stake = (props: Props) => {
         },
         [value]
     );
+
+
+
 
     return (
         <React.Fragment>

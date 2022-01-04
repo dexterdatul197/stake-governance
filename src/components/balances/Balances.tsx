@@ -14,9 +14,11 @@ import styles from './Balances.module.scss';
 import Modal from './StakeModal';
 import TableComponent from './Table';
 import ModalWithDraw from './WithDrawModal';
+
+
+
+
 const commaNumber = require('comma-number');
-
-
 const format = commaNumber.bindWith(',', '.');
 
 const cx = classNames.bind(styles);
@@ -106,7 +108,7 @@ const Balances: React.FC = () => {
   const { isActive, isActiveWithDraw, isOpenStake, isOpenWithdraw } = state
   const classes = useStyles();
   const currencies = useAppSelector((state: any) => state.currency.currenciesList);
-  const wallet = useAppSelector((state: any) => state.wallet)
+  const wallet = useAppSelector((state: any) => state.wallet);
   const [balance, setBalance] = useState(0);
   const [walletValue, setWalletValue] = useState(0);
   const [earn, setEarn] = useState((0))
@@ -116,7 +118,7 @@ const Balances: React.FC = () => {
   }
 
   const handleCloseModal = () => {
-    dispatch({ type: "CLOSE_STAKE" })
+    dispatch({ type: "CLOSE_STAKE" });
   }
 
   const handleActiveWithDraw = () => {
@@ -143,14 +145,17 @@ const Balances: React.FC = () => {
   const getTotalStakeInPool = useCallback(async () => {
     try {
       const connectedAddress = currentAddress(wallet);
-      const getTotalValueStake = await stakingToken().methods.linearPoolInfo(0).call();
-      const getTotalValueEarned = await stakingToken().methods.getAmountRewardInPool(0, connectedAddress).call()
+      const getLengthPool = await stakingToken().methods.getLengthPool().call()
+      const getTotalValueStake = await stakingToken().methods.linearPoolInfo(getLengthPool).call();
+      const getTotalValueEarned = await stakingToken().methods.getAmountRewardInPool(getLengthPool, connectedAddress).call()
       setWalletValue(getTotalValueStake);
       setEarn(getTotalValueEarned)
     } catch (error) {
       console.log(error)
     }
   }, [])
+
+
 
 
 
@@ -239,4 +244,6 @@ const Balances: React.FC = () => {
     </div>
   );
 };
+
+
 export default Balances;

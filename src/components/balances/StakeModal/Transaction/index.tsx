@@ -8,7 +8,9 @@ import {
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import React from 'react';
+import React, { useCallback } from 'react';
+import { stakingToken } from '../../../../helpers/ContractService';
+
 
 
 interface Props {
@@ -20,10 +22,13 @@ interface Props {
 
 const Transaction = (props: Props) => {
     const { cx, handleCloseModal, handleBack, setActiveStep } = props
-    const handleConfirmTransaction = () => {
+    const handleConfirmTransaction = useCallback(async () => {
         handleCloseModal();
         setActiveStep((prevActiveStep: any) => prevActiveStep - 1);
-    }
+        // await stakingToken().methods.stake().call()
+    }, [handleCloseModal, setActiveStep])
+
+
     return (
         <React.Fragment>
             <DialogTitle className={cx('dialog-title__transaction')}>
