@@ -3,6 +3,7 @@ import { Button } from '@material-ui/core';
 import classNames from 'classnames/bind';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { currentAddress } from '../../../../helpers/common';
 import { isConnected } from '../../../../helpers/connectWallet';
 import { governance } from '../../../../helpers/ContractService';
@@ -15,6 +16,7 @@ interface Props {
 }
 const cx = classNames.bind(styles);
 const Proposal: React.FC<Props> = (props) => {
+  const history = useHistory();
   const proposal: ProposalFormData = props.proposal;
   const wallet = useAppSelector((state) => state.wallet);
   const [voteStatus, setVoteStatus] = useState('');
@@ -35,23 +37,42 @@ const Proposal: React.FC<Props> = (props) => {
   const handleVote = async(support: string) => {
     setIsLoading(true);
     setVoteType(support);
-    const a = await governance().methods.castVote(props.proposal.proposal_id, support === 'like').send({from: currentAddress(wallet)});
+    await governance().methods.castVote(props.proposal.proposal_id, support === 'like').send({from: currentAddress(wallet)});
     setIsLoading(false);
   };
+
+  const getStatus = (state: string) => {
+    if (state === 'Executed') {
+      return 'Passed';
+    }
+    if (state === 'Active') {
+      return 'Active';
+    }
+    if (state === 'Defeated') {
+      return 'Failed';
+    }
+    return state;
+  };
+
+  const redirectToProposalDetail = (proposalId: number) => {
+    history.push(`/proposal/${proposalId}`);
+  }
+
   useEffect(() => {
     getIshasVoted();
   }, [getIshasVoted]);
   return (
     <div className={cx('proposal-item')}>
       <div className={cx('row-content')}>
-        <div className={cx('row-content-left')}>
+        <div className={cx('row-content-left')} onClick={() => redirectToProposalDetail(proposal.id)}>
           <div className={cx('proposal-title')}>{proposal.title}</div>
           <div className={cx('proposal-id-time')}>
             <div className={cx('proposal-id')}>{proposal.id}</div>
             <div>{moment(proposal.created_at).format('MMMM Do, YYYY')}</div>
+            <div className={cx(`proposal-status-${getStatus(proposal.state).toLowerCase()}`, 'proposal-status')}>{getStatus(proposal.state)}</div>
           </div>
         </div>
-        <div className={cx('row-content-btn')}>
+        <div className={cx('row-content-btn')} onClick={() => alert('Click btn')}>
           {voteStatus &&
             voteStatus === 'novoted' &&
             proposal.state !== 'Active' && (

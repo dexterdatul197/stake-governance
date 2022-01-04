@@ -111,7 +111,7 @@ const CreateProposal: React.FC = () => {
           state: proposalState
         }
         await axiosInstance(options)
-        .post('/governance/proposal', body)
+        .post('/proposal', body)
         .then((res) => console.log('[API]: RESPONSE: ', res))
         .catch((err) => console.log('[API]: ERROR: ', err));
         setIsLoading(false);

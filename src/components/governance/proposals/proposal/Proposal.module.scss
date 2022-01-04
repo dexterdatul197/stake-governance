@@ -11,6 +11,9 @@
   .row-content-left {
     color: var(--color-text-white-black);
   }
+  .row-content-left:hover, .row-content-btn:hover {
+    cursor: pointer;
+  }
   .row-content-left:nth-child(1) {
     width: 60%;
     text-overflow: ellipsis;
@@ -63,5 +66,16 @@
   }
   .no-proposal {
     text-align: center;
+  }
+  .proposal-status {
+    color: #277ee6;
+    width: 15%;
+    text-align: right;
+  }
+  .proposal-status-failed {
+    color: #7c7878;
+  }
+  .proposal-status-passed {
+    color: #9dd562;
   }
 }

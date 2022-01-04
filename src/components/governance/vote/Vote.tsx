@@ -57,13 +57,17 @@ const useStyles: any = makeStyles(() => ({
 const cx = classNames.bind(styles);
 const format = commaNumber.bindWith(',', '.');
 
-const Vote: React.FC = () => {
+interface Props {
+  voting?: string;
+}
+
+const Vote: React.FC<Props> = (props) => {
   const dispatch = useDispatch();
   const classes = useStyles();
   const currencies = useAppSelector((state) => state.currency.currenciesList);
   const wallet = useAppSelector((state) => state.wallet);
   const votingWeight = useAppSelector((state) => state.governance.voteingWeight);
-
+  
   const [openLoading, setOpenLoading] = useState(false);
   const handleOpenCreateForm = async () => {
     if (isConnected(wallet)) {
@@ -100,7 +104,7 @@ const Vote: React.FC = () => {
       }
       setOpenLoading(false);
       if (checkCHNamount !== 1) {
-        dispatch(openSnackbar({message: `You can't create proposal. Your voting power should be ${format(proposalThreshold)} CHN at least`, variant: SnackbarVariant.ERROR}));
+        dispatch(openSnackbar({message: `You can't create proposal. Your voting power should be ${format(new BigNumber(proposalThreshold).div(1e18))} CHN at least`, variant: SnackbarVariant.ERROR}));
         createProposal = false;
         return;
       }
@@ -116,24 +120,14 @@ const Vote: React.FC = () => {
       );
     }
   };
+  const convertVotingWeight = (voteWeight: string | undefined) => {
+    return voteWeight ? format(new BigNumber(voteWeight).div(1e18).toFixed(4).toString()) : '';
+  }
   return (
     <div className={cx('governance-vote')}>
       <div className={cx('vote-title')}>Vote Weight</div>
       <div className={cx('vote-content')}>
-        <div className={cx('vote-value')}>275</div>
-        <div>
-          <Autocomplete
-            classes={classes}
-            options={currencies}
-            defaultValue={'usd'}
-            // onChange={handleOnChangeSelectCurrency}
-            renderInput={(item) => (
-              <TextField {...item} margin="normal" fullWidth />
-            )}
-            size={'small'}
-            id="combo-box-demo"
-          />
-        </div>
+        <div className={cx('vote-value')}>{convertVotingWeight(votingWeight)} <span>CHN</span></div>
       </div>
       <Button onClick={handleOpenCreateForm} className={cx('create-proposal')}>
         {openLoading && (

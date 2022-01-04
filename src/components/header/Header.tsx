@@ -14,8 +14,8 @@ import dark_whiteIcon from "./../../assets/icon/dark-white.svg";
 import darkIcon from "./../../assets/icon/dark.svg";
 import light_whiteIcon from "./../../assets/icon/light-white.svg";
 import lightIcon from "./../../assets/icon/light.svg";
-import logo from "./../../assets/imgs/CHN_logo.png";
-import dark_logo from "./../../assets/imgs/chn_dark_logo.png";
+import logo from "./../../assets/icon/CHN_dark_logo.png";
+import dark_logo from "./../../assets/icon/CHN_light_logo.png";
 import style from "./Header.module.scss";
 const cx = classnames.bind(style);
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
