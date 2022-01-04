@@ -55,7 +55,7 @@ const WithDraw = (props: Props) => {
                 </Box>
                 <Box className={cx('dialog-content__children')}>
                     <Box className={cx('main-left')}>
-                        <img className={cx('main-left__icon')} src={CHN_icon} />
+                        <img className={cx('main-left__icon')} src={CHN_icon} alt="CHN_icon" />
                         <Box className={cx('main-left__text')}>
                             <Typography className={cx('token-title')}>Token</Typography>
                             <Typography className={cx('token-text')}>CHN</Typography>

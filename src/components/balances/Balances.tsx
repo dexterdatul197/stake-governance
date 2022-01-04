@@ -1,16 +1,26 @@
 import {
   Autocomplete,
   Button,
-  TextField,
+  TextField
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import classNames from 'classnames/bind';
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useReducer, useState } from 'react';
+import { currentAddress } from '../../helpers/common';
+import { isConnected } from '../../helpers/connectWallet';
+import { getCHNBalance, stakingToken } from '../../helpers/ContractService';
 import { useAppSelector } from '../../store/hooks';
 import styles from './Balances.module.scss';
 import Modal from './StakeModal';
-import ModalWithDraw from './WithDrawModal'
 import TableComponent from './Table';
+import ModalWithDraw from './WithDrawModal';
+import { BigNumber } from '@0x/utils';
+
+
+
+
+const commaNumber = require('comma-number');
+const format = commaNumber.bindWith(',', '.');
 
 const cx = classNames.bind(styles);
 
@@ -50,36 +60,107 @@ const useStyles: any = makeStyles(() => ({
   },
 }));
 
+const initialState = {
+  isActive: false,
+  isActiveWithDraw: false,
+  isOpenStake: false,
+  isOpenWithdraw: false,
+}
+
+const dataReducer = (state = initialState, action: any) => {
+  switch (action.type) {
+    case 'OPEN_STAKE':
+      return {
+        ...state,
+        isOpenStake: true,
+        isActive: true,
+      }
+    case 'CLOSE_STAKE':
+      return {
+        ...state,
+        isOpenStake: false,
+        isActive: false,
+      }
+    case 'OPEN_WITHDRAW':
+      return {
+        ...state,
+        isActiveWithDraw: true,
+        isOpenWithdraw: true
+      }
+    case 'CLOSE_WITHDRAW':
+      return {
+        ...state,
+        isActiveWithDraw: false,
+        isOpenWithdraw: false
+      }
+    default:
+      return state
+  }
+}
+
 
 const Balances: React.FC = () => {
+  const [state, dispatch] = useReducer(dataReducer, {
+    isActive: false,
+    isActiveWithDraw: false,
+    isOpenStake: false,
+    isOpenWithdraw: false
+  });
+  const { isActive, isActiveWithDraw, isOpenStake, isOpenWithdraw } = state
   const classes = useStyles();
-  const currencies = useAppSelector((state) => state.currency.currenciesList);
-  const [active, setActive] = useState(false);
-  const [activewithDraw, setActiveWithDraw] = useState(false);
-  const [openStake, setOpenStake] = useState(false);
-  const [openWithdraw, setOpenWithdraw] = useState(false);
+  const currencies = useAppSelector((state: any) => state.currency.currenciesList);
+  const wallet = useAppSelector((state: any) => state.wallet);
+  const [balance, setBalance] = useState(0);
+  const [walletValue, setWalletValue] = useState(0);
+  const [earn, setEarn] = useState((0))
 
   const handleActiveClass = () => {
-    setActive(!active);
-    setActiveWithDraw(false);
-    setOpenStake(true);
+    dispatch({ type: "OPEN_STAKE" })
   }
 
   const handleCloseModal = () => {
-    setOpenStake(false)
-    setActive(false);
+    dispatch({ type: "CLOSE_STAKE" });
   }
 
   const handleActiveWithDraw = () => {
-    setActiveWithDraw(!activewithDraw)
-    setActive(false)
-    setOpenWithdraw(true)
+    dispatch({ type: "OPEN_WITHDRAW" })
   }
 
   const handleCloseModalWithDraw = () => {
-    setOpenWithdraw(false)
-    setActiveWithDraw(false)
+    dispatch({ type: "CLOSE_WITHDRAW" })
   }
+
+  const getValueBalance = useCallback(async () => {
+    try {
+      if (isConnected(wallet)) {
+        const connectedAddress = currentAddress(wallet);
+        const tokenBalance = await getCHNBalance().methods.balanceOf(connectedAddress).call();
+        const formatToken = new BigNumber(tokenBalance).dividedBy('1e18');
+        setWalletValue(format(+formatToken))
+      }
+    } catch (error) {
+      console.log(error)
+    }
+
+  }, [wallet])
+
+  const getTotalStakeInPool = useCallback(async () => {
+    try {
+      const connectedAddress = currentAddress(wallet);
+      const getLengthPool = await stakingToken().methods.getLengthPool().call()
+      const getTotalValueStake = await stakingToken().methods.linearPoolInfo(getLengthPool).call();
+      const getTotalValueEarned = await stakingToken().methods.getAmountRewardInPool(getLengthPool, connectedAddress).call()
+      setBalance(getTotalValueStake);
+      setEarn(getTotalValueEarned)
+    } catch (error) {
+      console.log(error)
+    }
+  }, [])
+
+  useEffect(() => {
+    getValueBalance()
+    getTotalStakeInPool()
+  }, [getValueBalance, getTotalStakeInPool])
 
   return (
     <div className={cx('balances-history')}>
@@ -88,11 +169,11 @@ const Balances: React.FC = () => {
         <div className={cx('balance-row')}>
           <div></div>
           <span className={cx('balance-key')}>Stake:</span>
-          <span className={cx('balance-value')}>754.2</span>
+          <span className={cx('balance-value')}>{balance}</span>
           <Autocomplete
             classes={classes}
             options={currencies}
-            defaultValue={'usd'}
+            defaultValue={'chn'}
             // onChange={handleOnChangeSelectCurrency}
             renderInput={(item) => (
               <TextField {...item} margin="normal" fullWidth />
@@ -105,12 +186,12 @@ const Balances: React.FC = () => {
         <div className={cx('balance-row')}>
           <div></div>
           <div className={cx('balance-key')}>Wallet:</div>
-          <div className={cx('balance-value')}>754.2</div>
+          <div className={cx('balance-value')}>{walletValue}</div>
           <div>
             <Autocomplete
               classes={classes}
               options={currencies}
-              defaultValue={'usd'}
+              defaultValue={'chn'}
               // onChange={handleOnChangeSelectCurrency}
               renderInput={(item) => (
                 <TextField {...item} margin="normal" fullWidth />
@@ -124,12 +205,12 @@ const Balances: React.FC = () => {
         <div className={cx('balance-row')}>
           <div></div>
           <div className={cx('balance-key')}>Earned:</div>
-          <div className={cx('balance-value')}>754.2</div>
+          <div className={cx('balance-value')}>{earn}</div>
           <div>
             <Autocomplete
               classes={classes}
               options={currencies}
-              defaultValue={'usd'}
+              defaultValue={'chn'}
               // onChange={handleOnChangeSelectCurrency}
               renderInput={(item) => (
                 <TextField {...item} margin="normal" fullWidth />
@@ -142,12 +223,12 @@ const Balances: React.FC = () => {
         </div>
         <div className={`${cx('switcher')}`}>
           <Button onClick={handleActiveClass} className={cx('switcher_stake', {
-            'button-active': active,
-            'button-deactive': !active
+            'button-active': isActive,
+            'button-deactive': !isActive
           })}>Stake</Button>
           <Button onClick={handleActiveWithDraw} className={cx('switcher_withdraw', {
-            'button-active': activewithDraw,
-            'button-deactive': !activewithDraw
+            'button-active': isActiveWithDraw,
+            'button-deactive': !isActiveWithDraw
           })}>WithDraw</Button>
         </div>
       </div>
@@ -155,10 +236,12 @@ const Balances: React.FC = () => {
         <TableComponent />
       </div>
 
-      <Modal currencies={currencies} classes={classes} openStake={openStake} handleCloseModal={handleCloseModal} />
-      <ModalWithDraw openWithdraw={openWithdraw} handleCloseModalWithDraw={handleCloseModalWithDraw} />
+      <Modal walletValue={walletValue} currencies={currencies} classes={classes} openStake={isOpenStake} handleCloseModal={handleCloseModal} />
+      <ModalWithDraw openWithdraw={isOpenWithdraw} handleCloseModalWithDraw={handleCloseModalWithDraw} />
 
     </div>
   );
 };
+
+
 export default Balances;

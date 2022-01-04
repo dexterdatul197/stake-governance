@@ -3,7 +3,7 @@ import { Autocomplete, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import classNames from 'classnames/bind';
 import { CoinGeckoClient } from 'coingecko-api-v3';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { format } from '../../helpers/common';
 import { getCHNBalance } from '../../helpers/ContractService';
@@ -51,12 +51,12 @@ const Main: React.FC = () => {
   const dispatch = useDispatch();
   const [totalSupply, setTotalSupply] = useState('0');
 
-  const getCurrencies = async () => {
+  const getCurrencies = useCallback(async () => {
     const coinGeckoCurrencies =
       await coinGeckoClient.simpleSupportedCurrencies();
     setCurrencies(coinGeckoCurrencies);
     dispatch(setCurrencyList(coinGeckoCurrencies));
-  };
+  }, [dispatch]);
 
   const handleOnChangeSelectCurrency = (event: any, value: any) => {
     dispatch(setSelectedCurrency(value || 'usd'));
@@ -70,7 +70,7 @@ const Main: React.FC = () => {
   useEffect(() => {
     getCurrencies();
     getTotalSupply();
-  }, []);
+  }, [getCurrencies]);
 
   return (
     <div className={cx('text-head')}>

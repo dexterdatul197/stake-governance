@@ -20,8 +20,8 @@ const TableComponent = () => {
     type Order = 'asc' | 'desc';
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
-    const [order, setOrder] = useState<Order>('asc');
-    const [orderBy, setOrderBy] = useState('id');
+    const [order] = useState<Order>('asc');
+    const [orderBy] = useState('id');
 
 
 
@@ -35,11 +35,6 @@ const TableComponent = () => {
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
     };
-
-    const emptyRows =
-        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
-
-
 
     function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
         if (b[orderBy] < a[orderBy]) {
