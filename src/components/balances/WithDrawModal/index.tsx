@@ -54,7 +54,11 @@ const WithDraw = (props: Props) => {
     const { openWithdraw, handleCloseModalWithDraw, walletValue, earn, stake } = props;
     const wallet = useAppSelector((state: any) => state.wallet);
     const [isApprove, setApprove] = useState(false);
-    const [value, setValue] = useState(stake)
+    const [value, setValue] = useState(0);
+
+    useEffect(() => {
+        stake > 0 ? setValue(stake) : setValue(0)
+    }, [stake])
 
 
     const handleWithdraw = useCallback(async () => {
@@ -73,6 +77,7 @@ const WithDraw = (props: Props) => {
         if (isApprove === true) {
             handleCloseModalWithDraw();
             await stakingToken().methods.withdraw(0, value).send({ from: currentAddress(wallet) });
+            // setValue(stake)
         }
     }
 
@@ -85,10 +90,11 @@ const WithDraw = (props: Props) => {
     }, [value])
 
 
+
+
     return (
         <Dialog className={cx('dialog-container')} open={openWithdraw} onClose={() => {
             handleCloseModalWithDraw();
-            setValue(stake);
         }} maxWidth="md" disableEscapeKeyDown>
             <BootstrapDialogTitle id="customized-dialog-title" onClose={handleCloseModalWithDraw}>
                 Modal title
