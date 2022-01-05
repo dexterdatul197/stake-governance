@@ -142,14 +142,14 @@ const Balances: React.FC = () => {
         const connectedAddress = currentAddress(wallet);
         const tokenBalance = await getCHNBalance().methods.balanceOf(connectedAddress).call();
         const formatToken = new BigNumber(tokenBalance).dividedBy('1e18');
-        setWalletValue(format(+formatToken))
-        handleUpdateSmartContract()
+        setWalletValue(Math.floor(format(+formatToken)))
+
       }
     } catch (error) {
       console.log(error)
     }
 
-  }, [wallet, updateSmartContract])
+  }, [wallet])
 
   const getTotalStakeInPool = useCallback(async () => {
     try {
@@ -158,6 +158,8 @@ const Balances: React.FC = () => {
       const getValueEarned = await stakingToken().methods.getAmountRewardInPool(0, connectedAddress).call()
       setStake(getValueStake.totalStaked);
       setEarn(getValueEarned)
+      handleUpdateSmartContract()
+
     } catch (error) {
       console.log(error)
     }

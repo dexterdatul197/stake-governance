@@ -12,6 +12,7 @@ import React, { useCallback, useState, useEffect, useMemo } from 'react';
 import { stakingToken, getCHNBalance } from '../../../../helpers/ContractService';
 import { currentAddress } from '../../../../helpers/common';
 import { useAppSelector } from '../../../../store/hooks';
+import { BigNumber } from '@0x/utils';
 
 
 
@@ -28,7 +29,8 @@ const Transaction = (props: Props) => {
     const { cx, handleBack, handleNext, value, walletValue, handleCloseModal } = props;
     const wallet = useAppSelector((state: any) => state.wallet);
     const [isApprove, setApprove] = useState(false);
-    const amount = value.default * walletValue
+    const amount = (value.default * walletValue)
+
     const handleConfirmTransaction = useCallback(async () => {
         try {
             // handleNext()
@@ -67,7 +69,7 @@ const Transaction = (props: Props) => {
             </DialogTitle>
             <DialogContent className={cx('dialog-content__transaction')}>
                 <Box className={cx('children_content')}>
-                    <Typography className={cx('token-quantity')}>{value.default * walletValue / 100}</Typography>
+                    <Typography className={cx('token-quantity')}>{Math.floor(value.default * walletValue / 100)}</Typography>
                     <Typography className={cx('token-stake')}>CHN STAKE</Typography>
                 </Box>
             </DialogContent>

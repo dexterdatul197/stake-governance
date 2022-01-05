@@ -63,7 +63,11 @@ const Modal = memo((props: Props) => {
       maxWidth="xs"
       className={cx("dialog")}
       open={openStake}
-      onClose={handleCloseModal}
+      onClose={() => {
+        setValue({ ...value, default: 0 })
+        setActiveStep(0)
+        handleCloseModal()
+      }}
       PaperProps={{
         style: {
           backgroundColor: "var(--background-stake-modal)",
