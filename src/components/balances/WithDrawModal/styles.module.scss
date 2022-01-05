@@ -30,9 +30,9 @@
             font-weight: 500;
             padding-bottom: 13px;
 
-            .amount {}
+            // .amount {}
 
-            .available {}
+            // .available {}
         }
 
         &__children {
@@ -41,7 +41,7 @@
             align-items: center;
             background: #EDF1F8;
             border-radius: 10px;
-            padding: 19px 24px 19px 24px;
+            padding: 19px 20px 19px 20px;
 
             .main-left {
                 display: flex;
@@ -80,6 +80,7 @@
                     font-size: 18px;
                     font-weight: 600;
                     text-align: right;
+                    width: 50px;
                 }
             }
         }

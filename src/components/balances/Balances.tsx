@@ -156,7 +156,6 @@ const Balances: React.FC = () => {
       const connectedAddress = currentAddress(wallet);
       const getValueStake = await stakingToken().methods.linearPoolInfo(0).call();
       const getValueEarned = await stakingToken().methods.getAmountRewardInPool(0, connectedAddress).call()
-      const getTotalValueEarned = await stakingToken().methods.getAllAmountReward(connectedAddress).call()
       setStake(getValueStake.totalStaked);
       setEarn(getValueEarned)
     } catch (error) {
@@ -243,7 +242,7 @@ const Balances: React.FC = () => {
       </div>
 
       <Modal walletValue={walletValue} currencies={currencies} classes={classes} openStake={isOpenStake} handleCloseModal={handleCloseModal} />
-      <ModalWithDraw openWithdraw={isOpenWithdraw} handleCloseModalWithDraw={handleCloseModalWithDraw} walletValue={walletValue} />
+      <ModalWithDraw stake={stake} earn={earn} openWithdraw={isOpenWithdraw} handleCloseModalWithDraw={handleCloseModalWithDraw} walletValue={walletValue} />
 
     </div>
   );
