@@ -3,14 +3,14 @@
     padding: 30px 100px;
     display: flex;
     justify-content: space-between;
-    background: var(--main-background-color);
+    // background: var(--main-background-color);
   }
   .footer-component div {
     color: var(--color-text-footer);
     font-size: 18px;
   }
 
-  @media screen and (max-width: 376px) {
+  @media screen and (max-width: 375px) {
     .footer-component {
       padding: 0;
       display: block;
