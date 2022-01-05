@@ -104,7 +104,7 @@ const Balances: React.FC = () => {
     isActive: false,
     isActiveWithDraw: false,
     isOpenStake: false,
-    isOpenWithdraw: false
+    isOpenWithdraw: false,
   });
   const { isActive, isActiveWithDraw, isOpenStake, isOpenWithdraw } = state
   const classes = useStyles();
@@ -112,8 +112,8 @@ const Balances: React.FC = () => {
   const wallet = useAppSelector((state: any) => state.wallet);
   const [stake, setStake] = useState(0);
   const [walletValue, setWalletValue] = useState(0);
-  const [earn, setEarn] = useState((0))
-  const [pid, setPid] = useState({})
+  const [earn, setEarn] = useState((0));
+  const [updateSmartContract, setUpdateSmartContract] = useState(false)
 
   const handleActiveClass = () => {
     dispatch({ type: "OPEN_STAKE" })
@@ -131,6 +131,11 @@ const Balances: React.FC = () => {
     dispatch({ type: "CLOSE_WITHDRAW" })
   }
 
+  const handleUpdateSmartContract = () => {
+    setUpdateSmartContract((prevState) => !prevState)
+  }
+
+
   const getValueBalance = useCallback(async () => {
     try {
       if (isConnected(wallet)) {
@@ -138,29 +143,22 @@ const Balances: React.FC = () => {
         const tokenBalance = await getCHNBalance().methods.balanceOf(connectedAddress).call();
         const formatToken = new BigNumber(tokenBalance).dividedBy('1e18');
         setWalletValue(format(+formatToken))
+        handleUpdateSmartContract()
       }
     } catch (error) {
       console.log(error)
     }
 
-  }, [wallet])
+  }, [wallet, updateSmartContract])
 
   const getTotalStakeInPool = useCallback(async () => {
     try {
       const connectedAddress = currentAddress(wallet);
-
-      const getAllPool = await stakingToken().methods.getAllPool().call();
-      let pidObj = {}
-      getAllPool.forEach((pool: any) => {
-        pidObj = {
-          ...pidObj,
-          [pool.tokenStake]: stake
-        }
-      })
-      setPid(pidObj)
-
-      const getValueStake = await stakingToken().methods.linearPoolInfo().call()
-
+      const getValueStake = await stakingToken().methods.linearPoolInfo(0).call();
+      const getValueEarned = await stakingToken().methods.getAmountRewardInPool(0, connectedAddress).call()
+      const getTotalValueEarned = await stakingToken().methods.getAllAmountReward(connectedAddress).call()
+      setStake(getValueStake.totalStaked);
+      setEarn(getValueEarned)
     } catch (error) {
       console.log(error)
     }
@@ -168,12 +166,13 @@ const Balances: React.FC = () => {
 
   useEffect(() => {
     getValueBalance()
-    getTotalStakeInPool()
-  }, [getValueBalance, getTotalStakeInPool])
+  }, [getValueBalance])
 
   useEffect(() => {
-    // console.log(stake,'??')
-  }, [pid])
+    getTotalStakeInPool()
+  }, [getTotalStakeInPool, updateSmartContract])
+
+
 
   return (
     <div className={cx('balances-history')}>

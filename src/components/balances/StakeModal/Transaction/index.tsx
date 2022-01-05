@@ -28,16 +28,13 @@ const Transaction = (props: Props) => {
     const { cx, handleBack, handleNext, value, walletValue, handleCloseModal } = props;
     const wallet = useAppSelector((state: any) => state.wallet);
     const [isApprove, setApprove] = useState(false);
-
     const amount = value.default * walletValue
-
     const handleConfirmTransaction = useCallback(async () => {
         try {
             // handleNext()
             setTimeout(() => {
                 setApprove(true)
             }, 1000)
-            // handleCloseModal();
             await getCHNBalance().methods.approve(process.env.REACT_APP_STAKE_TESTNET_ADDRESS, amount).send({ from: currentAddress(wallet) })
         } catch (error) {
             console.log(error);

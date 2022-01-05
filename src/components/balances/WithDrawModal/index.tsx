@@ -6,10 +6,10 @@ import {
 } from "@material-ui/core";
 import CloseIcon from '@mui/icons-material/Close';
 import classNames from "classnames/bind";
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import CHN_icon from '../../../assets/icon/CHN.svg';
 import { currentAddress } from '../../../helpers/common';
-import { stakingToken } from '../../../helpers/ContractService';
+import { stakingToken, getCHNBalance } from '../../../helpers/ContractService';
 import { useAppSelector } from '../../../store/hooks';
 import styles from './styles.module.scss';
 
@@ -48,22 +48,35 @@ const BootstrapDialogTitle = (props: any) => {
 const WithDraw = (props: Props) => {
     const { openWithdraw, handleCloseModalWithDraw, walletValue } = props;
     const wallet = useAppSelector((state: any) => state.wallet);
+    const [isApprove, setApprove] = useState(false);
+
 
     const handleWithdraw = useCallback(async () => {
         try {
-            const getPoolId = await stakingToken().methods.getLengthPool().call();
-
-            const getAllPool = await stakingToken().methods.getAllPool().call();
-
-
+            setTimeout(() => {
+                setApprove(true)
+            }, 1000)
+            await getCHNBalance().methods.approve(process.env.REACT_APP_STAKE_TESTNET_ADDRESS, walletValue).send({ from: currentAddress(wallet) })
             if (currentAddress(wallet)) {
-                await stakingToken().methods.withdraw(getPoolId, walletValue).send({ from: currentAddress(wallet) });
+                await stakingToken().methods.withdraw(0, walletValue).send({ from: currentAddress(wallet) });
             }
-
         } catch (error) {
             console.log(error);
+            handleCloseModalWithDraw()
         }
     }, [wallet])
+
+    const checkApprove = async () => {
+        if (isApprove === true) {
+            handleCloseModalWithDraw();
+            await stakingToken().methods.withdraw(0, walletValue).send({ from: currentAddress(wallet) });
+        }
+    }
+
+    useEffect(() => {
+        checkApprove()
+    }, [isApprove])
+
 
     return (
         <Dialog className={cx('dialog-container')} open={openWithdraw} onClose={handleCloseModalWithDraw} maxWidth="md">
