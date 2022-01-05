@@ -52,8 +52,16 @@ const Transaction = (props: Props) => {
         }
     }
 
+
+    const handleCloseTransaction = () => {
+        handleCloseModal();
+        setTimeout(() => {
+            handleBack()
+        }, 500)
+    }
+
     useEffect(() => {
-        checkApprove()
+        checkApprove();
     }, [isApprove])
 
 
@@ -64,12 +72,12 @@ const Transaction = (props: Props) => {
                 <Box className={cx('children_content')}>
                     <ArrowBackIosIcon onClick={handleBack} className={cx('icon_right')} />
                     <Typography className={cx('confirm-title')}>Confirm Transaction</Typography>
-                    <CloseIcon onClick={handleCloseModal} className={cx('icon_left')} />
+                    <CloseIcon onClick={handleCloseTransaction} className={cx('icon_left')} />
                 </Box>
             </DialogTitle>
             <DialogContent className={cx('dialog-content__transaction')}>
                 <Box className={cx('children_content')}>
-                    <Typography className={cx('token-quantity')}>{Math.floor(value.default * walletValue / 100)}</Typography>
+                    <Typography className={cx('token-quantity')}>{value.default * walletValue / 100}</Typography>
                     <Typography className={cx('token-stake')}>CHN STAKE</Typography>
                 </Box>
             </DialogContent>

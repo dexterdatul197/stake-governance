@@ -65,8 +65,10 @@ const Modal = memo((props: Props) => {
       open={openStake}
       onClose={() => {
         setValue({ ...value, default: 0 })
-        setActiveStep(0)
         handleCloseModal()
+        setTimeout(() => {
+          setActiveStep(0)
+        }, 500)
       }}
       PaperProps={{
         style: {
