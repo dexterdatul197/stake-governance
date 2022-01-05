@@ -1,73 +1,88 @@
 body {
-  background-color: var(--background-color);
+  background-color: var(--main-background-color);
   font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
   margin: 0;
   display: flex;
   flex-direction: column;
+  height: 100vh;
 }
 .App {
   height: 100%;
 }
 
 :root {
-
-
-  --btn-header-border-color: #107DEF;
-  --header-bar-color:#FFFFFF;
-  --main-background-color: #FFF;
-  --btn-background-connect-color: #107DEF;
-  --color-text-white: #FFF;
-  --color-text-footer: #001C4E;
+  --btn-header-border-color: #107def;
+  --header-bar-color: #ffffff;
+  --main-background-color: #fff;
+  --btn-background-connect-color: #107def;
+  --color-text-white: #fff;
+  --color-text-footer: #001c4e;
   --background-dialog-color: #fff;
-  --color-text-white-black: #001C4E;
-  --btn-hover-blue-green: #107DEF;
+  --color-text-white-black: #001c4e;
+  --btn-hover-blue-green: #107def;
   --color-text-black-white: #fff;
-  --main-background-dropdow: #ECF3FB;
+  --main-background-dropdow: #ecf3fb;
   --background-governance-color: #fff;
   --pagination-color: rgba(78, 78, 78, 0.6);
   --pagination-action-color: rgba(156, 155, 155, 0.38);
-  --color-text-white-blue: #107DEF;
+  --color-text-white-blue: #107def;
   --color-dialog-title: #4e4b66;
   --color-primary: #1a88c9;
-  --footer-background-color: #FFF;
-  --background-wallet-connect: #FFFFFF;
-  --color-table: #FFFFFF;
-  --background-stake-color:#EDF1F8;
-  --text-color-stake:#107DEF;
-  --background-stake-modal: #FFFFFF;
-  --background-proposal: #EDF1F8;
-  --color-text-proposal-action: #001C4E;
+  --footer-background-color: #fff;
+  --background-wallet-connect: #ffffff;
+  --color-table: #ffffff;
+  --background-stake-color: #edf1f8;
+  --text-color-stake: #107def;
+  --background-stake-modal: #ffffff;
+  --background-proposal: #edf1f8;
+  --color-text-proposal-action: #001c4e;
   --background-proposal-detail-card: #fff;
-  --color-address-contract: rgba(0, 0, 0, 0.6)
+  --color-address-contract: rgba(0, 0, 0, 0.6);
+
+  // footer theme mobile
+  --bg-theme-active: #fcfbfd;
+  --bg-theme: #f5f4f6;
+  --mb-bg-footer: #fff;
+  --mb-bg-btn-wallet: rgba(16, 125, 239, 0.1);
+  --color-text: #000;
+  --color-text-active: #107def;
 }
 [data-theme='dark'] {
-  --btn-header-border-color: #72BF65;
-  --header-bar-color:#1B1C1F;
+  --btn-header-border-color: #72bf65;
+  --header-bar-color: #1b1c1f;
   --main-background-color: #121316;
-  --btn-background-connect-color: #72BF65;
-  --color-text-white: #FFF;
-  --color-text-footer: #FFF;
-  --background-dialog-color: #1B1C1F;
+  --btn-background-connect-color: #72bf65;
+  --color-text-white: #fff;
+  --color-text-footer: #fff;
+  --background-dialog-color: #1b1c1f;
   --color-text-white-black: #fff;
-  --btn-hover-blue-green: #107DEF;
+  --btn-hover-blue-green: #107def;
   --color-text-black-white: rgba(0, 28, 78, 0.87);
   --main-background-dropdow: rgba(114, 191, 101, 0.1);
-  --background-governance-color: #1B1C1F;
+  --background-governance-color: #1b1c1f;
   --pagination-color: rgba(255, 255, 255, 0.6);
   --pagination-action-color: rgba(255, 255, 255, 0.38);
   --color-text-white-blue: #fff;
   --color-dialog-title: #4e4b66;
   --color-primary: #1a88c9;
-  --footer-background-color: #1B1C1F;
-  --background-wallet-connect: #282B32;
-  --color-table: #1B1C1F;
-  --background-stake-color:#121316;
-  --text-color-stake:#107DEF;
-  --background-stake-modal: #1B1C1F;
-  --background-proposal: #09090B;
+  --footer-background-color: #1b1c1f;
+  --background-wallet-connect: #282b32;
+  --color-table: #1b1c1f;
+  --background-stake-color: #121316;
+  --text-color-stake: #107def;
+  --background-stake-modal: #1b1c1f;
+  --background-proposal: #09090b;
   --color-text-proposal-action: #fff;
-  --background-proposal-detail-card: #1B1C1F;
-  --color-address-contract: rgba(255, 255, 255, 0.6)
+  --background-proposal-detail-card: #1b1c1f;
+  --color-address-contract: rgba(255, 255, 255, 0.6);
+
+  // footer theme mobile
+  --bg-theme-active: #121416;
+  --bg-theme: rgba(0, 28, 78, 0.15);
+  --mb-bg-footer: rgba(27, 28, 31, 1);
+  --mb-bg-btn-wallet: rgba(16, 125, 239, 0.1);
+  --color-text: #fff;
+  --color-text-active: #107def;
 }
 .Snackbar {
   .css-zzms1-MuiSnackbar-root {
@@ -106,4 +121,12 @@ body {
   padding: 15px;
 }
 
-
+@media screen and (max-width: 375px) {
+  .App {
+    margin: 0;
+    box-sizing: border-box;
+  }
+  .area-chart-main {
+    padding: 0;
+  }
+}
