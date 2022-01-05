@@ -5,7 +5,7 @@ const cx = classNames.bind(styles);
 
 const VoteCard:React.FC = () => {
     return (
-        <div>Vote Card</div>
+        <div className={cx('vote-card')}>Vote Card</div>
     )
 }
 export default VoteCard;
