@@ -26,7 +26,7 @@ const Footer: React.FC = () => {
   };
 
   return (
-    <div className={cx('footer-component')}>
+    <div>
       {isMobile ? (
         <div className={cx('footer')}>
           <ConnectWallet />
@@ -62,7 +62,7 @@ const Footer: React.FC = () => {
           </div>
         </div>
       ) : (
-        <div>
+        <div className={cx('footer-component')}>
           <div>&copy; Chain 1 open source</div>
           <div>vi.o\Block 275</div>
         </div>
