@@ -1,4 +1,5 @@
 import { Autocomplete, Box, Button, TextField } from "@material-ui/core";
+import { BigNumber } from "@0x/utils";
 import { makeStyles } from "@material-ui/styles";
 import classNames from "classnames/bind";
 import React, { useCallback, useEffect, useReducer, useState } from "react";
@@ -10,7 +11,6 @@ import styles from "./Balances.module.scss";
 import Modal from "./StakeModal";
 import TableComponent from "./Table";
 import ModalWithDraw from "./WithDrawModal";
-import { BigNumber } from "@0x/utils";
 
 const commaNumber = require("comma-number");
 const format = commaNumber.bindWith(",", ".");
@@ -37,7 +37,6 @@ const useStyles: any = makeStyles(() => ({
     },
   },
   input: {
-    textTransform: "uppercase",
     color: "var(--btn-hover-blue-green) !important",
     width: "50px !important",
     paddingTop: "1px !important",
