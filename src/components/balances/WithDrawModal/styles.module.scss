@@ -1,103 +1,103 @@
 .dialog-container {
-    padding-left: 31px;
-    padding-right: 31px;
+  padding-left: 31px;
+  padding-right: 31px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .dialig-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #107def;
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  .dialog-content {
     display: flex;
     justify-content: center;
+    flex-direction: column;
     align-items: center;
+    overflow: unset;
 
-    .dialig-title {
+    &__title {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      color: rgba(0, 28, 78, 0.38);
+      font-size: 16px;
+      font-weight: 500;
+      padding-bottom: 13px;
+
+      // .amount {}
+
+      // .available {}
+    }
+
+    &__children {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #edf1f8;
+      border-radius: 10px;
+      padding: 19px 20px 19px 20px;
+
+      .main-left {
         display: flex;
+        align-items: center;
+        padding-right: 382px;
         justify-content: space-between;
-        align-items: center;
-        color: #107DEF;
-        font-size: 20px;
-        font-weight: 600;
-    }
 
-    .dialog-content {
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
-        align-items: center;
-        overflow: unset;
+        &__icon {
+          margin-right: 14px;
+        }
 
-        &__title {
-            display: flex;
-            justify-content: space-between;
-            width: 100%;
+        &__text {
+          .token-title {
             color: rgba(0, 28, 78, 0.38);
-            font-size: 16px;
             font-weight: 500;
-            padding-bottom: 13px;
-
-            // .amount {}
-
-            // .available {}
-        }
-
-        &__children {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: #EDF1F8;
-            border-radius: 10px;
-            padding: 19px 20px 19px 20px;
-
-            .main-left {
-                display: flex;
-                align-items: center;
-                padding-right: 382px;
-                justify-content: space-between;
-
-                &__icon {
-                    margin-right: 14px;
-                }
-
-                &__text {
-                    .token-title {
-                        color: rgba(0, 28, 78, 0.38);
-                        font-weight: 500;
-                        font-size: 16px;
-                    }
-                    .token-text{
-                        color: #107DEF;
-                        font-weight: 600;
-                        font-size: 18px;
-                    }
-                }
-            }
-
-            .main-right{
-                &__price{
-                    display:block;
-                    color: rgba(0, 28, 78, 0.38);
-                    font-weight: 500;
-                    font-size: 16px;
-                }
-                &__quantity{
-                    display:block;
-                    color: #107DEF;
-                    font-size: 18px;
-                    font-weight: 600;
-                    text-align: right;
-                    width: 50px;
-                }
-            }
-        }
-    }
-
-    .dialog-actions{
-        display:flex;
-        justify-content: center;
-        margin-bottom: 49px;
-        .button-action{
-            background-color:#107DEF;
-            color:#FFFFFF;
+            font-size: 16px;
+          }
+          .token-text {
+            color: #107def;
+            font-weight: 600;
             font-size: 18px;
-            font-weight: 700;
-            text-transform: capitalize;
-            padding: 20px 243px 20px 249px;
-            border-radius: 10px;
+          }
         }
+      }
+
+      .main-right {
+        &__price {
+          display: block;
+          color: rgba(0, 28, 78, 0.38);
+          font-weight: 500;
+          font-size: 16px;
+        }
+        &__quantity {
+          display: block;
+          color: #107def;
+          font-size: 18px;
+          font-weight: 600;
+          text-align: right;
+          width: 50px;
+        }
+      }
     }
+  }
+
+  .dialog-actions {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 49px;
+    .button-action {
+      background-color: #107def;
+      color: #ffffff;
+      font-size: 18px;
+      font-weight: 700;
+
+      padding: 20px 243px 20px 249px;
+      border-radius: 10px;
+    }
+  }
 }

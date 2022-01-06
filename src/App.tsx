@@ -1,16 +1,15 @@
-import React from 'react';
-import { Route, Switch } from 'react-router-dom';
-import Balances from './components/balances/Balances';
-import ConnectWalletDialog from './components/connect-wallet-dialog/ConnectWalletDialog';
-import Footer from './components/footer/Footer';
-import CreateProposal from './components/governance/dialog/create-proposal/CreateProposal';
-import Governance from './components/governance/Governance';
-import ProposalDetail from './components/governance/proposals/proposal-detail/ProposalDetail';
-import Header from './components/header/Header';
-import Main from './components/main/Main';
-import CustomSnackbar from './components/snackbar/Snackbar';
-import './_app.scss';
-
+import React from "react";
+import { Route, Switch } from "react-router-dom";
+import Balances from "./components/balances/Balances";
+import ConnectWalletDialog from "./components/connect-wallet-dialog/ConnectWalletDialog";
+import Footer from "./components/footer/Footer";
+import CreateProposal from "./components/governance/dialog/create-proposal/CreateProposal";
+import Governance from "./components/governance/Governance";
+import ProposalDetail from "./components/governance/proposals/proposal-detail/ProposalDetail";
+import Header from "./components/header/Header";
+import Main from "./components/main/Main";
+import CustomSnackbar from "./components/snackbar/Snackbar";
+import "./_app.scss";
 
 const App: React.FC = () => {
   return (
