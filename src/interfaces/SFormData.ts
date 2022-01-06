@@ -90,3 +90,12 @@ export interface ProposalDetailForm {
     values: string[];
     voterCount: string;
 }
+
+export interface TVLData {
+    id: number;
+    timestamp: number;
+    tvl: string;
+    createdAt: string;
+    updatedAt: string;
+    amount: string;
+}

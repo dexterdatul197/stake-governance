@@ -8,6 +8,8 @@ import { useAppSelector } from '../../store/hooks';
 import { CircularProgress } from '@material-ui/core';
 import { getTVLData } from '../../apis/apis';
 import { dateBeforeMonth } from '../../helpers/common';
+import { TVLData } from '../../interfaces/SFormData';
+import { BigNumber } from '@0x/utils';
 
 const coinGeckoClient = new CoinGeckoClient({
   timeout: 10000,
@@ -102,8 +104,7 @@ const AreaChart: React.FC = () => {
 
     const categories: any = res.map((item: number[]) => convertToDate(item[0]));
     const seriesPrice = res.map((item: number[]) => item[2]);
-    const tvlFinally = tvlData.map((item: { data: number, time: number }) => item.data);
-
+    const tvlFinally = tvlData.map((item: TVLData) => new BigNumber(item.tvl).toFixed(4));
     const series = [
       {
         name: "Price",
@@ -111,7 +112,7 @@ const AreaChart: React.FC = () => {
       },
       {
         name: 'TVL',
-        data: tvlFinally.reverse(),
+        data: tvlFinally,
       },
     ];
 
@@ -150,8 +151,6 @@ const AreaChart: React.FC = () => {
       endTime: new Date().getTime()
     }
     const tvlData = await getTVLData(param);
-    console.log('CHART TVL DATA: ', tvlData);
-    
     chainPriceDataForChart(getOHCL, tvlData.data);
     if (getOHCL) {
       setIsLoading(false);

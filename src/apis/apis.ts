@@ -26,6 +26,6 @@ export const getTVLData = async (body: Filter) => {
  const options = {
   baseUrl: process.env.REACT_APP_BACKEND,
  }
- const res = await axiosInstance(options).get(`/stake${qsStringify(body)}`);
+ const res = await axiosInstance(options).get(`/staking/tvl${qsStringify(body)}`);
  return res.data;
 }
