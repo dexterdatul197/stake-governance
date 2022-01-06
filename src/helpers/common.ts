@@ -44,3 +44,8 @@ export const getStatus = (state: string) => {
   }
   return state;
 };
+
+export const dateBeforeMonth = (date: Date, num: number): Date => {
+  date.setMonth(date.getMonth() - num);
+  return date;
+};

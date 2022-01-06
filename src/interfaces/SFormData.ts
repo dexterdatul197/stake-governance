@@ -8,6 +8,8 @@ export interface SFormData {
 export type Filter = {
     page?: number;
     limit?: number;
+    startTime?: number;
+    endTime?: number;
 }
 
 export interface ProposalFormData {

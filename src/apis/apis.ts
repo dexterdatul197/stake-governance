@@ -21,3 +21,11 @@ export const getProposalDetail = async (id: number) => {
   const res = await axiosInstance(options).get(`/proposal/${id}`);
   return res.data;
 }
+
+export const getTVLData = async (body: Filter) => {
+ const options = {
+  baseUrl: process.env.REACT_APP_BACKEND,
+ }
+ const res = await axiosInstance(options).get(`/stake${qsStringify(body)}`);
+ return res.data;
+}
