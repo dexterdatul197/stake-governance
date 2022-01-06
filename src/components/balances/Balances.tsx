@@ -11,6 +11,11 @@ import styles from "./Balances.module.scss";
 import Modal from "./StakeModal";
 import TableComponent from "./Table";
 import ModalWithDraw from "./WithDrawModal";
+import { getTransactionHistory } from "src/apis/apis";
+import { useDispatch } from "react-redux";
+import eventBus from "src/event/event-bus";
+import { SocketEvent } from "src/socket/SocketEvent";
+import { sleep } from "src/helpers/sleep";
 
 const commaNumber = require("comma-number");
 const format = commaNumber.bindWith(",", ".");
@@ -97,6 +102,7 @@ const Balances: React.FC = () => {
     isOpenStake: false,
     isOpenWithdraw: false,
   });
+  const dispatchFuntion = useDispatch();
   const { isActive, isActiveWithDraw, isOpenStake, isOpenWithdraw } = state;
   const classes = useStyles();
   const currencies = useAppSelector(
@@ -107,6 +113,9 @@ const Balances: React.FC = () => {
   const [walletValue, setWalletValue] = useState(0);
   const [earn, setEarn] = useState(0);
   const [updateSmartContract, setUpdateSmartContract] = useState(false);
+  const transactionData = useAppSelector(
+    (state) => state.transactions.transactions
+  );
 
   const handleActiveClass = () => {
     dispatch({ type: "OPEN_STAKE" });
@@ -175,6 +184,22 @@ const Balances: React.FC = () => {
     getTotalStakeInPool();
   }, [getTotalStakeInPool, updateSmartContract]);
 
+  useEffect(() => {
+    dispatchFuntion(
+      getTransactionHistory({
+        address: "0xD655458D8A11D2DA50cfD2d5D7eAF3f804678588",
+      })
+    );
+    eventBus.on(SocketEvent.transactionUpdated, async () => {
+      await sleep(1000);
+      dispatchFuntion(
+        getTransactionHistory({
+          address: "0xD655458D8A11D2DA50cfD2d5D7eAF3f804678588",
+        })
+      );
+    });
+  }, [dispatchFuntion]);
+
   return (
     <Box className={cx("balances-history")}>
       <Box className={cx("balance")}>
@@ -217,7 +242,7 @@ const Balances: React.FC = () => {
         </Box>
       </Box>
       <Box className={cx("history")}>
-        <TableComponent />
+        <TableComponent transactionData={transactionData} />
       </Box>
 
       <Modal

@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Route, Switch } from "react-router-dom";
+import { BaseSocket } from "src/socket/BaseSocket";
 import Balances from "./components/balances/Balances";
 import ConnectWalletDialog from "./components/connect-wallet-dialog/ConnectWalletDialog";
 import Footer from "./components/footer/Footer";
@@ -12,6 +13,9 @@ import CustomSnackbar from "./components/snackbar/Snackbar";
 import "./_app.scss";
 
 const App: React.FC = () => {
+  useEffect(() => {
+    BaseSocket.getInstance().connect();
+  }, []);
   return (
     <div className="App">
       <div className="Snackbar">

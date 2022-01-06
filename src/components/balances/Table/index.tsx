@@ -9,13 +9,19 @@ import {
   TableRow,
 } from "@material-ui/core";
 import classNames from "classnames/bind";
-import React, { useState } from "react";
+import { ethers } from "ethers";
+import React, { useEffect, useState } from "react";
+import { ITransaction } from "src/components/balances/Table/transaction.slice";
 import arrowRightUp from "../../../assets/icon/arrow-right-up.svg";
-import { headCells, rows } from "../../../constant/constants";
+import { headCells } from "../../../constant/constants";
 import styles from "./styles.module.scss";
 const cx = classNames.bind(styles);
 
-const TableComponent = () => {
+interface ITableProps {
+  transactionData: any;
+}
+
+const TableComponent: React.FC<ITableProps> = ({ transactionData }) => {
   type Order = "asc" | "desc";
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -70,6 +76,24 @@ const TableComponent = () => {
     return stabilizedThis.map((el) => el[0]);
   }
 
+  const getTypeTxt = (type: number) => {
+    switch (type) {
+      case 0:
+        return "Stake";
+      case 1:
+        return "Withdraw";
+      default:
+        return "Stake";
+    }
+  };
+
+  const get_ellipsis_mid = (str: string) => {
+    if (str && str.length > 15) {
+      return str.substr(0, 5) + "..." + str.substr(str.length - 5, str.length);
+    }
+    return str;
+  };
+
   return (
     <TableContainer className={cx("table-container")}>
       <Table className={cx("table")}>
@@ -89,47 +113,57 @@ const TableComponent = () => {
           </TableRow>
         </TableHead>
         <TableBody className={cx("table-body")}>
-          {stableSort(rows, getComparator(order, orderBy))
-            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-            .map((row, index) => {
-              const labelId = `enhanced-table-checkbox-${index}`;
-              return (
-                <TableRow tabIndex={-1} key={row.id}>
-                  <TableCell
-                    // component="th"
-                    id={labelId}
-                    // scope="row"
-                    align={"left"}
-                    className={cx("table-body__cell")}
-                  >
-                    {row.id}
-                  </TableCell>
-                  <TableCell align={"left"} className={cx("table-body__cell")}>
-                    <div className={cx("cell-hash")}>
-                      <div className={cx("hash")}>{row.transactionHash}</div>
-                      <img src={arrowRightUp} alt="" />
+          {transactionData.data.map((row: ITransaction, index: number) => {
+            const labelId = `enhanced-table-checkbox-${index}`;
+            return (
+              <TableRow tabIndex={-1} key={row.id}>
+                <TableCell
+                  // component="th"
+                  id={labelId}
+                  // scope="row"
+                  align={"left"}
+                  className={cx("table-body__cell")}
+                >
+                  {row.id}
+                </TableCell>
+                <TableCell align={"left"} className={cx("table-body__cell")}>
+                  <div className={cx("cell-hash")}>
+                    <div className={cx("hash")}>
+                      {get_ellipsis_mid(row.tx_hash)}
                     </div>
-                  </TableCell>
-                  <TableCell align={"left"} className={cx("table-body__cell")}>
-                    <div>{row.type}</div>
-                  </TableCell>
-                  <TableCell align={"left"} className={cx("table-body__cell")}>
-                    {row.amount}
-                  </TableCell>
-                  <TableCell align={"left"} className={cx("table-body__cell")}>
-                    {row.date}
-                  </TableCell>
-                </TableRow>
-              );
-            })}
+                    <img
+                      className={cx("icon-redirect")}
+                      src={arrowRightUp}
+                      alt=""
+                    />
+                  </div>
+                </TableCell>
+                <TableCell align={"left"} className={cx("table-body__cell")}>
+                  <div>{getTypeTxt(row.type)}</div>
+                </TableCell>
+                <TableCell align={"left"} className={cx("table-body__cell")}>
+                  {ethers.utils.formatEther(row.amount)}
+                </TableCell>
+                <TableCell align={"left"} className={cx("table-body__cell")}>
+                  {row.updated_at}
+                </TableCell>
+                <TableCell
+                  align={"left"}
+                  className={cx("table-body__cell", "Completed")}
+                >
+                  Completed
+                </TableCell>
+              </TableRow>
+            );
+          })}
         </TableBody>
         <TableFooter>
           <TableRow>
             <TableCell colSpan={6} className={cx("table-footer")}>
               <TablePagination
-                rowsPerPageOptions={[5, 10, 25]}
+                // rowsPerPageOptions={[5, 10, 25]}
                 component="div"
-                count={rows.length}
+                count={transactionData.metadata.totalItem}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 onPageChange={handleChangePage}
