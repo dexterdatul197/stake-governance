@@ -11,6 +11,7 @@ import Main from './components/main/Main';
 import CustomSnackbar from './components/snackbar/Snackbar';
 import './_app.scss';
 
+
 const App: React.FC = () => {
   return (
     <div className="App">
@@ -23,7 +24,11 @@ const App: React.FC = () => {
           <Route exact path="/" component={Main} />
           <Route exact path="/stake" component={Balances} />
           <Route exact path="/governance" component={Governance} />
-          <Route exact path="/proposal/:proposalId" component={ProposalDetail} />
+          <Route
+            exact
+            path="/proposal/:proposalId"
+            component={ProposalDetail}
+          />
         </Switch>
       </div>
       <div className="footer">

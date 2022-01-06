@@ -64,8 +64,10 @@ const Main: React.FC = () => {
 
   const getTotalSupply = async () => {
     const totalSup = await getCHNBalance().methods.totalSupply().call();
-    setTotalSupply(format(new BigNumber(totalSup).div(1e18).toFixed(4).toString()));
-  }
+    setTotalSupply(
+      format(new BigNumber(totalSup).div(1e18).toFixed(4).toString())
+    );
+  };
 
   useEffect(() => {
     getCurrencies();

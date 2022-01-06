@@ -3,9 +3,65 @@
     padding: 30px 230px;
     display: flex;
     justify-content: space-between;
+    // background: var(--main-background-color);
   }
   .footer-component div {
     color: var(--color-text-footer);
     font-size: 18px;
+  }
+
+  @media screen and (max-width: 375px) {
+    .footer-component {
+      padding: 0;
+      display: block;
+      width: calc(100% - 32px);
+      position: fixed;
+      bottom: 0px;
+      padding: 10px 16px;
+      z-index: 100000;
+      background: var(--mb-bg-footer);
+      border-top: 1px solid rgba(228, 233, 244, 1);
+
+      &__mobile {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .footer-theme {
+        padding: 4px 1px;
+        background-color: var(--bg-theme);
+        border-radius: 20px;
+        display: flex;
+        flex-direction: row;
+
+        &__item {
+          margin: 0 4px;
+          display: flex;
+          align-items: center;
+          padding: 4px 10px;
+          border-radius: 20px;
+
+          span {
+            font-size: 12px;
+          }
+          img {
+            width: 12px;
+            height: 12px;
+          }
+        }
+
+        .active {
+          background: var(--bg-theme-active);
+        }
+        .icon-theme {
+          margin-right: 3px;
+        }
+      }
+    }
   }
 }

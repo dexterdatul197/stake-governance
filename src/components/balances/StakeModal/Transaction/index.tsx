@@ -20,16 +20,18 @@ interface Props {
     cx?: any;
     handleBack: () => void;
     handleNext: () => void;
-    value?: any;
+    value?: any
     walletValue?: any;
     handleCloseModal: () => void;
+    handleUpdateSmartContract: () => void;
 }
 
 const Transaction = (props: Props) => {
-    const { cx, handleBack, handleNext, value, walletValue, handleCloseModal } = props;
+    const { cx, handleBack, handleNext, walletValue, handleCloseModal, value, handleUpdateSmartContract } = props;
     const wallet = useAppSelector((state: any) => state.wallet);
     const [isApprove, setApprove] = useState(false);
     const amount = (value.default * walletValue)
+    const formatAmount = new BigNumber(amount / 100).multipliedBy('1e18')
 
     const handleConfirmTransaction = useCallback(async () => {
         try {
@@ -37,7 +39,9 @@ const Transaction = (props: Props) => {
             setTimeout(() => {
                 setApprove(true)
             }, 1000)
-            await getCHNBalance().methods.approve(process.env.REACT_APP_STAKE_TESTNET_ADDRESS, amount).send({ from: currentAddress(wallet) })
+            await getCHNBalance().methods.approve(process.env.REACT_APP_STAKE_TESTNET_ADDRESS, formatAmount).send({ from: currentAddress(wallet) });
+            handleBack();
+     
         } catch (error) {
             console.log(error);
             setApprove(false)
@@ -48,13 +52,16 @@ const Transaction = (props: Props) => {
     const checkApprove = async () => {
         if (isApprove === true) {
             handleCloseModal();
-            await stakingToken().methods.stake(0, walletValue).send({ from: currentAddress(wallet) })
+            await stakingToken().methods.stake(0, formatAmount).send({ from: currentAddress(wallet) })
+            handleUpdateSmartContract()
         }
+
     }
 
 
     const handleCloseTransaction = () => {
         handleCloseModal();
+        handleBack();
         setTimeout(() => {
             handleBack()
         }, 500)
@@ -77,7 +84,7 @@ const Transaction = (props: Props) => {
             </DialogTitle>
             <DialogContent className={cx('dialog-content__transaction')}>
                 <Box className={cx('children_content')}>
-                    <Typography className={cx('token-quantity')}>{value.default * walletValue / 100}</Typography>
+                    <Typography className={cx('token-quantity')}> {(value.default * walletValue / 100).toFixed(2)}</Typography>
                     <Typography className={cx('token-stake')}>CHN STAKE</Typography>
                 </Box>
             </DialogContent>

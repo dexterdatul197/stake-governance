@@ -1,4 +1,4 @@
-import { Autocomplete, Button, TextField } from "@material-ui/core";
+import { Autocomplete, Box, Button, TextField } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import classNames from "classnames/bind";
 import React, { useCallback, useEffect, useReducer, useState } from "react";
@@ -136,8 +136,10 @@ const Balances: React.FC = () => {
         const tokenBalance = await getCHNBalance()
           .methods.balanceOf(connectedAddress)
           .call();
-        const formatToken = new BigNumber(tokenBalance).dividedBy("1e18");
-        setWalletValue(Math.floor(format(+formatToken)));
+        const formatToken = new BigNumber(tokenBalance)
+          .dividedBy("1e18")
+          .toFixed(2);
+        setWalletValue(format(+formatToken));
       }
     } catch (error) {
       console.log(error);
@@ -148,14 +150,19 @@ const Balances: React.FC = () => {
     try {
       const connectedAddress = currentAddress(wallet);
       const getValueStake = await stakingToken()
-        .methods.linearPoolInfo(0)
+        .methods.userInfo(0, connectedAddress)
         .call();
       const getValueEarned = await stakingToken()
-        .methods.getAmountRewardInPool(0, connectedAddress)
+        .methods.pendingReward(0, connectedAddress)
         .call();
-      setStake(getValueStake.totalStaked);
-      setEarn(getValueEarned);
-      handleUpdateSmartContract();
+      const formatValueStake = new BigNumber(getValueStake.amount)
+        .dividedBy("1e18")
+        .toFixed(2);
+      const formatValueEarned = new BigNumber(getValueEarned)
+        .dividedBy("1e18")
+        .toFixed(2);
+      setStake(format(+formatValueStake));
+      setEarn(format(+formatValueEarned));
     } catch (error) {
       console.log(error);
     }
@@ -163,66 +170,33 @@ const Balances: React.FC = () => {
 
   useEffect(() => {
     getValueBalance();
-  }, [getValueBalance]);
+  }, [getValueBalance, updateSmartContract]);
 
   useEffect(() => {
     getTotalStakeInPool();
   }, [getTotalStakeInPool, updateSmartContract]);
 
   return (
-    <div className={cx("balances-history")}>
-      <div className={cx("balance")}>
-        <div className={cx("balance-head-text")}>Balances</div>
-        <div className={cx("balance-row")}>
-          <span className={cx("balance-key")}>Stake:</span>
-          <span className={cx("balance-value")}>{stake}</span>
-          <Autocomplete
-            classes={classes}
-            options={currencies}
-            defaultValue={"chn"}
-            // onChange={handleOnChangeSelectCurrency}
-            renderInput={(item) => (
-              <TextField {...item} margin="normal" fullWidth />
-            )}
-            size={"small"}
-            id="combo-box-demo"
-          />
-        </div>
-        <div className={cx("balance-row")}>
-          <div className={cx("balance-key")}>Wallet:</div>
-          <div className={cx("balance-value")}>{walletValue}</div>
-          <div>
-            <Autocomplete
-              classes={classes}
-              options={currencies}
-              defaultValue={"chn"}
-              // onChange={handleOnChangeSelectCurrency}
-              renderInput={(item) => (
-                <TextField {...item} margin="normal" fullWidth />
-              )}
-              size={"small"}
-              id="combo-box-demo"
-            />
-          </div>
-        </div>
-        <div className={cx("balance-row")}>
-          <div className={cx("balance-key")}>Earned:</div>
-          <div className={cx("balance-value")}>{earn}</div>
-          <div>
-            <Autocomplete
-              classes={classes}
-              options={currencies}
-              defaultValue={"chn"}
-              // onChange={handleOnChangeSelectCurrency}
-              renderInput={(item) => (
-                <TextField {...item} margin="normal" fullWidth />
-              )}
-              size={"small"}
-              id="combo-box-demo"
-            />
-          </div>
-        </div>
-        <div className={`${cx("switcher")}`}>
+    <Box className={cx("balances-history")}>
+      <Box className={cx("balance")}>
+        <Box className={cx("balance-head-text")}>Balances</Box>
+        <Box className={cx("balance-row")}>
+          <Box className={cx("stake")}>
+            <span className={cx("stake__title")}>Stake:</span>
+            <span className={cx("stake__value")}>{stake}</span>
+            <span className={cx("wallet__token")}>CHN</span>
+          </Box>
+          <Box className={cx("wallet")}>
+            <span className={cx("wallet__title")}>Wallet:</span>
+            <span className={cx("wallet__value")}>{walletValue}</span>
+          </Box>
+          <Box className={cx("earn")}>
+            <span className={cx("earn__title")}>Earned:</span>
+            <span className={cx("earn__value")}>{earn}</span>
+          </Box>
+        </Box>
+
+        <Box className={`${cx("switcher")}`}>
           <Button
             onClick={handleActiveClass}
             className={cx("switcher_stake", {
@@ -241,12 +215,11 @@ const Balances: React.FC = () => {
           >
             WithDraw
           </Button>
-        </div>
-      </div>
-      <div className={cx("history-label")}>Historyy</div>
-      <div className={cx("history")}>
+        </Box>
+      </Box>
+      <Box className={cx("history")}>
         <TableComponent />
-      </div>
+      </Box>
 
       <Modal
         walletValue={walletValue}
@@ -254,6 +227,7 @@ const Balances: React.FC = () => {
         classes={classes}
         openStake={isOpenStake}
         handleCloseModal={handleCloseModal}
+        handleUpdateSmartContract={handleUpdateSmartContract}
       />
       <ModalWithDraw
         stake={stake}
@@ -261,8 +235,9 @@ const Balances: React.FC = () => {
         openWithdraw={isOpenWithdraw}
         handleCloseModalWithDraw={handleCloseModalWithDraw}
         walletValue={walletValue}
+        handleUpdateSmartContract={handleUpdateSmartContract}
       />
-    </div>
+    </Box>
   );
 };
 

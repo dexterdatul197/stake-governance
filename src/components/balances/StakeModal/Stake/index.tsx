@@ -10,6 +10,7 @@ import {
     Typography
 } from "@material-ui/core";
 import React, { useCallback, useState } from 'react';
+import { BigNumber } from '@0x/utils';
 
 interface Props {
     cx?: any;
@@ -149,7 +150,7 @@ const Stake = (props: Props) => {
                         />
                     </Box>
                     <Box className={cx("balance__stake-balance")}>
-                        <Typography className={cx("title")}>Stake Balance: {value.default * walletValue / 100}</Typography>
+                        <Typography className={cx("title")}>Stake Balance: {(value.default * walletValue / 100).toFixed(2)}</Typography>
                         <Autocomplete
                             classes={classes}
                             options={currencies}
@@ -167,7 +168,6 @@ const Stake = (props: Props) => {
             <DialogActions className={cx("dialog-action")}>
                 <Button onClick={handleNext} className={cx("button-stake")}>
                     {progress ? <CircularProgress style={{ color: '#ffffff' }} /> : "Stake"}
-
                 </Button>
             </DialogActions>
         </React.Fragment>
