@@ -49,3 +49,9 @@ export const dateBeforeMonth = (date: Date, num: number): Date => {
   date.setMonth(date.getMonth() - num);
   return date;
 };
+
+export const convertToDate = (param: number) => {
+  return `${new Date(param).getFullYear()} - ${
+    new Date(param).getMonth() + 1
+  } - ${new Date(param).getDate()}`;
+};

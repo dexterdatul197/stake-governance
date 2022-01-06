@@ -1,13 +1,12 @@
 import { BigNumber } from "@0x/utils";
-import Web3 from "web3";
 import { Autocomplete, TextField } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import classNames from "classnames/bind";
 import { CoinGeckoClient } from "coingecko-api-v3";
 import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { format } from "../../helpers/common";
-import { getCHNBalance } from "../../helpers/ContractService";
+import { getTVLData } from "../../apis/apis";
+import { dateBeforeMonth, format } from "../../helpers/common";
 import AreaChart from "../chart/AreaChart";
 import { setCurrencyList, setSelectedCurrency } from "../chart/redux/currency";
 import style from "./Main.module.scss";
@@ -46,7 +45,6 @@ const coinGeckoClient = new CoinGeckoClient({
 
 const Main: React.FC = () => {
   const classes = useStyles();
-  // const wallet = useAppSelector((state) => state.wallet);
   const [currencies, setCurrencies] = useState([""]);
   const dispatch = useDispatch();
   const [totalSupply, setTotalSupply] = useState("0");
@@ -62,11 +60,17 @@ const Main: React.FC = () => {
     dispatch(setSelectedCurrency(value || "usd"));
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const getTotalSupply = async () => {
-    // const totalSup = await getCHNBalance().methods.totalSupply().call();
-    // setTotalSupply(
-    //   format(new BigNumber(totalSup).div(1e18).toFixed(4).toString())
-    // );
+    const getPriceOnUsd = await coinGeckoClient.simplePrice({ids: 'chain', vs_currencies: 'usd'});
+    const param = {
+      startTime: dateBeforeMonth(new Date(), 1).getTime(),
+      endTime: new Date().getTime()
+    }
+    let tvlData = await getTVLData(param);
+    const lastTvlItem = tvlData[tvlData.length - 1];
+    const totalLock = new BigNumber(getPriceOnUsd.chain.usd).multipliedBy(new BigNumber(lastTvlItem.tvl)); 
+    setTotalSupply(format(totalLock.toFixed(4).toString()));
   };
 
   useEffect(() => {

@@ -99,3 +99,8 @@ export interface TVLData {
     updatedAt: string;
     amount: string;
 }
+
+export interface TVLDataRes {
+    tvl: string;
+    timestamp: number;
+}

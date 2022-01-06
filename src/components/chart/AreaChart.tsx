@@ -7,7 +7,7 @@ import styles from './AreaChart.module.scss';
 import { useAppSelector } from '../../store/hooks';
 import { CircularProgress } from '@material-ui/core';
 import { getTVLData } from '../../apis/apis';
-import { dateBeforeMonth } from '../../helpers/common';
+import { convertToDate, dateBeforeMonth } from '../../helpers/common';
 import { TVLData } from '../../interfaces/SFormData';
 import { BigNumber } from '@0x/utils';
 
@@ -17,7 +17,6 @@ const coinGeckoClient = new CoinGeckoClient({
 });
 
 const cx = classNames.bind(styles);
-
 const AreaChart: React.FC = () => {
   const [series, setSeries] = useState([{ data: [], name: "Price" }]);
   const [isLoading, setIsLoading] = useState(true);
@@ -78,12 +77,6 @@ const AreaChart: React.FC = () => {
     ]
   });
 
-  const convertToDate = (param: number) => {
-    return `${new Date(param).getFullYear()} - ${
-      new Date(param).getMonth() + 1
-    } - ${new Date(param).getDate()}`;
-  };
-
   const chainPriceDataForChart = (data: any, tvlData: any) => {
     const res = data.reduce((res: any[], e: any) => {
       const date = convertToDate(e[0]);
@@ -101,10 +94,15 @@ const AreaChart: React.FC = () => {
       }
       return res;
     }, []);
-
+    
     const categories: any = res.map((item: number[]) => convertToDate(item[0]));
     const seriesPrice = res.map((item: number[]) => item[2]);
-    const tvlFinally = tvlData.map((item: TVLData) => new BigNumber(item.tvl).toFixed(4));
+    let tvlFinally = tvlData.map((item: TVLData) => new BigNumber(item.tvl).toFixed(4));
+    
+    if (tvlFinally.length > seriesPrice.length) {
+      const indexRemove = tvlFinally.length - seriesPrice.length;
+      tvlFinally.splice(0, indexRemove);
+    }
     const series = [
       {
         name: "Price",
@@ -127,15 +125,6 @@ const AreaChart: React.FC = () => {
       tooltip: {
         shared: true
       }
-      // tooltip: {
-      //   custom: function ({ series, seriesIndex, dataPointIndex, w }) {
-      //     return (
-      //       '<div style="padding: 10px; text-transform: uppercase">' +
-      //       `$${series[seriesIndex][dataPointIndex]} <strong>${selectedCurrency}</strong>` +
-      //       '</div>'
-      //     );
-      //   },
-      // },
     });
     setSeries(series);
   };
@@ -151,7 +140,7 @@ const AreaChart: React.FC = () => {
       endTime: new Date().getTime()
     }
     const tvlData = await getTVLData(param);
-    chainPriceDataForChart(getOHCL, tvlData.data);
+    chainPriceDataForChart(getOHCL, tvlData);
     if (getOHCL) {
       setIsLoading(false);
     }
