@@ -6,12 +6,12 @@ import {
 import CloseIcon from '@mui/icons-material/Close';
 import classNames from "classnames/bind";
 import { useCallback, useEffect, useState } from "react";
+import useIsMobile from "src/hooks/useMobile";
 import CHN_icon from '../../../assets/icon/CHN.svg';
 import { currentAddress } from '../../../helpers/common';
 import { getCHNBalance, stakingToken } from '../../../helpers/ContractService';
 import { useAppSelector } from '../../../store/hooks';
 import styles from './styles.module.scss';
-import { useMediaQuery } from 'react-responsive'
 
 const commaNumber = require('comma-number');
 const format = commaNumber.bindWith(',', '.');
@@ -54,7 +54,7 @@ const WithDraw = (props: Props) => {
     const wallet = useAppSelector((state: any) => state.wallet);
     const [isApprove, setApprove] = useState(false);
     const [value, setValue] = useState(0);
-    const isMobile = useMediaQuery({ query: '(max-width: 768px)' })
+    const isMobile = useIsMobile(768)
 
     useEffect(() => {
         stake > 0 ? setValue(stake) : setValue(0)

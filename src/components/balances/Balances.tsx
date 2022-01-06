@@ -16,7 +16,7 @@ import TableComponent from './Table';
 import CardComponent from './TableOnMobile';
 import ModalWithDraw from './WithDrawModal';
 import { BigNumber } from '@0x/utils';
-import { useMediaQuery } from 'react-responsive'
+import useIsMobile from 'src/hooks/useMobile';
 
 
 
@@ -108,7 +108,7 @@ const Balances: React.FC = () => {
     isOpenStake: false,
     isOpenWithdraw: false,
   });
-  const isMobile = useMediaQuery({ query: '(max-width: 768px)' })
+  const isMobile = useIsMobile(768)
 
   const { isActive, isActiveWithDraw, isOpenStake, isOpenWithdraw } = state
   const classes = useStyles();
@@ -184,8 +184,8 @@ const Balances: React.FC = () => {
       <div className={cx('balance')}>
         <div className={cx('balance-head-text')}>Balances</div>
         <div className={cx('balance-row')}>
-          <span className={cx(!isMobile ? 'balance-key' : 'm-balance-key')}>Stake:</span>
-          <span className={cx(!isMobile ? 'balance-value' : 'm-balance-value')}>{stake}</span>
+          <span className={cx('balance-key')}>Stake:</span>
+          <span className={cx('balance-value')}>{stake}</span>
           <Autocomplete
             classes={classes}
             options={currencies}
@@ -197,8 +197,8 @@ const Balances: React.FC = () => {
             size={'small'}
             id="combo-box-demo"
           />
-          <div className={cx(!isMobile ? 'balance-key' : 'm-balance-key')}>Wallet:</div>
-          <div className={cx(!isMobile ? 'balance-value' : 'm-balance-value')}>{walletValue}</div>
+          <div className={cx('balance-key')}>Wallet:</div>
+          <div className={cx('balance-value')}>{walletValue}</div>
           <div>
             <Autocomplete
               classes={classes}
@@ -212,8 +212,8 @@ const Balances: React.FC = () => {
               id="combo-box-demo"
             />
           </div>
-          <div className={cx(!isMobile ? 'balance-key' : 'm-balance-key')}>Earned:</div>
-          <div className={cx(!isMobile ? 'balance-value' : 'm-balance-value')}>{earn}</div>
+          <div className={cx('balance-key')}>Earned:</div>
+          <div className={cx('balance-value')}>{earn}</div>
           <div>
             <Autocomplete
               classes={classes}
@@ -228,20 +228,6 @@ const Balances: React.FC = () => {
             />
           </div>
         </div>
-        {isMobile ? (
-
-          <div className={`${cx('switcher')}`}>
-            <Button onClick={handleActiveClass} className={cx('switcher_stake', {
-              'button-active': isActive,
-              'button-deactive': !isActive
-            })} style ={{fontSize: '28px'}}>Stake</Button>
-            <Button onClick={handleActiveWithDraw} className={cx('switcher_withdraw', {
-              'button-active': isActiveWithDraw,
-              'button-deactive': !isActiveWithDraw
-            })} style ={{fontSize: '28px'}}>WithDraw</Button>
-          </div>
-        ) : (
-
           <div className={`${cx('switcher')}`}>
             <Button onClick={handleActiveClass} className={cx('switcher_stake', {
               'button-active': isActive,
@@ -252,7 +238,6 @@ const Balances: React.FC = () => {
               'button-deactive': !isActiveWithDraw
             })}>WithDraw</Button>
           </div>
-        )}
       </div>
 
       {isMobile ?

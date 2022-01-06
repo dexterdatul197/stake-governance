@@ -8,7 +8,7 @@ import Stake from "./Stake";
 import styles from "./styles.module.scss";
 import Transaction from "./Transaction";
 import LoadingComponent from "./isLoading"
-import { useMediaQuery } from 'react-responsive'
+import useIsMobile from "src/hooks/useMobile";
 
 const cx = classNames.bind(styles);
 
@@ -35,7 +35,7 @@ const Modal = memo((props: Props) => {
     value3: 75,
     all: 100,
   });
-  const isMobile = useMediaQuery({ query: '(max-width: 768px)' })
+  const isMobile = useIsMobile(768)
   const renderStepContent = (step: Number) => {
     switch (step) {
       case 0:

@@ -39,7 +39,7 @@
         font-size: 20px;
         font-weight: 500;
         margin-right: 35px;
-        text-align: left;       
+        text-align: left;
       }
       .balance-value {
         color: var(--color-text-white-black);
@@ -53,7 +53,7 @@
         font-size: 24px;
         font-weight: 500;
         margin-right: 35px;
-        text-align: left;       
+        text-align: left;
       }
       .m-balance-value {
         color: var(--color-text-white-black);
@@ -65,47 +65,79 @@
     }
   }
 
-  .switcher{
+  .switcher {
     margin-top: 31px;
     display: flex;
     justify-content: center;
     &_stake,
-    &_withdraw{
-      background: #8196BB;
+    &_withdraw {
+      background: #8196bb;
       border-radius: 16px;
       text-transform: capitalize;
-      color: #FFFFFF;
+      color: #ffffff;
     }
 
     &_stake {
       width: 221px;
-      height:65px;
-      line-height:65px;
+      height: 65px;
+      line-height: 65px;
       font-size: 18px;
       font-weight: 700;
       margin-right: 10px;
     }
-    
+
     &_withdraw {
       width: 221px;
-      height:65px;
-      line-height:65px;
+      height: 65px;
+      line-height: 65px;
       font-size: 18px;
       font-weight: 700;
     }
 
     .button-active {
-      background: #107DEF;
-      color: #fff
+      background: #107def;
+      color: #fff;
     }
     .button-deactive {
-      background: #8196BB;
-      color: #FFFFFF;
+      background: #8196bb;
+      color: #ffffff;
     }
   }
 
   .history {
     margin-top: 20px;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  }
+}
+@media screen and (max-width: 768px) {
+  :root {
+    .balance {
+      .balance-row {
+        .balance-key {
+          color: var(--color-text-white-black);
+          font-size: 24px;
+          font-weight: 500;
+          margin-right: 35px;
+          text-align: left;
+        }
+        .balance-value {
+          color: var(--color-text-white-black);
+          font-size: 26px;
+          font-weight: 600;
+          text-align: left;
+          margin-right: 15px;
+        }
+      }
+    }
+
+    .switcher {
+      &_stake {
+        font-size: 24px;
+      }
+
+      &_withdraw {
+        font-size: 24px;
+      }
+    }
   }
 }
