@@ -11,6 +11,7 @@ import Main from './components/main/Main';
 import CustomSnackbar from './components/snackbar/Snackbar';
 import './_app.scss';
 
+
 const App: React.FC = () => {
   return (
     <div className="App">
