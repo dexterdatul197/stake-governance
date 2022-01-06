@@ -200,7 +200,7 @@ const ConnectWalletDialog: React.FC = () => {
               className={cx("list-wallet")}
             >
               <Button className={cx("button")} disableRipple={true}>
-                <img className={cx("icon")} src={icon} alt="icon"/>
+                <img className={cx("icon")} src={icon} alt="icon" />
                 <Typography className={cx("title")}>{title}</Typography>
               </Button>
             </Box>

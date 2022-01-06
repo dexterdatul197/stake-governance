@@ -1,11 +1,11 @@
-import { ApexOptions } from 'apexcharts';
-import classNames from 'classnames/bind';
-import { CoinGeckoClient } from 'coingecko-api-v3';
-import React, { useEffect, useState } from 'react';
-import ReactApexChart from 'react-apexcharts';
-import styles from './AreaChart.module.scss';
-import { useAppSelector } from '../../store/hooks';
-import { CircularProgress } from '@material-ui/core';
+import { ApexOptions } from "apexcharts";
+import classNames from "classnames/bind";
+import { CoinGeckoClient } from "coingecko-api-v3";
+import React, { useEffect, useState } from "react";
+import ReactApexChart from "react-apexcharts";
+import styles from "./AreaChart.module.scss";
+import { useAppSelector } from "../../store/hooks";
+import { CircularProgress } from "@material-ui/core";
 
 const coinGeckoClient = new CoinGeckoClient({
   timeout: 10000,
@@ -15,7 +15,7 @@ const coinGeckoClient = new CoinGeckoClient({
 const cx = classNames.bind(styles);
 
 const AreaChart: React.FC = () => {
-  const [series, setSeries] = useState([{ data: [], name: 'Price' }]);
+  const [series, setSeries] = useState([{ data: [], name: "Price" }]);
   const [isLoading, setIsLoading] = useState(true);
   const selectedCurrency = useAppSelector(
     (state) => state.currency.selectedCurrency
@@ -37,11 +37,11 @@ const AreaChart: React.FC = () => {
     legend: {
       show: false,
     },
-    colors: ['#F78939', '#72BF65'],
+    colors: ["#F78939", "#72BF65"],
     stroke: {
       show: true,
-      curve: 'smooth',
-      lineCap: 'butt',
+      curve: "smooth",
+      lineCap: "butt",
       colors: undefined,
       width: 2,
       dashArray: 0,
@@ -53,7 +53,7 @@ const AreaChart: React.FC = () => {
       labels: {
         show: false,
       },
-      categories: ['1', '2', '3'],
+      categories: ["1", "2", "3"],
     },
     yaxis: {
       show: false,
@@ -89,7 +89,7 @@ const AreaChart: React.FC = () => {
 
     const series = [
       {
-        name: 'Price',
+        name: "Price",
         data: seriesPrice,
       },
     ];
@@ -102,9 +102,9 @@ const AreaChart: React.FC = () => {
       tooltip: {
         custom: function ({ series, seriesIndex, dataPointIndex, w }) {
           return (
-            '<div style="padding: 10px; text-transform: uppercase">' +
+            '<div style="padding: 10px;">' +
             `$${series[seriesIndex][dataPointIndex]} <strong>${selectedCurrency}</strong>` +
-            '</div>'
+            "</div>"
           );
         },
       },
@@ -114,7 +114,7 @@ const AreaChart: React.FC = () => {
 
   const getCoinGecko = async () => {
     const getOHCL = await coinGeckoClient.coinIdOHLC({
-      id: 'chain',
+      id: "chain",
       vs_currency: `${selectedCurrency}`,
       days: 30,
     });
@@ -129,15 +129,25 @@ const AreaChart: React.FC = () => {
   }, [selectedCurrency]);
 
   return (
-    <div className={cx('area-chart')}>
+    <div className={cx("area-chart")}>
       <div id="chart" style={{ height: 480 }}>
         {isLoading ? (
-          <CircularProgress size={50} color="primary" sx={{
-            position: 'absolute',
-            top: '50%'
-        }}/>
+          <CircularProgress
+            size={50}
+            color="primary"
+            sx={{
+              position: "absolute",
+              top: "50%",
+            }}
+          />
         ) : (
-          <ReactApexChart options={option} series={series} width="100%" type="line" height="100%" />
+          <ReactApexChart
+            options={option}
+            series={series}
+            width="100%"
+            type="line"
+            height="100%"
+          />
         )}
       </div>
     </div>
