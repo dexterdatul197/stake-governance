@@ -154,12 +154,12 @@ const Balances: React.FC = () => {
   const getTotalStakeInPool = useCallback(async () => {
     try {
       const connectedAddress = currentAddress(wallet);
-      const getValueStake = await stakingToken().methods.linearPoolInfo(0).call();
-      const getValueEarned = await stakingToken().methods.getAmountRewardInPool(0, connectedAddress).call()
-      setStake(getValueStake.totalStaked);
+      const getValueStake = await stakingToken().methods.userInfo(0, connectedAddress).call();
+      const getValueEarned = await stakingToken().methods.pendingReward(0, connectedAddress).call()
+      setStake(getValueStake.amount);
       setEarn(getValueEarned)
-      handleUpdateSmartContract()
-
+      // handleUpdateSmartContract()
+      console.log(getValueStake)
     } catch (error) {
       console.log(error)
     }

@@ -48,7 +48,7 @@ const Transaction = (props: Props) => {
     const checkApprove = async () => {
         if (isApprove === true) {
             handleCloseModal();
-            await stakingToken().methods.stake(0, walletValue).send({ from: currentAddress(wallet) })
+            await stakingToken().methods.stake(0, amount).send({ from: currentAddress(wallet) })
         }
     }
 
