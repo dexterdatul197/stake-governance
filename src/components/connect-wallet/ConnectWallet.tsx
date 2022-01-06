@@ -9,6 +9,8 @@ import useOnClickOutside from '../../helpers/useClickOutside';
 import { useAppSelector } from '../../store/hooks';
 import styles from './ConnectWallet.module.scss';
 import { setOpenConnectDialog } from './redux/wallet';
+import { ReactComponent as ConectWalletIcon } from '../../assets/icon/wallet.svg';
+
 const cx = classnames.bind(styles);
 
 const ConnectWallet: React.FC = () => {
@@ -26,8 +28,8 @@ const ConnectWallet: React.FC = () => {
     setOpenDropdown(true);
   };
   const handleCloseDropdown = () => {
-      setOpenDropdown(false);
-  }
+    setOpenDropdown(false);
+  };
   useOnClickOutside(ref, handleCloseDropdown);
   useEffect(() => {
     handleCloseDropdown();
@@ -48,29 +50,38 @@ const ConnectWallet: React.FC = () => {
               </div>
             ) : null}
             {wallet.trust ? (
-                <div className={cx('wallet-item')}>
-                    <BscSVG size={'md'} />
-                    {getShortAddress(wallet.trust)}
-                </div>
+              <div className={cx('wallet-item')}>
+                <BscSVG size={'md'} />
+                {getShortAddress(wallet.trust)}
+              </div>
             ) : null}
             {wallet.coinbase ? (
-                <div className={cx('wallet-item')}>
-                    <BscSVG size={'md'} />
-                    {getShortAddress(wallet.coinbase)}
-                </div>
+              <div className={cx('wallet-item')}>
+                <BscSVG size={'md'} />
+                {getShortAddress(wallet.coinbase)}
+              </div>
             ) : null}
             {wallet.walletconnect ? (
-                <div className={cx('wallet-item')}>
-                    <BscSVG size={'md'} />
-                    {getShortAddress(wallet.walletconnect)}
-                </div>
+              <div className={cx('wallet-item')}>
+                <BscSVG size={'md'} />
+                {getShortAddress(wallet.walletconnect)}
+              </div>
             ) : null}
-            <div onClick={() => handleOpenConnectWalletDialog()} className={cx('btn-add-wallet')}><AddContainedSVG size={'md'} /> Switch wallet</div>
+            <div
+              onClick={() => handleOpenConnectWalletDialog()}
+              className={cx('btn-add-wallet')}
+            >
+              <AddContainedSVG size={'md'} /> Switch wallet
+            </div>
           </div>
         </>
       ) : (
-        <div className={cx('button')} onClick={() => handleOpenConnectWalletDialog()}>
-          Connect wallet
+        <div
+          className={cx('button')}
+          onClick={() => handleOpenConnectWalletDialog()}
+        >
+          <ConectWalletIcon stroke="var(--text-color-stake)" />{' '}
+          <span className={cx('button__text')}>Connect wallet</span>
         </div>
       )}
     </>
