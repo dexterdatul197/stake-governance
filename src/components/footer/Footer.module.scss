@@ -1,11 +1,11 @@
-:root{
-    .footer-component {
-        padding: 30px 100px;
-        display: flex;
-        justify-content: space-between;
-    }
-    .footer-component div {
-        color: var(--color-text-footer);
-        font-size: 18px;
-    }
+:root {
+  .footer-component {
+    padding: 30px 230px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .footer-component div {
+    color: var(--color-text-footer);
+    font-size: 18px;
+  }
 }

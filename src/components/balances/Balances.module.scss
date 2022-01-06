@@ -7,7 +7,7 @@
     width: 543px;
     height: 387px;
     background-color: var(--background-governance-color);
-    padding: 10px;
+    // padding: 10px;
     border-radius: 15px;
     margin: 0 auto;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
@@ -33,9 +33,8 @@
         font-weight: 500;
         margin-right: 35px;
         text-align: left;
-       
       }
-    
+
       .balance-value {
         color: var(--color-text-white-black);
         font-size: 24px;
@@ -46,47 +45,52 @@
     }
   }
 
-  .switcher{
+  .switcher {
     margin-top: 31px;
     display: flex;
     justify-content: center;
     &_stake,
-    &_withdraw{
-      background: #8196BB;
+    &_withdraw {
+      background: #8196bb;
       border-radius: 16px;
       text-transform: capitalize;
-      color: #FFFFFF;
+      color: #ffffff;
     }
 
     &_stake {
       width: 221px;
-      height:65px;
-      line-height:65px;
+      height: 65px;
+      line-height: 65px;
       font-size: 18px;
       font-weight: 700;
       margin-right: 10px;
     }
-    
+
     &_withdraw {
       width: 221px;
-      height:65px;
-      line-height:65px;
+      height: 65px;
+      line-height: 65px;
       font-size: 16px;
       font-weight: 700;
     }
 
     .button-active {
-      background: #107DEF;
-      color: #fff
+      background: #107def;
+      color: #fff;
     }
     .button-deactive {
-      background: #8196BB;
-      color: #FFFFFF;
+      background: #8196bb;
+      color: #ffffff;
     }
+  }
+
+  .history-label {
+    text-align: left;
+    font-size: 24px;
   }
 
   .history {
     margin-top: 20px;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    // box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   }
 }

@@ -108,12 +108,6 @@ export const headCells: readonly HeadCell[] = [
     disablePadding: false,
     label: "Date",
   },
-  {
-    id: "status",
-    numeric: true,
-    disablePadding: false,
-    label: "Status",
-  },
 ];
 
 export enum THEME_MODE {
