@@ -158,7 +158,7 @@ const Balances: React.FC = () => {
       const getValueEarned = await stakingToken().methods.pendingReward(0, connectedAddress).call()
       setStake(getValueStake.amount);
       setEarn(getValueEarned)
-      // handleUpdateSmartContract()
+      handleUpdateSmartContract()
       console.log(getValueStake)
     } catch (error) {
       console.log(error)
