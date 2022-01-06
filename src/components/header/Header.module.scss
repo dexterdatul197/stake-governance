@@ -170,4 +170,36 @@
       }
     }
   }
+  @media screen and (max-width: 768px) {
+    .header-parent {
+      padding: 12px 16px;
+      border-bottom: 1px solid rgba(228, 233, 244, 1);
+      position: fixed;
+      top: 0;
+      width: calc(100%);
+      z-index: 100000;
+    }
+    .header-wallet {
+      display: none;
+    }
+    .logo {
+      img {
+        width: 32px;
+        height: 32px;
+      }
+    }
+    .stake-governance {
+      position: absolute;
+      left: 50%;
+      transform: translate(-50%);
+      .link-style {
+        font-size: 14px !important;
+        margin: 0 6px;
+        color: var(--color-text);
+      }
+      .text-active {
+        color: var(--color-text-active);
+      }
+    }
+  }
 }

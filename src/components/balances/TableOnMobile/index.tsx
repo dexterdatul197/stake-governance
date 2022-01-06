@@ -37,6 +37,9 @@ const CardComponent : FC = () => {
             <div className={cx('card-container')}>
                 <Card />
                 <Card />
+                <Card />
+                <Card />
+                <Card />
             </div>
         </>
     )

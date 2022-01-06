@@ -8,7 +8,6 @@ import Stake from "./Stake";
 import styles from "./styles.module.scss";
 import Transaction from "./Transaction";
 import LoadingComponent from "./isLoading"
-import useIsMobile from "src/hooks/useMobile";
 
 const cx = classNames.bind(styles);
 
@@ -35,7 +34,6 @@ const Modal = memo((props: Props) => {
     value3: 75,
     all: 100,
   });
-  const isMobile = useIsMobile(768)
   const renderStepContent = (step: Number) => {
     switch (step) {
       case 0:
@@ -61,7 +59,7 @@ const Modal = memo((props: Props) => {
 
   return (
     <Dialog
-      maxWidth={isMobile ? "sm" : "xs"}
+      maxWidth="xs"
       className={cx("dialog")}
       open={openStake}
       onClose={() => {

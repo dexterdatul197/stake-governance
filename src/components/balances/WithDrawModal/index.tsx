@@ -6,7 +6,6 @@ import {
 import CloseIcon from '@mui/icons-material/Close';
 import classNames from "classnames/bind";
 import { useCallback, useEffect, useState } from "react";
-import useIsMobile from "src/hooks/useMobile";
 import CHN_icon from '../../../assets/icon/CHN.svg';
 import { currentAddress } from '../../../helpers/common';
 import { getCHNBalance, stakingToken } from '../../../helpers/ContractService';
@@ -54,7 +53,6 @@ const WithDraw = (props: Props) => {
     const wallet = useAppSelector((state: any) => state.wallet);
     const [isApprove, setApprove] = useState(false);
     const [value, setValue] = useState(0);
-    const isMobile = useIsMobile(768)
 
     useEffect(() => {
         stake > 0 ? setValue(stake) : setValue(0)
@@ -95,7 +93,7 @@ const WithDraw = (props: Props) => {
     return (
         <Dialog className={cx('dialog-container')} open={openWithdraw} onClose={() => {
             handleCloseModalWithDraw();
-        }} maxWidth={isMobile ? "lg" : "md"} disableEscapeKeyDown>
+        }} maxWidth="md" disableEscapeKeyDown>
             <BootstrapDialogTitle id="customized-dialog-title" onClose={handleCloseModalWithDraw}>
                 Modal title
             </BootstrapDialogTitle>
