@@ -16,10 +16,10 @@
         display: flex;
         flex-direction: column;
         font-size: 24px;
-        border-bottom:rgba(0, 28, 78, 0.15) 1px solid;
+        border-bottom: rgba(0, 28, 78, 0.15) 1px solid;
         margin-top: 28px;
         line-height: 22px;
-        .card-items{
+        .card-items {
             display: flex;
             flex-direction: row;
             margin-bottom: 28px;
@@ -27,12 +27,19 @@
                 margin-left: auto;
                 color: rgba(0, 28, 78, 0.87);
             }
+            .card-head-item {
+                margin-left: 11px;
+                font-size: 26px;
+                line-height: 22px;
+                color: rgba(0, 28, 78, 0.87);
+                font-weight: 600;
+            }
             .btn-stake {
                 margin-left: auto;
                 color: rgba(0, 28, 78, 0.87);
-                border: #EDF1F8 1px solid;    
+                border: #edf1f8 1px solid;
                 border-radius: 6px;
-                background-color: #EDF1F8;
+                background-color: #edf1f8;
                 padding: 8px 18px 8px 18px;
             }
         }

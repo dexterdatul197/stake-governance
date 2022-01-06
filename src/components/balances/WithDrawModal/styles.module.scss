@@ -9,7 +9,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        color: #107DEF;
+        color: #107def;
         font-size: 20px;
         font-weight: 600;
     }
@@ -39,7 +39,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: #EDF1F8;
+            background: #edf1f8;
             border-radius: 10px;
             padding: 19px 20px 19px 20px;
 
@@ -59,24 +59,24 @@
                         font-weight: 500;
                         font-size: 16px;
                     }
-                    .token-text{
-                        color: #107DEF;
+                    .token-text {
+                        color: #107def;
                         font-weight: 600;
                         font-size: 18px;
                     }
                 }
             }
 
-            .main-right{
-                &__price{
-                    display:block;
+            .main-right {
+                &__price {
+                    display: block;
                     color: rgba(0, 28, 78, 0.38);
                     font-weight: 500;
                     font-size: 16px;
                 }
-                &__quantity{
-                    display:block;
-                    color: #107DEF;
+                &__quantity {
+                    display: block;
+                    color: #107def;
                     font-size: 18px;
                     font-weight: 600;
                     text-align: right;
@@ -86,18 +86,56 @@
         }
     }
 
-    .dialog-actions{
-        display:flex;
+    .dialog-actions {
+        display: flex;
         justify-content: center;
         margin-bottom: 49px;
-        .button-action{
-            background-color:#107DEF;
-            color:#FFFFFF;
+        .button-action {
+            background-color: #107def;
+            color: #ffffff;
             font-size: 18px;
             font-weight: 700;
             text-transform: capitalize;
             padding: 20px 243px 20px 249px;
             border-radius: 10px;
+        }
+    }
+}
+@media screen and (max-width: 768px) {
+    .dialog-container {
+        .dialig-title {
+            font-size: 28px;
+        }
+        .dialog-content {
+            &__title {
+                font-size: 24px;
+            }
+            &__children {
+                .main-left {
+                    &__text {
+                        .token-title {
+                            font-size: 24px;
+                        }
+                        .token-text {
+                            font-size: 26px;
+                        }
+                    }
+                }
+
+                .main-right {
+                    &__price {
+                        font-size: 24px;
+                    }
+                    &__quantity {
+                        font-size: 26px;
+                    }
+                }
+            }
+        }
+        .dialog-actions {
+            .button-action {
+                font-size: 24px;
+            }
         }
     }
 }

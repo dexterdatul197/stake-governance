@@ -185,3 +185,56 @@
     }
   }
 }
+@media screen and (max-width: 768px) {
+  .dialog {
+    .title-dialog {
+      .text-stake {
+        font-size: 28px;
+      }
+    }
+    .dialog-content {
+      &__amount {
+        .title {
+          font-size: 24px;
+        }
+      }
+      .balance {
+        &__wallet-balance {
+          .title {
+            font-size: 24px;
+          }
+        }
+        &__stake-balance {
+          .title {
+            font-size: 24px;
+          }
+        }
+      }
+    }
+    .dialog-action {
+      .button-stake {
+        font-size: 26px;
+      }
+    }
+    .dialog-title__transaction {
+      .children_content {
+        .confirm-title {
+          font-size: 24px;
+        }
+      }
+    }
+    .dialog-content__transaction {
+      .token-quantity {
+        font-size: 48px;
+      }
+      .token-stake {
+        font-size: 24px;
+      }
+    }
+    .dialog-actions__transaction {
+      &__confirm {
+        font-size: 24px;
+      }
+    }
+  }
+}

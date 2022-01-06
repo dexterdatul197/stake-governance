@@ -11,7 +11,7 @@ import { currentAddress } from '../../../helpers/common';
 import { getCHNBalance, stakingToken } from '../../../helpers/ContractService';
 import { useAppSelector } from '../../../store/hooks';
 import styles from './styles.module.scss';
-
+import { useMediaQuery } from 'react-responsive'
 
 const commaNumber = require('comma-number');
 const format = commaNumber.bindWith(',', '.');
@@ -28,7 +28,6 @@ interface Props {
 
 const BootstrapDialogTitle = (props: any) => {
     const { children, onClose, ...other } = props;
-
     return (
         <DialogTitle className={cx('dialig-title')} sx={{ m: 0, p: 2 }} {...other}>
             {children}
@@ -55,6 +54,7 @@ const WithDraw = (props: Props) => {
     const wallet = useAppSelector((state: any) => state.wallet);
     const [isApprove, setApprove] = useState(false);
     const [value, setValue] = useState(0);
+    const isMobile = useMediaQuery({ query: '(max-width: 768px)' })
 
     useEffect(() => {
         stake > 0 ? setValue(stake) : setValue(0)
@@ -95,7 +95,7 @@ const WithDraw = (props: Props) => {
     return (
         <Dialog className={cx('dialog-container')} open={openWithdraw} onClose={() => {
             handleCloseModalWithDraw();
-        }} maxWidth="md" disableEscapeKeyDown>
+        }} maxWidth={isMobile ? "lg" : "md"} disableEscapeKeyDown>
             <BootstrapDialogTitle id="customized-dialog-title" onClose={handleCloseModalWithDraw}>
                 Modal title
             </BootstrapDialogTitle>

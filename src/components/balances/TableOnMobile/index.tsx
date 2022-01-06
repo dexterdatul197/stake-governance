@@ -11,9 +11,7 @@ const CardComponent : FC = () => {
             <div className={cx('card')}>
                     <div className={cx('card-items')}>
                         <div>1</div>
-                        <div style={{
-                            marginLeft: '11px',fontSize: '26px', lineHeight: '22px', color: 'rgba(0, 28, 78, 0.87)', fontWeight: '600'
-                        }}>0xxxxakhfkdhfwkh...</div>
+                        <div className={cx('card-head-item')}>0xxxxakhfkdhfwkh...</div>
                     </div>
                     <div className={cx('card-items')}>
                         <div>Type</div>
