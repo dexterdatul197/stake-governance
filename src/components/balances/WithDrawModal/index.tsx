@@ -1,7 +1,7 @@
 import {
     Box,
     Button, Dialog, DialogActions, DialogContent,
-    DialogTitle, IconButton, Input, Typography
+    DialogTitle, IconButton, Input, Typography, CircularProgress
 } from "@material-ui/core";
 import CloseIcon from '@mui/icons-material/Close';
 import classNames from "classnames/bind";
@@ -11,6 +11,7 @@ import { currentAddress } from '../../../helpers/common';
 import { getCHNBalance, stakingToken } from '../../../helpers/ContractService';
 import { useAppSelector } from '../../../store/hooks';
 import styles from './styles.module.scss';
+import { BigNumber } from '@0x/utils';
 
 
 const commaNumber = require('comma-number');
@@ -24,6 +25,7 @@ interface Props {
     walletValue?: any
     earn: Number
     stake?: any
+    handleUpdateSmartContract: () => void;
 }
 
 const BootstrapDialogTitle = (props: any) => {
@@ -51,52 +53,48 @@ const BootstrapDialogTitle = (props: any) => {
 };
 
 const WithDraw = (props: Props) => {
-    const { openWithdraw, handleCloseModalWithDraw, walletValue, earn, stake } = props;
+    const { openWithdraw, handleCloseModalWithDraw, earn, stake, handleUpdateSmartContract } = props;
     const wallet = useAppSelector((state: any) => state.wallet);
-    const [isApprove, setApprove] = useState(false);
     const [value, setValue] = useState(0);
-
-    useEffect(() => {
-        stake > 0 ? setValue(stake) : setValue(0)
-    }, [stake])
-
-
-    const handleWithdraw = useCallback(async () => {
-        try {
-            setTimeout(() => {
-                setApprove(true)
-            }, 1000)
-            await getCHNBalance().methods.approve(process.env.REACT_APP_STAKE_TESTNET_ADDRESS, walletValue).send({ from: currentAddress(wallet) })
-        } catch (error) {
-            console.log(error);
-            handleCloseModalWithDraw()
-        }
-    }, [wallet])
-
-    const checkApprove = async () => {
-        if (isApprove === true) {
-            handleCloseModalWithDraw();
-            await stakingToken().methods.withdraw(0, value).send({ from: currentAddress(wallet) });
-            // setValue(stake)
-        }
-    }
-
-    useEffect(() => {
-        checkApprove()
-    }, [isApprove])
+    const [progress, setProgress] = useState(false)
 
     const handleChangeInputValue = useCallback((event: any) => {
         setValue(event.target.value);
     }, [value])
 
 
+    useEffect(() => {
+        if (stake) {
+            setValue(stake)
+        }
+    }, [stake])
 
+
+    const handleWithdraw = async () => {
+        try {
+            setProgress(true)
+            setTimeout(() => {
+                setProgress(false)
+            }, 1000)
+            console.log('value: ', value)
+            await stakingToken().methods.withdraw(0, new BigNumber(value).multipliedBy('1e18')).send({ from: currentAddress(wallet) });
+            handleUpdateSmartContract()
+        } catch (error) {
+            console.log(error);
+            handleCloseModalWithDraw()
+            setProgress(false)
+        }
+    }
 
     return (
         <Dialog className={cx('dialog-container')} open={openWithdraw} onClose={() => {
             handleCloseModalWithDraw();
+            setValue(stake)
         }} maxWidth="md" disableEscapeKeyDown>
-            <BootstrapDialogTitle id="customized-dialog-title" onClose={handleCloseModalWithDraw}>
+            <BootstrapDialogTitle id="customized-dialog-title" onClose={() => {
+                handleCloseModalWithDraw();
+                setValue(stake)
+            }}>
                 Modal title
             </BootstrapDialogTitle>
             <DialogContent className={cx('dialog-content')}>
@@ -119,7 +117,9 @@ const WithDraw = (props: Props) => {
                 </Box>
             </DialogContent>
             <DialogActions className={cx('dialog-actions')}>
-                <Button onClick={handleWithdraw} className={cx('button-action')}>Withdraw</Button>
+                <Button onClick={handleWithdraw} className={cx('button-action')}>
+                    {progress ? <CircularProgress style={{ color: '#ffffff' }} /> : 'Withdraw'}
+                </Button>
             </DialogActions>
         </Dialog>
     )
