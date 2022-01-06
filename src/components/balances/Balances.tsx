@@ -13,8 +13,10 @@ import { useAppSelector } from '../../store/hooks';
 import styles from './Balances.module.scss';
 import Modal from './StakeModal';
 import TableComponent from './Table';
+import CardComponent from './TableOnMobile';
 import ModalWithDraw from './WithDrawModal';
 import { BigNumber } from '@0x/utils';
+import { useMediaQuery } from 'react-responsive'
 
 
 
@@ -106,6 +108,8 @@ const Balances: React.FC = () => {
     isOpenStake: false,
     isOpenWithdraw: false,
   });
+  const isMobile = useMediaQuery({ query: '(max-width: 768px)' })
+
   const { isActive, isActiveWithDraw, isOpenStake, isOpenWithdraw } = state
   const classes = useStyles();
   const currencies = useAppSelector((state: any) => state.currency.currenciesList);
@@ -180,8 +184,8 @@ const Balances: React.FC = () => {
       <div className={cx('balance')}>
         <div className={cx('balance-head-text')}>Balances</div>
         <div className={cx('balance-row')}>
-          <span className={cx('balance-key')}>Stake:</span>
-          <span className={cx('balance-value')}>{stake}</span>
+          <span className={cx(!isMobile ? 'balance-key' : 'm-balance-key')}>Stake:</span>
+          <span className={cx(!isMobile ? 'balance-value' : 'm-balance-value')}>{stake}</span>
           <Autocomplete
             classes={classes}
             options={currencies}
@@ -193,10 +197,23 @@ const Balances: React.FC = () => {
             size={'small'}
             id="combo-box-demo"
           />
-        </div>
-        <div className={cx('balance-row')}>
-          <div className={cx('balance-key')}>Wallet:</div>
-          <div className={cx('balance-value')}>{walletValue}</div>
+          <div className={cx(!isMobile ? 'balance-key' : 'm-balance-key')}>Wallet:</div>
+          <div className={cx(!isMobile ? 'balance-value' : 'm-balance-value')}>{walletValue}</div>
+          <div>
+            <Autocomplete
+              classes={classes}
+              options={currencies}
+              defaultValue={'chn'}
+              // onChange={handleOnChangeSelectCurrency}
+              renderInput={(item) => (
+                <TextField {...item} margin="normal" fullWidth />
+              )}
+              size={'small'}
+              id="combo-box-demo"
+            />
+          </div>
+          <div className={cx(!isMobile ? 'balance-key' : 'm-balance-key')}>Earned:</div>
+          <div className={cx(!isMobile ? 'balance-value' : 'm-balance-value')}>{earn}</div>
           <div>
             <Autocomplete
               classes={classes}
@@ -211,38 +228,39 @@ const Balances: React.FC = () => {
             />
           </div>
         </div>
-        <div className={cx('balance-row')}>
-          <div className={cx('balance-key')}>Earned:</div>
-          <div className={cx('balance-value')}>{earn}</div>
-          <div>
-            <Autocomplete
-              classes={classes}
-              options={currencies}
-              defaultValue={'chn'}
-              // onChange={handleOnChangeSelectCurrency}
-              renderInput={(item) => (
-                <TextField {...item} margin="normal" fullWidth />
-              )}
-              size={'small'}
-              id="combo-box-demo"
-            />
+        {isMobile ? (
+
+          <div className={`${cx('switcher')}`}>
+            <Button onClick={handleActiveClass} className={cx('switcher_stake', {
+              'button-active': isActive,
+              'button-deactive': !isActive
+            })} style ={{fontSize: '28px'}}>Stake</Button>
+            <Button onClick={handleActiveWithDraw} className={cx('switcher_withdraw', {
+              'button-active': isActiveWithDraw,
+              'button-deactive': !isActiveWithDraw
+            })} style ={{fontSize: '28px'}}>WithDraw</Button>
           </div>
-        </div>
-        <div className={`${cx('switcher')}`}>
-          <Button onClick={handleActiveClass} className={cx('switcher_stake', {
-            'button-active': isActive,
-            'button-deactive': !isActive
-          })}>Stake</Button>
-          <Button onClick={handleActiveWithDraw} className={cx('switcher_withdraw', {
-            'button-active': isActiveWithDraw,
-            'button-deactive': !isActiveWithDraw
-          })}>WithDraw</Button>
-        </div>
-      </div>
-      <div className={cx('history')}>
-        <TableComponent />
+        ) : (
+
+          <div className={`${cx('switcher')}`}>
+            <Button onClick={handleActiveClass} className={cx('switcher_stake', {
+              'button-active': isActive,
+              'button-deactive': !isActive
+            })}>Stake</Button>
+            <Button onClick={handleActiveWithDraw} className={cx('switcher_withdraw', {
+              'button-active': isActiveWithDraw,
+              'button-deactive': !isActiveWithDraw
+            })}>WithDraw</Button>
+          </div>
+        )}
       </div>
 
+      {isMobile ?
+        <CardComponent /> : (
+          <div className={cx('history')}>
+            <TableComponent />
+          </div>
+        )}
       <Modal walletValue={walletValue} currencies={currencies} classes={classes} openStake={isOpenStake} handleCloseModal={handleCloseModal} />
       <ModalWithDraw stake={stake} earn={earn} openWithdraw={isOpenWithdraw} handleCloseModalWithDraw={handleCloseModalWithDraw} walletValue={walletValue} />
 

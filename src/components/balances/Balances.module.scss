@@ -1,6 +1,8 @@
 :root {
   .balances-history {
     text-align: center;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .balance {
@@ -22,23 +24,38 @@
     }
 
     .balance-row {
-      display: flex;
-      justify-content: center;
+      display: grid;
+      grid-auto-flow: row;
+      grid-template-columns: repeat(3, max(0, 1fr));
+      flex: 1 1 0%;
+      margin-left: 128px;
+      margin-right: 128px;
+      margin-top: 44px;
       align-items: center;
-      padding: 5px 0;
-
       .balance-key {
         color: var(--color-text-white-black);
         font-size: 20px;
         font-weight: 500;
         margin-right: 35px;
-        text-align: left;
-       
+        text-align: left;       
       }
-    
       .balance-value {
         color: var(--color-text-white-black);
         font-size: 24px;
+        font-weight: 600;
+        text-align: left;
+        margin-right: 15px;
+      }
+      .m-balance-key {
+        color: var(--color-text-white-black);
+        font-size: 24px;
+        font-weight: 500;
+        margin-right: 35px;
+        text-align: left;       
+      }
+      .m-balance-value {
+        color: var(--color-text-white-black);
+        font-size: 26px;
         font-weight: 600;
         text-align: left;
         margin-right: 15px;
@@ -71,7 +88,7 @@
       width: 221px;
       height:65px;
       line-height:65px;
-      font-size: 16px;
+      font-size: 18px;
       font-weight: 700;
     }
 
