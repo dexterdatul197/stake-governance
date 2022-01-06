@@ -1,7 +1,8 @@
 .card-container {
     background: var(--color-table);
     border-radius: 19px;
-    width: 515px;
+    max-width: 507px;
+    width: 100%;
     color: rgba(0, 28, 78, 0.6);
     border: rgba(0, 28, 78, 0.15) 1px solid;
     padding-right: 28px;
@@ -32,7 +33,7 @@
                 border: #EDF1F8 1px solid;    
                 border-radius: 6px;
                 background-color: #EDF1F8;
-                padding: 4px 10px 4px 10px;
+                padding: 8px 18px 8px 18px;
             }
         }
     }

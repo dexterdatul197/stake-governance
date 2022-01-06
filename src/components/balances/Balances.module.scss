@@ -6,10 +6,11 @@
   }
 
   .balance {
-    width: 543px;
-    height: 387px;
+    max-width: 543px;
+    max-height: 387px;
+    width: 100%;
     background-color: var(--background-governance-color);
-    padding: 10px;
+    padding: 10px 10px 26px 10px;
     border-radius: 15px;
     margin: 0 auto;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
@@ -28,8 +29,9 @@
       grid-auto-flow: row;
       grid-template-columns: repeat(3, max(0, 1fr));
       flex: 1 1 0%;
-      margin-left: 128px;
-      margin-right: 128px;
+      margin-left: auto;
+      margin-right: auto;
+      width: 286px;
       margin-top: 44px;
       align-items: center;
       .balance-key {

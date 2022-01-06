@@ -91,6 +91,7 @@ body {
 }
 .area-chart-main {
   padding: 20px 100px;
+  min-width: 637px;
   background-color: var(--main-background-color);
   height: calc(100% - 50px);
   // margin-top: -20px;
@@ -119,6 +120,14 @@ body {
 }
 .pd-15 {
   padding: 15px;
+}
+
+@media screen and (max-width: 768px) {
+  .area-chart-main {
+    padding: 20px 50px;
+    // margin-top: -20px;
+    // padding-bottom: 153px;
+  }
 }
 
 @media screen and (max-width: 375px) {
