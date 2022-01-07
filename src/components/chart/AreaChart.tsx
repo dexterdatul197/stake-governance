@@ -1,11 +1,15 @@
-import { ApexOptions } from "apexcharts";
-import classNames from "classnames/bind";
-import { CoinGeckoClient } from "coingecko-api-v3";
-import React, { useEffect, useState } from "react";
-import ReactApexChart from "react-apexcharts";
-import styles from "./AreaChart.module.scss";
-import { useAppSelector } from "../../store/hooks";
-import { CircularProgress } from "@material-ui/core";
+import { ApexOptions } from 'apexcharts';
+import classNames from 'classnames/bind';
+import { CoinGeckoClient } from 'coingecko-api-v3';
+import React, { useEffect, useState } from 'react';
+import ReactApexChart from 'react-apexcharts';
+import styles from './AreaChart.module.scss';
+import { useAppSelector } from '../../store/hooks';
+import { CircularProgress } from '@material-ui/core';
+import { getTVLData } from '../../apis/apis';
+import { convertToDate, dateBeforeMonth } from '../../helpers/common';
+import { TVLData } from '../../interfaces/SFormData';
+import { BigNumber } from '@0x/utils';
 
 const coinGeckoClient = new CoinGeckoClient({
   timeout: 10000,
@@ -13,7 +17,6 @@ const coinGeckoClient = new CoinGeckoClient({
 });
 
 const cx = classNames.bind(styles);
-
 const AreaChart: React.FC = () => {
   const [series, setSeries] = useState([{ data: [], name: "Price" }]);
   const [isLoading, setIsLoading] = useState(true);
@@ -23,6 +26,7 @@ const AreaChart: React.FC = () => {
 
   const [option, setOption] = useState<ApexOptions>({
     chart: {
+      type: 'line',
       height: 280,
       zoom: {
         enabled: false,
@@ -37,7 +41,7 @@ const AreaChart: React.FC = () => {
     legend: {
       show: false,
     },
-    colors: ["#F78939", "#72BF65"],
+    colors: ['#F78939', '#107DEF'],
     stroke: {
       show: true,
       curve: "smooth",
@@ -58,15 +62,22 @@ const AreaChart: React.FC = () => {
     yaxis: {
       show: false,
     },
+    tooltip: {
+      shared: true
+    },
+    series: [
+      {
+        name: 'Price',
+        data: [1, 2, 3]
+      },
+      {
+        name: 'TVL',
+        data: [2, 5, 6]
+      }
+    ]
   });
 
-  const convertToDate = (param: number) => {
-    return `${new Date(param).getFullYear()} - ${
-      new Date(param).getMonth() + 1
-    } - ${new Date(param).getDate()}`;
-  };
-
-  const chainPriceDataForChart = (data: any) => {
+  const chainPriceDataForChart = (data: any, tvlData: any) => {
     const res = data.reduce((res: any[], e: any) => {
       const date = convertToDate(e[0]);
       const existDate = res.filter(
@@ -83,14 +94,23 @@ const AreaChart: React.FC = () => {
       }
       return res;
     }, []);
-
+    
     const categories: any = res.map((item: number[]) => convertToDate(item[0]));
     const seriesPrice = res.map((item: number[]) => item[2]);
-
+    let tvlFinally = tvlData.map((item: TVLData) => new BigNumber(item.tvl).toFixed(4));
+    
+    if (tvlFinally.length > seriesPrice.length) {
+      const indexRemove = tvlFinally.length - seriesPrice.length;
+      tvlFinally.splice(0, indexRemove);
+    }
     const series = [
       {
         name: "Price",
         data: seriesPrice,
+      },
+      {
+        name: 'TVL',
+        data: tvlFinally,
       },
     ];
 
@@ -98,16 +118,13 @@ const AreaChart: React.FC = () => {
       ...option,
       xaxis: {
         categories: categories,
+        labels: {
+          show: false
+        }
       },
       tooltip: {
-        custom: function ({ series, seriesIndex, dataPointIndex, w }) {
-          return (
-            '<div style="padding: 10px;">' +
-            `$${series[seriesIndex][dataPointIndex]} <strong>${selectedCurrency}</strong>` +
-            "</div>"
-          );
-        },
-      },
+        shared: true
+      }
     });
     setSeries(series);
   };
@@ -118,7 +135,12 @@ const AreaChart: React.FC = () => {
       vs_currency: `${selectedCurrency}`,
       days: 30,
     });
-    chainPriceDataForChart(getOHCL);
+    const param = {
+      startTime: dateBeforeMonth(new Date(), 1).getTime(),
+      endTime: new Date().getTime()
+    }
+    const tvlData = await getTVLData(param);
+    chainPriceDataForChart(getOHCL, tvlData);
     if (getOHCL) {
       setIsLoading(false);
     }
