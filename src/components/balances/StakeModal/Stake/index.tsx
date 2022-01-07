@@ -1,5 +1,4 @@
 import {
-  Autocomplete,
   Box,
   Button,
   CircularProgress,
@@ -8,17 +7,15 @@ import {
   DialogTitle,
   Input,
   Slider,
-  TextField,
   Typography
 } from '@material-ui/core';
-import React, { useCallback, useState } from 'react';
-import { BigNumber } from '@0x/utils';
+import React, { useCallback } from 'react';
+import { useAppDispatch } from '../../../../store/hooks';
+import { openSnackbar, SnackbarVariant } from '../../../../store/snackbar';
 
 interface Props {
   cx?: any;
   walletValue?: any;
-  classes?: any;
-  currencies?: any;
   handleNext: () => void;
   progress: Boolean;
   value?: any;
@@ -26,8 +23,9 @@ interface Props {
 }
 
 const Stake = (props: Props) => {
-  const { cx, walletValue, classes, currencies, handleNext, progress, value, setValue } = props;
+  const { cx, walletValue, handleNext, progress, value, setValue } = props;
 
+  const dispatch = useAppDispatch();
   const handleChangeValue = useCallback(
     (event: any) => {
       let _value = { ...value };
@@ -76,6 +74,19 @@ const Stake = (props: Props) => {
     },
     [value]
   );
+
+  const handleNextStep = () => {
+    if (value.default === 0) {
+      dispatch(
+        openSnackbar({
+          message: 'Please enter the wallet balance you want to stake',
+          variant: SnackbarVariant.ERROR
+        })
+      );
+    } else {
+      handleNext();
+    }
+  };
 
   return (
     <React.Fragment>
@@ -134,34 +145,18 @@ const Stake = (props: Props) => {
         <Box className={cx('balance')}>
           <Box className={cx('balance__wallet-balance')}>
             <Typography className={cx('title')}>Wallet Balance: {walletValue}</Typography>
-            <Autocomplete
-              classes={classes}
-              options={currencies}
-              defaultValue={'chn'}
-              className={cx('autocomplete')}
-              renderInput={(item) => <TextField {...item} margin="normal" fullWidth />}
-              size={'small'}
-              id="combo-box-demo"
-            />
+            <span className={cx('token')}>CHN</span>
           </Box>
           <Box className={cx('balance__stake-balance')}>
             <Typography className={cx('title')}>
-              Stake Balance: {((value.default * walletValue) / 100).toFixed(2)}
+              Stake Balance: {((value.default * walletValue) / 100).toFixed(4)}
             </Typography>
-            <Autocomplete
-              classes={classes}
-              options={currencies}
-              defaultValue={'chn'}
-              className={cx('autocomplete')}
-              renderInput={(item) => <TextField {...item} margin="normal" fullWidth />}
-              size={'small'}
-              id="combo-box-demo"
-            />
+            <span className={cx('token')}>CHN</span>
           </Box>
         </Box>
       </DialogContent>
       <DialogActions className={cx('dialog-action')}>
-        <Button onClick={handleNext} className={cx('button-stake')}>
+        <Button onClick={handleNextStep} className={cx('button-stake')}>
           {progress ? <CircularProgress style={{ color: '#ffffff' }} /> : 'Stake'}
         </Button>
       </DialogActions>

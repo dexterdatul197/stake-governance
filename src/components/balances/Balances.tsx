@@ -1,6 +1,5 @@
 import { Box, Button } from '@material-ui/core';
 import { BigNumber } from '@0x/utils';
-import { makeStyles } from '@material-ui/styles';
 import classNames from 'classnames/bind';
 import React, { useCallback, useEffect, useReducer, useState } from 'react';
 import { currentAddress } from '../../helpers/common';
@@ -19,41 +18,6 @@ const commaNumber = require('comma-number');
 const format = commaNumber.bindWith(',', '.');
 
 const cx = classNames.bind(styles);
-
-const useStyles: any = makeStyles(() => ({
-  root: {
-    // width: '50%',
-    '& > .css-17vbkzs-MuiFormControl-root-MuiTextField-root': {
-      // marginTop: 0,
-    },
-    '& > .MuiOutlinedInput-root': {
-      height: '2em',
-      paddingRight: '25px'
-    }
-  },
-  inputRoot: {
-    background: 'var(--main-background-dropdow)',
-    height: '2em',
-    paddingRight: '25px !important',
-    '&.MuiOutlinedInput-root': {
-      borderRadius: '18px'
-    }
-  },
-  input: {
-    color: 'var(--btn-hover-blue-green) !important',
-    width: '50px !important',
-    paddingTop: '1px !important',
-    paddingBottom: '0px !important'
-  },
-  endAdornment: {
-    '& > .MuiAutocomplete-clearIndicator': {
-      display: 'none'
-    },
-    '& > .MuiAutocomplete-popupIndicator': {
-      color: 'var(--btn-hover-blue-green)'
-    }
-  }
-}));
 
 const initialState = {
   isActive: false,
@@ -103,7 +67,6 @@ const Balances: React.FC = () => {
   const isMobile = useIsMobile(768);
 
   const { isActive, isActiveWithDraw, isOpenStake, isOpenWithdraw } = state;
-  const classes = useStyles();
   const currencies = useAppSelector((state: any) => state.currency.currenciesList);
   const wallet = useAppSelector((state: any) => state.wallet);
   const [stake, setStake] = useState(0);
@@ -136,7 +99,7 @@ const Balances: React.FC = () => {
       if (isConnected(wallet)) {
         const connectedAddress = currentAddress(wallet);
         const tokenBalance = await getCHNBalance().methods.balanceOf(connectedAddress).call();
-        const formatToken = new BigNumber(tokenBalance).dividedBy('1e18').toFixed(2);
+        const formatToken = new BigNumber(tokenBalance).dividedBy('1e18').toFixed(4);
         setWalletValue(format(+formatToken));
       }
     } catch (error) {
@@ -149,8 +112,8 @@ const Balances: React.FC = () => {
       const connectedAddress = currentAddress(wallet);
       const getValueStake = await stakingToken().methods.userInfo(0, connectedAddress).call();
       const getValueEarned = await stakingToken().methods.pendingReward(0, connectedAddress).call();
-      const formatValueStake = new BigNumber(getValueStake.amount).dividedBy('1e18').toFixed(2);
-      const formatValueEarned = new BigNumber(getValueEarned).dividedBy('1e18').toFixed(2);
+      const formatValueStake = new BigNumber(getValueStake.amount).dividedBy('1e18').toFixed(4);
+      const formatValueEarned = new BigNumber(getValueEarned).dividedBy('1e18').toFixed(4);
       setStake(format(+formatValueStake));
       setEarn(format(+formatValueEarned));
     } catch (error) {
@@ -178,15 +141,17 @@ const Balances: React.FC = () => {
               <Box className={cx('stake')}>
                 <span className={cx('stake__title')}>Stake:</span>
                 <span className={cx('stake__value')}>{stake}</span>
-                <span className={cx('wallet__token')}>CHN</span>
+                <span className={cx('stake__token')}>CHN</span>
               </Box>
               <Box className={cx('wallet')}>
                 <span className={cx('wallet__title')}>Wallet:</span>
                 <span className={cx('wallet__value')}>{walletValue}</span>
+                <span className={cx('wallet__token')}>CHN</span>
               </Box>
               <Box className={cx('earn')}>
                 <span className={cx('earn__title')}>Earned:</span>
                 <span className={cx('earn__value')}>{earn}</span>
+                <span className={cx('earn__token')}>CHN</span>
               </Box>
             </Box>
 
@@ -223,8 +188,6 @@ const Balances: React.FC = () => {
           )}
           <Modal
             walletValue={walletValue}
-            currencies={currencies}
-            classes={classes}
             openStake={isOpenStake}
             handleCloseModal={handleCloseModal}
             handleUpdateSmartContract={handleUpdateSmartContract}

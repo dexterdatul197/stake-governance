@@ -17,7 +17,8 @@ import CHN_icon from '../../../assets/icon/CHN.svg';
 import { currentAddress } from '../../../helpers/common';
 import { getCHNBalance, stakingToken } from '../../../helpers/ContractService';
 import useIsMobile from '../../../hooks/useMobile';
-import { useAppSelector } from '../../../store/hooks';
+import { useAppSelector, useAppDispatch } from '../../../store/hooks';
+import { openSnackbar, SnackbarVariant } from '../../../store/snackbar';
 import styles from './styles.module.scss';
 import { BigNumber } from '@0x/utils';
 
@@ -30,7 +31,7 @@ interface Props {
   openWithdraw: boolean;
   handleCloseModalWithDraw: () => void;
   walletValue?: any;
-  earn: Number;
+  earn?: any;
   stake?: any;
   handleUpdateSmartContract: () => void;
 }
@@ -63,13 +64,7 @@ const WithDraw = (props: Props) => {
   const wallet = useAppSelector((state: any) => state.wallet);
   const [value, setValue] = useState(0);
   const [progress, setProgress] = useState(false);
-
-  const handleChangeInputValue = useCallback(
-    (event: any) => {
-      setValue(event.target.value);
-    },
-    [value]
-  );
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (stake) {
@@ -83,17 +78,52 @@ const WithDraw = (props: Props) => {
       setTimeout(() => {
         setProgress(false);
       }, 1000);
-      console.log('value: ', value);
-      await stakingToken()
-        .methods.withdraw(0, new BigNumber(value).multipliedBy('1e18'))
-        .send({ from: currentAddress(wallet) });
-      handleUpdateSmartContract();
+
+      if (stake) {
+        await stakingToken()
+          .methods.withdraw(0, new BigNumber(value).multipliedBy('1e18'))
+          .send({ from: currentAddress(wallet) });
+        handleCloseModalWithDraw();
+        dispatch(
+          openSnackbar({
+            message: 'Withdraw Success',
+            variant: SnackbarVariant.SUCCESS
+          })
+        );
+        handleUpdateSmartContract();
+      } else if (earn) {
+        await stakingToken()
+          .methods.withdraw(0, new BigNumber(earn).multipliedBy('1e18'))
+          .send({ from: currentAddress(wallet) });
+        handleCloseModalWithDraw();
+        dispatch(
+          openSnackbar({
+            message: 'Withdraw Success',
+            variant: SnackbarVariant.SUCCESS
+          })
+        );
+        handleUpdateSmartContract();
+      } else {
+        dispatch(
+          openSnackbar({
+            message: 'Withdraw Failed',
+            variant: SnackbarVariant.ERROR
+          })
+        );
+      }
     } catch (error) {
       console.log(error);
       handleCloseModalWithDraw();
       setProgress(false);
     }
   };
+
+  const handleChangeInputValue = useCallback(
+    (event: any) => {
+      setValue(event.target.value);
+    },
+    [value]
+  );
 
   return (
     <Dialog
@@ -133,7 +163,7 @@ const WithDraw = (props: Props) => {
             <Input
               className={cx('main-right__quantity')}
               disableUnderline
-              value={value}
+              value={value ? value : 0}
               onChange={handleChangeInputValue}
             />
           </Box>

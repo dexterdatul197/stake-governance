@@ -12,21 +12,12 @@ const cx = classNames.bind(styles);
 interface Props {
   openStake: boolean;
   handleCloseModal: () => void;
-  classes?: any;
-  currencies?: any;
   walletValue?: any;
   handleUpdateSmartContract: () => void;
 }
 
 const Modal = memo((props: Props) => {
-  const {
-    openStake,
-    handleCloseModal,
-    classes,
-    currencies,
-    walletValue,
-    handleUpdateSmartContract
-  } = props;
+  const { openStake, handleCloseModal, walletValue, handleUpdateSmartContract } = props;
   const [activeStep, setActiveStep] = useState(0);
   const [progress, setProgress] = useState(false);
 
@@ -43,8 +34,6 @@ const Modal = memo((props: Props) => {
         return (
           <Stake
             cx={cx}
-            classes={classes}
-            currencies={currencies}
             walletValue={walletValue}
             handleNext={handleNext}
             progress={progress}
@@ -61,11 +50,18 @@ const Modal = memo((props: Props) => {
             handleNext={handleNext}
             walletValue={walletValue}
             handleCloseModal={handleCloseModal}
-            handleUpdateSmartContract={handleUpdateSmartContract}
           />
         );
-      // case 2:
-      //   return <LoadingComponent />
+      case 2:
+        return (
+          <LoadingComponent
+            value={value}
+            walletValue={walletValue}
+            handleUpdateSmartContract={handleUpdateSmartContract}
+            handleCloseModal={handleCloseModal}
+            handleBackBegin={handleBackBegin}
+          />
+        );
     }
   };
 
@@ -79,6 +75,11 @@ const Modal = memo((props: Props) => {
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    setValue({ ...value, default: 0 });
+  };
+
+  const handleBackBegin = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 2);
     setValue({ ...value, default: 0 });
   };
 
