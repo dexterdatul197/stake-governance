@@ -77,17 +77,30 @@ const WithDraw = (props: Props) => {
       setTimeout(() => {
         setProgress(false);
       }, 1000);
-      console.log('stake: ', stake);
-      console.log('value: ', value);
-      if (stake && stake > value) {
+
+      if (stake) {
         await stakingToken()
           .methods.withdraw(0, new BigNumber(value).multipliedBy('1e18'))
           .send({ from: currentAddress(wallet) });
+        handleCloseModalWithDraw();
+        dispatch(
+          openSnackbar({
+            message: 'Withdraw Success',
+            variant: SnackbarVariant.SUCCESS
+          })
+        );
         handleUpdateSmartContract();
       } else if (earn) {
         await stakingToken()
           .methods.withdraw(0, new BigNumber(earn).multipliedBy('1e18'))
           .send({ from: currentAddress(wallet) });
+        handleCloseModalWithDraw();
+        dispatch(
+          openSnackbar({
+            message: 'Withdraw Success',
+            variant: SnackbarVariant.SUCCESS
+          })
+        );
         handleUpdateSmartContract();
       } else {
         dispatch(
