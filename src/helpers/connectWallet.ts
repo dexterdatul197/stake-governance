@@ -22,7 +22,7 @@ export const connectMetaMask = async (): Promise<string> => {
   if (window.ethereum) {
     window.web3 = new Web3(window.ethereum);
     const accounts = await window.ethereum.request({
-      method: 'eth_requestAccounts',
+      method: 'eth_requestAccounts'
     });
     return accounts[0];
   } else if (window.web3) {
@@ -32,7 +32,7 @@ export const connectMetaMask = async (): Promise<string> => {
   } else {
     const exception: UninstallExtensionException = {
       walletType: SoftwareWalletType.METAMASK,
-      message: MISSING_EXTENSION_ERROR,
+      message: MISSING_EXTENSION_ERROR
     };
     throw exception;
   }
@@ -67,19 +67,19 @@ export const connectTrust = async () => {
       package: WalletConnectProvider,
       options: {
         rpc: {
-          56: `${process.env.REACT_APP_TRUST_BRIDGE}`,
+          56: `${process.env.REACT_APP_TRUST_BRIDGE}`
         },
-        chainId: 56,
-      },
+        chainId: 56
+      }
       // display: {
       //   name: "Mobile"
       // },
-    },
+    }
   };
   const web3Modal = new Web3Modal({
     network: 'mainnet', // optional
     cacheProvider: true, // optional
-    providerOptions, // required
+    providerOptions // required
   });
   const provider = await web3Modal.connect();
   await web3Modal.toggleModal();
@@ -94,39 +94,34 @@ export const connectCoinbase = async (apiKey: string, apiSecret: string) => {
   const req = {
     method: 'GET',
     path: '/v2/user',
-    body: '',
+    body: ''
   };
   const message = timestamp + req.method + req.path + req.body;
-  const signature = crypto
-    .createHmac('sha256', apiSecret)
-    .update(message)
-    .digest('hex');
+  const signature = crypto.createHmac('sha256', apiSecret).update(message).digest('hex');
   const options = {
     headers: {
       'CB-ACCESS-SIGN': signature,
       'CB-ACCESS-TIMESTAMP': timestamp,
-      'CB-ACCESS-KEY': apiKey,
+      'CB-ACCESS-KEY': apiKey
     },
     baseUrl: process.env.REACT_APP_COIN_BASE_URL
   };
-  let response: {code: number, data: any} = {code: 200, data: 'any'};
+  let response: { code: number; data: any } = { code: 200, data: 'any' };
   await axiosInstance(options)
     .get('/v2/user')
-    .then((res) => {response.code = 200; response.data = res.data})
+    .then((res) => {
+      response.code = 200;
+      response.data = res.data;
+    })
     .catch((err) => {
       if (err) {
         response.code = 401;
-        response.data = 'Cannot connect Coinbase wallet!'
+        response.data = 'Cannot connect Coinbase wallet!';
       }
     });
   return response;
 };
 
 export const isConnected = (wallet: WalletData): boolean => {
-  return !!(
-    wallet.ethereumAddress ||
-    wallet.trust ||
-    wallet.coinbase ||
-    wallet.walletconnect
-  );
+  return !!(wallet.ethereumAddress || wallet.trust || wallet.coinbase || wallet.walletconnect);
 };

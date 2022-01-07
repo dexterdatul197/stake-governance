@@ -8,17 +8,13 @@ import { Box } from '@mui/system';
 import classnames from 'classnames/bind';
 import React, { useState, useCallback } from 'react';
 import { MISSING_EXTENSION_ERROR } from '../../constant/uninstallExtentionException';
-import {
-  connectCoinbase,
-  connectMetaMask,
-  connectTrust,
-} from '../../helpers/connectWallet';
+import { connectCoinbase, connectMetaMask, connectTrust } from '../../helpers/connectWallet';
 import { openSnackbar, SnackbarVariant } from '../../store/snackbar';
 import {
   setCoinbaseAddress,
   setEthereumAddress,
   setOpenConnectDialog,
-  setTrustAddress,
+  setTrustAddress
 } from '../connect-wallet/redux/wallet';
 import { useAppDispatch, useAppSelector } from './../../store/hooks';
 import styles from './ConnectWalletDialog.module.scss';
@@ -41,9 +37,7 @@ const ConnectWalletDialog: React.FC = () => {
   const [apiSecretError, setApiSecretError] = useState(false);
   const [apiKey, setApiKey] = useState('');
   const [apiSecret, setApiSecret] = useState('');
-  const openConnectWalletDialog = useAppSelector(
-    (state) => state.wallet.openConnectDialog
-  );
+  const openConnectWalletDialog = useAppSelector((state) => state.wallet.openConnectDialog);
   const [coinbaseDialogOpen, setCoinbaseDialogOpen] = useState(false);
   const handleCloseConnectDialog = () => {
     dispatch(setOpenConnectDialog(false));
@@ -54,9 +48,8 @@ const ConnectWalletDialog: React.FC = () => {
     if (!window.ethereum) {
       dispatch(
         openSnackbar({
-          message:
-            'Your brower are not install Metamask extension, please install it!',
-          variant: SnackbarVariant.ERROR,
+          message: 'Your brower are not install Metamask extension, please install it!',
+          variant: SnackbarVariant.ERROR
         })
       );
     }
@@ -70,7 +63,7 @@ const ConnectWalletDialog: React.FC = () => {
             openSnackbar({
               message:
                 'You are currently visiting the Ropsten Test Network for Strike Finance. Please change your metamask to access the Ethereum Mainnet.',
-              variant: SnackbarVariant.ERROR,
+              variant: SnackbarVariant.ERROR
             })
           );
         } else if (netId === 1 && process.env.REACT_APP_ENV === 'dev') {
@@ -78,7 +71,7 @@ const ConnectWalletDialog: React.FC = () => {
             openSnackbar({
               message:
                 'You are currently visiting the Main Network for Strike Finance. Please change your metamask to access the Ropsten Test Network.',
-              variant: SnackbarVariant.ERROR,
+              variant: SnackbarVariant.ERROR
             })
           );
         }
@@ -87,7 +80,7 @@ const ConnectWalletDialog: React.FC = () => {
           openSnackbar({
             message:
               'You are currently connected to another network. Please connect to Ethereum Network',
-            variant: SnackbarVariant.ERROR,
+            variant: SnackbarVariant.ERROR
           })
         );
       }
@@ -107,7 +100,7 @@ const ConnectWalletDialog: React.FC = () => {
         dispatch(
           openSnackbar({
             message: 'Extension not install!',
-            variant: SnackbarVariant.ERROR,
+            variant: SnackbarVariant.ERROR
           })
         );
       }
@@ -129,7 +122,7 @@ const ConnectWalletDialog: React.FC = () => {
         dispatch(
           openSnackbar({
             message: 'Extension not install!',
-            variant: SnackbarVariant.ERROR,
+            variant: SnackbarVariant.ERROR
           })
         );
       }
@@ -147,7 +140,7 @@ const ConnectWalletDialog: React.FC = () => {
       dispatch(
         openSnackbar({
           message: 'Connect to Trust wallet did not success!',
-          variant: SnackbarVariant.WARNING,
+          variant: SnackbarVariant.WARNING
         })
       );
     }
@@ -180,9 +173,7 @@ const ConnectWalletDialog: React.FC = () => {
     if (apiKey && apiSecret) {
       const res: any = await connectCoinbase(apiKey, apiSecret);
       if (res.code === 401) {
-        dispatch(
-          openSnackbar({ variant: SnackbarVariant.ERROR, message: res.data })
-        );
+        dispatch(openSnackbar({ variant: SnackbarVariant.ERROR, message: res.data }));
       } else {
         dispatch(setCoinbaseAddress(res.data.data.id));
       }
@@ -194,7 +185,7 @@ const ConnectWalletDialog: React.FC = () => {
     {
       icon: metamask,
       title: 'Meta Mask',
-      onClickFunc: handleConnectMetaMask,
+      onClickFunc: handleConnectMetaMask
     },
     // {
     //   icon: trust,
@@ -209,19 +200,15 @@ const ConnectWalletDialog: React.FC = () => {
     {
       icon: wallet_connect,
       title: 'Wallet Connect',
-      onClickFunc: handleConnectWalletConnect,
-    },
+      onClickFunc: handleConnectWalletConnect
+    }
   ];
 
   const renderData = useCallback((content) => {
     return content
       ? content.map(({ icon, title, onClickFunc }: any, index: any) => {
           return (
-            <Box
-              key={index}
-              onClick={onClickFunc}
-              className={cx('list-wallet')}
-            >
+            <Box key={index} onClick={onClickFunc} className={cx('list-wallet')}>
               <Button className={cx('button')} disableRipple={true}>
                 <img className={cx('icon')} src={icon} alt="icon" />
                 <Typography className={cx('title')}>{title}</Typography>
@@ -243,8 +230,8 @@ const ConnectWalletDialog: React.FC = () => {
         PaperProps={{
           style: {
             backgroundColor: 'var(--background-dialog-color)',
-            overflowY: 'unset',
-          },
+            overflowY: 'unset'
+          }
         }}
       >
         <Box display={'flex'} justifyContent={'space-between'}>
@@ -255,9 +242,7 @@ const ConnectWalletDialog: React.FC = () => {
           </Typography>
           <Typography component={'div'} className={cx('title')}>
             <Box>
-              <div className={cx('connect-wallet-text-title')}>
-                Connect your wallet
-              </div>
+              <div className={cx('connect-wallet-text-title')}>Connect your wallet</div>
             </Box>
           </Typography>
           <Typography component={'div'}>
@@ -277,8 +262,8 @@ const ConnectWalletDialog: React.FC = () => {
             {
               icon: icon,
               title: title,
-              onClickFunc: onClickFunc,
-            },
+              onClickFunc: onClickFunc
+            }
           ];
           return (
             <Box style={{ margin: '-24px', padding: '11px' }} key={index}>
@@ -296,8 +281,8 @@ const ConnectWalletDialog: React.FC = () => {
         PaperProps={{
           style: {
             backgroundColor: '#001C4E',
-            color: '#fff',
-          },
+            color: '#fff'
+          }
         }}
       >
         <Box display={'flex'} justifyContent={'space-between'}>
@@ -356,7 +341,7 @@ const ConnectWalletDialog: React.FC = () => {
             width: '50%',
             textAlign: 'center',
             margin: 'auto',
-            marginBottom: '10px',
+            marginBottom: '10px'
           }}
           onClick={handleConnectCoinbase}
         >
