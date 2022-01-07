@@ -10,12 +10,12 @@
     font-size: 18px;
   }
 
-  @media screen and (max-width: 375px) {
+  @media screen and (max-width: 576px) {
     .footer-component {
       padding: 0;
       display: block;
       width: calc(100% - 32px);
-      position: fixed;
+      position: fixed !important;
       bottom: 0px;
       padding: 10px 16px;
       z-index: 100000;

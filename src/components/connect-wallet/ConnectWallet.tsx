@@ -10,10 +10,12 @@ import { useAppSelector } from '../../store/hooks';
 import styles from './ConnectWallet.module.scss';
 import { setOpenConnectDialog } from './redux/wallet';
 import { ReactComponent as ConectWalletIcon } from '../../assets/icon/wallet.svg';
+import useIsMobile from '../../hooks/useMobile';
 
 const cx = classnames.bind(styles);
 
 const ConnectWallet: React.FC = () => {
+  const isMobile = useIsMobile(576);
   const dispatch = useDispatch();
   const handleOpenConnectWalletDialog = () => {
     dispatch(setOpenConnectDialog(true));
@@ -40,7 +42,7 @@ const ConnectWallet: React.FC = () => {
       {isConnected(wallet) ? (
         <>
           <div className={cx('button')} onClick={handleOpenDropdown}>
-            Connected wallet <ArrowDown size={'md'} />
+            Connected wallet {!isMobile && <ArrowDown size={'md'} />}
           </div>
           <div className={cx('select', !openDropdown && 'close')} ref={ref}>
             {wallet.ethereumAddress ? (

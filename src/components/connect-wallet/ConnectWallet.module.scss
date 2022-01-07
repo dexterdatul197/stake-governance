@@ -31,7 +31,7 @@
   .close {
     display: none;
   }
-  @media screen and (max-width: 375px) {
+  @media screen and (max-width: 576px) {
     .button {
       background: var(--mb-bg-btn-wallet);
       border-radius: 30px;

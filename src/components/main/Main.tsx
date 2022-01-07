@@ -77,7 +77,7 @@ const Main: React.FC = () => {
   return (
     <div className={cx('text-head')}>
       <div className={cx('text-head-child')}>
-        <div className={cx('price')}>${totalSupply}</div>
+        <div className={cx('price')}>${'totalSupply'}</div>
         <Autocomplete
           classes={classes}
           options={currencies}

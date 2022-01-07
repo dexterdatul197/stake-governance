@@ -52,8 +52,6 @@ body {
   --mb-card-color-text-value: rgba(0, 28, 78, 0.87);
   --mb-card-btn: #edf1f8;
   --mb-card-border: rgba(0, 28, 78, 0.15);
-
-
 }
 [data-theme='dark'] {
   --btn-header-border-color: #72bf65;
@@ -96,8 +94,7 @@ body {
   --mb-card-color-text: rgba(255, 255, 255, 0.6);
   --mb-card-color-text-value: rgba(255, 255, 255, 0.87);
   --mb-card-btn: rgba(36, 44, 59, 1);
-  --mb-card-border: rgba(255, 255, 255, 0.15)
-  ;
+  --mb-card-border: rgba(255, 255, 255, 0.15);
 }
 .Snackbar {
   .css-zzms1-MuiSnackbar-root {
@@ -106,8 +103,9 @@ body {
 }
 .area-chart-main {
   padding: 20px 100px;
+  // min-width: 637px;
   background-color: var(--main-background-color);
-  height: calc(100% - 50px);
+  // height: calc(100% - 50px);
   // margin-top: -20px;
   // padding-bottom: 153px;
 }
@@ -143,7 +141,7 @@ body {
   }
   .area-chart-main {
     padding: 20px 24px;
-    height: calc(100vh - 120px);
+    // height: calc(100vh - 120px);
     margin-top: 110px;
   }
   .footer {
@@ -151,15 +149,14 @@ body {
   }
 }
 
-@media screen and (max-width: 375px) {
+@media screen and (max-width: 576px) {
   .App {
     margin: 0;
-    box-sizing: border-box;
   }
   .area-chart-main {
     padding: 20px 24px;
-    height: calc(100vh - 120px);
-    margin-top: 110px;
+    // height: calc(100vh - 120px);
+    margin-top: 60px;
   }
   .footer {
     height: 0px;
