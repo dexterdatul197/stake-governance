@@ -61,12 +61,12 @@ const IsLoading = (props: Props) => {
       .methods.allowance(currentAddress(wallet), process.env.REACT_APP_STAKE_TESTNET_ADDRESS)
       .call()
       .then((res: any) => {
-        console.log('res allowance: ', res)
-        if (res.toString() !== MAX_INT) {
+        if (res === '0') {
           getCHNBalance()
             .methods.approve(process.env.REACT_APP_STAKE_TESTNET_ADDRESS, MAX_INT)
             .send({ from: currentAddress(wallet) })
             .then((res: any) => {
+              console.log('res approve: ', res);
               if (res.status === true) {
                 dispatch(
                   openSnackbar({
@@ -85,13 +85,8 @@ const IsLoading = (props: Props) => {
               }
             })
             .catch((e: any) => console.log(e));
-        } else {
-          dispatch(
-            openSnackbar({
-              message: 'Allowance Failed',
-              variant: SnackbarVariant.ERROR
-            })
-          );
+        }else{
+          handleConfirmStake()
         }
       })
       .catch((e: any) => console.log(e));
