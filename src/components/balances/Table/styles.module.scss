@@ -21,6 +21,7 @@
     .table-body {
       padding-bottom: 56px;
       &__cell {
+        max-height: 100px;
         border-bottom: none;
         color: var(--color-text-white-black);
         font-weight: 500;
@@ -51,6 +52,12 @@
 
       .completed {
         color: #72bf65;
+      }
+      .txt-type {
+        width: fit-content;
+        padding: 1px 4px;
+        border-radius: 4px;
+        background-color: var(--bg-txt-type);
       }
     }
 

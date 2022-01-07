@@ -53,7 +53,7 @@
     "websocket": "1.0.34",
     "react-socket-io": "0.2.5",
     "socket.io": "4.1.2",
-    "socket.io-client": "4.4.1"
+    "socket.io-client": "2.4.0"
   },
   "scripts": {
     "start": "react-scripts start",

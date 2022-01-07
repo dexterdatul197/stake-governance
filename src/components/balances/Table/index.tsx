@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
   Table,
   TableBody,
@@ -10,23 +11,74 @@ import {
 } from "@material-ui/core";
 import classNames from "classnames/bind";
 import { ethers } from "ethers";
+import moment from "moment";
 import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { getTransactionHistory } from "src/apis/apis";
 import { ITransaction } from "src/components/balances/Table/transaction.slice";
+import eventBus from "src/event/event-bus";
+import { sleep } from "src/helpers/sleep";
+import { SocketEvent } from "src/socket/SocketEvent";
+import { useAppSelector } from "src/store/hooks";
 import arrowRightUp from "../../../assets/icon/arrow-right-up.svg";
-import { headCells } from "../../../constant/constants";
+import { FORMAT_DATE, headCells } from "../../../constant/constants";
 import styles from "./styles.module.scss";
 const cx = classNames.bind(styles);
 
-interface ITableProps {
-  transactionData: any;
-}
-
-const TableComponent: React.FC<ITableProps> = ({ transactionData }) => {
+const TableComponent = () => {
+  const dispatch = useDispatch();
   type Order = "asc" | "desc";
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [order] = useState<Order>("asc");
   const [orderBy] = useState("id");
+  const transactionData = useAppSelector(
+    (state) => state.transactions.transactions
+  );
+  const wallet = useAppSelector((state) => state.wallet);
+
+  const getUserAddress = () => {
+    if (wallet.ethereumAddress) {
+      return wallet.ethereumAddress;
+    }
+    if (wallet.trust) {
+      return wallet.trust;
+    }
+    if (wallet.coinbase) {
+      return wallet.coinbase;
+    }
+    if (wallet.walletconnect) {
+      return wallet.walletconnect;
+    }
+  };
+
+  const [filter, setFilter] = useState({
+    page: page + 1,
+    limit: rowsPerPage,
+    address: getUserAddress(),
+  });
+
+  useEffect(() => {
+    setFilter({
+      page: page + 1,
+      limit: rowsPerPage,
+      address: getUserAddress(),
+    });
+  }, [page, rowsPerPage]);
+
+  useEffect(() => {
+    dispatch(getTransactionHistory(filter));
+    eventBus.on(SocketEvent.transactionUpdated, async () => {
+      await sleep(1000);
+      if (page === 0) {
+        dispatch(getTransactionHistory(filter));
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    dispatch(getTransactionHistory(filter));
+  }, [filter]);
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -133,23 +185,28 @@ const TableComponent: React.FC<ITableProps> = ({ transactionData }) => {
                     </div>
                     <img
                       className={cx("icon-redirect")}
+                      onClick={() => {
+                        window.open(
+                          `${process.env.REACT_APP_EXPLORER + row.tx_hash}`
+                        );
+                      }}
                       src={arrowRightUp}
                       alt=""
                     />
                   </div>
                 </TableCell>
                 <TableCell align={"left"} className={cx("table-body__cell")}>
-                  <div>{getTypeTxt(row.type)}</div>
+                  <div className={cx("txt-type")}>{getTypeTxt(row.type)}</div>
                 </TableCell>
                 <TableCell align={"left"} className={cx("table-body__cell")}>
                   {ethers.utils.formatEther(row.amount)}
                 </TableCell>
                 <TableCell align={"left"} className={cx("table-body__cell")}>
-                  {row.updated_at}
+                  {moment(row.updated_at).format(FORMAT_DATE)}
                 </TableCell>
                 <TableCell
                   align={"left"}
-                  className={cx("table-body__cell", "Completed")}
+                  className={cx("table-body__cell", "completed")}
                 >
                   Completed
                 </TableCell>
@@ -161,7 +218,7 @@ const TableComponent: React.FC<ITableProps> = ({ transactionData }) => {
           <TableRow>
             <TableCell colSpan={6} className={cx("table-footer")}>
               <TablePagination
-                // rowsPerPageOptions={[5, 10, 25]}
+                rowsPerPageOptions={[5, 10, 15]}
                 component="div"
                 count={transactionData.metadata.totalItem}
                 rowsPerPage={rowsPerPage}

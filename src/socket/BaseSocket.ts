@@ -25,25 +25,10 @@ export class BaseSocket {
       // },
     });
     this.listenTransactionEvent();
-    console.log("abcdcddd");
-    this.socket.on("connect", (data: any) => {
-      console.log("connect", data);
-    });
-    this.socket.on("disconnect", (data: any) => {
-      console.log("disconnect", data);
-    });
-
-    this.socket.on("error", (data: any) => {
-      console.log("error", data);
-    });
-
-    this.socket.on("reconnect", (data: any) => {
-      console.log("reconnect", data);
-    });
   }
 
   listenTransactionEvent(): void {
-    this.socket.on("transactions", (data: any) => {
+    this.socket.on("staking_history", (data: any) => {
       eventBus.dispatch(SocketEvent.transactionUpdated, data);
     });
   }

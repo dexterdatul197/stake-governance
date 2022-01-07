@@ -24,6 +24,8 @@ const createData = (
   return { id, transactionHash, type, amount, date, status };
 };
 
+export const FORMAT_DATE = "YYYY-DD-MM HH:mm:ss";
+
 export const rows = [
   createData(
     1,

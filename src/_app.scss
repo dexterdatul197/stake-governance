@@ -39,6 +39,9 @@ body {
   --background-proposal-detail-card: #fff;
   --color-address-contract: rgba(0, 0, 0, 0.6);
   --color-line: #e0e0e0;
+
+  //balance
+  --bg-txt-type: #eaf4fb;
 }
 [data-theme="dark"] {
   --btn-header-border-color: #72bf65;
@@ -70,6 +73,9 @@ body {
   --color-address-contract: rgba(255, 255, 255, 0.6);
   --color-line: #333;
 
+  //balance
+  --bg-txt-type: #2d3c57;
+
   // footer theme mobile
   --bg-theme-active: #121416;
   --bg-theme: rgba(0, 28, 78, 0.15);
@@ -86,7 +92,7 @@ body {
 .area-chart-main {
   padding: 20px 230px;
   background-color: var(--main-background-color);
-  height: calc(100% - 50px);
+  // height: calc(100% - 50px);
   // margin-top: -20px;
   // padding-bottom: 153px;
 }
