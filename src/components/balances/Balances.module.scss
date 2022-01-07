@@ -23,58 +23,100 @@
     .balance-row {
       padding-left: 127px;
       padding-right: 151px;
-      .stake,
-      .wallet,
-      .earn {
-        display: flex;
-        align-items: center;
-        padding-bottom: 39px;
-        text-align: left;
-      }
       .stake {
+        display: flex;
+        padding-bottom: 39px;
+        align-items: center;
         &__title {
+          flex: 1;
           font-size: 20px;
           font-weight: 500;
-          color: var(--color-text-white-black);
+          color: var(--text-color-balance);
           display: block;
-          padding-right: 35px;
         }
         &__value {
+          flex: 1;
           font-size: 24px;
           font-weight: 600;
-          color: var(--color-text-white-black);
+          color: var(--text-color-balance);
           display: block;
-          padding-right: 37px;
+          margin-right: 15px;
+        }
+        &__token {
+          font-size: 16px;
+          font-weight: 600;
+          color: var(--text-color-stake);
+          width: 92px;
+          height: 33px;
+          background: rgba(16, 125, 239, 0.1);
+          border-radius: 30px;
+          text-align: center;
+          line-height: 33px;
+          flex: 1;
         }
       }
       .wallet {
+        display: flex;
+        padding-bottom: 39px;
+        align-items: center;
         &__title {
           font-size: 20px;
           font-weight: 500;
           display: block;
-          color: var(--color-text-white-black);
-          padding-right: 35px;
+          color: var(--text-color-balance);
+          flex: 1;
         }
         &__value {
           font-size: 24px;
           font-weight: 600;
           display: block;
-          color: var(--color-text-white-black);
+          color: var(--text-color-balance);
+          flex: 1;
+          margin-right: 15px;
+        }
+        &__token {
+          font-size: 16px;
+          font-weight: 600;
+          color: var(--text-color-stake);
+          width: 92px;
+          height: 33px;
+          background: rgba(16, 125, 239, 0.1);
+          border-radius: 30px;
+          text-align: center;
+          line-height: 33px;
+          flex: 1;
         }
       }
       .earn {
+        display: flex;
+        padding-bottom: 39px;
+        align-items: center;
         &__title {
           font-size: 20px;
           display: block;
           font-weight: 500;
-          color: var(--color-text-white-black);
-          padding-right: 35px;
+          color: var(--text-color-balance);
+          flex: 1;
         }
         &__value {
           font-size: 24px;
           display: block;
           font-weight: 600;
-          color: var(--color-text-white-black);
+          color: var(--text-color-balance);
+          flex: 1;
+          margin-right: 15px;
+        }
+        &__token {
+          font-size: 16px;
+          font-weight: 600;
+          color: var(--text-color-stake);
+          width: 92px;
+          height: 33px;
+          background: rgba(16, 125, 239, 0.1);
+          border-radius: 30px;
+          text-align: center;
+          line-height: 33px;
+          flex: 1;
         }
       }
       .m-balance-key {

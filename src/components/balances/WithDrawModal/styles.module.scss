@@ -80,8 +80,10 @@
           color: #107def;
           font-size: 18px;
           font-weight: 600;
-          text-align: right;
           // width: 50px;
+          input[type='text'] {
+            text-align: right !important;
+          }
         }
       }
     }
@@ -102,6 +104,9 @@
     display: block;
     margin: 0 20px;
     border-radius: 10px;
+    &:hover {
+      background-color: #107def;
+    }
   }
 }
 @media screen and (max-width: 768px) {
