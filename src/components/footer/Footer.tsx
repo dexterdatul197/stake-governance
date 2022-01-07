@@ -55,10 +55,10 @@ const Footer: React.FC = () => {
           </div>
         </div>
       ) : (
-        <div>
+        <>
           <div>&copy; Chain 1 open source</div>
           <div>vi.o\Block 275</div>
-        </div>
+        </>
       )}
     </div>
   );

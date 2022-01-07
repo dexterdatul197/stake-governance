@@ -8,6 +8,7 @@ export interface SFormData {
 export type Filter = {
   page?: number;
   limit?: number;
+  address?: string;
   startTime?: number;
   endTime?: number;
 };

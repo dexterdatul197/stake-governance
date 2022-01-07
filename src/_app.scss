@@ -38,7 +38,10 @@ body {
   --color-text-proposal-action: #001c4e;
   --background-proposal-detail-card: #fff;
   --color-address-contract: rgba(0, 0, 0, 0.6);
+  --color-line: #e0e0e0;
 
+  //balance
+  --bg-txt-type: #eaf4fb;
   // footer theme mobile
   --bg-theme-active: #fcfbfd;
   --bg-theme: #f5f4f6;
@@ -81,6 +84,10 @@ body {
   --color-text-proposal-action: #fff;
   --background-proposal-detail-card: #1b1c1f;
   --color-address-contract: rgba(255, 255, 255, 0.6);
+  --color-line: #333;
+
+  //balance
+  --bg-txt-type: #2d3c57;
 
   // footer theme mobile
   --bg-theme-active: #121416;
@@ -102,7 +109,7 @@ body {
   }
 }
 .area-chart-main {
-  padding: 20px 100px;
+  padding: 20px 230px;
   // min-width: 637px;
   background-color: var(--main-background-color);
   // height: calc(100% - 50px);

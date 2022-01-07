@@ -1,5 +1,5 @@
-import { BigNumber } from '@0x/utils';
 import { Box, Button } from '@material-ui/core';
+import { BigNumber } from '@0x/utils';
 import { makeStyles } from '@material-ui/styles';
 import classNames from 'classnames/bind';
 import React, { useCallback, useEffect, useReducer, useState } from 'react';
@@ -204,6 +204,7 @@ const Balances: React.FC = () => {
           </Button>
         </Box>
       </Box>
+      <div className={cx('history-label')}>History</div>
       <Box className={cx('history')}>
         <TableComponent />
       </Box>

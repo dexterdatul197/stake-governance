@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import Web3 from 'web3';
 import { Route, Switch } from 'react-router-dom';
@@ -15,6 +15,7 @@ import { useEagerConnect } from './hooks/useEagerConnect';
 import { useInactiveListener } from './hooks/useInactiveListener';
 
 import './_app.scss';
+import { BaseSocket } from 'src/socket/BaseSocket';
 
 const App: React.FC = () => {
   const context = useWeb3React<Web3>();
@@ -22,6 +23,10 @@ const App: React.FC = () => {
 
   // handle logic to recognize the connector currently being activated
   const [activatingConnector, setActivatingConnector] = React.useState<any>();
+
+  useEffect(() => {
+    BaseSocket.getInstance().connect();
+  }, []);
 
   React.useEffect(() => {
     if (activatingConnector && activatingConnector === connector) {

@@ -1,4 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
+import transactionReducer from 'src/components/balances/Table/transaction.slice';
 import currencyReducer from '../components/chart/redux/currency';
 import walletReducer from '../components/connect-wallet/redux/wallet';
 import proposalsReducer from '../components/governance/proposals/redux/proposal.slice';
@@ -12,7 +13,8 @@ const store = configureStore({
     currency: currencyReducer,
     theme: themeReducer,
     governance: governanceReducer,
-    proposals: proposalsReducer
+    proposals: proposalsReducer,
+    transactions: transactionReducer
   }
 });
 export type AppDispatch = typeof store.dispatch;
