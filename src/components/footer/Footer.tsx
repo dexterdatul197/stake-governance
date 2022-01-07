@@ -1,5 +1,5 @@
 import classNames from 'classnames/bind';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { THEME_MODE } from '../../constant/constants';
 import useIsMobile from '../../hooks/useMobile';
@@ -11,6 +11,8 @@ import darkIcon from './../../assets/icon/dark.svg';
 import light_whiteIcon from './../../assets/icon/light-white.svg';
 import lightIcon from './../../assets/icon/light.svg';
 import styles from './Footer.module.scss';
+import Web3 from 'web3';
+import { SetCalldataBlock } from '@0x/utils/lib/src/abi_encoder/calldata/blocks/set';
 
 const cx = classNames.bind(styles);
 
@@ -18,11 +20,30 @@ const Footer: React.FC = () => {
   const isMobile = useIsMobile(576);
   const dispatch = useDispatch();
   const theme = useAppSelector((state) => state.theme.themeMode);
+  const [block, setBlock] = useState(0);
 
   const onSwitchTheme = () => {
     const newTheme = theme === THEME_MODE.LIGHT ? THEME_MODE.DARK : THEME_MODE.LIGHT;
     dispatch(setTheme(newTheme));
   };
+
+  const getLatestBlock = async () => {
+    setInterval(async() => {
+      if (window.web3) {
+        const web3 = await new Web3(window.web3.currentProvider);
+        const block = await web3.eth.getBlockNumber();
+        setBlock(block);
+      }
+    }, 15000);
+  }
+
+  const openEther = () => {
+    window.open('https://etherscan.io','_blank');
+  }
+
+  useEffect(() => {
+    getLatestBlock();
+  }, [])
 
   return (
     <div className={cx('footer-component')}>
@@ -57,7 +78,10 @@ const Footer: React.FC = () => {
       ) : (
         <>
           <div>&copy; Chain 1 open source</div>
-          <div>vi.o\Block 275</div>
+          <div className={cx('right-footer')}>
+            <div className={cx('status-circle')}></div>
+            <div onClick={openEther} className={cx('block-number')}>vi.o\Block: {block}</div>
+          </div>
         </>
       )}
     </div>

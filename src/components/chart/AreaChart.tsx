@@ -21,8 +21,6 @@ interface Props {
 
 const cx = classNames.bind(styles);
 const AreaChart: React.FC<Props> = (props) => {
-  console.log('INIT AREA CHART: ', props);
-
   const [series, setSeries] = useState([{ data: [], name: 'Price' }]);
   const selectedCurrency = useAppSelector((state) => state.currency.selectedCurrency);
   const [option, setOption] = useState<ApexOptions>({
