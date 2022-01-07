@@ -55,3 +55,21 @@ export const convertToDate = (param: number) => {
     param
   ).getDate()}`;
 };
+
+export const convertOHCL = (data: any[]) => {
+  const res = data.reduce((res: any[], e: any) => {
+    const date = convertToDate(e[0]);
+    const existDate = res.filter((item: any) => convertToDate(item[0]) === date);
+    if (existDate.length === 0) {
+      res.push(e);
+    } else {
+      const childExistDate: any = existDate[0];
+      childExistDate[1] = Math.max(childExistDate[1], e[1]);
+      childExistDate[2] = Math.max(childExistDate[2], e[2]);
+      childExistDate[3] = Math.max(childExistDate[3], e[3]);
+      childExistDate[4] = Math.max(childExistDate[1], e[4]);
+    }
+    return res;
+  }, []);
+  return res;
+};

@@ -39,15 +39,6 @@ const TableComponent = () => {
     if (wallet.ethereumAddress) {
       return wallet.ethereumAddress;
     }
-    // if (wallet.trust) {
-    //   return wallet.trust;
-    // }
-    // if (wallet.coinbase) {
-    //   return wallet.coinbase;
-    // }
-    // if (wallet.walletconnect) {
-    //   return wallet.walletconnect;
-    // }
   };
 
   const [filter, setFilter] = useState({

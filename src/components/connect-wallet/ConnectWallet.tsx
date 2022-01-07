@@ -56,7 +56,7 @@ const ConnectWallet: React.FC = () => {
           <span className={cx('button__text')}>Logout</span>
         </div>
       ) : (
-        <div className={cx('button', 'center-items')} onClick={handleOpenConnectWalletDialog}>
+        <div className={cx('button')} onClick={() => handleOpenConnectWalletDialog()}>
           <ConectWalletIcon stroke="var(--text-color-stake)" />{' '}
           <span className={cx('button__text')}>Connect wallet</span>
         </div>

@@ -105,3 +105,5 @@ export interface TVLDataRes {
   tvl: string;
   timestamp: number;
 }
+
+export interface CoinGekoOHCL {}

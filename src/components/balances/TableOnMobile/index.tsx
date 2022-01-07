@@ -28,7 +28,7 @@ const CardComponent: FC = () => {
           <div>Status</div>
           <div
             className={cx('card-items-2')}
-            style={{ color: 'rgba(16, 125, 239, 1)', fontWeight: '700' }}
+            style={{ color: 'rgba(16, 125, 239, 1)' }}
           >
             Pending
           </div>
