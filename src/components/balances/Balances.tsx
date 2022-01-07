@@ -214,25 +214,22 @@ const Balances: React.FC = () => {
             <TableComponent />
           </Box>
 
-        <Box className={`${cx('switcher')}`}>
-          <Button
-            onClick={handleActiveClass}
-            className={cx('switcher_stake', {
-              'button-active': isActive,
-              'button-deactive': !isActive
-            })}
-          >
-            Stake
-          </Button>
-          <Button
-            onClick={handleActiveWithDraw}
-            className={cx('switcher_withdraw', {
-              'button-active': isActiveWithDraw,
-              'button-deactive': !isActiveWithDraw
-            })}
-          >
-            WithDraw
-          </Button>
+          <Modal
+            walletValue={walletValue}
+            currencies={currencies}
+            classes={classes}
+            openStake={isOpenStake}
+            handleCloseModal={handleCloseModal}
+            handleUpdateSmartContract={handleUpdateSmartContract}
+          />
+          <ModalWithDraw
+            stake={stake}
+            earn={earn}
+            openWithdraw={isOpenWithdraw}
+            handleCloseModalWithDraw={handleCloseModalWithDraw}
+            walletValue={walletValue}
+            handleUpdateSmartContract={handleUpdateSmartContract}
+          />
         </Box>
       )}
     </>

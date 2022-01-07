@@ -137,7 +137,7 @@ const Main: React.FC = () => {
           )}
         </>
       )}
-    </div>
+      </div>
   );
 };
 export default Main;
