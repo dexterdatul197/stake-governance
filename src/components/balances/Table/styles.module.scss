@@ -2,7 +2,8 @@
   overflow: unset;
   height: 511px !important;
   background: var(--color-table) !important;
-  border-radius: 19px !important;
+  border: 1px solid var(--color-line);
+  border-radius: 20px;
   .table {
     height: 511px !important;
 
@@ -10,7 +11,6 @@
       &__cell {
         border-bottom: none;
         color: var(--color-text-white-black);
-
         font-weight: 500;
         font-size: 16px;
         padding-top: 34px;
@@ -21,6 +21,7 @@
     .table-body {
       padding-bottom: 56px;
       &__cell {
+        max-height: 100px;
         border-bottom: none;
         color: var(--color-text-white-black);
         font-weight: 500;
@@ -36,12 +37,27 @@
           }
         }
       }
+      .cell-hash {
+        display: flex;
+        .hash {
+          margin-right: 6px;
+        }
+        .icon-redirect {
+          cursor: pointer;
+        }
+      }
       .pending {
         color: #5773e7;
       }
 
       .completed {
         color: #72bf65;
+      }
+      .txt-type {
+        width: fit-content;
+        padding: 1px 4px;
+        border-radius: 4px;
+        background-color: var(--bg-txt-type);
       }
     }
 

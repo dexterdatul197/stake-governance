@@ -10,7 +10,7 @@ const initialState: WalletData = {
   openConnectDialog: false,
   bsc: '',
   ethereumAddress: Web3.utils.isAddress(ethereumAddress) ? ethereumAddress : '',
-  walletName: '',
+  walletName: ''
 };
 export const walletSlice = createSlice({
   name: 'wallet',
@@ -23,18 +23,17 @@ export const walletSlice = createSlice({
       localStorage.setItem('ethereumAddress', JSON.stringify(action.payload));
       return {
         ...state,
-        ethereumAddress: action.payload,
+        ethereumAddress: action.payload
       };
     },
     setWalletName: (state, action) => {
       return {
         ...state,
-        walletName: action.payload,
+        walletName: action.payload
       };
-    },
-  },
+    }
+  }
 });
-export const { setOpenConnectDialog, setEthereumAddress, setWalletName } =
-  walletSlice.actions;
+export const { setOpenConnectDialog, setEthereumAddress, setWalletName } = walletSlice.actions;
 const { reducer: walletReducer } = walletSlice;
 export default walletReducer;

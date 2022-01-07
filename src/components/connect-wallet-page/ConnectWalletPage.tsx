@@ -8,16 +8,9 @@ import { Box } from '@mui/system';
 import classnames from 'classnames/bind';
 import React, { useState, useCallback } from 'react';
 import { MISSING_EXTENSION_ERROR } from '../../constant/uninstallExtentionException';
-import {
-  connectCoinbase,
-  connectMetaMask,
-  connectTrust,
-} from '../../helpers/connectWallet';
+import { connectCoinbase, connectMetaMask, connectTrust } from '../../helpers/connectWallet';
 import { openSnackbar, SnackbarVariant } from '../../store/snackbar';
-import {
-  setEthereumAddress,
-  setOpenConnectDialog,
-} from '../connect-wallet/redux/wallet';
+import { setEthereumAddress, setOpenConnectDialog } from '../connect-wallet/redux/wallet';
 import { useAppDispatch, useAppSelector } from './../../store/hooks';
 import styles from './ConnectWalletPage.module.scss';
 import metamask from '../../assets/icon/meta_mask.svg';
@@ -41,9 +34,7 @@ const ConnectWalletPage: React.FC = () => {
   const [apiSecretError, setApiSecretError] = useState(false);
   const [apiKey, setApiKey] = useState('');
   const [apiSecret, setApiSecret] = useState('');
-  const openConnectWalletDialog = useAppSelector(
-    (state) => state.wallet.openConnectDialog
-  );
+  const openConnectWalletDialog = useAppSelector((state) => state.wallet.openConnectDialog);
   const [coinbaseDialogOpen, setCoinbaseDialogOpen] = useState(false);
   const handleCloseConnectDialog = () => {
     dispatch(setOpenConnectDialog(false));
@@ -54,9 +45,8 @@ const ConnectWalletPage: React.FC = () => {
     if (!window.ethereum) {
       dispatch(
         openSnackbar({
-          message:
-            'Your brower are not install Metamask extension, please install it!',
-          variant: SnackbarVariant.ERROR,
+          message: 'Your brower are not install Metamask extension, please install it!',
+          variant: SnackbarVariant.ERROR
         })
       );
     }
@@ -70,7 +60,7 @@ const ConnectWalletPage: React.FC = () => {
             openSnackbar({
               message:
                 'You are currently visiting the Ropsten Test Network for Strike Finance. Please change your metamask to access the Ethereum Mainnet.',
-              variant: SnackbarVariant.ERROR,
+              variant: SnackbarVariant.ERROR
             })
           );
         } else if (netId === 1 && process.env.REACT_APP_ENV === 'dev') {
@@ -78,7 +68,7 @@ const ConnectWalletPage: React.FC = () => {
             openSnackbar({
               message:
                 'You are currently visiting the Main Network for Strike Finance. Please change your metamask to access the Ropsten Test Network.',
-              variant: SnackbarVariant.ERROR,
+              variant: SnackbarVariant.ERROR
             })
           );
         }
@@ -87,7 +77,7 @@ const ConnectWalletPage: React.FC = () => {
           openSnackbar({
             message:
               'You are currently connected to another network. Please connect to Ethereum Network',
-            variant: SnackbarVariant.ERROR,
+            variant: SnackbarVariant.ERROR
           })
         );
       }
@@ -108,7 +98,7 @@ const ConnectWalletPage: React.FC = () => {
         dispatch(
           openSnackbar({
             message: 'Extension not install!',
-            variant: SnackbarVariant.ERROR,
+            variant: SnackbarVariant.ERROR
           })
         );
       }
@@ -129,7 +119,7 @@ const ConnectWalletPage: React.FC = () => {
         dispatch(
           openSnackbar({
             message: 'Extension not install!',
-            variant: SnackbarVariant.ERROR,
+            variant: SnackbarVariant.ERROR
           })
         );
       }
@@ -166,7 +156,7 @@ const ConnectWalletPage: React.FC = () => {
     {
       icon: metamask,
       title: 'Metamask',
-      onClickFunc: handleConnectMetaMask,
+      onClickFunc: handleConnectMetaMask
     },
     // {
     //   icon: trust,
@@ -181,8 +171,8 @@ const ConnectWalletPage: React.FC = () => {
     {
       icon: wallet_connect,
       title: 'Wallet Connect',
-      onClickFunc: handleConnectWalletConnect,
-    },
+      onClickFunc: handleConnectWalletConnect
+    }
   ];
 
   const renderData = useCallback((content) => {
@@ -190,11 +180,7 @@ const ConnectWalletPage: React.FC = () => {
       ? content.map(({ icon, title, onClickFunc }: any) => {
           console.log('title', title);
           return (
-            <Box
-              key={title}
-              onClick={onClickFunc}
-              className={cx('list-wallet')}
-            >
+            <Box key={title} onClick={onClickFunc} className={cx('list-wallet')}>
               <Button className={cx('button')} disableRipple={true}>
                 <img className={cx('icon')} src={icon} alt="icon" />
                 <span className={cx('title')}>{title}</span>
@@ -218,8 +204,8 @@ const ConnectWalletPage: React.FC = () => {
           {
             icon: icon,
             title: title,
-            onClickFunc: onClickFunc,
-          },
+            onClickFunc: onClickFunc
+          }
         ];
         return (
           <Box style={{ margin: '-24px', padding: '11px' }} key={title}>

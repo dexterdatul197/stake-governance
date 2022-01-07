@@ -13,54 +13,52 @@ import { BigNumber } from '@0x/utils';
 
 const coinGeckoClient = new CoinGeckoClient({
   timeout: 10000,
-  autoRetry: true,
+  autoRetry: true
 });
 
 const cx = classNames.bind(styles);
 const AreaChart: React.FC = () => {
-  const [series, setSeries] = useState([{ data: [], name: "Price" }]);
+  const [series, setSeries] = useState([{ data: [], name: 'Price' }]);
   const [isLoading, setIsLoading] = useState(true);
-  const selectedCurrency = useAppSelector(
-    (state) => state.currency.selectedCurrency
-  );
+  const selectedCurrency = useAppSelector((state) => state.currency.selectedCurrency);
 
   const [option, setOption] = useState<ApexOptions>({
     chart: {
       type: 'line',
       height: 280,
       zoom: {
-        enabled: false,
+        enabled: false
       },
       toolbar: {
-        show: false,
-      },
+        show: false
+      }
     },
     dataLabels: {
-      enabled: false,
+      enabled: false
     },
     legend: {
-      show: false,
+      show: false
     },
     colors: ['#F78939', '#107DEF'],
     stroke: {
       show: true,
-      curve: "smooth",
-      lineCap: "butt",
+      curve: 'smooth',
+      lineCap: 'butt',
       colors: undefined,
       width: 2,
-      dashArray: 0,
+      dashArray: 0
     },
     grid: {
-      show: false,
+      show: false
     },
     xaxis: {
       labels: {
-        show: false,
+        show: false
       },
-      categories: ["1", "2", "3"],
+      categories: ['1', '2', '3']
     },
     yaxis: {
-      show: false,
+      show: false
     },
     tooltip: {
       shared: true
@@ -80,9 +78,7 @@ const AreaChart: React.FC = () => {
   const chainPriceDataForChart = (data: any, tvlData: any) => {
     const res = data.reduce((res: any[], e: any) => {
       const date = convertToDate(e[0]);
-      const existDate = res.filter(
-        (item: any) => convertToDate(item[0]) === date
-      );
+      const existDate = res.filter((item: any) => convertToDate(item[0]) === date);
       if (existDate.length === 0) {
         res.push(e);
       } else {
@@ -94,24 +90,24 @@ const AreaChart: React.FC = () => {
       }
       return res;
     }, []);
-    
+
     const categories: any = res.map((item: number[]) => convertToDate(item[0]));
     const seriesPrice = res.map((item: number[]) => item[2]);
     let tvlFinally = tvlData.map((item: TVLData) => new BigNumber(item.tvl).toFixed(4));
-    
+
     if (tvlFinally.length > seriesPrice.length) {
       const indexRemove = tvlFinally.length - seriesPrice.length;
       tvlFinally.splice(0, indexRemove);
     }
     const series = [
       {
-        name: "Price",
-        data: seriesPrice,
+        name: 'Price',
+        data: seriesPrice
       },
       {
         name: 'TVL',
-        data: tvlFinally,
-      },
+        data: tvlFinally
+      }
     ];
 
     setOption({
@@ -131,14 +127,14 @@ const AreaChart: React.FC = () => {
 
   const getCoinGecko = async () => {
     const getOHCL = await coinGeckoClient.coinIdOHLC({
-      id: "chain",
+      id: 'chain',
       vs_currency: `${selectedCurrency}`,
-      days: 30,
+      days: 30
     });
     const param = {
       startTime: dateBeforeMonth(new Date(), 1).getTime(),
       endTime: new Date().getTime()
-    }
+    };
     const tvlData = await getTVLData(param);
     chainPriceDataForChart(getOHCL, tvlData);
     if (getOHCL) {
@@ -151,25 +147,19 @@ const AreaChart: React.FC = () => {
   }, [selectedCurrency]);
 
   return (
-    <div className={cx("area-chart")}>
+    <div className={cx('area-chart')}>
       <div id="chart" style={{ height: 480 }}>
         {isLoading ? (
           <CircularProgress
             size={50}
             color="primary"
             sx={{
-              position: "absolute",
-              top: "50%",
+              position: 'absolute',
+              top: '50%'
             }}
           />
         ) : (
-          <ReactApexChart
-            options={option}
-            series={series}
-            width="100%"
-            type="line"
-            height="100%"
-          />
+          <ReactApexChart options={option} series={series} width="100%" type="line" height="100%" />
         )}
       </div>
     </div>

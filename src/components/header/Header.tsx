@@ -50,13 +50,11 @@ const Header: React.FC = () => {
   };
   const theme = useAppSelector((state) => state.theme.themeMode);
   const onSwitchTheme = () => {
-    const newTheme =
-      theme === THEME_MODE.LIGHT ? THEME_MODE.DARK : THEME_MODE.LIGHT;
+    const newTheme = theme === THEME_MODE.LIGHT ? THEME_MODE.DARK : THEME_MODE.LIGHT;
     dispatch(setTheme(newTheme));
   };
   const wallet = useAppSelector((state) => state.wallet);
-
-  const isMobile = useIsMobile(375);
+  const isMobile = useIsMobile(576);
   return (
     <div className={cx('header-parent')}>
       <div className={cx('logo')}>
@@ -75,9 +73,7 @@ const Header: React.FC = () => {
         <Link
           to="/governance"
           onClick={setGovernaneStyle}
-          className={
-            governanBorder ? cx('link-style-border') : cx('link-style')
-          }
+          className={governanBorder ? cx('link-style-border') : cx('link-style')}
         >
           Governance
         </Link>
@@ -98,38 +94,22 @@ const Header: React.FC = () => {
                   {theme === THEME_MODE.LIGHT ? (
                     <>
                       <p className={cx('light')}>
-                        <img
-                          className={cx('icon-theme')}
-                          src={lightIcon}
-                          alt="light icon"
-                        />
+                        <img className={cx('icon-theme')} src={lightIcon} alt="light icon" />
                         light
                       </p>
                       <p className={cx('dark')}>
-                        <img
-                          className={cx('icon-theme')}
-                          src={darkIcon}
-                          alt=""
-                        />
+                        <img className={cx('icon-theme')} src={darkIcon} alt="" />
                         dark
                       </p>
                     </>
                   ) : (
                     <>
                       <p className={cx('light')}>
-                        <img
-                          className={cx('icon-theme')}
-                          src={light_whiteIcon}
-                          alt="dark icon"
-                        />
+                        <img className={cx('icon-theme')} src={light_whiteIcon} alt="dark icon" />
                         light
                       </p>
                       <p className={cx('dark')}>
-                        <img
-                          className={cx('icon-theme')}
-                          src={dark_whiteIcon}
-                          alt=""
-                        />
+                        <img className={cx('icon-theme')} src={dark_whiteIcon} alt="" />
                         dark
                       </p>
                     </>

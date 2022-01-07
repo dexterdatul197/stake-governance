@@ -15,13 +15,12 @@ import styles from './Footer.module.scss';
 const cx = classNames.bind(styles);
 
 const Footer: React.FC = () => {
-  const isMobile = useIsMobile(375);
+  const isMobile = useIsMobile(576);
   const dispatch = useDispatch();
   const theme = useAppSelector((state) => state.theme.themeMode);
 
   const onSwitchTheme = () => {
-    const newTheme =
-      theme === THEME_MODE.LIGHT ? THEME_MODE.DARK : THEME_MODE.LIGHT;
+    const newTheme = theme === THEME_MODE.LIGHT ? THEME_MODE.DARK : THEME_MODE.LIGHT;
     dispatch(setTheme(newTheme));
   };
 
@@ -32,10 +31,7 @@ const Footer: React.FC = () => {
           <ConnectWallet />
           <div className={cx('footer-theme')}>
             <span
-              className={cx(
-                'footer-theme__item',
-                theme === THEME_MODE.LIGHT ? 'active' : ''
-              )}
+              className={cx('footer-theme__item', theme === THEME_MODE.LIGHT ? 'active' : '')}
               onClick={onSwitchTheme}
             >
               <img
@@ -46,10 +42,7 @@ const Footer: React.FC = () => {
               <span>Light</span>
             </span>
             <span
-              className={cx(
-                'footer-theme__item',
-                theme === THEME_MODE.DARK ? 'active' : ''
-              )}
+              className={cx('footer-theme__item', theme === THEME_MODE.DARK ? 'active' : '')}
               onClick={onSwitchTheme}
             >
               <img
@@ -62,10 +55,10 @@ const Footer: React.FC = () => {
           </div>
         </div>
       ) : (
-        <div>
+        <>
           <div>&copy; Chain 1 open source</div>
           <div>vi.o\Block 275</div>
-        </div>
+        </>
       )}
     </div>
   );

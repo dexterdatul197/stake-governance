@@ -13,10 +13,12 @@ import { useAppSelector } from '../../store/hooks';
 import styles from './ConnectWallet.module.scss';
 import { setOpenConnectDialog, setEthereumAddress } from './redux/wallet';
 import { ReactComponent as ConectWalletIcon } from '../../assets/icon/wallet.svg';
+import useIsMobile from '../../hooks/useMobile';
 
 const cx = classnames.bind(styles);
 
 const ConnectWallet: React.FC = () => {
+  const isMobile = useIsMobile(576);
   const { account } = useWeb3React<Web3>();
   const history = useHistory();
   const dispatch = useDispatch();
@@ -54,10 +56,7 @@ const ConnectWallet: React.FC = () => {
           <span className={cx('button__text')}>Logout</span>
         </div>
       ) : (
-        <div
-          className={cx('button', 'center-items')}
-          onClick={handleOpenConnectWalletDialog}
-        >
+        <div className={cx('button', 'center-items')} onClick={handleOpenConnectWalletDialog}>
           <ConectWalletIcon stroke="var(--text-color-stake)" />{' '}
           <span className={cx('button__text')}>Connect wallet</span>
         </div>

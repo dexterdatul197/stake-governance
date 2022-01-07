@@ -53,12 +53,10 @@ const ProposalDetail: React.FC<Props> = (props) => {
     title: '',
     updatedAt: '',
     values: [],
-    voterCount: '',
+    voterCount: ''
   });
   const getProposal = async () => {
-    const proposalDetail = await getProposalDetail(
-      props.match.params.proposalId
-    );
+    const proposalDetail = await getProposalDetail(props.match.params.proposalId);
     setProposalDetail(proposalDetail.data);
   };
 
@@ -75,9 +73,7 @@ const ProposalDetail: React.FC<Props> = (props) => {
   return (
     <div className={cx('proposal-detail')}>
       <BackArrow title="Detail" />
-      <div className={cx('title', 'text-black-white')}>
-        {proposalDetail.title}
-      </div>
+      <div className={cx('title', 'text-black-white')}>{proposalDetail.title}</div>
       <div className={cx('proposal-block')}>
         <div className={cx('block-left')}>
           <div
@@ -88,14 +84,16 @@ const ProposalDetail: React.FC<Props> = (props) => {
           </div>
           <div className={cx('proposer-status')}>
             <span>{proposalDetail.id}</span>
-            <span>
-              {moment(proposalDetail.createdAt).format('MMMM Do, YYYY')}
-            </span>
+            <span>{moment(proposalDetail.createdAt).format('MMMM Do, YYYY')}</span>
             <span>{getStatus(proposalDetail.state)}</span>
           </div>
           <div className={cx('detail-info')}>
-              <div className={cx('vote-card')}><VoteCard /></div>
-              <div className={cx('vote-card')}><VoteCard /></div>
+            <div className={cx('vote-card')}>
+              <VoteCard />
+            </div>
+            <div className={cx('vote-card')}>
+              <VoteCard />
+            </div>
           </div>
         </div>
         <div className={cx('block-right')}>

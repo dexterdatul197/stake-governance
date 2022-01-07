@@ -18,45 +18,44 @@ const useStyles: any = makeStyles(() => ({
   root: {
     width: '10%',
     '& > .css-17vbkzs-MuiFormControl-root-MuiTextField-root': {
-      marginTop: 0,
-    },
+      marginTop: 0
+    }
   },
   inputRoot: {
     background: 'var(--main-background-dropdow)',
     '&.MuiOutlinedInput-root': {
-      borderRadius: '18px',
-    },
+      borderRadius: '18px'
+    }
   },
   input: {
-    color: 'var(--btn-hover-blue-green) !important',
+    color: 'var(--btn-hover-blue-green) !important'
   },
   endAdornment: {
     '& > .MuiAutocomplete-clearIndicator': {
-      display: 'none',
+      display: 'none'
     },
     '& > .MuiAutocomplete-popupIndicator': {
-      color: 'var(--btn-hover-blue-green)',
-    },
-  },
+      color: 'var(--btn-hover-blue-green)'
+    }
+  }
 }));
 
 const coinGeckoClient = new CoinGeckoClient({
   timeout: 10000,
-  autoRetry: true,
+  autoRetry: true
 });
 
 const Main: React.FC = () => {
   const classes = useStyles();
   const [currencies, setCurrencies] = useState(['']);
   const { wallet } = useAppSelector((state) => ({
-    wallet: state.wallet,
+    wallet: state.wallet
   }));
   const dispatch = useDispatch();
   const [totalSupply, setTotalSupply] = useState('0');
 
   const getCurrencies = useCallback(async () => {
-    const coinGeckoCurrencies =
-      await coinGeckoClient.simpleSupportedCurrencies();
+    const coinGeckoCurrencies = await coinGeckoClient.simpleSupportedCurrencies();
     setCurrencies(coinGeckoCurrencies);
     dispatch(setCurrencyList(coinGeckoCurrencies));
   }, [dispatch]);
@@ -67,13 +66,10 @@ const Main: React.FC = () => {
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const getTotalSupply = async () => {
-    const getPriceOnUsd = await coinGeckoClient.simplePrice({
-      ids: 'chain',
-      vs_currencies: 'usd',
-    });
+    const getPriceOnUsd = await coinGeckoClient.simplePrice({ ids: 'chain', vs_currencies: 'usd' });
     const param = {
       startTime: dateBeforeMonth(new Date(), 1).getTime(),
-      endTime: new Date().getTime(),
+      endTime: new Date().getTime()
     };
     let tvlData = await getTVLData(param);
     const lastTvlItem = tvlData[tvlData.length - 1];
@@ -101,9 +97,7 @@ const Main: React.FC = () => {
               options={currencies}
               defaultValue={'usd'}
               onChange={handleOnChangeSelectCurrency}
-              renderInput={(item) => (
-                <TextField {...item} margin="normal" fullWidth />
-              )}
+              renderInput={(item) => <TextField {...item} margin="normal" fullWidth />}
               size={'small'}
               id="combo-box-demo"
             />

@@ -23,9 +23,7 @@ const Governance: React.FC = () => {
   const getBalanceOf = async () => {
     if (isConnected(wallet)) {
       const connectedAddress = currentAddress(wallet);
-      const chnAmount = await getCHNBalance()
-        .methods.balanceOf(connectedAddress)
-        .call();
+      const chnAmount = await getCHNBalance().methods.balanceOf(connectedAddress).call();
       dispatch(setVotingWeight(chnAmount));
       const vote = new BigNumber(chnAmount).div(1e18).toString();
       setVoting(vote);
@@ -50,7 +48,7 @@ const Governance: React.FC = () => {
                 color="primary"
                 sx={{
                   position: 'absolute',
-                  top: '50%',
+                  top: '50%'
                 }}
               />
             </div>
