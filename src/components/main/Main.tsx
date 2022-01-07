@@ -71,7 +71,6 @@ const Main: React.FC = () => {
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const getTotalSupply = async (ohcl: any) => {
-    const getPriceOnUsd = await coinGeckoClient.simplePrice({ ids: 'chain', vs_currencies: 'usd' });
     const res = convertOHCL(ohcl);
     const latestOhcl = res[res.length - 1];
 
@@ -111,7 +110,7 @@ const Main: React.FC = () => {
       ) : (
         <>
           <div className={cx('text-head-child')}>
-            <div className={cx('price')}>${'totalSupply'}</div>
+            <div className={cx('price')}>${totalSupply}</div>
             <Autocomplete
               classes={classes}
               options={currencies}
