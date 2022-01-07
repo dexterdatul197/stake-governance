@@ -47,7 +47,7 @@ const Header: React.FC = () => {
     dispatch(setTheme(newTheme));
   };
   const wallet = useAppSelector((state) => state.wallet);
-  const isMobile = useIsMobile(375);
+  const isMobile = useIsMobile(576);
   return (
     <div className={cx('header-parent')}>
       <div className={cx('logo')}>

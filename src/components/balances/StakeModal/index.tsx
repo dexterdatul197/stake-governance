@@ -37,7 +37,6 @@ const Modal = memo((props: Props) => {
     value3: 75,
     all: 100
   });
-
   const renderStepContent = (step: Number) => {
     switch (step) {
       case 0:

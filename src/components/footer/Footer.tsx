@@ -15,7 +15,7 @@ import styles from './Footer.module.scss';
 const cx = classNames.bind(styles);
 
 const Footer: React.FC = () => {
-  const isMobile = useIsMobile(375);
+  const isMobile = useIsMobile(576);
   const dispatch = useDispatch();
   const theme = useAppSelector((state) => state.theme.themeMode);
 

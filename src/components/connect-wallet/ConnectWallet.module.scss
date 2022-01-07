@@ -31,7 +31,21 @@
   .close {
     display: none;
   }
-  @media screen and (max-width: 375px) {
+  @media screen and (max-width: 576px) {
+    .button {
+      background: var(--mb-bg-btn-wallet);
+      border-radius: 30px;
+      color: var(--text-color-stake);
+      display: flex;
+      padding: 10px 16px;
+
+      &__text {
+        margin-left: 8px;
+        color: var(--text-color-stake);
+      }
+    }
+  }
+  @media screen and (max-width: 768px) {
     .button {
       background: var(--mb-bg-btn-wallet);
       border-radius: 30px;

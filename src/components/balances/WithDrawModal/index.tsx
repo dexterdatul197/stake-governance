@@ -16,6 +16,7 @@ import { useCallback, useEffect, useState } from 'react';
 import CHN_icon from '../../../assets/icon/CHN.svg';
 import { currentAddress } from '../../../helpers/common';
 import { getCHNBalance, stakingToken } from '../../../helpers/ContractService';
+import useIsMobile from '../../../hooks/useMobile';
 import { useAppSelector } from '../../../store/hooks';
 import styles from './styles.module.scss';
 import { BigNumber } from '@0x/utils';
@@ -36,7 +37,6 @@ interface Props {
 
 const BootstrapDialogTitle = (props: any) => {
   const { children, onClose, ...other } = props;
-
   return (
     <DialogTitle className={cx('dialig-title')} sx={{ m: 0, p: 2 }} {...other}>
       {children}
@@ -49,8 +49,7 @@ const BootstrapDialogTitle = (props: any) => {
             right: 8,
             top: 8,
             color: (theme) => theme.palette.grey[500]
-          }}
-        >
+          }}>
           <CloseIcon />
         </IconButton>
       ) : null}
@@ -104,15 +103,13 @@ const WithDraw = (props: Props) => {
         setValue(stake);
       }}
       maxWidth="md"
-      disableEscapeKeyDown
-    >
+      disableEscapeKeyDown>
       <BootstrapDialogTitle
         id="customized-dialog-title"
         onClose={() => {
           handleCloseModalWithDraw();
           setValue(stake);
-        }}
-      >
+        }}>
         Modal title
       </BootstrapDialogTitle>
       <DialogContent className={cx('dialog-content')}>
