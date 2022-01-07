@@ -19,7 +19,7 @@ const cx = classnames.bind(styles);
 
 const ConnectWallet: React.FC = () => {
   const isMobile = useIsMobile(576);
-  const { account } = useWeb3React<Web3>();
+  const { deactivate } = useWeb3React<Web3>();
   const history = useHistory();
   const dispatch = useDispatch();
   const handleOpenConnectWalletDialog = () => {
@@ -43,7 +43,8 @@ const ConnectWallet: React.FC = () => {
   }, [wallet]);
 
   const handleLogout = () => {
-    localStorage.removeItem('ethereumAddress');
+    deactivate();
+    localStorage.clear();
     dispatch(setEthereumAddress(''));
     history.push('/');
   };
@@ -56,7 +57,7 @@ const ConnectWallet: React.FC = () => {
           <span className={cx('button__text')}>Logout</span>
         </div>
       ) : (
-        <div className={cx('button')} onClick={() => handleOpenConnectWalletDialog()}>
+        <div className={cx('button')} onClick={handleOpenConnectWalletDialog}>
           <ConectWalletIcon stroke="var(--text-color-stake)" />{' '}
           <span className={cx('button__text')}>Connect wallet</span>
         </div>

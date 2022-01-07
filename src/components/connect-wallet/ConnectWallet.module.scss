@@ -4,8 +4,13 @@ $color: #107def;
 :root {
   .button {
     background-color: $background-login-btn;
-    padding: 10px 20px;
+    padding: 10px 17px;
+    width: 175px;
+    box-shadow: border-box;
     border-radius: 30px;
+    letter-spacing: 0.015em;
+    display: flex;
+    justify-content: center;
     color: $color;
     cursor: pointer;
     letter-spacing: 0.015em;

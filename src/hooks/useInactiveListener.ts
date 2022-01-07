@@ -1,15 +1,28 @@
-import { useWeb3React } from '@web3-react/core';
+import { useDispatch } from 'react-redux';
+import { useWeb3React, UnsupportedChainIdError } from '@web3-react/core';
 import { useEffect } from 'react';
 import { injectedConnector } from '../connectors/injectedConnector';
+import { openSnackbar, SnackbarVariant, closeSnackbar } from '../store/snackbar';
 
 export function useInactiveListener(suppress = false): void {
   const { active, error, activate } = useWeb3React();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (error) {
-      console.log('useInactiveListener', error);
+      console.log('useInactiveListener', error instanceof UnsupportedChainIdError, error);
+      if (error instanceof UnsupportedChainIdError) {
+        dispatch(
+          openSnackbar({
+            message: String(error).replace('UnsupportedChainIdError: ', ''),
+            variant: SnackbarVariant.ERROR
+          })
+        );
+        setTimeout(() => {
+          dispatch(closeSnackbar());
+        }, 4000);
+      }
       localStorage.removeItem('ethereumAddress');
-      window.location.reload();
     }
   }, [error]);
   useEffect(() => {
@@ -39,6 +52,8 @@ export function useInactiveListener(suppress = false): void {
       ethereum.on('chainChanged', handleChainChanged);
       ethereum.on('accountsChanged', handleAccountsChanged);
       ethereum.on('connect', handleConnect);
+      ethereum.on('disconnect', (args: any) => console.log('disconnected', args));
+
       return () => {
         if (ethereum.removeListener) {
           ethereum.removeListener('connect', handleConnect);

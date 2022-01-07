@@ -4,13 +4,13 @@ import Web3 from 'web3';
 
 const ethereumAddress = localStorage.getItem('ethereumAddress') || '';
 
-export const wallets = ['METAMASK', 'WALLET_CONNECT', 'TRUST', 'COINBASE'];
+export const walletsConfig = ['METAMASK', 'WALLET_CONNECT', 'TRUST', 'COINBASE'];
 
 const initialState: WalletData = {
   openConnectDialog: false,
   bsc: '',
   ethereumAddress: Web3.utils.isAddress(ethereumAddress) ? ethereumAddress : '',
-  walletName: ''
+  walletName: localStorage.getItem('walletName') || ''
 };
 export const walletSlice = createSlice({
   name: 'wallet',
@@ -20,13 +20,14 @@ export const walletSlice = createSlice({
       state.openConnectDialog = action.payload;
     },
     setEthereumAddress: (state, action) => {
-      localStorage.setItem('ethereumAddress', JSON.stringify(action.payload));
+      localStorage.setItem('ethereumAddress', action.payload as string);
       return {
         ...state,
         ethereumAddress: action.payload
       };
     },
     setWalletName: (state, action) => {
+      localStorage.setItem('walletName', action.payload as string);
       return {
         ...state,
         walletName: action.payload
