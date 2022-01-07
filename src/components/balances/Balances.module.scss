@@ -1,13 +1,10 @@
 :root {
   .balances-history {
-    text-align: center;
-    margin-left: auto;
-    margin-right: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
-
   .balance {
-    max-width: 563px;
-    max-height: 387px;
     background-color: var(--background-governance-color);
     padding: 10px 10px 26px 10px;
     border-radius: 15px;
@@ -17,35 +14,68 @@
 
     .balance-head-text {
       color: var(--color-text-white-black);
-      padding-top: 20px;
-      // padding-bottom: 44px;
+      padding: 20px 222px 44px 219px;
       font-size: 24px;
       font-weight: 600;
+      display: block;
     }
 
     .balance-row {
-      display: grid;
-      grid-auto-flow: row;
-      grid-template-columns: repeat(3, max(0, 1fr));
-      flex: 1 1 0%;
-      margin-left: auto;
-      margin-right: auto;
-      width: 286px;
-      margin-top: 44px;
-      align-items: center;
-      .balance-key {
-        color: var(--color-text-white-black);
-        font-size: 20px;
-        font-weight: 500;
-        margin-right: 35px;
+      padding-left: 127px;
+      padding-right: 151px;
+      .stake,
+      .wallet,
+      .earn {
+        display: flex;
+        align-items: center;
+        padding-bottom: 39px;
         text-align: left;
       }
-      .balance-value {
-        color: var(--color-text-white-black);
-        font-size: 24px;
-        font-weight: 600;
-        text-align: left;
-        margin-right: 15px;
+      .stake {
+        &__title {
+          font-size: 20px;
+          font-weight: 500;
+          color: var(--color-text-white-black);
+          display: block;
+          padding-right: 35px;
+        }
+        &__value {
+          font-size: 24px;
+          font-weight: 600;
+          color: var(--color-text-white-black);
+          display: block;
+          padding-right: 37px;
+        }
+      }
+      .wallet {
+        &__title {
+          font-size: 20px;
+          font-weight: 500;
+          display: block;
+          color: var(--color-text-white-black);
+          padding-right: 35px;
+        }
+        &__value {
+          font-size: 24px;
+          font-weight: 600;
+          display: block;
+          color: var(--color-text-white-black);
+        }
+      }
+      .earn {
+        &__title {
+          font-size: 20px;
+          display: block;
+          font-weight: 500;
+          color: var(--color-text-white-black);
+          padding-right: 35px;
+        }
+        &__value {
+          font-size: 24px;
+          display: block;
+          font-weight: 600;
+          color: var(--color-text-white-black);
+        }
       }
       .m-balance-key {
         color: var(--color-text-white-black);
@@ -65,32 +95,29 @@
   }
 
   .switcher {
-    margin-top: 31px;
-    display: flex;
-    justify-content: center;
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-bottom: 39px;
     &_stake,
     &_withdraw {
       background: #8196bb;
       border-radius: 16px;
-      text-transform: capitalize;
       color: #ffffff;
     }
 
     &_stake {
-      width: 221px;
-      height: 65px;
-      line-height: 65px;
       font-size: 18px;
       font-weight: 700;
       margin-right: 10px;
+      width: 221px;
+      height: 65px;
     }
 
     &_withdraw {
+      font-size: 16px;
+      font-weight: 700;
       width: 221px;
       height: 65px;
-      line-height: 65px;
-      font-size: 18px;
-      font-weight: 700;
     }
 
     .button-active {

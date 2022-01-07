@@ -1,62 +1,58 @@
+.table-container {
+  overflow: unset;
+  height: 511px !important;
+  background: var(--color-table) !important;
+  border-radius: 19px !important;
+  .table {
+    height: 511px !important;
 
- 
-    .table-container {
-        overflow: unset;
-        height: 511px!important;
-        background: var(--color-table)!important;
-        border-radius: 19px!important;
-        .table {
-            height: 511px!important;
+    .table-head {
+      &__cell {
+        border-bottom: none;
+        color: var(--color-text-white-black);
 
-            .table-head {
-                &__cell {
-                    border-bottom: none;
-                    color: var(--color-text-white-black);
-                    text-transform: capitalize;
-                    font-weight: 500;
-                    font-size: 16px;
-                    padding-top: 34px;
-                    padding-left: 46px;
-                }
-            }
-
-            .table-body {
-                padding-bottom: 56px;
-                &__cell{
-                    border-bottom: none;
-                    color: var(--color-text-white-black);
-                    font-weight: 500;
-                    font-size: 18px;
-                    padding-left: 46px;
-                    &__pending-text{
-                        display: flex;
-                        align-items: center;
-                        justify-content:center;
-                        
-                       .progress {
-                           margin-left: 10px
-                       }
-                    }
-                }
-                .pending {
-                    color: #5773E7;
-                }
-
-                .completed {
-                    color:#72BF65
-                }
-            }
-
-            .table-footer{
-                border-bottom: none;
-                .table-pagination{
-                    padding-bottom: 23px;
-                    color:var(--color-text-white-black);
-                    font-size: 14px;
-                    font-weight: 600;
-                }
-            }
-        }
-
+        font-weight: 500;
+        font-size: 16px;
+        padding-top: 34px;
+        padding-left: 46px;
+      }
     }
 
+    .table-body {
+      padding-bottom: 56px;
+      &__cell {
+        border-bottom: none;
+        color: var(--color-text-white-black);
+        font-weight: 500;
+        font-size: 18px;
+        padding-left: 46px;
+        &__pending-text {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          .progress {
+            margin-left: 10px;
+          }
+        }
+      }
+      .pending {
+        color: #5773e7;
+      }
+
+      .completed {
+        color: #72bf65;
+      }
+    }
+
+    .table-footer {
+      border-bottom: none;
+      .table-pagination {
+        padding-bottom: 23px;
+        color: var(--color-text-white-black);
+        font-size: 14px;
+        font-weight: 600;
+      }
+    }
+  }
+}

@@ -6,72 +6,79 @@ import ReactApexChart from 'react-apexcharts';
 import styles from './AreaChart.module.scss';
 import { useAppSelector } from '../../store/hooks';
 import { CircularProgress } from '@material-ui/core';
+import { getTVLData } from '../../apis/apis';
+import { convertToDate, dateBeforeMonth } from '../../helpers/common';
+import { TVLData } from '../../interfaces/SFormData';
+import { BigNumber } from '@0x/utils';
 
 const coinGeckoClient = new CoinGeckoClient({
   timeout: 10000,
-  autoRetry: true,
+  autoRetry: true
 });
 
 const cx = classNames.bind(styles);
-
 const AreaChart: React.FC = () => {
   const [series, setSeries] = useState([{ data: [], name: 'Price' }]);
   const [isLoading, setIsLoading] = useState(true);
-  const selectedCurrency = useAppSelector(
-    (state) => state.currency.selectedCurrency
-  );
+  const selectedCurrency = useAppSelector((state) => state.currency.selectedCurrency);
 
   const [option, setOption] = useState<ApexOptions>({
     chart: {
+      type: 'line',
       height: 280,
       zoom: {
-        enabled: false,
+        enabled: false
       },
       toolbar: {
-        show: false,
-      },
+        show: false
+      }
     },
     dataLabels: {
-      enabled: false,
+      enabled: false
     },
     legend: {
-      show: false,
+      show: false
     },
-    colors: ['#F78939', '#72BF65'],
+    colors: ['#F78939', '#107DEF'],
     stroke: {
       show: true,
       curve: 'smooth',
       lineCap: 'butt',
       colors: undefined,
       width: 2,
-      dashArray: 0,
+      dashArray: 0
     },
     grid: {
-      show: false,
+      show: false
     },
     xaxis: {
       labels: {
-        show: false,
+        show: false
       },
-      categories: ['1', '2', '3'],
+      categories: ['1', '2', '3']
     },
     yaxis: {
-      show: false,
+      show: false
     },
+    tooltip: {
+      shared: true
+    },
+    series: [
+      {
+        name: 'Price',
+        data: [1, 2, 3]
+      },
+      {
+        name: 'TVL',
+        data: [2, 5, 6]
+      }
+    ]
   });
 
-  const convertToDate = (param: number) => {
-    return `${new Date(param).getFullYear()} - ${
-      new Date(param).getMonth() + 1
-    } - ${new Date(param).getDate()}`;
-  };
-
-  const chainPriceDataForChart = (data: any) => {
+  const chainPriceDataForChart = (data: any, tvlData: any) => {
     const res = data.reduce((res: any[], e: any) => {
       const date = convertToDate(e[0]);
-      const existDate = res.filter(
-        (item: any) => convertToDate(item[0]) === date
-      );
+      const existDate = res.filter((item: any) => convertToDate(item[0]) === date);
       if (existDate.length === 0) {
         res.push(e);
       } else {
@@ -86,28 +93,34 @@ const AreaChart: React.FC = () => {
 
     const categories: any = res.map((item: number[]) => convertToDate(item[0]));
     const seriesPrice = res.map((item: number[]) => item[2]);
+    let tvlFinally = tvlData.map((item: TVLData) => new BigNumber(item.tvl).toFixed(4));
 
+    if (tvlFinally.length > seriesPrice.length) {
+      const indexRemove = tvlFinally.length - seriesPrice.length;
+      tvlFinally.splice(0, indexRemove);
+    }
     const series = [
       {
         name: 'Price',
-        data: seriesPrice,
+        data: seriesPrice
       },
+      {
+        name: 'TVL',
+        data: tvlFinally
+      }
     ];
 
     setOption({
       ...option,
       xaxis: {
         categories: categories,
+        labels: {
+          show: false
+        }
       },
       tooltip: {
-        custom: function ({ series, seriesIndex, dataPointIndex, w }) {
-          return (
-            '<div style="padding: 10px; text-transform: uppercase">' +
-            `$${series[seriesIndex][dataPointIndex]} <strong>${selectedCurrency}</strong>` +
-            '</div>'
-          );
-        },
-      },
+        shared: true
+      }
     });
     setSeries(series);
   };
@@ -116,9 +129,14 @@ const AreaChart: React.FC = () => {
     const getOHCL = await coinGeckoClient.coinIdOHLC({
       id: 'chain',
       vs_currency: `${selectedCurrency}`,
-      days: 30,
+      days: 30
     });
-    chainPriceDataForChart(getOHCL);
+    const param = {
+      startTime: dateBeforeMonth(new Date(), 1).getTime(),
+      endTime: new Date().getTime()
+    };
+    const tvlData = await getTVLData(param);
+    chainPriceDataForChart(getOHCL, tvlData);
     if (getOHCL) {
       setIsLoading(false);
     }
@@ -132,10 +150,14 @@ const AreaChart: React.FC = () => {
     <div className={cx('area-chart')}>
       <div id="chart" style={{ height: 480 }}>
         {isLoading ? (
-          <CircularProgress size={50} color="primary" sx={{
-            position: 'absolute',
-            top: '50%'
-        }}/>
+          <CircularProgress
+            size={50}
+            color="primary"
+            sx={{
+              position: 'absolute',
+              top: '50%'
+            }}
+          />
         ) : (
           <ReactApexChart options={option} series={series} width="100%" type="line" height="100%" />
         )}

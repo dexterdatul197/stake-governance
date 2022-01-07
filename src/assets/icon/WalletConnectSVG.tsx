@@ -1,39 +1,39 @@
 import React from 'react';
 
 interface Props {
-    size?: 'xl' | 'lg' | 'md' | 'sm';
-  }
-const WalletConnectSVG: React.FC<Props> = ({ size = 'md' }: Props) =>{
-    const returnSize = (size: string) => {
-        switch (size) {
-          case 'xl':
-            return {
-              height: '36',
-              width: '36',
-            };
-          case 'lg':
-            return {
-              height: '20',
-              width: '20',
-            };
-          case 'md':
-            return {
-              height: '16',
-              width: '16',
-            };
-          case 'sm':
-            return {
-              height: '12',
-              width: '12',
-            };
-    
-          default:
-            break;
-        }
-      };
+  size?: 'xl' | 'lg' | 'md' | 'sm';
+}
+const WalletConnectSVG: React.FC<Props> = ({ size = 'md' }: Props) => {
+  const returnSize = (size: string) => {
+    switch (size) {
+      case 'xl':
+        return {
+          height: '36',
+          width: '36'
+        };
+      case 'lg':
+        return {
+          height: '20',
+          width: '20'
+        };
+      case 'md':
+        return {
+          height: '16',
+          width: '16'
+        };
+      case 'sm':
+        return {
+          height: '12',
+          width: '12'
+        };
+
+      default:
+        break;
+    }
+  };
   return (
     <svg
-    {...returnSize(size)}
+      {...returnSize(size)}
       width="40"
       height="40"
       viewBox="0 0 40 40"
@@ -43,12 +43,7 @@ const WalletConnectSVG: React.FC<Props> = ({ size = 'md' }: Props) =>{
     >
       <circle cx="20" cy="20" r="20" fill="url(#pattern0)" />
       <defs>
-        <pattern
-          id="pattern0"
-          patternContentUnits="objectBoundingBox"
-          width="1"
-          height="1"
-        >
+        <pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">
           <use xlinkHref="#image0_161_299" transform="scale(0.025)" />
         </pattern>
         <image

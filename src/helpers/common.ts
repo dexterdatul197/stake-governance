@@ -26,9 +26,9 @@ export const getArgs = (param: any) => {
 };
 
 export const currentAddress = (wallet: WalletData) => {
-    const allValue = Object.values(wallet);
-    return allValue.filter(item => typeof(item) === 'string' && item.length !== 0)[0] || '';
-}
+  const allValue = Object.values(wallet);
+  return allValue.filter((item) => typeof item === 'string' && item.length !== 0)[0] || '';
+};
 
 export const format = commaNumber.bindWith(',', '.');
 
@@ -43,4 +43,15 @@ export const getStatus = (state: string) => {
     return 'Failed';
   }
   return state;
+};
+
+export const dateBeforeMonth = (date: Date, num: number): Date => {
+  date.setMonth(date.getMonth() - num);
+  return date;
+};
+
+export const convertToDate = (param: number) => {
+  return `${new Date(param).getFullYear()} - ${new Date(param).getMonth() + 1} - ${new Date(
+    param
+  ).getDate()}`;
 };

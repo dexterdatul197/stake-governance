@@ -26,17 +26,17 @@ const AddContainedSVG: React.FC<Props> = ({ size = 'md', theme = 'light' }) => {
       case 'lg':
         return {
           height: '24',
-          width: '24',
+          width: '24'
         };
       case 'md':
         return {
           height: '15',
-          width: '15',
+          width: '15'
         };
       default:
         return {
           height: '24',
-          width: '24',
+          width: '24'
         };
     }
   };

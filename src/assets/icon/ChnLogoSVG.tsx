@@ -7,24 +7,20 @@ interface Props {
   pathFill?: string;
 }
 
-const ChnLogoSVG: React.FC<Props> = ({
-  size = 'md',
-  svgFill = 'none',
-  pathFill = 'white',
-}) => {
+const ChnLogoSVG: React.FC<Props> = ({ size = 'md', svgFill = 'none', pathFill = 'white' }) => {
   const returnSize = (size: string) => {
     switch (size) {
       case 'lg':
         return {
           height: '24',
           width: '24',
-          viewBox: '0 0 24 24',
+          viewBox: '0 0 24 24'
         };
       case 'md':
         return {
           height: '14',
           width: '14',
-          viewBox: '0 0 24 24',
+          viewBox: '0 0 24 24'
         };
       default:
         break;

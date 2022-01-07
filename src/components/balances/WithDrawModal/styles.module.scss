@@ -3,7 +3,9 @@
     padding: 30px;
     // display: flex;
     justify-content: center;
+    flex-direction: column;
     align-items: center;
+    overflow: unset;
 
     .dialig-title {
       // display: flex;
@@ -62,81 +64,81 @@
             }
           }
         }
+      }
 
-        .main-right {
-          flex-grow: 1;
+      .main-right {
+        flex-grow: 1;
+        text-align: right;
+        &__price {
+          display: block;
+          color: rgba(0, 28, 78, 0.38);
+          font-weight: 500;
+          font-size: 16px;
+        }
+        &__quantity {
+          display: block;
+          color: #107def;
+          font-size: 18px;
+          font-weight: 600;
           text-align: right;
-          &__price {
-            display: block;
-            color: rgba(0, 28, 78, 0.38);
-            font-weight: 500;
-            font-size: 16px;
-          }
-          &__quantity {
-            display: block;
-            color: #107def;
-            font-size: 18px;
-            font-weight: 600;
-            text-align: right;
-            // width: 50px;
-          }
+          // width: 50px;
         }
       }
     }
   }
+}
 
-  .dialog-actions {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 30px;
-    .button-action {
-      background-color: #107def;
-      color: #ffffff;
-      font-size: 18px;
-      font-weight: 700;
-      text-transform: capitalize;
-      width: 100%;
-      display: block;
-      margin: 0 20px;
-      border-radius: 10px;
-    }
+.dialog-actions {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+  .button-action {
+    background-color: #107def;
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 700;
+    text-transform: capitalize;
+    width: 100%;
+    display: block;
+    margin: 0 20px;
+    border-radius: 10px;
   }
-  @media screen and (max-width: 768px) {
-    .dialog-container {
-      padding: 24px !important;
-      .dialig-title {
-        font-size: 28px;
+}
+@media screen and (max-width: 768px) {
+  .dialog-container {
+    padding: 24px !important;
+    .dialig-title {
+      font-size: 28px;
+    }
+    .dialog-content {
+      &__title {
+        font-size: 24px;
       }
-      .dialog-content {
-        &__title {
-          font-size: 24px;
-        }
-        &__children {
-          .main-left {
-            &__text {
-              .token-title {
-                font-size: 24px;
-              }
-              .token-text {
-                font-size: 26px;
-              }
-            }
-          }
-
-          .main-right {
-            &__price {
+      &__children {
+        .main-left {
+          &__text {
+            .token-title {
               font-size: 24px;
             }
-            &__quantity {
+            .token-text {
               font-size: 26px;
             }
           }
         }
-      }
-      .dialog-actions {
-        .button-action {
-          font-size: 24px;
+
+        .main-right {
+          &__price {
+            font-size: 24px;
+          }
+          &__quantity {
+            font-size: 26px;
+          }
         }
+      }
+    }
+    .dialog-actions {
+      .button-action {
+        font-size: 24px;
       }
     }
   }
@@ -149,13 +151,13 @@
       width: 20px !important;
     }
     .dialig-title {
-    padding: 20px !important;
+      padding: 20px !important;
       font-size: 16px !important;
     }
     .dialog-content {
-    // padding: 0 20px 20px !important;
+      // padding: 0 20px 20px !important;
       &__title {
-        p{
+        p {
           font-size: 12px !important;
         }
       }
@@ -194,7 +196,7 @@
       .button-action {
         padding: 12px !important;
         font-size: 14px !important;
-        margin:  0 !important;
+        margin: 0 !important;
       }
     }
   }

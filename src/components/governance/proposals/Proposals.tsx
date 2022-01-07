@@ -15,18 +15,18 @@ import styles from './Proposals.module.scss';
 const cx = classNames.bind(styles);
 const paginationStyle = makeStyles(() => ({
   toolbar: {
-    color: 'var(--pagination-color)',
+    color: 'var(--pagination-color)'
   },
   input: {
     '& > .MuiTablePagination-selectIcon': {
-      color: 'var(--pagination-action-color)',
-    },
+      color: 'var(--pagination-action-color)'
+    }
   },
   actions: {
     '& > .Mui-disabled .MuiSvgIcon-fontSizeMedium': {
-      color: 'var(--pagination-action-color)',
-    },
-  },
+      color: 'var(--pagination-action-color)'
+    }
+  }
 }));
 
 const Proposals: React.FC = () => {
@@ -47,7 +47,7 @@ const Proposals: React.FC = () => {
     conditionFilter.limit = item.target.value;
     setConditionFilter(conditionFilter);
     setCurrentPage(0);
-  }
+  };
   const [conditionFilter, setConditionFilter] = useState<Filter>({
     page: 1,
     limit: 5
@@ -59,7 +59,7 @@ const Proposals: React.FC = () => {
     // if (currentAddress(currentAccount))
     // await getCHNBalance().methods.mintForUser(new BigNumber('100000000000000000000')).send({from: currentAddress(currentAccount)});
     // console.log('RECEIVE FREE CHN TOKEN');
-  }
+  };
 
   useEffect(() => {
     setCurrentPage(proposals.metadata.page);
@@ -68,20 +68,19 @@ const Proposals: React.FC = () => {
   useEffect(() => {
     minForUser();
     dispatch(getProposalList(conditionFilter));
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [conditionFilter.limit, conditionFilter.page, currentAccount, dispatch]);
-  
+
   return (
     <div className={cx('governance-proposal')}>
       <div className={cx('text-header')}>Proposal</div>
       {proposals && proposals.data.length !== 0 ? (
         proposals.data.map((item, key) => {
-          return <Proposal 
-                    proposal={item}
-                    key={key}
-                  />
-        }
-      )) : (<div className={cx('no-proposal')}>No Proposals</div>)}
+          return <Proposal proposal={item} key={key} />;
+        })
+      ) : (
+        <div className={cx('no-proposal')}>No Proposals</div>
+      )}
       <TablePagination
         rowsPerPageOptions={[5, 10, 25]}
         component="div"

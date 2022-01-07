@@ -8,6 +8,7 @@ import {
   IconButton,
   Input,
   Typography,
+  CircularProgress
 } from '@material-ui/core';
 import CloseIcon from '@mui/icons-material/Close';
 import classNames from 'classnames/bind';
@@ -18,6 +19,7 @@ import { getCHNBalance, stakingToken } from '../../../helpers/ContractService';
 import useIsMobile from '../../../hooks/useMobile';
 import { useAppSelector } from '../../../store/hooks';
 import styles from './styles.module.scss';
+import { BigNumber } from '@0x/utils';
 
 const commaNumber = require('comma-number');
 const format = commaNumber.bindWith(',', '.');
@@ -30,6 +32,7 @@ interface Props {
   walletValue?: any;
   earn: Number;
   stake?: any;
+  handleUpdateSmartContract: () => void;
 }
 
 const BootstrapDialogTitle = (props: any) => {
@@ -45,9 +48,8 @@ const BootstrapDialogTitle = (props: any) => {
             position: 'absolute',
             right: 8,
             top: 8,
-            color: (theme) => theme.palette.grey[500],
-          }}
-        >
+            color: (theme) => theme.palette.grey[500]
+          }}>
           <CloseIcon />
         </IconButton>
       ) : null}
@@ -56,47 +58,10 @@ const BootstrapDialogTitle = (props: any) => {
 };
 
 const WithDraw = (props: Props) => {
-  const { openWithdraw, handleCloseModalWithDraw, walletValue, earn, stake } =
-    props;
+  const { openWithdraw, handleCloseModalWithDraw, earn, stake, handleUpdateSmartContract } = props;
   const wallet = useAppSelector((state: any) => state.wallet);
-  const [isApprove, setApprove] = useState(false);
   const [value, setValue] = useState(0);
-  const isMobile = useIsMobile(768);
-
-  useEffect(() => {
-    stake > 0 ? setValue(stake) : setValue(0);
-  }, [stake]);
-
-  const handleWithdraw = useCallback(async () => {
-    try {
-      setTimeout(() => {
-        setApprove(true);
-      }, 1000);
-      await getCHNBalance()
-        .methods.approve(
-          process.env.REACT_APP_STAKE_TESTNET_ADDRESS,
-          walletValue
-        )
-        .send({ from: currentAddress(wallet) });
-    } catch (error) {
-      console.log(error);
-      handleCloseModalWithDraw();
-    }
-  }, [wallet]);
-
-  const checkApprove = async () => {
-    if (isApprove === true) {
-      handleCloseModalWithDraw();
-      await stakingToken()
-        .methods.withdraw(0, value)
-        .send({ from: currentAddress(wallet) });
-      // setValue(stake)
-    }
-  };
-
-  useEffect(() => {
-    checkApprove();
-  }, [isApprove]);
+  const [progress, setProgress] = useState(false);
 
   const handleChangeInputValue = useCallback(
     (event: any) => {
@@ -105,22 +70,47 @@ const WithDraw = (props: Props) => {
     [value]
   );
 
+  useEffect(() => {
+    if (stake) {
+      setValue(stake);
+    }
+  }, [stake]);
+
+  const handleWithdraw = async () => {
+    try {
+      setProgress(true);
+      setTimeout(() => {
+        setProgress(false);
+      }, 1000);
+      console.log('value: ', value);
+      await stakingToken()
+        .methods.withdraw(0, new BigNumber(value).multipliedBy('1e18'))
+        .send({ from: currentAddress(wallet) });
+      handleUpdateSmartContract();
+    } catch (error) {
+      console.log(error);
+      handleCloseModalWithDraw();
+      setProgress(false);
+    }
+  };
+
   return (
     <Dialog
       className={cx('dialog-container')}
       open={openWithdraw}
       onClose={() => {
         handleCloseModalWithDraw();
+        setValue(stake);
       }}
-      maxWidth={isMobile ? 'md' : 'xs'}
-      // style={{ width: '80%', maxWidth: 500 }}
-      disableEscapeKeyDown
-    >
+      maxWidth="md"
+      disableEscapeKeyDown>
       <BootstrapDialogTitle
         id="customized-dialog-title"
-        onClose={handleCloseModalWithDraw}
-      >
-        Widthdraw
+        onClose={() => {
+          handleCloseModalWithDraw();
+          setValue(stake);
+        }}>
+        Modal title
       </BootstrapDialogTitle>
       <DialogContent className={cx('dialog-content')}>
         <Box className={cx('dialog-content__title')}>
@@ -129,20 +119,14 @@ const WithDraw = (props: Props) => {
         </Box>
         <Box className={cx('dialog-content__children')}>
           <Box className={cx('main-left')}>
-            <img
-              className={cx('main-left__icon')}
-              src={CHN_icon}
-              alt="CHN_icon"
-            />
+            <img className={cx('main-left__icon')} src={CHN_icon} alt="CHN_icon" />
             <Box className={cx('main-left__text')}>
               <Typography className={cx('token-title')}>Token</Typography>
               <Typography className={cx('token-text')}>CHN</Typography>
             </Box>
           </Box>
           <Box className={cx('main-right')}>
-            <Typography className={cx('main-right__price')}>
-              ${format(earn)}
-            </Typography>
+            <Typography className={cx('main-right__price')}>${format(earn)}</Typography>
             <Input
               className={cx('main-right__quantity')}
               disableUnderline
@@ -154,38 +138,9 @@ const WithDraw = (props: Props) => {
       </DialogContent>
       <DialogActions className={cx('dialog-actions')}>
         <Button onClick={handleWithdraw} className={cx('button-action')}>
-          Withdraw
+          {progress ? <CircularProgress style={{ color: '#ffffff' }} /> : 'Withdraw'}
         </Button>
       </DialogActions>
-      {/* <div className="dmm">
-        <span>Widthdraw</span>
-        <span>Close</span>
-      </div>
-      <div>
-        <span>Amount</span>
-        <span>Available</span>
-      </div>
-      <div>
-        <img src={CHN_icon} alt="CHN_icon" />
-        <div>
-          <span>Token</span>
-          <span>{format(earn)}</span>
-        </div>
-        <div>
-          <span>CHN</span>
-          <Input
-            className={cx('main-right__quantity')}
-            disableUnderline
-            value={value}
-            onChange={handleChangeInputValue}
-          />
-        </div>
-      </div>
-      <div>
-        <Button onClick={handleWithdraw} className={cx('button-action')}>
-          Withdraw
-        </Button>
-      </div> */}
     </Dialog>
   );
 };

@@ -4,7 +4,7 @@ export enum SnackbarVariant {
   INFO = 'info',
   SUCCESS = 'success',
   WARNING = 'warning',
-  ERROR = 'error',
+  ERROR = 'error'
 }
 export type SnackbarState = {
   message: string;
@@ -15,21 +15,24 @@ export type SnackbarState = {
 const initialState: SnackbarState = {
   message: '',
   variant: '',
-  isOpen: false,
+  isOpen: false
 };
 
 export const snackbarSlice = createSlice({
   name: 'snackbar',
   initialState,
   reducers: {
-    openSnackbar: (state, action: PayloadAction<{ message: string; variant: SnackbarVariant }>) => ({
+    openSnackbar: (
+      state,
+      action: PayloadAction<{ message: string; variant: SnackbarVariant }>
+    ) => ({
       ...state,
       message: action.payload.message,
       variant: action.payload.variant,
-      isOpen: true,
+      isOpen: true
     }),
-    closeSnackbar: () => initialState,
-  },
+    closeSnackbar: () => initialState
+  }
 });
 
 export const { openSnackbar, closeSnackbar } = snackbarSlice.actions;
