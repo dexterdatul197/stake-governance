@@ -72,4 +72,4 @@ export const convertOHCL = (data: any[]) => {
     return res;
   }, []);
   return res;
-}
+};

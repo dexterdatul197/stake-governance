@@ -22,7 +22,7 @@ interface Props {
 const cx = classNames.bind(styles);
 const AreaChart: React.FC<Props> = (props) => {
   console.log('INIT AREA CHART: ', props);
-  
+
   const [series, setSeries] = useState([{ data: [], name: 'Price' }]);
   const selectedCurrency = useAppSelector((state) => state.currency.selectedCurrency);
   const [option, setOption] = useState<ApexOptions>({
@@ -58,24 +58,24 @@ const AreaChart: React.FC<Props> = (props) => {
       labels: {
         show: false
       },
-      categories: ['1', '2', '3'],
+      categories: ['1', '2', '3']
     },
     yaxis: {
       show: false
     },
     tooltip: {
-      shared: true,
+      shared: true
     },
     series: [
       {
         name: 'Price',
-        data: [1, 2, 3],
+        data: [1, 2, 3]
       },
       {
         name: 'TVL',
-        data: [2, 5, 6],
-      },
-    ],
+        data: [2, 5, 6]
+      }
+    ]
   });
 
   const chainPriceDataForChart = (data: any, tvlData: any) => {
@@ -91,7 +91,7 @@ const AreaChart: React.FC<Props> = (props) => {
     const series = [
       {
         name: 'Price',
-        data: seriesPrice,
+        data: seriesPrice
       },
       {
         name: 'TVL',
@@ -104,12 +104,12 @@ const AreaChart: React.FC<Props> = (props) => {
       xaxis: {
         categories: categories,
         labels: {
-          show: false,
-        },
+          show: false
+        }
       },
       tooltip: {
-        shared: true,
-      },
+        shared: true
+      }
     });
     setSeries(series);
   };
