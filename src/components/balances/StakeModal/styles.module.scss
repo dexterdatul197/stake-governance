@@ -64,14 +64,23 @@
         align-items: center;
         align-content: center;
         justify-content: flex-start;
+        padding-bottom: 18px;
         .title {
           font-size: 16px;
           font-weight: 600;
           color: var(--color-text-white-black);
+          padding-right: 13px;
         }
-        .autocomplete {
-          padding-left: 10px;
-          padding-bottom: 10px;
+        .token {
+          font-size: 16px;
+          font-weight: 600;
+          color: var(--text-color-stake);
+          width: 92px;
+          height: 33px;
+          background: rgba(16, 125, 239, 0.1);
+          border-radius: 30px;
+          text-align: center;
+          line-height: 33px;
         }
       }
 
@@ -84,10 +93,18 @@
           font-size: 16px;
           font-weight: 600;
           color: var(--color-text-white-black);
+          padding-right: 13px;
         }
-        .autocomplete {
-          padding-left: 10px;
-          padding-bottom: 10px;
+        .token {
+          font-size: 16px;
+          font-weight: 600;
+          color: var(--text-color-stake);
+          width: 92px;
+          height: 33px;
+          background: rgba(16, 125, 239, 0.1);
+          border-radius: 30px;
+          text-align: center;
+          line-height: 33px;
         }
       }
     }
@@ -180,6 +197,51 @@
       &:hover {
         background-color: #107def;
       }
+    }
+  }
+  .dialog-content_loading {
+    display: flex;
+    flex-direction: column;
+    overflow-y: unset;
+    &__progress {
+      width: 82px !important;
+      height: 96px !important;
+      margin: auto;
+      margin-top: 70px;
+      margin-bottom: 90px;
+    }
+    .icon-done {
+      margin: auto;
+      margin-top: 85px;
+      margin-bottom: 27px;
+      background: rgba(87, 115, 231, 0.12);
+      border-radius: 50%;
+      padding: 15px 11px 14px 17px;
+    }
+  }
+
+  .dialog-actions_loading {
+    padding: 0 50px 18px 50px;
+    .pending,
+    .confirm {
+      width: 202px;
+      height: 63px;
+      font-size: 18px;
+      font-weight: 700;
+      background: rgba(0, 15, 42, 0.25);
+      border-radius: 10px;
+      text-align: center;
+      text-transform: capitalize;
+      color: rgba(0, 0, 0, 0.5);
+    }
+    .pending {
+      margin-right: 16px;
+    }
+    .text_done {
+      padding: 0px 150px 58px 155px;
+      font-size: 24px;
+      font-weight: 700;
+      color: rgba(0, 28, 78, 0.87);
     }
   }
 }
