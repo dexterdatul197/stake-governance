@@ -10,7 +10,7 @@ const initialState: WalletData = {
   trust: '',
   coinbase: '',
   walletconnect: '',
-  ethereumAddress: Web3.utils.isAddress(ethereumAddress) ? ethereumAddress : '',
+  ethereumAddress: Web3.utils.isAddress(ethereumAddress) ? ethereumAddress : ''
 };
 export const walletSlice = createSlice({
   name: 'wallet',
@@ -27,14 +27,10 @@ export const walletSlice = createSlice({
     },
     setCoinbaseAddress: (state, action) => {
       state.coinbase = action.payload;
-    },
-  },
+    }
+  }
 });
-export const {
-  setOpenConnectDialog,
-  setEthereumAddress,
-  setTrustAddress,
-  setCoinbaseAddress,
-} = walletSlice.actions;
+export const { setOpenConnectDialog, setEthereumAddress, setTrustAddress, setCoinbaseAddress } =
+  walletSlice.actions;
 const { reducer: walletReducer } = walletSlice;
 export default walletReducer;

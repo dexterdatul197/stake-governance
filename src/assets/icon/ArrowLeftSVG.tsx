@@ -18,13 +18,13 @@ const ArrowLeftSVG: React.FC<Props> = ({
         return {
           height: '24',
           width: '24',
-          viewBox: '0 0 24 24',
+          viewBox: '0 0 24 24'
         };
       case 'md':
         return {
           height: '14',
           width: '14',
-          viewBox: '0 0 24 24',
+          viewBox: '0 0 24 24'
         };
       default:
         break;

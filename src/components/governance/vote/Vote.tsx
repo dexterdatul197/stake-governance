@@ -1,8 +1,5 @@
 import { BigNumber } from '@0x/utils';
-import {
-  Button,
-  CircularProgress
-} from '@material-ui/core';
+import { Button, CircularProgress } from '@material-ui/core';
 import classNames from 'classnames/bind';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -23,7 +20,7 @@ const Vote: React.FC<Props> = (props) => {
   const dispatch = useDispatch();
   const wallet = useAppSelector((state) => state.wallet);
   const votingWeight = useAppSelector((state) => state.governance.voteingWeight);
-  
+
   const [openLoading, setOpenLoading] = useState(false);
   const handleOpenCreateForm = async () => {
     if (isConnected(wallet)) {
@@ -31,25 +28,37 @@ const Vote: React.FC<Props> = (props) => {
       setOpenLoading(true);
       const connectedAddress = currentAddress(wallet);
       // // check amount strike in wallet > proposalThreshold()
-      const proposalThreshold = await governance()
-        .methods.proposalThreshold()
-        .call();
-      const checkCHNamount = new BigNumber(votingWeight).comparedTo(new BigNumber(proposalThreshold));
+      const proposalThreshold = await governance().methods.proposalThreshold().call();
+      const checkCHNamount = new BigNumber(votingWeight).comparedTo(
+        new BigNumber(proposalThreshold)
+      );
       // check user dont have any proposal with status active or pending
-      console.log('COMPARE THRESHOLD: ', format(votingWeight), format(proposalThreshold), checkCHNamount);
-      
+      console.log(
+        'COMPARE THRESHOLD: ',
+        format(votingWeight),
+        format(proposalThreshold),
+        checkCHNamount
+      );
+
       const voteContract = governance();
-      const lastestProposalId = await voteContract.methods.latestProposalIds(connectedAddress).call();
+      const lastestProposalId = await voteContract.methods
+        .latestProposalIds(connectedAddress)
+        .call();
       //TODO:need remove comment to cancel lastestProposalId
       // const cancelLastestProposal = await voteContract.methods.cancel(lastestProposalId).send({from: connectedAddress});
       // console.log('CANCEL PROPOSAL: ', cancelLastestProposal);
-      
+
       if (lastestProposalId !== '0') {
         const state = await voteContract.methods.state(lastestProposalId).call();
         if (state === '0' || state === '1') {
           setOpenLoading(false);
           createProposal = false;
-          dispatch(openSnackbar({ message: `You can't create proposal. there is a proposal in progress!`, variant: SnackbarVariant.ERROR }));
+          dispatch(
+            openSnackbar({
+              message: `You can't create proposal. there is a proposal in progress!`,
+              variant: SnackbarVariant.ERROR
+            })
+          );
           return;
         } else {
           createProposal = true;
@@ -60,7 +69,14 @@ const Vote: React.FC<Props> = (props) => {
       }
       setOpenLoading(false);
       if (checkCHNamount !== 1) {
-        dispatch(openSnackbar({message: `You can't create proposal. Your voting power should be ${format(new BigNumber(proposalThreshold).div(1e18))} CHN at least`, variant: SnackbarVariant.ERROR}));
+        dispatch(
+          openSnackbar({
+            message: `You can't create proposal. Your voting power should be ${format(
+              new BigNumber(proposalThreshold).div(1e18)
+            )} CHN at least`,
+            variant: SnackbarVariant.ERROR
+          })
+        );
         createProposal = false;
         return;
       }
@@ -71,24 +87,26 @@ const Vote: React.FC<Props> = (props) => {
       dispatch(
         openSnackbar({
           variant: SnackbarVariant.ERROR,
-          message: 'Need connect wallet to create proposal!',
+          message: 'Need connect wallet to create proposal!'
         })
       );
     }
   };
   const convertVotingWeight = (voteWeight: string | undefined) => {
     return voteWeight ? format(new BigNumber(voteWeight).div(1e18).toFixed(4).toString()) : '';
-  }
+  };
   return (
     <div className={cx('governance-vote')}>
       <div className={cx('vote-title')}>Vote Weight</div>
       <div className={cx('vote-content')}>
-        <div className={cx('vote-value')}>{convertVotingWeight(votingWeight)} <span>CHN</span></div>
+        <div className={cx('vote-value')}>
+          {convertVotingWeight(votingWeight)} <span>CHN</span>
+        </div>
       </div>
       <Button onClick={handleOpenCreateForm} className={cx('create-proposal')}>
         {openLoading && (
           <div>
-            <CircularProgress size={20} color='inherit' /> 
+            <CircularProgress size={20} color="inherit" />
             <span>Create Proposal</span>
           </div>
         )}

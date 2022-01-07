@@ -22,9 +22,7 @@ const Governance: React.FC = () => {
   const getBalanceOf = async () => {
     if (isConnected(wallet)) {
       const connectedAddress = currentAddress(wallet);
-      const chnAmount = await getCHNBalance()
-        .methods.balanceOf(connectedAddress)
-        .call();
+      const chnAmount = await getCHNBalance().methods.balanceOf(connectedAddress).call();
       dispatch(setVotingWeight(chnAmount));
       const vote = new BigNumber(chnAmount).div(1e18).toString();
       setVoting(vote);
@@ -34,7 +32,7 @@ const Governance: React.FC = () => {
       dispatch(
         openSnackbar({
           message: 'Need connect wallet!',
-          variant: SnackbarVariant.ERROR,
+          variant: SnackbarVariant.ERROR
         })
       );
     }
@@ -46,10 +44,14 @@ const Governance: React.FC = () => {
     <div className={cx('governance')}>
       {isLoading ? (
         <div className={cx('loading-page')}>
-          <CircularProgress size={50} color="primary" sx={{
+          <CircularProgress
+            size={50}
+            color="primary"
+            sx={{
               position: 'absolute',
               top: '50%'
-          }}/>
+            }}
+          />
         </div>
       ) : (
         <>

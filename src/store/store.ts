@@ -6,14 +6,14 @@ import governanceReducer from '../components/governance/redux/Governance';
 import snackbarReducer from './snackbar';
 import themeReducer from './theme';
 const store = configureStore({
-    reducer: {
-        wallet: walletReducer,
-        snackbar: snackbarReducer,
-        currency: currencyReducer,
-        theme: themeReducer,
-        governance: governanceReducer,
-        proposals: proposalsReducer,
-    }
+  reducer: {
+    wallet: walletReducer,
+    snackbar: snackbarReducer,
+    currency: currencyReducer,
+    theme: themeReducer,
+    governance: governanceReducer,
+    proposals: proposalsReducer
+  }
 });
 export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;
