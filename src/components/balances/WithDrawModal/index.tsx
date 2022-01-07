@@ -31,7 +31,7 @@ interface Props {
   openWithdraw: boolean;
   handleCloseModalWithDraw: () => void;
   walletValue?: any;
-  earn: Number;
+  earn?: any;
   stake?: any;
   handleUpdateSmartContract: () => void;
 }
@@ -77,17 +77,35 @@ const WithDraw = (props: Props) => {
       setTimeout(() => {
         setProgress(false);
       }, 1000);
-      console.log('stake: ',stake);
-      console.log('value: ', value)
-      if (stake > value) {
+
+      if (stake) {
         await stakingToken()
           .methods.withdraw(0, new BigNumber(value).multipliedBy('1e18'))
           .send({ from: currentAddress(wallet) });
+        handleCloseModalWithDraw();
+        dispatch(
+          openSnackbar({
+            message: 'Withdraw Success',
+            variant: SnackbarVariant.SUCCESS
+          })
+        );
+        handleUpdateSmartContract();
+      } else if (earn) {
+        await stakingToken()
+          .methods.withdraw(0, new BigNumber(earn).multipliedBy('1e18'))
+          .send({ from: currentAddress(wallet) });
+        handleCloseModalWithDraw();
+        dispatch(
+          openSnackbar({
+            message: 'Withdraw Success',
+            variant: SnackbarVariant.SUCCESS
+          })
+        );
         handleUpdateSmartContract();
       } else {
         dispatch(
           openSnackbar({
-            message: 'withdraw amount is more than stake, please enter smaller number',
+            message: 'Withdraw Failed',
             variant: SnackbarVariant.ERROR
           })
         );
@@ -99,7 +117,6 @@ const WithDraw = (props: Props) => {
     }
   };
 
-  
   const handleChangeInputValue = useCallback(
     (event: any) => {
       setValue(event.target.value);
