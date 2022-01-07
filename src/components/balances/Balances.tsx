@@ -13,6 +13,7 @@ import Modal from './StakeModal';
 import TableComponent from './Table';
 import CardComponent from './TableOnMobile';
 import ModalWithDraw from './WithDrawModal';
+import ConnectWalletPage from '../connect-wallet-page/ConnectWalletPage';
 
 const commaNumber = require('comma-number');
 const format = commaNumber.bindWith(',', '.');
@@ -166,66 +167,72 @@ const Balances: React.FC = () => {
   }, [getTotalStakeInPool, updateSmartContract]);
 
   return (
-    <Box className={cx('balances-history')}>
-      <Box className={cx('balance')}>
-        <Box className={cx('balance-head-text')}>Balances</Box>
-        <Box className={cx('balance-row')}>
-          <Box className={cx('stake')}>
-            <span className={cx('stake__title')}>Stake:</span>
-            <span className={cx('stake__value')}>{stake}</span>
-            <span className={cx('wallet__token')}>CHN</span>
-          </Box>
-          <Box className={cx('wallet')}>
-            <span className={cx('wallet__title')}>Wallet:</span>
-            <span className={cx('wallet__value')}>{walletValue}</span>
-          </Box>
-          <Box className={cx('earn')}>
-            <span className={cx('earn__title')}>Earned:</span>
-            <span className={cx('earn__value')}>{earn}</span>
-          </Box>
-        </Box>
+    <>
+      {!wallet.ethereumAddress ? (
+        <ConnectWalletPage />
+      ) : (
+        <Box className={cx('balances-history')}>
+          <Box className={cx('balance')}>
+            <Box className={cx('balance-head-text')}>Balances</Box>
+            <Box className={cx('balance-row')}>
+              <Box className={cx('stake')}>
+                <span className={cx('stake__title')}>Stake:</span>
+                <span className={cx('stake__value')}>{stake}</span>
+                <span className={cx('wallet__token')}>CHN</span>
+              </Box>
+              <Box className={cx('wallet')}>
+                <span className={cx('wallet__title')}>Wallet:</span>
+                <span className={cx('wallet__value')}>{walletValue}</span>
+              </Box>
+              <Box className={cx('earn')}>
+                <span className={cx('earn__title')}>Earned:</span>
+                <span className={cx('earn__value')}>{earn}</span>
+              </Box>
+            </Box>
 
-        <Box className={`${cx('switcher')}`}>
-          <Button
-            onClick={handleActiveClass}
-            className={cx('switcher_stake', {
-              'button-active': isActive,
-              'button-deactive': !isActive
-            })}>
-            Stake
-          </Button>
-          <Button
-            onClick={handleActiveWithDraw}
-            className={cx('switcher_withdraw', {
-              'button-active': isActiveWithDraw,
-              'button-deactive': !isActiveWithDraw
-            })}>
-            WithDraw
-          </Button>
-        </Box>
-      </Box>
-      <div className={cx('history-label')}>History</div>
-      <Box className={cx('history')}>
-        <TableComponent />
-      </Box>
+            <Box className={`${cx('switcher')}`}>
+              <Button
+                onClick={handleActiveClass}
+                className={cx('switcher_stake', {
+                  'button-active': isActive,
+                  'button-deactive': !isActive
+                })}>
+                Stake
+              </Button>
+              <Button
+                onClick={handleActiveWithDraw}
+                className={cx('switcher_withdraw', {
+                  'button-active': isActiveWithDraw,
+                  'button-deactive': !isActiveWithDraw
+                })}>
+                WithDraw
+              </Button>
+            </Box>
+          </Box>
+          <div className={cx('history-label')}>History</div>
+          <Box className={cx('history')}>
+            <TableComponent />
+          </Box>
 
-      <Modal
-        walletValue={walletValue}
-        currencies={currencies}
-        classes={classes}
-        openStake={isOpenStake}
-        handleCloseModal={handleCloseModal}
-        handleUpdateSmartContract={handleUpdateSmartContract}
-      />
-      <ModalWithDraw
-        stake={stake}
-        earn={earn}
-        openWithdraw={isOpenWithdraw}
-        handleCloseModalWithDraw={handleCloseModalWithDraw}
-        walletValue={walletValue}
-        handleUpdateSmartContract={handleUpdateSmartContract}
-      />
-    </Box>
+          <Modal
+            walletValue={walletValue}
+            currencies={currencies}
+            classes={classes}
+            openStake={isOpenStake}
+            handleCloseModal={handleCloseModal}
+            handleUpdateSmartContract={handleUpdateSmartContract}
+          />
+          <ModalWithDraw
+            stake={stake}
+            earn={earn}
+            openWithdraw={isOpenWithdraw}
+            handleCloseModalWithDraw={handleCloseModalWithDraw}
+            walletValue={walletValue}
+            handleUpdateSmartContract={handleUpdateSmartContract}
+          />
+        </Box>
+      )}
+    </>
   );
 };
 

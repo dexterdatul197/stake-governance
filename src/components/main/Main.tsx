@@ -7,8 +7,10 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { getTVLData } from '../../apis/apis';
 import { dateBeforeMonth, format } from '../../helpers/common';
+import { useAppSelector } from '../../store/hooks';
 import AreaChart from '../chart/AreaChart';
 import { setCurrencyList, setSelectedCurrency } from '../chart/redux/currency';
+import ConnectWalletPage from '../connect-wallet-page/ConnectWalletPage';
 import style from './Main.module.scss';
 const cx = classNames.bind(style);
 
@@ -46,6 +48,9 @@ const coinGeckoClient = new CoinGeckoClient({
 const Main: React.FC = () => {
   const classes = useStyles();
   const [currencies, setCurrencies] = useState(['']);
+  const { wallet } = useAppSelector((state) => ({
+    wallet: state.wallet
+  }));
   const dispatch = useDispatch();
   const [totalSupply, setTotalSupply] = useState('0');
 
@@ -81,20 +86,26 @@ const Main: React.FC = () => {
 
   return (
     <div className={cx('text-head')}>
-      <div className={cx('text-head-child')}>
-        <div className={cx('price')}>${'totalSupply'}</div>
-        <Autocomplete
-          classes={classes}
-          options={currencies}
-          defaultValue={'usd'}
-          onChange={handleOnChangeSelectCurrency}
-          renderInput={(item) => <TextField {...item} margin="normal" fullWidth />}
-          size={'small'}
-          id="combo-box-demo"
-        />
-      </div>
-      <div className={cx('securing-chain')}>Securing chain governance</div>
-      <AreaChart />
+      {wallet.openConnectDialog ? (
+        <ConnectWalletPage />
+      ) : (
+        <>
+          <div className={cx('text-head-child')}>
+            <div className={cx('price')}>${totalSupply}</div>
+            <Autocomplete
+              classes={classes}
+              options={currencies}
+              defaultValue={'usd'}
+              onChange={handleOnChangeSelectCurrency}
+              renderInput={(item) => <TextField {...item} margin="normal" fullWidth />}
+              size={'small'}
+              id="combo-box-demo"
+            />
+          </div>
+          <div className={cx('securing-chain')}>Securing chain governance</div>
+          <AreaChart />
+        </>
+      )}
     </div>
   );
 };

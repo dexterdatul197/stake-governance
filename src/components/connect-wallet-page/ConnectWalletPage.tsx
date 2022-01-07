@@ -1,6 +1,6 @@
 import Web3 from 'web3';
 import { useWeb3React } from '@web3-react/core';
-
+import { useHistory } from 'react-router-dom';
 import { Button } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import { Dialog, IconButton, TextField, Typography } from '@mui/material';
@@ -10,14 +10,9 @@ import React, { useState, useCallback } from 'react';
 import { MISSING_EXTENSION_ERROR } from '../../constant/uninstallExtentionException';
 import { connectCoinbase, connectMetaMask, connectTrust } from '../../helpers/connectWallet';
 import { openSnackbar, SnackbarVariant } from '../../store/snackbar';
-import {
-  setCoinbaseAddress,
-  setEthereumAddress,
-  setOpenConnectDialog,
-  setTrustAddress
-} from '../connect-wallet/redux/wallet';
+import { setEthereumAddress, setOpenConnectDialog } from '../connect-wallet/redux/wallet';
 import { useAppDispatch, useAppSelector } from './../../store/hooks';
-import styles from './ConnectWalletDialog.module.scss';
+import styles from './ConnectWalletPage.module.scss';
 import metamask from '../../assets/icon/meta_mask.svg';
 import trust from '../../assets/icon/trust.svg';
 import coinbase from '../../assets/icon/coinbase.svg';
@@ -26,10 +21,12 @@ import wallet_connect from '../../assets/icon/wallet_connect.svg';
 import { injectedConnector } from '../../connectors/injectedConnector';
 import { switchNetwork } from '../../connectors/switchNetwork';
 import { walletconnectConnector } from '../../connectors/walletconnectConnector';
+import bannerImg from '../../assets/imgs/bg-connect.png';
 
 const cx = classnames.bind(styles);
 
-const ConnectWalletDialog: React.FC = () => {
+const ConnectWalletPage: React.FC = () => {
+  const history = useHistory();
   const { account, activate, deactivate } = useWeb3React<Web3>();
   const dispatch = useAppDispatch();
   const wallet = useAppSelector((state) => state.wallet);
@@ -87,11 +84,12 @@ const ConnectWalletDialog: React.FC = () => {
     }
   };
   // Connect MetaMask
+  console.log('account 22', account);
+
   const handleConnectMetaMask = async () => {
     try {
       await deactivate();
       activate(injectedConnector).then(() => {
-        localStorage.setItem('ethereumAddress', JSON.stringify(account));
         dispatch(setEthereumAddress(account));
       });
       switchNetwork(process.env.REACT_APP_CHAIN_ID || '');
@@ -113,7 +111,6 @@ const ConnectWalletDialog: React.FC = () => {
     try {
       await deactivate();
       activate(walletconnectConnector).then(() => {
-        localStorage.setItem('ethereumAddress', JSON.stringify(account));
         dispatch(setEthereumAddress(account));
       });
       switchNetwork(process.env.REACT_APP_CHAIN_ID || '');
@@ -131,20 +128,7 @@ const ConnectWalletDialog: React.FC = () => {
   };
 
   // Connect Trust
-  const handleConnectTrust = async () => {
-    dispatch(setOpenConnectDialog(false));
-    const connectedTrust = await connectTrust();
-    if (connectedTrust.length > 0) {
-      dispatch(setTrustAddress(connectedTrust[0]));
-    } else {
-      dispatch(
-        openSnackbar({
-          message: 'Connect to Trust wallet did not success!',
-          variant: SnackbarVariant.WARNING
-        })
-      );
-    }
-  };
+  const handleConnectTrust = async () => {};
 
   // Connect Coinbase
   const handleConnectCoinBase = () => {
@@ -166,25 +150,12 @@ const ConnectWalletDialog: React.FC = () => {
     setApiSecretError(false);
   };
 
-  const handleConnectCoinbase = async () => {
-    // validate api key api secret
-    if (!apiKey) setApiKeyError(true);
-    if (!apiSecret) setApiSecretError(true);
-    if (apiKey && apiSecret) {
-      const res: any = await connectCoinbase(apiKey, apiSecret);
-      if (res.code === 401) {
-        dispatch(openSnackbar({ variant: SnackbarVariant.ERROR, message: res.data }));
-      } else {
-        dispatch(setCoinbaseAddress(res.data.data.id));
-      }
-      setCoinbaseDialogOpen(false);
-    }
-  };
+  const handleConnectCoinbase = async () => {};
 
   const listIcon = [
     {
       icon: metamask,
-      title: 'Meta Mask',
+      title: 'Metamask',
       onClickFunc: handleConnectMetaMask
     },
     // {
@@ -194,7 +165,7 @@ const ConnectWalletDialog: React.FC = () => {
     // },
     // {
     //   icon: coinbase,
-    //   title: 'Coin Base',
+    //   title: 'Coinbase',
     //   onClickFunc: handleConnectCoinBase,
     // },
     {
@@ -206,12 +177,13 @@ const ConnectWalletDialog: React.FC = () => {
 
   const renderData = useCallback((content) => {
     return content
-      ? content.map(({ icon, title, onClickFunc }: any, index: any) => {
+      ? content.map(({ icon, title, onClickFunc }: any) => {
+          console.log('title', title);
           return (
-            <Box key={index} onClick={onClickFunc} className={cx('list-wallet')}>
+            <Box key={title} onClick={onClickFunc} className={cx('list-wallet')}>
               <Button className={cx('button')} disableRipple={true}>
                 <img className={cx('icon')} src={icon} alt="icon" />
-                <Typography className={cx('title')}>{title}</Typography>
+                <span className={cx('title')}>{title}</span>
               </Button>
             </Box>
           );
@@ -221,134 +193,27 @@ const ConnectWalletDialog: React.FC = () => {
 
   return (
     <>
-      <Dialog
-        open={openConnectWalletDialog}
-        onClose={handleCloseConnectDialog}
-        fullWidth={true}
-        maxWidth={'xs'}
-        disableEscapeKeyDown={true}
-        PaperProps={{
-          style: {
-            backgroundColor: 'var(--background-dialog-color)',
-            overflowY: 'unset'
+      <div className={cx('banner-connect')}>
+        <img src={bannerImg} alt="" />
+        <span>Hi! Wellcome today!</span>
+      </div>
+      <div className={cx('title-connect')}>Connect your wallet</div>
+      {listIcon.map((item, index) => {
+        const { icon, title, onClickFunc } = item;
+        const contents = [
+          {
+            icon: icon,
+            title: title,
+            onClickFunc: onClickFunc
           }
-        }}
-      >
-        <Box display={'flex'} justifyContent={'space-between'}>
-          <Typography component={'div'}>
-            <IconButton size={'small'} className={cx('hidden')}>
-              <CloseIcon />
-            </IconButton>
-          </Typography>
-          <Typography component={'div'} className={cx('title')}>
-            <Box>
-              <div className={cx('connect-wallet-text-title')}>Connect your wallet</div>
-            </Box>
-          </Typography>
-          <Typography component={'div'}>
-            <IconButton
-              onClick={handleCloseConnectDialog}
-              size={'small'}
-              className={cx('close-button')}
-            >
-              <CloseIcon />
-            </IconButton>
-          </Typography>
-        </Box>
-
-        {listIcon.map((item, index) => {
-          const { icon, title, onClickFunc } = item;
-          const contents = [
-            {
-              icon: icon,
-              title: title,
-              onClickFunc: onClickFunc
-            }
-          ];
-          return (
-            <Box style={{ margin: '-24px', padding: '11px' }} key={index}>
-              {renderData(contents)}
-            </Box>
-          );
-        })}
-      </Dialog>
-      {/* Coinbase login dialog */}
-      <Dialog
-        open={coinbaseDialogOpen}
-        fullWidth={true}
-        maxWidth={'xs'}
-        disableEscapeKeyDown={true}
-        PaperProps={{
-          style: {
-            backgroundColor: '#001C4E',
-            color: '#fff'
-          }
-        }}
-      >
-        <Box display={'flex'} justifyContent={'space-between'}>
-          <Typography component={'div'}>
-            <IconButton size={'small'} className={cx('hidden')}>
-              <CloseIcon />
-            </IconButton>
-          </Typography>
-          <Typography component={'div'} className={cx('title')}>
-            <Box>
-              <div className={cx('connect-wallet-text')}>Connect Coinbase</div>
-            </Box>
-          </Typography>
-          <Typography component={'div'}>
-            <IconButton
-              onClick={handleCloseConnectCoibaseDialog}
-              size={'small'}
-              className={cx('close-button')}
-            >
-              <CloseIcon />
-            </IconButton>
-          </Typography>
-        </Box>
-        <Box padding={2}>
-          <TextField
-            required
-            id="outlined-required"
-            label="API KEY"
-            defaultValue=""
-            size="medium"
-            fullWidth={true}
-            error={apiKeyError}
-            onChange={handleOnChangeApiKey}
-            margin="dense"
-          />
-          <TextField
-            required
-            id="outlined-required"
-            label="API SECRET"
-            defaultValue=""
-            size="medium"
-            fullWidth={true}
-            error={apiSecretError}
-            onChange={handleOnChangeApiSecret}
-            margin="dense"
-          />
-        </Box>
-        <Button
-          size="medium"
-          style={{
-            borderRadius: 20,
-            backgroundColor: '#72BF65',
-            padding: '18px 36px',
-            color: '#fff',
-            fontWeight: 'bold',
-            width: '50%',
-            textAlign: 'center',
-            margin: 'auto',
-            marginBottom: '10px'
-          }}
-          onClick={handleConnectCoinbase}
-        >
-          Connect
-        </Button>
-      </Dialog>
+        ];
+        return (
+          <Box style={{ margin: '-24px', padding: '11px' }} key={title}>
+            {renderData(contents)}
+          </Box>
+        );
+      })}
     </>
   );
 };
-export default ConnectWalletDialog;
+export default ConnectWalletPage;

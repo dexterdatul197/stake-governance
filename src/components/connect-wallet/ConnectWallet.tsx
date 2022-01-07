@@ -1,6 +1,7 @@
 import classnames from 'classnames/bind';
 import React, { useEffect, useRef, useState } from 'react';
 import { useWeb3React } from '@web3-react/core';
+import { useHistory } from 'react-router-dom';
 import Web3 from 'web3';
 import { useDispatch } from 'react-redux';
 import AddContainedSVG from '../../assets/icon/AddContainedSVG';
@@ -19,6 +20,7 @@ const cx = classnames.bind(styles);
 const ConnectWallet: React.FC = () => {
   const isMobile = useIsMobile(576);
   const { account } = useWeb3React<Web3>();
+  const history = useHistory();
   const dispatch = useDispatch();
   const handleOpenConnectWalletDialog = () => {
     dispatch(setOpenConnectDialog(true));
@@ -43,17 +45,18 @@ const ConnectWallet: React.FC = () => {
   const handleLogout = () => {
     localStorage.removeItem('ethereumAddress');
     dispatch(setEthereumAddress(''));
+    history.push('/');
   };
 
   return (
     <>
       {wallet.ethereumAddress ? (
-        <div className={cx('button')} onClick={handleLogout}>
+        <div className={cx('button', 'center-items')} onClick={handleLogout}>
           <ConectWalletIcon stroke="var(--text-color-stake)" />{' '}
           <span className={cx('button__text')}>Logout</span>
         </div>
       ) : (
-        <div className={cx('button')} onClick={handleOpenConnectWalletDialog}>
+        <div className={cx('button', 'center-items')} onClick={handleOpenConnectWalletDialog}>
           <ConectWalletIcon stroke="var(--text-color-stake)" />{' '}
           <span className={cx('button__text')}>Connect wallet</span>
         </div>

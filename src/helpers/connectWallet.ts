@@ -123,5 +123,5 @@ export const connectCoinbase = async (apiKey: string, apiSecret: string) => {
 };
 
 export const isConnected = (wallet: WalletData): boolean => {
-  return !!(wallet.ethereumAddress || wallet.trust || wallet.coinbase || wallet.walletconnect);
+  return !!wallet.ethereumAddress;
 };

@@ -49,7 +49,8 @@ const BootstrapDialogTitle = (props: any) => {
             right: 8,
             top: 8,
             color: (theme) => theme.palette.grey[500]
-          }}>
+          }}
+        >
           <CloseIcon />
         </IconButton>
       ) : null}
@@ -103,13 +104,15 @@ const WithDraw = (props: Props) => {
         setValue(stake);
       }}
       maxWidth="md"
-      disableEscapeKeyDown>
+      disableEscapeKeyDown
+    >
       <BootstrapDialogTitle
         id="customized-dialog-title"
         onClose={() => {
           handleCloseModalWithDraw();
           setValue(stake);
-        }}>
+        }}
+      >
         Modal title
       </BootstrapDialogTitle>
       <DialogContent className={cx('dialog-content')}>

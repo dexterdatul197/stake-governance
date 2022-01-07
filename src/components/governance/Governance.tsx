@@ -8,6 +8,7 @@ import { isConnected } from '../../helpers/connectWallet';
 import { getCHNBalance } from '../../helpers/ContractService';
 import { useAppSelector } from '../../store/hooks';
 import { openSnackbar, SnackbarVariant } from '../../store/snackbar';
+import ConnectWalletPage from '../connect-wallet-page/ConnectWalletPage';
 import styles from './Governance.module.scss';
 import Proposals from './proposals/Proposals';
 import { setVotingWeight } from './redux/Governance';
@@ -29,37 +30,37 @@ const Governance: React.FC = () => {
       setIsLoading(false);
     } else {
       setIsLoading(true);
-      dispatch(
-        openSnackbar({
-          message: 'Need connect wallet!',
-          variant: SnackbarVariant.ERROR
-        })
-      );
     }
   };
   useEffect(() => {
     getBalanceOf();
   }, [getBalanceOf]);
   return (
-    <div className={cx('governance')}>
-      {isLoading ? (
-        <div className={cx('loading-page')}>
-          <CircularProgress
-            size={50}
-            color="primary"
-            sx={{
-              position: 'absolute',
-              top: '50%'
-            }}
-          />
-        </div>
+    <>
+      {!wallet.ethereumAddress ? (
+        <ConnectWalletPage />
       ) : (
-        <>
-          <Vote />
-          <Proposals />
-        </>
+        <div className={cx('governance')}>
+          {isLoading ? (
+            <div className={cx('loading-page')}>
+              <CircularProgress
+                size={50}
+                color="primary"
+                sx={{
+                  position: 'absolute',
+                  top: '50%'
+                }}
+              />
+            </div>
+          ) : (
+            <>
+              <Vote />
+              <Proposals />
+            </>
+          )}
+        </div>
       )}
-    </div>
+    </>
   );
 };
 export default Governance;
