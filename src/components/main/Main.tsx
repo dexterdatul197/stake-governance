@@ -105,7 +105,7 @@ const Main: React.FC = () => {
 
   return (
     <div className={cx('text-head')}>
-      {wallet.openConnectDialog || false ? (
+      {wallet.openConnectDialog ? (
         <ConnectWalletPage />
       ) : (
         <>
