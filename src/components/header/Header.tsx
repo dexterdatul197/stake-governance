@@ -1,5 +1,9 @@
 import classnames from 'classnames/bind';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+
+import Web3 from 'web3';
+import { useWeb3React } from '@web3-react/core';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { THEME_MODE } from '../../constant/constants';
@@ -19,6 +23,9 @@ import useIsMobile from '../../hooks/useMobile';
 const cx = classnames.bind(style);
 
 const Header: React.FC = () => {
+  const { account } = useWeb3React<Web3>();
+  const history = useHistory();
+
   const dispatch = useDispatch();
   const [stackBorder, setStackBorder] = useState(false);
   const [governanBorder, setGovernanceBorder] = useState(false);
@@ -29,7 +36,6 @@ const Header: React.FC = () => {
   const openDialogConnect = () => {
     setStackBorder(true);
     setGovernanceBorder(false);
-    dispatch(setOpenConnectDialog(true));
   };
 
   const setGovernaneStyle = () => {
@@ -40,6 +46,7 @@ const Header: React.FC = () => {
   const disableBorderStyle = () => {
     setStackBorder(false);
     setGovernanceBorder(false);
+    dispatch(setOpenConnectDialog(false));
   };
   const theme = useAppSelector((state) => state.theme.themeMode);
   const onSwitchTheme = () => {
@@ -48,6 +55,7 @@ const Header: React.FC = () => {
     dispatch(setTheme(newTheme));
   };
   const wallet = useAppSelector((state) => state.wallet);
+
   const isMobile = useIsMobile(375);
   return (
     <div className={cx('header-parent')}>
@@ -57,19 +65,13 @@ const Header: React.FC = () => {
         </Link>
       </div>
       <div className={cx('stake-governance')}>
-        {isConnected(wallet) ? (
-          <Link
-            to="/stake"
-            onClick={testRouter}
-            className={stackBorder ? cx('link-style-border') : cx('link-style')}
-          >
-            Stake
-          </Link>
-        ) : (
-          <Link to="/" onClick={openDialogConnect} className={cx('link-style')}>
-            Stake
-          </Link>
-        )}
+        <Link
+          to="/stake"
+          onClick={testRouter}
+          className={stackBorder ? cx('link-style-border') : cx('link-style')}
+        >
+          Stake
+        </Link>
         <Link
           to="/governance"
           onClick={setGovernaneStyle}

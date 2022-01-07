@@ -3,7 +3,6 @@ import { useWeb3React } from '@web3-react/core';
 import Web3 from 'web3';
 import { Route, Switch } from 'react-router-dom';
 import Balances from './components/balances/Balances';
-import ConnectWalletDialog from './components/connect-wallet-dialog/ConnectWalletDialog';
 import Footer from './components/footer/Footer';
 import CreateProposal from './components/governance/dialog/create-proposal/CreateProposal';
 import Governance from './components/governance/Governance';
@@ -54,7 +53,6 @@ const App: React.FC = () => {
       <div className="footer">
         <Footer />
       </div>
-      <ConnectWalletDialog />
       <CreateProposal />
     </div>
   );

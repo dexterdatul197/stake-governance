@@ -1,0 +1,92 @@
+:root {
+  .hidden {
+    visibility: hidden;
+    margin-top: 32px;
+    margin-left: 32px;
+  }
+  .title {
+    font-size: 26px;
+    font-weight: 500;
+    color: var(--color-text-black-white);
+    margin: 30px 0;
+    text-align: center;
+  }
+  .close-button {
+    margin-top: 32px;
+    margin-right: 32px;
+    color: var(--color-dialog-label);
+  }
+
+  .list-wallet {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 32px 30px 32px;
+    .button {
+      width: 412px;
+      border: 1px solid rgba(0, 28, 78, 0.15);
+      border-radius: 15px;
+      text-transform: capitalize;
+
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      background: var(--background-wallet-connect);
+      border-radius: 15px;
+      height: 82px;
+
+      .icon {
+        padding: 21px 22px 22px 23px;
+      }
+
+      .title {
+        color: var(--color-text-white-black);
+        font-size: 24px;
+        font-weight: 700;
+      }
+      &:hover {
+        background: #107def;
+        box-shadow: 1px 2px 6px rgba(0, 0, 0, 0.35);
+        color: #fff;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .connect-wallet-text-title {
+    color: var(--color-text-white-black);
+    font-size: 24px;
+    font-weight: 700;
+  }
+  .connect-wallet-text {
+    color: var(--color-text-white-black);
+  }
+
+  .banner-connect {
+    position: relative;
+    img {
+      border-radius: 20px;
+      max-width: 100%;
+      height: auto;
+    }
+    span {
+      position: absolute;
+      top: 82px;
+      left: 120px;
+      letter-spacing: 0.015em;
+      color: #ffffff;
+      text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.5);
+      font-size: 64px;
+      font-family: 'Futura Md BT';
+    }
+  }
+  .title-connect {
+    font-family: 'SF UI Display';
+    color: var(--color-text-white-black);
+    letter-spacing: 0.015em;
+    font-weight: bold;
+    font-size: 28px;
+    margin: 30px;
+    text-align: center;
+  }
+}

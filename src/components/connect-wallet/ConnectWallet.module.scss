@@ -1,11 +1,28 @@
+$background-login-btn: rgba(16, 125, 239, 0.1);
+$color: #107def;
+
 :root {
   .button {
-    background-color: var(--btn-background-connect-color);
-    padding: 10px;
-    border-radius: 10px;
-    color: var(--color-text-white);
+    background-color: $background-login-btn;
+    padding: 10px 20px;
+    border-radius: 30px;
+    color: $color;
     cursor: pointer;
-    height: 20px;
+    letter-spacing: 0.015em;
+    &:hover {
+      cursor: pointer;
+      opacity: 0.8;
+    }
+  }
+  .center-items {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .button__text {
+    padding-left: 7.67px;
+    font-weight: 500;
+    font-size: 17px;
   }
   .select {
     background: #dedede;

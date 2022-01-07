@@ -5,7 +5,7 @@ import axiosInstance from '../config/config';
 import {
   MISSING_EXTENSION_ERROR,
   SoftwareWalletType,
-  UninstallExtensionException
+  UninstallExtensionException,
 } from './../constant/uninstallExtentionException';
 import { WalletData } from './../interfaces/WalletData';
 const crypto = require('crypto');
@@ -107,26 +107,24 @@ export const connectCoinbase = async (apiKey: string, apiSecret: string) => {
       'CB-ACCESS-TIMESTAMP': timestamp,
       'CB-ACCESS-KEY': apiKey,
     },
-    baseUrl: process.env.REACT_APP_COIN_BASE_URL
+    baseUrl: process.env.REACT_APP_COIN_BASE_URL,
   };
-  let response: {code: number, data: any} = {code: 200, data: 'any'};
+  let response: { code: number; data: any } = { code: 200, data: 'any' };
   await axiosInstance(options)
     .get('/v2/user')
-    .then((res) => {response.code = 200; response.data = res.data})
+    .then((res) => {
+      response.code = 200;
+      response.data = res.data;
+    })
     .catch((err) => {
       if (err) {
         response.code = 401;
-        response.data = 'Cannot connect Coinbase wallet!'
+        response.data = 'Cannot connect Coinbase wallet!';
       }
     });
   return response;
 };
 
 export const isConnected = (wallet: WalletData): boolean => {
-  return !!(
-    wallet.ethereumAddress ||
-    wallet.trust ||
-    wallet.coinbase ||
-    wallet.walletconnect
-  );
+  return !!wallet.ethereumAddress;
 };
