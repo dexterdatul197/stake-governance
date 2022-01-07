@@ -15,7 +15,7 @@ const eventBus = {
     } else {
       document.removeEventListener(event, callbacks[event]);
     }
-  },
+  }
 };
 
 export default eventBus;

@@ -7,34 +7,32 @@ import {
   TableFooter,
   TableHead,
   TablePagination,
-  TableRow,
-} from "@material-ui/core";
-import classNames from "classnames/bind";
-import { ethers } from "ethers";
-import moment from "moment";
-import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { getTransactionHistory } from "src/apis/apis";
-import { ITransaction } from "src/components/balances/Table/transaction.slice";
-import eventBus from "src/event/event-bus";
-import { sleep } from "src/helpers/sleep";
-import { SocketEvent } from "src/socket/SocketEvent";
-import { useAppSelector } from "src/store/hooks";
-import arrowRightUp from "../../../assets/icon/arrow-right-up.svg";
-import { FORMAT_DATE, headCells } from "../../../constant/constants";
-import styles from "./styles.module.scss";
+  TableRow
+} from '@material-ui/core';
+import classNames from 'classnames/bind';
+import { ethers } from 'ethers';
+import moment from 'moment';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { getTransactionHistory } from 'src/apis/apis';
+import { ITransaction } from 'src/components/balances/Table/transaction.slice';
+import eventBus from 'src/event/event-bus';
+import { sleep } from 'src/helpers/sleep';
+import { SocketEvent } from 'src/socket/SocketEvent';
+import { useAppSelector } from 'src/store/hooks';
+import arrowRightUp from '../../../assets/icon/arrow-right-up.svg';
+import { FORMAT_DATE, headCells } from '../../../constant/constants';
+import styles from './styles.module.scss';
 const cx = classNames.bind(styles);
 
 const TableComponent = () => {
   const dispatch = useDispatch();
-  type Order = "asc" | "desc";
+  type Order = 'asc' | 'desc';
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [order] = useState<Order>("asc");
-  const [orderBy] = useState("id");
-  const transactionData = useAppSelector(
-    (state) => state.transactions.transactions
-  );
+  const [order] = useState<Order>('asc');
+  const [orderBy] = useState('id');
+  const transactionData = useAppSelector((state) => state.transactions.transactions);
   const wallet = useAppSelector((state) => state.wallet);
 
   const getUserAddress = () => {
@@ -55,14 +53,14 @@ const TableComponent = () => {
   const [filter, setFilter] = useState({
     page: page + 1,
     limit: rowsPerPage,
-    address: getUserAddress(),
+    address: getUserAddress()
   });
 
   useEffect(() => {
     setFilter({
       page: page + 1,
       limit: rowsPerPage,
-      address: getUserAddress(),
+      address: getUserAddress()
     });
   }, [page, rowsPerPage]);
 
@@ -84,9 +82,7 @@ const TableComponent = () => {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
@@ -104,19 +100,13 @@ const TableComponent = () => {
   function getComparator<Key extends keyof any>(
     order: Order,
     orderBy: Key
-  ): (
-    a: { [key in Key]: number | string },
-    b: { [key in Key]: number | string }
-  ) => number {
-    return order === "desc"
+  ): (a: { [key in Key]: number | string }, b: { [key in Key]: number | string }) => number {
+    return order === 'desc'
       ? (a, b) => descendingComparator(a, b, orderBy)
       : (a, b) => -descendingComparator(a, b, orderBy);
   }
 
-  function stableSort<T>(
-    array: readonly T[],
-    comparator: (a: T, b: T) => number
-  ) {
+  function stableSort<T>(array: readonly T[], comparator: (a: T, b: T) => number) {
     const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
     stabilizedThis.sort((a, b) => {
       const order = comparator(a[0], b[0]);
@@ -131,40 +121,40 @@ const TableComponent = () => {
   const getTypeTxt = (type: number) => {
     switch (type) {
       case 0:
-        return "Stake";
+        return 'Stake';
       case 1:
-        return "Withdraw";
+        return 'Withdraw';
       default:
-        return "Stake";
+        return 'Stake';
     }
   };
 
   const get_ellipsis_mid = (str: string) => {
     if (str && str.length > 15) {
-      return str.substr(0, 5) + "..." + str.substr(str.length - 5, str.length);
+      return str.substr(0, 5) + '...' + str.substr(str.length - 5, str.length);
     }
     return str;
   };
 
   return (
-    <TableContainer className={cx("table-container")}>
-      <Table className={cx("table")}>
-        <TableHead className={cx("table-head")}>
+    <TableContainer className={cx('table-container')}>
+      <Table className={cx('table')}>
+        <TableHead className={cx('table-head')}>
           <TableRow>
             {headCells.map((headCell) => (
               <TableCell
                 key={headCell.id}
-                align={"left"}
-                padding={headCell.disablePadding ? "none" : "normal"}
+                align={'left'}
+                padding={headCell.disablePadding ? 'none' : 'normal'}
                 sortDirection={orderBy === headCell.id ? order : false}
-                className={cx("table-head__cell")}
+                className={cx('table-head__cell')}
               >
                 {headCell.label}
               </TableCell>
             ))}
           </TableRow>
         </TableHead>
-        <TableBody className={cx("table-body")}>
+        <TableBody className={cx('table-body')}>
           {transactionData.data.map((row: ITransaction, index: number) => {
             const labelId = `enhanced-table-checkbox-${index}`;
             return (
@@ -173,41 +163,34 @@ const TableComponent = () => {
                   // component="th"
                   id={labelId}
                   // scope="row"
-                  align={"left"}
-                  className={cx("table-body__cell")}
+                  align={'left'}
+                  className={cx('table-body__cell')}
                 >
                   {row.id}
                 </TableCell>
-                <TableCell align={"left"} className={cx("table-body__cell")}>
-                  <div className={cx("cell-hash")}>
-                    <div className={cx("hash")}>
-                      {get_ellipsis_mid(row.tx_hash)}
-                    </div>
+                <TableCell align={'left'} className={cx('table-body__cell')}>
+                  <div className={cx('cell-hash')}>
+                    <div className={cx('hash')}>{get_ellipsis_mid(row.tx_hash)}</div>
                     <img
-                      className={cx("icon-redirect")}
+                      className={cx('icon-redirect')}
                       onClick={() => {
-                        window.open(
-                          `${process.env.REACT_APP_EXPLORER + row.tx_hash}`
-                        );
+                        window.open(`${process.env.REACT_APP_EXPLORER + row.tx_hash}`);
                       }}
                       src={arrowRightUp}
                       alt=""
                     />
                   </div>
                 </TableCell>
-                <TableCell align={"left"} className={cx("table-body__cell")}>
-                  <div className={cx("txt-type")}>{getTypeTxt(row.type)}</div>
+                <TableCell align={'left'} className={cx('table-body__cell')}>
+                  <div className={cx('txt-type')}>{getTypeTxt(row.type)}</div>
                 </TableCell>
-                <TableCell align={"left"} className={cx("table-body__cell")}>
+                <TableCell align={'left'} className={cx('table-body__cell')}>
                   {ethers.utils.formatEther(row.amount)}
                 </TableCell>
-                <TableCell align={"left"} className={cx("table-body__cell")}>
+                <TableCell align={'left'} className={cx('table-body__cell')}>
                   {moment(row.updated_at).format(FORMAT_DATE)}
                 </TableCell>
-                <TableCell
-                  align={"left"}
-                  className={cx("table-body__cell", "completed")}
-                >
+                <TableCell align={'left'} className={cx('table-body__cell', 'completed')}>
                   Completed
                 </TableCell>
               </TableRow>
@@ -216,7 +199,7 @@ const TableComponent = () => {
         </TableBody>
         <TableFooter>
           <TableRow>
-            <TableCell colSpan={6} className={cx("table-footer")}>
+            <TableCell colSpan={6} className={cx('table-footer')}>
               <TablePagination
                 rowsPerPageOptions={[5, 10, 15]}
                 component="div"
@@ -225,7 +208,7 @@ const TableComponent = () => {
                 page={page}
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={handleChangeRowsPerPage}
-                className={cx("table-pagination")}
+                className={cx('table-pagination')}
                 labelRowsPerPage="Items Per Page:"
               />
             </TableCell>

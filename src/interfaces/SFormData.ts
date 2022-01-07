@@ -9,6 +9,8 @@ export type Filter = {
   page?: number;
   limit?: number;
   address?: string;
+  startTime?: number;
+  endTime?: number;
 };
 
 export interface ProposalFormData {
@@ -88,4 +90,18 @@ export interface ProposalDetailForm {
   updatedAt: string;
   values: string[];
   voterCount: string;
+}
+
+export interface TVLData {
+  id: number;
+  timestamp: number;
+  tvl: string;
+  createdAt: string;
+  updatedAt: string;
+  amount: string;
+}
+
+export interface TVLDataRes {
+  tvl: string;
+  timestamp: number;
 }

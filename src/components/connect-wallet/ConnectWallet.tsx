@@ -1,5 +1,7 @@
 import classnames from 'classnames/bind';
 import React, { useEffect, useRef, useState } from 'react';
+import { useWeb3React } from '@web3-react/core';
+import Web3 from 'web3';
 import { useDispatch } from 'react-redux';
 import AddContainedSVG from '../../assets/icon/AddContainedSVG';
 import ArrowDown from '../../assets/icon/ArrowDown';
@@ -8,12 +10,13 @@ import { isConnected } from '../../helpers/connectWallet';
 import useOnClickOutside from '../../helpers/useClickOutside';
 import { useAppSelector } from '../../store/hooks';
 import styles from './ConnectWallet.module.scss';
-import { setOpenConnectDialog } from './redux/wallet';
+import { setOpenConnectDialog, setEthereumAddress } from './redux/wallet';
 import { ReactComponent as ConectWalletIcon } from '../../assets/icon/wallet.svg';
 
 const cx = classnames.bind(styles);
 
 const ConnectWallet: React.FC = () => {
+  const { account } = useWeb3React<Web3>();
   const dispatch = useDispatch();
   const handleOpenConnectWalletDialog = () => {
     dispatch(setOpenConnectDialog(true));
@@ -35,51 +38,20 @@ const ConnectWallet: React.FC = () => {
     handleCloseDropdown();
   }, [wallet]);
 
+  const handleLogout = () => {
+    localStorage.removeItem('ethereumAddress');
+    dispatch(setEthereumAddress(''));
+  };
+
   return (
     <>
-      {isConnected(wallet) ? (
-        <>
-          <div className={cx('button')} onClick={handleOpenDropdown}>
-            Connected wallet <ArrowDown size={'md'} />
-          </div>
-          <div className={cx('select', !openDropdown && 'close')} ref={ref}>
-            {wallet.ethereumAddress ? (
-              <div className={cx('wallet-item')}>
-                <BscSVG size={'md'} />
-                {getShortAddress(wallet.ethereumAddress)}
-              </div>
-            ) : null}
-            {wallet.trust ? (
-              <div className={cx('wallet-item')}>
-                <BscSVG size={'md'} />
-                {getShortAddress(wallet.trust)}
-              </div>
-            ) : null}
-            {wallet.coinbase ? (
-              <div className={cx('wallet-item')}>
-                <BscSVG size={'md'} />
-                {getShortAddress(wallet.coinbase)}
-              </div>
-            ) : null}
-            {wallet.walletconnect ? (
-              <div className={cx('wallet-item')}>
-                <BscSVG size={'md'} />
-                {getShortAddress(wallet.walletconnect)}
-              </div>
-            ) : null}
-            <div
-              onClick={() => handleOpenConnectWalletDialog()}
-              className={cx('btn-add-wallet')}
-            >
-              <AddContainedSVG size={'md'} /> Switch wallet
-            </div>
-          </div>
-        </>
+      {wallet.ethereumAddress ? (
+        <div className={cx('button')} onClick={handleLogout}>
+          <ConectWalletIcon stroke="var(--text-color-stake)" />{' '}
+          <span className={cx('button__text')}>Logout</span>
+        </div>
       ) : (
-        <div
-          className={cx('button')}
-          onClick={() => handleOpenConnectWalletDialog()}
-        >
+        <div className={cx('button')} onClick={handleOpenConnectWalletDialog}>
           <ConectWalletIcon stroke="var(--text-color-stake)" />{' '}
           <span className={cx('button__text')}>Connect wallet</span>
         </div>

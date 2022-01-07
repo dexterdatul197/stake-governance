@@ -1,8 +1,8 @@
 // @ts-ignore
-import io from "socket.io-client";
-import eventBus from "src/event/event-bus";
-import { SocketEvent } from "src/socket/SocketEvent";
-import store from "src/store/store";
+import io from 'socket.io-client';
+import eventBus from 'src/event/event-bus';
+import { SocketEvent } from 'src/socket/SocketEvent';
+import store from 'src/store/store';
 export class BaseSocket {
   private static instance: BaseSocket;
   // @ts-ignore
@@ -19,7 +19,7 @@ export class BaseSocket {
   public connect(): void {
     // const accessToken = getCookieStorage('access_token');
     this.socket = io(`${process.env.REACT_APP_BASE_SOCKET}`, {
-      transports: ["websocket"],
+      transports: ['websocket']
       // query: {
       //   // authorization: accessToken,
       // },
@@ -28,7 +28,7 @@ export class BaseSocket {
   }
 
   listenTransactionEvent(): void {
-    this.socket.on("staking_history", (data: any) => {
+    this.socket.on('staking_history', (data: any) => {
       eventBus.dispatch(SocketEvent.transactionUpdated, data);
     });
   }

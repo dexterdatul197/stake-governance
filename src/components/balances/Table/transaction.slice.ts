@@ -1,5 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { getTransactionHistory } from "src/apis/apis";
+import { createSlice } from '@reduxjs/toolkit';
+import { getTransactionHistory } from 'src/apis/apis';
 
 export interface ITransaction {
   address: string;
@@ -19,20 +19,20 @@ const initialState = {
       page: 0,
       limit: 0,
       totalItem: 0,
-      totalPage: 0,
-    },
-  },
+      totalPage: 0
+    }
+  }
 };
 
 export const transactionHistorySlice = createSlice({
-  name: "transaction",
+  name: 'transaction',
   initialState,
   reducers: {},
   extraReducers: {
     [getTransactionHistory.fulfilled.toString()]: (state, action) => {
       state.transactions = action.payload;
-    },
-  },
+    }
+  }
 });
 
 const { reducer: transactionReducer } = transactionHistorySlice;

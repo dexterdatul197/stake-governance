@@ -41,12 +41,10 @@ const CreateProposal: React.FC = () => {
       targetAddress: '',
       value: '',
       signature: '',
-      callData: [],
-    },
+      callData: []
+    }
   ]);
-  const openDialog = useAppSelector(
-    (state) => state.governance.openCreateProposalDialog
-  );
+  const openDialog = useAppSelector((state) => state.governance.openCreateProposalDialog);
   const handleCloseConnectDialog = () => {
     dispatch(setOpenCreateProposalDialog(false));
   };
@@ -62,7 +60,7 @@ const CreateProposal: React.FC = () => {
       setErrorMsg('');
     }
     try {
-      for (let i = 0; i < formData.length; i +=1) {
+      for (let i = 0; i < formData.length; i += 1) {
         const callDataValues = [];
         let callDataTypes = [];
         targetAddresses.push(formData[i]['targetAddress']);
@@ -79,14 +77,27 @@ const CreateProposal: React.FC = () => {
         callDatas.push(encodeParameters(callDataTypes, callDataValues));
       }
     } catch (error) {
-      dispatch(openSnackbar({message: 'Proposal parameters are invalid!', variant: SnackbarVariant.ERROR}));
+      dispatch(
+        openSnackbar({
+          message: 'Proposal parameters are invalid!',
+          variant: SnackbarVariant.ERROR
+        })
+      );
       return;
     }
     setIsLoading(true);
     const governanceContract = governance();
     try {
-      console.log('BEFORE CREATE PROPOSAL: ', currentAddress(currentAccount), targetAddresses, values, signatures);
-      const responseCreate = await governanceContract.methods.propose(targetAddresses, values, signatures, callDatas, description).send({from: currentAddress(currentAccount)});
+      console.log(
+        'BEFORE CREATE PROPOSAL: ',
+        currentAddress(currentAccount),
+        targetAddresses,
+        values,
+        signatures
+      );
+      const responseCreate = await governanceContract.methods
+        .propose(targetAddresses, values, signatures, callDatas, description)
+        .send({ from: currentAddress(currentAccount) });
       console.log('RESPONSE OF CREATE PROPOSAL: ', responseCreate);
       if (responseCreate) {
         const proposalId = Number(responseCreate.events.ProposalCreated.returnValues.id);
@@ -94,7 +105,7 @@ const CreateProposal: React.FC = () => {
         // call API create proposal in DB
         const options = {
           baseUrl: process.env.REACT_APP_BACKEND
-        }
+        };
         const body = {
           proposalId: proposalId,
           title: title,
@@ -109,27 +120,32 @@ const CreateProposal: React.FC = () => {
           createdBlock: responseCreate.blockNumber,
           createdTxHash: responseCreate.transactionHash,
           state: proposalState
-        }
+        };
         await axiosInstance(options)
-        .post('/proposal', body)
-        .then((res) => console.log('[API]: RESPONSE: ', res))
-        .catch((err) => console.log('[API]: ERROR: ', err));
+          .post('/proposal', body)
+          .then((res) => console.log('[API]: RESPONSE: ', res))
+          .catch((err) => console.log('[API]: ERROR: ', err));
         setIsLoading(false);
         dispatch(setOpenCreateProposalDialog(false));
-        dispatch(openSnackbar({message: 'Create proposal successfully!', variant: SnackbarVariant.SUCCESS}));
-        dispatch(getProposalList({page: 1, limit: 5}));
+        dispatch(
+          openSnackbar({
+            message: 'Create proposal successfully!',
+            variant: SnackbarVariant.SUCCESS
+          })
+        );
+        dispatch(getProposalList({ page: 1, limit: 5 }));
       }
     } catch (error) {
       console.log('ERROR RESPONSE WHEN CREATE PROPOSAL: ', error);
-      dispatch(openSnackbar({message: 'Creating proposal is failed!', variant: SnackbarVariant.ERROR}));
+      dispatch(
+        openSnackbar({ message: 'Creating proposal is failed!', variant: SnackbarVariant.ERROR })
+      );
       setIsLoading(false);
     }
   };
   const getMaxOperation = async () => {
     const voteContract = governance();
-    const maxOperation = await voteContract.methods
-      .proposalMaxOperations()
-      .call();
+    const maxOperation = await voteContract.methods.proposalMaxOperations().call();
     setMaxOperation(maxOperation);
   };
 
@@ -143,7 +159,7 @@ const CreateProposal: React.FC = () => {
 
   const handleChangeTitle = (value: string) => {
     setTitle(value);
-  }
+  };
 
   useEffect(() => {
     if (isConnected(currentAccount)) {
@@ -162,8 +178,8 @@ const CreateProposal: React.FC = () => {
         style: {
           backgroundColor: 'var(--background-dialog-color)',
           padding: '25px',
-          borderRadius: '20px',
-        },
+          borderRadius: '20px'
+        }
       }}
     >
       {/* header: title + btn close */}
@@ -171,7 +187,7 @@ const CreateProposal: React.FC = () => {
         display={'flex'}
         justifyContent={'space-between'}
         sx={{
-          marginBottom: '20px',
+          marginBottom: '20px'
         }}
       >
         <Typography component={'div'} className={cx('title')}>
@@ -202,17 +218,15 @@ const CreateProposal: React.FC = () => {
             <div className={cx('sub-title-text')}>Proposal Description</div>
             <div className={cx('box-title')}>Title</div>
             <div className={cx('div-input')}>
-              <StakeInputBase 
-                onChange={handleChangeTitle}
-              />
+              <StakeInputBase onChange={handleChangeTitle} />
             </div>
             <div className={cx('box-title')}>Details</div>
             <div className={cx('div-input')}>
               <MdEditor
                 value={description}
-                style={{ 
+                style={{
                   height: '300px',
-                  borderRadius: '15px',
+                  borderRadius: '15px'
                 }}
                 renderHTML={(text) => mdParser.render(text)}
                 onChange={handleEditorChange}
@@ -221,18 +235,11 @@ const CreateProposal: React.FC = () => {
             </div>
           </div>
           <div className={cx('right-popup')}>
-            <div className={cx('sub-title-text', 'sub-title-action')}>
-              Actions
-            </div>
-            <div
-              className={cx(
-                `card-style`,
-                `${theme === 'dark' ? 'card-style-border' : ''}`
-              )}
-            >
+            <div className={cx('sub-title-text', 'sub-title-action')}>Actions</div>
+            <div className={cx(`card-style`, `${theme === 'dark' ? 'card-style-border' : ''}`)}>
               {formData.map((f, index) => {
                 return (
-                  <div key={index} >
+                  <div key={index}>
                     <CollapseItem
                       index={index}
                       formData={formData}
@@ -251,7 +258,7 @@ const CreateProposal: React.FC = () => {
       <Box
         sx={{
           margin: '10px 0',
-          paddingRight: '10px',
+          paddingRight: '10px'
         }}
       >
         <div className={cx('wrap-btn')}>
@@ -265,7 +272,7 @@ const CreateProposal: React.FC = () => {
           >
             {isLoading && (
               <div>
-                <CircularProgress size={20} color='inherit' /> 
+                <CircularProgress size={20} color="inherit" />
                 <span className={cx('btn-create-inloading')}>Create Proposal</span>
               </div>
             )}

@@ -1,17 +1,26 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
+import { Web3ReactProvider } from '@web3-react/core';
+import Web3 from 'web3';
+
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import store from './store/store';
 
+function getLibrary(provider: any) {
+  return new Web3(provider);
+}
+
 ReactDOM.render(
   <Provider store={store}>
     <React.StrictMode>
       <BrowserRouter>
-        <App />
+        <Web3ReactProvider getLibrary={getLibrary}>
+          <App />
+        </Web3ReactProvider>
       </BrowserRouter>
     </React.StrictMode>
   </Provider>,

@@ -34,16 +34,18 @@ const Proposal: React.FC<Props> = (props) => {
     }
   };
 
-  const handleVote = async(support: string) => {
+  const handleVote = async (support: string) => {
     setIsLoading(true);
     setVoteType(support);
-    await governance().methods.castVote(props.proposal.proposal_id, support === 'like').send({from: currentAddress(wallet)});
+    await governance()
+      .methods.castVote(props.proposal.proposal_id, support === 'like')
+      .send({ from: currentAddress(wallet) });
     setIsLoading(false);
   };
 
   const redirectToProposalDetail = (proposalId: number) => {
     history.push(`/proposal/${proposalId}`);
-  }
+  };
 
   useEffect(() => {
     getIshasVoted();
@@ -51,58 +53,53 @@ const Proposal: React.FC<Props> = (props) => {
   return (
     <div className={cx('proposal-item')}>
       <div className={cx('row-content')}>
-        <div className={cx('row-content-left')} onClick={() => redirectToProposalDetail(proposal.id)}>
+        <div
+          className={cx('row-content-left')}
+          onClick={() => redirectToProposalDetail(proposal.id)}
+        >
           <div className={cx('proposal-title')}>{proposal.title}</div>
           <div className={cx('proposal-id-time')}>
             <div className={cx('proposal-id')}>{proposal.id}</div>
             <div>{moment(proposal.created_at).format('MMMM Do, YYYY')}</div>
-            <div className={cx(`proposal-status-${getStatus(proposal.state).toLowerCase()}`, 'proposal-status')}>{getStatus(proposal.state)}</div>
+            <div
+              className={cx(
+                `proposal-status-${getStatus(proposal.state).toLowerCase()}`,
+                'proposal-status'
+              )}
+            >
+              {getStatus(proposal.state)}
+            </div>
           </div>
         </div>
         <div className={cx('row-content-btn')}>
-          {voteStatus &&
-            voteStatus === 'novoted' &&
-            proposal.state !== 'Active' && (
-              <div className={cx('vote-status-text')}>NO VOTE</div>
-            )}
+          {voteStatus && voteStatus === 'novoted' && proposal.state !== 'Active' && (
+            <div className={cx('vote-status-text')}>NO VOTE</div>
+          )}
           {voteStatus && voteStatus === 'voted' && (
             <div className={cx('vote-status-text')}>VOTED</div>
           )}
-          {voteStatus &&
-            voteStatus === 'novoted' &&
-            proposal.state === 'Active' && (
-              <div
-                className="flex align-center"
-                onClick={(e) => e.stopPropagation()}
+          {voteStatus && voteStatus === 'novoted' && proposal.state === 'Active' && (
+            <div className="flex align-center" onClick={(e) => e.stopPropagation()}>
+              <Button
+                className={cx('btn-upvote')}
+                disabled={
+                  votingWeight === '0' || !proposal || (proposal && proposal.state !== 'Active')
+                }
+                onClick={() => handleVote('like')}
               >
-                <Button
-                  className={cx('btn-upvote')}
-                  disabled={
-                    votingWeight === '0' ||
-                    !proposal ||
-                    (proposal && proposal.state !== 'Active')
-                  }
-                  onClick={() => handleVote('like')}
-                >
-                  {isLoading && voteType === 'like' && <Icon type="loading" />}{' '}
-                  Up Vote
-                </Button>
-                <Button
-                  className={cx('btn-downvote')}
-                  disabled={
-                    votingWeight === '0' ||
-                    !proposal ||
-                    (proposal && proposal.state !== 'Active')
-                  }
-                  onClick={() => handleVote('dislike')}
-                >
-                  {isLoading && voteType === 'dislike' && (
-                    <Icon type="loading" />
-                  )}{' '}
-                  Down Vote
-                </Button>
-              </div>
-            )}
+                {isLoading && voteType === 'like' && <Icon type="loading" />} Up Vote
+              </Button>
+              <Button
+                className={cx('btn-downvote')}
+                disabled={
+                  votingWeight === '0' || !proposal || (proposal && proposal.state !== 'Active')
+                }
+                onClick={() => handleVote('dislike')}
+              >
+                {isLoading && voteType === 'dislike' && <Icon type="loading" />} Down Vote
+              </Button>
+            </div>
+          )}
         </div>
       </div>
     </div>

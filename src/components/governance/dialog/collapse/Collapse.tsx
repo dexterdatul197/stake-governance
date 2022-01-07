@@ -32,23 +32,22 @@ const CollapseItem: React.FC<Props> = ({
         value: '',
         signature: '',
         callData: []
-      })
+      });
     } else {
       formData.splice(index, 0, {
         targetAddress: '',
         value: '',
         signature: '',
         callData: []
-      })
+      });
     }
     setFormData(formData);
-    setActiveKey(type === 'next' ? index + 1 : index)
+    setActiveKey(type === 'next' ? index + 1 : index);
   };
   const handleRemove = (index: number) => {
-    if (index !== 0)
-    formData = formData.filter((_f, idx) => idx < index);
+    if (index !== 0) formData = formData.filter((_f, idx) => idx < index);
     setFormData(formData);
-  }
+  };
   const handleKeyUpCommon = (type: string, idx: number, subIdx: any, v: any) => {
     if (type === 'targetAddress') {
       formData[idx].targetAddress = v;
@@ -58,7 +57,7 @@ const CollapseItem: React.FC<Props> = ({
       formData[idx].callData[subIdx] = v;
     }
     setFormData(formData);
-  }
+  };
 
   const handleParseFunc = (signatureValue: string) => {
     if (signatureValue.trim().replace(/^s+|s+$/g, '')) {
@@ -67,26 +66,24 @@ const CollapseItem: React.FC<Props> = ({
       formData[index].callData = [...parsedChn];
       setFormData([...formData]);
     }
-  }
-  
+  };
+
   const handleKeyupAddress = (e: any) => {
     handleKeyUpCommon('targetAddress', index, null, e.target.value);
-  }
+  };
   const handleKeyUpCallData = (e: any, cIndex: number) => {
     handleKeyUpCommon('calldata', index, cIndex, e.target.value);
-  }
+  };
   const handleKeyUpSignature = (e: any) => {
     handleParseFunc(e.target.value);
-  }
+  };
   return (
     <div className={cx('collapse-item-style')}>
-      <div
-        className={cx('action-style')}
-      >
-        <div className={cx('action-text')}
-          onClick={() => setOpenCollapse(!openCollapse)}
-        >Action {index}</div>
-        <img src={editIcon} alt="edit_icon" onClick={() => handleRemove(index)}/>
+      <div className={cx('action-style')}>
+        <div className={cx('action-text')} onClick={() => setOpenCollapse(!openCollapse)}>
+          Action {index}
+        </div>
+        <img src={editIcon} alt="edit_icon" onClick={() => handleRemove(index)} />
       </div>
       <Collapse key={activeKey} timeout="auto" in={openCollapse}>
         <div key={activeKey}>
@@ -104,12 +101,15 @@ const CollapseItem: React.FC<Props> = ({
             onKeyUp={handleKeyUpSignature}
           />
           {fCallData.map((c: any, cIndex: number) => {
-            return <StakeInputBase key={cIndex}
-              validate={true}
-              placeholder={`${c}(callData)`}
-              name="CallData"
-              onKeyUp={(e) => handleKeyUpCallData(e, cIndex)}
-            />;
+            return (
+              <StakeInputBase
+                key={cIndex}
+                validate={true}
+                placeholder={`${c}(callData)`}
+                name="CallData"
+                onKeyUp={(e) => handleKeyUpCallData(e, cIndex)}
+              />
+            );
           })}
           {formData.length < +maxOperation && (
             <div>
@@ -124,10 +124,7 @@ const CollapseItem: React.FC<Props> = ({
                 </div>
               )} */}
               <div className={cx('btn-add')}>
-                <div
-                  className={cx('btn-text')}
-                  onClick={() => handleAdd('next', index)}
-                >
+                <div className={cx('btn-text')} onClick={() => handleAdd('next', index)}>
                   Add to next
                 </div>
               </div>
