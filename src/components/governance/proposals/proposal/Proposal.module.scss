@@ -11,7 +11,8 @@
   .row-content-left {
     color: var(--color-text-white-black);
   }
-  .row-content-left:hover, .row-content-btn:hover {
+  .row-content-left:hover,
+  .row-content-btn:hover {
     cursor: pointer;
   }
   .row-content-left:nth-child(1) {
@@ -38,7 +39,7 @@
   }
   .proposal-id-time {
     display: flex;
-    justify-content: start;
+    justify-content: flex-start;
     font-size: 14px;
   }
   .proposal-id {
@@ -52,17 +53,17 @@
     color: #fff;
   }
   .btn-upvote:hover {
-    background-color: #72BF65;
+    background-color: #72bf65;
   }
   .btn-upvote {
-    background-color: #72BF65;
+    background-color: #72bf65;
     margin-right: 5px;
   }
   .btn-downvote:hover {
-    background-color: #EC5656;
+    background-color: #ec5656;
   }
   .btn-downvote {
-    background-color: #EC5656;
+    background-color: #ec5656;
   }
   .no-proposal {
     text-align: center;
