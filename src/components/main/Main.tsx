@@ -30,6 +30,7 @@ const useStyles: any = makeStyles(() => ({
     }
   },
   input: {
+    textTransform: 'uppercase',
     color: 'var(--btn-hover-blue-green) !important'
   },
   endAdornment: {
