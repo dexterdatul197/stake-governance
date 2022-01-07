@@ -1,12 +1,14 @@
 import { BigNumber } from '@0x/utils';
 import { Autocomplete, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
+import { CircularProgress } from '@mui/material';
 import classNames from 'classnames/bind';
 import { CoinGeckoClient } from 'coingecko-api-v3';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { getTVLData } from '../../apis/apis';
-import { dateBeforeMonth, format } from '../../helpers/common';
+import { convertOHCL, dateBeforeMonth, format } from '../../helpers/common';
+import { TVLDataRes } from '../../interfaces/SFormData';
 import { useAppSelector } from '../../store/hooks';
 import AreaChart from '../chart/AreaChart';
 import { setCurrencyList, setSelectedCurrency } from '../chart/redux/currency';
@@ -53,6 +55,9 @@ const Main: React.FC = () => {
   }));
   const dispatch = useDispatch();
   const [totalSupply, setTotalSupply] = useState('0');
+  const [tvlData, setTvlData] = useState<TVLDataRes[]>([]);
+  const [ohclData, setOhclData] = useState<number[][]>([]);
+  const selectedCrc = useAppSelector((state) => state.currency.selectedCurrency);
 
   const getCurrencies = useCallback(async () => {
     const coinGeckoCurrencies = await coinGeckoClient.simpleSupportedCurrencies();
@@ -65,23 +70,38 @@ const Main: React.FC = () => {
   };
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const getTotalSupply = async () => {
+  const getTotalSupply = async (ohcl: any) => {
     const getPriceOnUsd = await coinGeckoClient.simplePrice({ ids: 'chain', vs_currencies: 'usd' });
+    const res = convertOHCL(ohcl);
+    const latestOhcl = res[res.length - 1];
+
     const param = {
       startTime: dateBeforeMonth(new Date(), 1).getTime(),
       endTime: new Date().getTime()
     };
     let tvlData = await getTVLData(param);
+    setTvlData(tvlData);
     const lastTvlItem = tvlData[tvlData.length - 1];
-    const totalLock = new BigNumber(getPriceOnUsd.chain.usd).multipliedBy(
-      new BigNumber(lastTvlItem.tvl)
-    );
+    const totalLock = new BigNumber(latestOhcl[1]).multipliedBy(new BigNumber(lastTvlItem.tvl));
     setTotalSupply(format(totalLock.toFixed(4).toString()));
   };
 
+  const getCoinGecko = async () => {
+    const getOHCL = await coinGeckoClient.coinIdOHLC({
+      id: 'chain',
+      vs_currency: `${selectedCrc}`,
+      days: 30
+    });
+    getTotalSupply(getOHCL);
+    setOhclData(getOHCL);
+  };
+
+  useEffect(() => {
+    getCoinGecko();
+  }, [selectedCrc]);
+
   useEffect(() => {
     getCurrencies();
-    getTotalSupply();
   }, [getCurrencies]);
 
   return (
@@ -91,7 +111,7 @@ const Main: React.FC = () => {
       ) : (
         <>
           <div className={cx('text-head-child')}>
-            <div className={cx('price')}>${totalSupply}</div>
+            <div className={cx('price')}>${'totalSupply'}</div>
             <Autocomplete
               classes={classes}
               options={currencies}
@@ -103,7 +123,18 @@ const Main: React.FC = () => {
             />
           </div>
           <div className={cx('securing-chain')}>Securing chain governance</div>
-          <AreaChart />
+          {tvlData.length > 0 && ohclData.length > 0 ? (
+            <AreaChart tvlData={tvlData} ohclData={ohclData} />
+          ) : (
+            <CircularProgress
+              size={50}
+              color="primary"
+              sx={{
+                position: 'absolute',
+                top: '50%'
+              }}
+            />
+          )}
         </>
       )}
     </div>
