@@ -127,7 +127,7 @@ const WithDraw = (props: Props) => {
           <Typography className={cx('amount')}>Amount</Typography>
           <Typography className={cx('available')}>Available</Typography>
         </Box>
-        {/* <Box className={cx('dialog-content__children')}>
+        <Box className={cx('dialog-content__children')}>
           <Box className={cx('main-left')}>
             <img
               className={cx('main-left__icon')}
@@ -150,7 +150,7 @@ const WithDraw = (props: Props) => {
               onChange={handleChangeInputValue}
             />
           </Box>
-        </Box> */}
+        </Box>
       </DialogContent>
       <DialogActions className={cx('dialog-actions')}>
         <Button onClick={handleWithdraw} className={cx('button-action')}>

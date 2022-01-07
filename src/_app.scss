@@ -140,7 +140,7 @@ body {
     box-sizing: border-box;
   }
   .area-chart-main {
-    padding: 20px 24px;
+    // padding: 20px 24px;
     // height: calc(100vh - 120px);
     margin-top: 110px;
   }
@@ -150,11 +150,15 @@ body {
 }
 
 @media screen and (max-width: 576px) {
+  .css-12rl710-MuiPaper-root-MuiDialog-paper {
+    border-radius: 20px !important;
+    margin: 0px !important;
+  }
   .App {
     margin: 0;
   }
   .area-chart-main {
-    padding: 20px 24px;
+    padding: 16px !important;
     // height: calc(100vh - 120px);
     margin-top: 60px;
   }

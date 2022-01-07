@@ -66,7 +66,6 @@
         .main-right {
           flex-grow: 1;
           text-align: right;
-          height: 51px;
           &__price {
             display: block;
             color: rgba(0, 28, 78, 0.38);
@@ -104,6 +103,7 @@
   }
   @media screen and (max-width: 768px) {
     .dialog-container {
+      padding: 24px !important;
       .dialig-title {
         font-size: 28px;
       }
@@ -137,6 +137,61 @@
         .button-action {
           font-size: 24px;
         }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .dialog-container {
+    padding: 16px !important;
+    svg {
+      width: 20px !important;
+    }
+    .dialig-title {
+    padding: 20px !important;
+      font-size: 16px !important;
+    }
+    .dialog-content {
+    // padding: 0 20px 20px !important;
+      &__title {
+        p{
+          font-size: 12px !important;
+        }
+      }
+      &__children {
+        padding: 12px 16px !important;
+        .main-left {
+          img {
+            width: 36px !important;
+          }
+          &__text {
+            .token-title {
+              font-size: 12px !important;
+            }
+            .token-text {
+              font-size: 14px !important;
+            }
+          }
+        }
+
+        .main-right {
+          &__price {
+            font-size: 12px !important;
+          }
+          &__quantity {
+            font-size: 14px !important;
+            input {
+              padding: 0 !important;
+              text-align: right;
+            }
+          }
+        }
+      }
+    }
+    .dialog-actions {
+      .button-action {
+        font-size: 14px !important;
       }
     }
   }
