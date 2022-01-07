@@ -196,7 +196,8 @@ const Balances: React.FC = () => {
                 className={cx('switcher_stake', {
                   'button-active': isActive,
                   'button-deactive': !isActive
-                })}>
+                })}
+              >
                 Stake
               </Button>
               <Button
@@ -204,16 +205,22 @@ const Balances: React.FC = () => {
                 className={cx('switcher_withdraw', {
                   'button-active': isActiveWithDraw,
                   'button-deactive': !isActiveWithDraw
-                })}>
+                })}
+              >
                 WithDraw
               </Button>
             </Box>
           </Box>
           <div className={cx('history-label')}>History</div>
-          <Box className={cx('history')}>
-            <TableComponent />
-          </Box>
-
+          {isMobile ? (
+            <Box className={cx('history')}>
+              <CardComponent />
+            </Box>
+          ) : (
+            <Box className={cx('history')}>
+              <TableComponent />
+            </Box>
+          )}
           <Modal
             walletValue={walletValue}
             currencies={currencies}
