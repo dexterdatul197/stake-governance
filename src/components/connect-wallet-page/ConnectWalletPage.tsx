@@ -84,8 +84,6 @@ const ConnectWalletPage: React.FC = () => {
     }
   };
   // Connect MetaMask
-  console.log('account 22', account);
-
   const handleConnectMetaMask = async () => {
     try {
       await deactivate();
@@ -178,7 +176,6 @@ const ConnectWalletPage: React.FC = () => {
   const renderData = useCallback((content) => {
     return content
       ? content.map(({ icon, title, onClickFunc }: any) => {
-          console.log('title', title);
           return (
             <Box key={title} onClick={onClickFunc} className={cx('list-wallet')}>
               <Button className={cx('button')} disableRipple={true}>
@@ -195,7 +192,7 @@ const ConnectWalletPage: React.FC = () => {
     <>
       <div className={cx('banner-connect')}>
         <img src={bannerImg} alt="" />
-        <span>Hi! Wellcome today!</span>
+        <span>Hi! Welcome today!</span>
       </div>
       <div className={cx('title-connect')}>Connect your wallet</div>
       {listIcon.map((item, index) => {
