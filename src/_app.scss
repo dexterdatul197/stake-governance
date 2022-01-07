@@ -40,6 +40,21 @@ body {
   --color-address-contract: rgba(0, 0, 0, 0.6);
   --color-line: #e0e0e0;
 
+  --connect-button: #107def;
+  --background-connect-button: rgba(16, 125, 239, 0.1);
+
+  //Stake,Withdraw theme
+  --background-color-balance: #fff;
+  --text-color-balance: #001c4e;
+  --button-active-balance: #107def;
+  --button-deactive-balance: #8196bb;
+  --color-white-button-stake: #ffffff;
+  --background-stake-modal: #ffffff;
+  --text-color-stake: #107def;
+  --btn-background-connect-color: #107def;
+  --text-color-transaction: rgba(0, 28, 78, 0.87);
+  --color-text-history: rgba(0, 28, 78, 0.87);
+
   //balance
   --bg-txt-type: #eaf4fb;
   // footer theme mobile
@@ -88,6 +103,17 @@ body {
 
   //balance
   --bg-txt-type: #2d3c57;
+  --background-color-balance: #1b1c1f;
+  --text-color-balance: rgba(255, 255, 255, 0.87);
+  --button-active-balance: #107def;
+  --button-deactive-balance: #8196bb;
+  --color-white-button-stake: #ffffff;
+  --background-stake-modal: #1b1c1f;
+  --btn-background-connect-color: #107def;
+  --icon-back-transaction: rgba(255, 255, 255, 0.6);
+  --text-color-stake: #107def;
+  --text-color-transaction: rgba(255, 255, 255, 0.87);
+  --color-text-history: rgba(255, 255, 255, 0.87);
 
   // footer theme mobile
   --bg-theme-active: #121416;
