@@ -12,10 +12,12 @@ import { useAppSelector } from '../../store/hooks';
 import styles from './ConnectWallet.module.scss';
 import { setOpenConnectDialog, setEthereumAddress } from './redux/wallet';
 import { ReactComponent as ConectWalletIcon } from '../../assets/icon/wallet.svg';
+import useIsMobile from '../../hooks/useMobile';
 
 const cx = classnames.bind(styles);
 
 const ConnectWallet: React.FC = () => {
+  const isMobile = useIsMobile(576);
   const { account } = useWeb3React<Web3>();
   const dispatch = useDispatch();
   const handleOpenConnectWalletDialog = () => {

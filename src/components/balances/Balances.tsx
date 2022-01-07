@@ -6,10 +6,12 @@ import React, { useCallback, useEffect, useReducer, useState } from 'react';
 import { currentAddress } from '../../helpers/common';
 import { isConnected } from '../../helpers/connectWallet';
 import { getCHNBalance, stakingToken } from '../../helpers/ContractService';
+import useIsMobile from '../../hooks/useMobile';
 import { useAppSelector } from '../../store/hooks';
 import styles from './Balances.module.scss';
 import Modal from './StakeModal';
 import TableComponent from './Table';
+import CardComponent from './TableOnMobile';
 import ModalWithDraw from './WithDrawModal';
 
 const commaNumber = require('comma-number');
@@ -97,6 +99,8 @@ const Balances: React.FC = () => {
     isOpenStake: false,
     isOpenWithdraw: false
   });
+  const isMobile = useIsMobile(768);
+
   const { isActive, isActiveWithDraw, isOpenStake, isOpenWithdraw } = state;
   const classes = useStyles();
   const currencies = useAppSelector((state: any) => state.currency.currenciesList);
@@ -187,8 +191,7 @@ const Balances: React.FC = () => {
             className={cx('switcher_stake', {
               'button-active': isActive,
               'button-deactive': !isActive
-            })}
-          >
+            })}>
             Stake
           </Button>
           <Button
@@ -196,8 +199,7 @@ const Balances: React.FC = () => {
             className={cx('switcher_withdraw', {
               'button-active': isActiveWithDraw,
               'button-deactive': !isActiveWithDraw
-            })}
-          >
+            })}>
             WithDraw
           </Button>
         </Box>
