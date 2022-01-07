@@ -19,6 +19,7 @@ export function useEagerConnect(): boolean {
           .then(() => {
             console.log('activated eager connect');
             dispatch(setEthereumAddress(account));
+            localStorage.setItem('ethereumAddress', account as string);
           })
           .catch(() => {
             setTried(true);
@@ -27,7 +28,7 @@ export function useEagerConnect(): boolean {
         setTried(true);
       }
     });
-  }, [activate, active]);
+  }, []);
 
   // wait until we get confirmation of a connection to flip the flag
   useEffect(() => {
