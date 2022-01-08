@@ -62,7 +62,6 @@ const Header: React.FC = () => {
   }, [account]);
   const isMobile = useIsMobile(576);
 
-  console.log(theme, 'theme');
   return (
     <div className={cx('header-parent')}>
       <div className={cx('logo')}>
