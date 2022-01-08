@@ -93,7 +93,7 @@
 .dialog-actions {
   display: flex;
   justify-content: center;
-  padding-bottom: 30px;
+  margin-bottom: 30px;
   .button-action {
     background-color: #107def;
     color: #ffffff;
@@ -206,9 +206,6 @@
         padding: 12px !important;
         font-size: 14px !important;
         margin: 0 !important;
-        display: flex;
-        justify-self: center;
-        align-items: center;
       }
     }
   }

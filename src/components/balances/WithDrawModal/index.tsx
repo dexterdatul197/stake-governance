@@ -181,7 +181,7 @@ const WithDraw = (props: Props) => {
       </DialogContent>
       <DialogActions className={cx('dialog-actions')}>
         <Button onClick={handleWithdraw} className={cx('button-action')}>
-          {progress || true ? (
+          {progress ? (
             <img
               src={loadingSvg}
               className={cx('loading-rotate')}

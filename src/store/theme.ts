@@ -9,6 +9,7 @@ export const themeSlice = createSlice({
   reducers: {
     setTheme: (state, action) => {
       document.documentElement.setAttribute('data-theme', action.payload);
+      localStorage.setItem('theme', action.payload);
       state.themeMode = action.payload;
     }
   }

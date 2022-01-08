@@ -193,7 +193,9 @@ body {
 .css-12rl710-MuiPaper-root-MuiDialog-paper {
   border-radius: 20px !important;
   margin: 0px !important;
+  background: var(--background-stake-modal) !important;
 }
+
 .loading-rotate {
   -webkit-animation: spin 1s linear infinite;
   -moz-animation: spin 1s linear infinite;
