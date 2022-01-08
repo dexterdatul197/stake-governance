@@ -11,7 +11,7 @@ import { isConnected } from '../../helpers/connectWallet';
 import { useAppSelector } from '../../store/hooks';
 import { setTheme } from '../../store/theme';
 import ConnectWallet from '../connect-wallet/ConnectWallet';
-import { setOpenConnectDialog } from '../connect-wallet/redux/wallet';
+import { setEthereumAddress, setOpenConnectDialog } from '../connect-wallet/redux/wallet';
 import dark_whiteIcon from './../../assets/icon/dark-white.svg';
 import darkIcon from './../../assets/icon/dark.svg';
 import light_whiteIcon from './../../assets/icon/light-white.svg';
@@ -54,6 +54,12 @@ const Header: React.FC = () => {
     dispatch(setTheme(newTheme));
   };
   const wallet = useAppSelector((state) => state.wallet);
+  useEffect(() => {
+    if (account) {
+      dispatch(setEthereumAddress(account));
+      localStorage.setItem('ethereumAddress', account as string);
+    }
+  }, [account]);
   const isMobile = useIsMobile(576);
   return (
     <div className={cx('header-parent')}>
@@ -66,17 +72,25 @@ const Header: React.FC = () => {
         <Link
           to="/stake"
           onClick={testRouter}
+<<<<<<< HEAD
           className={cx('link-style', {
             'link-style-border': stackBorder
           })}>
+=======
+          className={stackBorder ? cx('link-style-border') : cx('link-style')}>
+>>>>>>> c7ee8564fffafa980fe0bfcbdbfb00d16e68d8d5
           Stake
         </Link>
         <Link
           to="/governance"
           onClick={setGovernaneStyle}
+<<<<<<< HEAD
           className={cx('link-style', {
             'link-style-border-right': governanBorder
           })}>
+=======
+          className={governanBorder ? cx('link-style-border') : cx('link-style')}>
+>>>>>>> c7ee8564fffafa980fe0bfcbdbfb00d16e68d8d5
           Governance
         </Link>
       </div>

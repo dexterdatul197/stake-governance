@@ -12,6 +12,7 @@ import Main from './components/main/Main';
 import CustomSnackbar from './components/snackbar/Snackbar';
 import { useEagerConnect } from './hooks/useEagerConnect';
 import { useInactiveListener } from './hooks/useInactiveListener';
+import { useInitial } from './hooks/useInitial';
 
 import './_app.scss';
 import { BaseSocket } from 'src/socket/BaseSocket';
@@ -19,7 +20,6 @@ import { BaseSocket } from 'src/socket/BaseSocket';
 const App: React.FC = () => {
   const context = useWeb3React<Web3>();
   const { connector } = context;
-
   // handle logic to recognize the connector currently being activated
   const [activatingConnector, setActivatingConnector] = React.useState<any>();
 
@@ -36,6 +36,7 @@ const App: React.FC = () => {
   const triedEager = useEagerConnect();
 
   useInactiveListener(!triedEager || !!activatingConnector);
+  useInitial();
 
   return (
     <div className="App">

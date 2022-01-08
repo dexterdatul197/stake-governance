@@ -1,7 +1,9 @@
+import { useEffect } from 'react';
 import Web3 from 'web3';
 import { useWeb3React } from '@web3-react/core';
 import { useHistory } from 'react-router-dom';
 import { Button } from '@material-ui/core';
+import { isMobile } from 'react-device-detect';
 import CloseIcon from '@material-ui/icons/Close';
 import { Dialog, IconButton, TextField, Typography } from '@mui/material';
 import { Box } from '@mui/system';
@@ -10,7 +12,12 @@ import React, { useState, useCallback } from 'react';
 import { MISSING_EXTENSION_ERROR } from '../../constant/uninstallExtentionException';
 import { connectCoinbase, connectMetaMask, connectTrust } from '../../helpers/connectWallet';
 import { openSnackbar, SnackbarVariant } from '../../store/snackbar';
-import { setEthereumAddress, setOpenConnectDialog } from '../connect-wallet/redux/wallet';
+import {
+  setEthereumAddress,
+  setOpenConnectDialog,
+  setWalletName,
+  walletsConfig
+} from '../connect-wallet/redux/wallet';
 import { useAppDispatch, useAppSelector } from './../../store/hooks';
 import styles from './ConnectWalletPage.module.scss';
 import metamask from '../../assets/icon/meta_mask.svg';
@@ -20,14 +27,18 @@ import wallet_connect from '../../assets/icon/wallet_connect.svg';
 
 import { injectedConnector } from '../../connectors/injectedConnector';
 import { switchNetwork } from '../../connectors/switchNetwork';
-import { walletconnectConnector } from '../../connectors/walletconnectConnector';
+import {
+  walletconnectConnector,
+  web3WalletConnect,
+  provider
+} from '../../connectors/walletconnectConnector';
 import bannerImg from '../../assets/imgs/bg-connect.png';
-
 const cx = classnames.bind(styles);
 
 const ConnectWalletPage: React.FC = () => {
   const history = useHistory();
-  const { account, activate, deactivate } = useWeb3React<Web3>();
+  const { connector, library, chainId, account, activate, deactivate, active, error } =
+    useWeb3React<Web3>();
   const dispatch = useAppDispatch();
   const wallet = useAppSelector((state) => state.wallet);
   const [apiKeyError, setApiKeyError] = useState(false);
@@ -83,14 +94,18 @@ const ConnectWalletPage: React.FC = () => {
       }
     }
   };
-  // Connect MetaMask
-  console.log('account 22', account);
 
+  const windowObj = window as any;
+
+  // Connect MetaMask
   const handleConnectMetaMask = async () => {
+    if (isMobile && !windowObj?.ethereum?.isMetaMask) {
+      window.location.assign(process.env.REACT_APP_DEEP_LINK_METAMASK || '#');
+      return;
+    }
     try {
-      await deactivate();
       activate(injectedConnector).then(() => {
-        dispatch(setEthereumAddress(account));
+        dispatch(setWalletName(walletsConfig[0]));
       });
       switchNetwork(process.env.REACT_APP_CHAIN_ID || '');
     } catch (e: any) {
@@ -109,22 +124,16 @@ const ConnectWalletPage: React.FC = () => {
   // Connect Wallet connect
   const handleConnectWalletConnect = async () => {
     try {
-      await deactivate();
-      activate(walletconnectConnector).then(() => {
-        dispatch(setEthereumAddress(account));
-      });
-      switchNetwork(process.env.REACT_APP_CHAIN_ID || '');
-    } catch (e: any) {
-      if (e.message === MISSING_EXTENSION_ERROR) {
-        dispatch(
-          openSnackbar({
-            message: 'Extension not install!',
-            variant: SnackbarVariant.ERROR
-          })
-        );
-      }
+      activate(walletconnectConnector)
+        .then(() => {
+          dispatch(setWalletName(walletsConfig[1]));
+        })
+        .finally(() => {
+          handleCloseConnectDialog();
+        });
+    } catch (error: any) {
+      console.log('handleConnectWalletConnect', error);
     }
-    handleCloseConnectDialog();
   };
 
   // Connect Trust
@@ -178,7 +187,6 @@ const ConnectWalletPage: React.FC = () => {
   const renderData = useCallback((content) => {
     return content
       ? content.map(({ icon, title, onClickFunc }: any) => {
-          console.log('title', title);
           return (
             <Box key={title} onClick={onClickFunc} className={cx('list-wallet')}>
               <Button className={cx('button')} disableRipple={true}>
@@ -195,7 +203,7 @@ const ConnectWalletPage: React.FC = () => {
     <>
       <div className={cx('banner-connect')}>
         <img src={bannerImg} alt="" />
-        <span>Hi! Wellcome today!</span>
+        <span>Hi! Welcome today!</span>
       </div>
       <div className={cx('title-connect')}>Connect your wallet</div>
       {listIcon.map((item, index) => {

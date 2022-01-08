@@ -1,6 +1,6 @@
 :root {
   .footer-component {
-    padding: 30px 230px;
+    padding: 30px 100px;
     display: flex;
     justify-content: space-between;
     // background: var(--main-background-color);
@@ -121,5 +121,19 @@
         }
       }
     }
+  }
+  .right-footer {
+    display: flex;
+  }
+  .status-circle {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background-color: rgb(151, 204, 96);
+    margin-right: 21px;
+  }
+  .block-number {
+    cursor: pointer;
+    line-height: 18px;
   }
 }
