@@ -131,7 +131,8 @@ const IsLoading = (props: Props) => {
                   );
                 }
               }}
-              className={cx('confirm')}>
+              className={cx('confirm')}
+            >
               confirmation
             </Button>
           </React.Fragment>

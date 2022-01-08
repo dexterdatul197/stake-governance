@@ -184,10 +184,15 @@ const Balances: React.FC = () => {
             </Box>
           </Box>
           <div className={cx('history-label')}>History</div>
-          <Box className={cx('history')}>
-            <TableComponent />
-          </Box>
-
+          {isMobile ? (
+            <Box className={cx('history')}>
+              <CardComponent />
+            </Box>
+          ) : (
+            <Box className={cx('history')}>
+              <TableComponent />
+            </Box>
+          )}
           <Modal
             walletValue={walletValue}
             openStake={isOpenStake}

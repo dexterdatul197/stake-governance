@@ -1,12 +1,11 @@
 :root {
   .balances-history {
-    display: flex;
-    flex-direction: column;
     justify-content: center;
   }
   .balance {
+    width: 563px;
     background-color: var(--background-governance-color);
-    padding: 10px 10px 26px 10px;
+    padding: 20px 10px 40px 10px;
     border-radius: 15px;
     margin: 0 auto;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
@@ -14,15 +13,16 @@
 
     .balance-head-text {
       color: var(--color-text-white-black);
-      padding: 20px 222px 44px 219px;
+      text-align: center;
+      margin-bottom: 44px;
       font-size: 24px;
       font-weight: 600;
       display: block;
     }
 
     .balance-row {
-      padding-left: 127px;
-      padding-right: 151px;
+      margin-left: 127px;
+      margin-right: 151px;
       .stake {
         display: flex;
         padding-bottom: 39px;
@@ -137,9 +137,7 @@
   }
 
   .switcher {
-    padding-left: 50px;
-    padding-right: 50px;
-    padding-bottom: 39px;
+    display: flex;
     &_stake,
     &_withdraw {
       background: #8196bb;
@@ -148,17 +146,19 @@
     }
 
     &_stake {
+      margin-left: 33px;
       font-size: 18px;
       font-weight: 700;
       margin-right: 10px;
-      width: 221px;
+      width: 100%;
       height: 65px;
     }
 
     &_withdraw {
-      font-size: 16px;
+      margin-right: 33px;
+      font-size: 18px;
       font-weight: 700;
-      width: 221px;
+      width: 100%;
       height: 65px;
     }
 
@@ -182,34 +182,139 @@
     // box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   }
 }
-@media screen and (max-width: 576px) {
+@media screen and (max-width: 768px) {
   :root {
     .balances-history {
-      text-align: center;
-      margin-left: auto;
-      margin-right: auto;
+      justify-content: center;
     }
     .balance {
+      max-width: 583px;
+      width: 100%;
+      background-color: var(--background-governance-color);
+      padding: 20px 10px 40px 10px;
+      border-radius: 15px;
+      box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+      margin-bottom: 47px;
+
+      .balance-head-text {
+        color: var(--color-text-white-black);
+        text-align: center;
+        margin-bottom: 44px;
+        font-size: 24px;
+        font-weight: 600;
+        display: block;
+      }
+
       .balance-row {
-        width: 195px;
-        margin-top: 31px;
-        .balance-head-text {
-          color: var(--color-text-white-black);
-          padding-top: 20px;
-          // padding-bottom: 44px;
-          font-size: 16px;
-          font-weight: 600;
+        margin-right: auto;
+        margin-left: auto;
+        width: 230px;
+        .stake {
+          display: flex;
+          padding-bottom: 39px;
+          align-items: center;
+          &__title {
+            flex: 1;
+            font-size: 20px;
+            font-weight: 500;
+            color: var(--text-color-balance);
+            display: block;
+          }
+          &__value {
+            flex: 1;
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--text-color-balance);
+            display: block;
+            margin-right: 15px;
+          }
+          &__token {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-color-stake);
+            width: 92px;
+            height: 33px;
+            background: rgba(16, 125, 239, 0.1);
+            border-radius: 30px;
+            text-align: center;
+            line-height: 33px;
+            flex: 1;
+          }
         }
-        .balance-key {
+        .wallet {
+          display: flex;
+          padding-bottom: 39px;
+          align-items: center;
+          &__title {
+            font-size: 20px;
+            font-weight: 500;
+            display: block;
+            color: var(--text-color-balance);
+            flex: 1;
+          }
+          &__value {
+            font-size: 24px;
+            font-weight: 600;
+            display: block;
+            color: var(--text-color-balance);
+            flex: 1;
+            margin-right: 15px;
+          }
+          &__token {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-color-stake);
+            width: 92px;
+            height: 33px;
+            background: rgba(16, 125, 239, 0.1);
+            border-radius: 30px;
+            text-align: center;
+            line-height: 33px;
+            flex: 1;
+          }
+        }
+        .earn {
+          display: flex;
+          padding-bottom: 39px;
+          align-items: center;
+          &__title {
+            font-size: 20px;
+            display: block;
+            font-weight: 500;
+            color: var(--text-color-balance);
+            flex: 1;
+          }
+          &__value {
+            font-size: 24px;
+            display: block;
+            font-weight: 600;
+            color: var(--text-color-balance);
+            flex: 1;
+            margin-right: 15px;
+          }
+          &__token {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-color-stake);
+            width: 92px;
+            height: 33px;
+            background: rgba(16, 125, 239, 0.1);
+            border-radius: 30px;
+            text-align: center;
+            line-height: 33px;
+            flex: 1;
+          }
+        }
+        .m-balance-key {
           color: var(--color-text-white-black);
-          font-size: 14px;
+          font-size: 24px;
           font-weight: 500;
           margin-right: 35px;
           text-align: left;
         }
-        .balance-value {
+        .m-balance-value {
           color: var(--color-text-white-black);
-          font-size: 16px;
+          font-size: 26px;
           font-weight: 600;
           text-align: left;
           margin-right: 15px;
@@ -218,19 +323,234 @@
     }
 
     .switcher {
+      display: flex;
+      &_stake,
+      &_withdraw {
+        background: #8196bb;
+        border-radius: 16px;
+        color: #ffffff;
+      }
+
       &_stake {
-        width: 140px;
-        height: 40px;
-        font-size: 14px;
-        font-weight: 700px;
+        margin-left: 33px;
+        font-size: 18px;
+        font-weight: 700;
+        margin-right: 10px;
+        width: 100%;
+        height: 65px;
       }
 
       &_withdraw {
-        width: 140px;
-        height: 40px;
-        font-size: 14px;
-        font-weight: 700px;
+        margin-right: 33px;
+        font-size: 18px;
+        font-weight: 700;
+        width: 100%;
+        height: 65px;
       }
+
+      .button-active {
+        background: #107def;
+        color: #fff;
+      }
+      .button-deactive {
+        background: #8196bb;
+        color: #ffffff;
+      }
+    }
+
+    .history-label {
+      text-align: left;
+      font-size: 24px;
+    }
+
+    .history {
+      margin-top: 20px;
+      // box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    }
+  }
+}
+@media screen and (max-width: 576px) {
+  :root {
+    .balances-history {
+      justify-content: center;
+    }
+    .balance {
+      width: 100%;
+      background-color: var(--background-governance-color);
+      padding: 15px 0px 24px 0px;
+      border-radius: 15px;
+      margin-top: 10px;
+      box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+      margin-bottom: 47px;
+
+      .balance-head-text {
+        color: var(--color-text-white-black);
+        text-align: center;
+        margin-bottom: 32px;
+        font-size: 16px;
+        font-weight: 600;
+        display: block;
+      }
+
+      .balance-row {
+        margin-right: auto;
+        margin-left: auto;
+        width: 200px;
+        .stake {
+          display: flex;
+          padding-bottom: 22px;
+          align-items: center;
+          &__title {
+            flex: 1;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-color-balance);
+            display: block;
+          }
+          &__value {
+            flex: 1;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-color-balance);
+            display: block;
+            margin-right: 15px;
+          }
+          &__token {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-color-stake);
+            width: 78px;
+            height: 24px;
+            background: rgba(16, 125, 239, 0.1);
+            border-radius: 30px;
+            text-align: center;
+            line-height: 17.71px;
+            flex: 1;
+          }
+        }
+        .wallet {
+          display: flex;
+          padding-bottom: 22px;
+          align-items: center;
+          &__title {
+            font-size: 14px;
+            font-weight: 500;
+            display: block;
+            color: var(--text-color-balance);
+            flex: 1;
+          }
+          &__value {
+            font-size: 16px;
+            font-weight: 600;
+            display: block;
+            color: var(--text-color-balance);
+            flex: 1;
+            margin-right: 15px;
+          }
+          &__token {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-color-stake);
+            width: 78px;
+            height: 24px;
+            background: rgba(16, 125, 239, 0.1);
+            border-radius: 30px;
+            text-align: center;
+            line-height: 17.71px;
+            flex: 1;
+          }
+        }
+        .earn {
+          display: flex;
+          padding-bottom: 22px;
+          align-items: center;
+          &__title {
+            font-size: 14px;
+            display: block;
+            font-weight: 500;
+            color: var(--text-color-balance);
+            flex: 1;
+          }
+          &__value {
+            font-size: 16px;
+            display: block;
+            font-weight: 600;
+            color: var(--text-color-balance);
+            flex: 1;
+            margin-right: 15px;
+          }
+          &__token {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-color-stake);
+            width: 78px;
+            height: 24px;
+            background: rgba(16, 125, 239, 0.1);
+            border-radius: 30px;
+            text-align: center;
+            line-height: 17.71px;
+            flex: 1;
+          }
+        }
+        .m-balance-key {
+          color: var(--color-text-white-black);
+          font-size: 24px;
+          font-weight: 500;
+          margin-right: 35px;
+          text-align: left;
+        }
+        .m-balance-value {
+          color: var(--color-text-white-black);
+          font-size: 26px;
+          font-weight: 600;
+          text-align: left;
+          margin-right: 15px;
+        }
+      }
+    }
+
+    .switcher {
+      display: flex;
+      &_stake,
+      &_withdraw {
+        background: #8196bb;
+        border-radius: 16px;
+        color: #ffffff;
+      }
+
+      &_stake {
+        font-size: 14px;
+        font-weight: 700;
+        margin-right: 4px;
+        width: 100%;
+        height: 44px;
+      }
+
+      &_withdraw {
+        font-size: 14px;
+        font-weight: 700;
+        width: 100%;
+        height: 44px;
+      }
+
+      .button-active {
+        background: #107def;
+        color: #fff;
+      }
+      .button-deactive {
+        background: #8196bb;
+        color: #ffffff;
+      }
+    }
+
+    .history-label {
+      text-align: left;
+      font-size: 24px;
+    }
+
+    .history {
+      margin-top: 20px;
+      // box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     }
   }
 }

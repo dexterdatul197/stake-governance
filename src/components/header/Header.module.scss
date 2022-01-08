@@ -1,8 +1,7 @@
 :root {
   .header-parent {
     background-color: var(--header-bar-color);
-    padding-left: 100px;
-    padding-right: 100px;
+    padding: 0 100px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -31,6 +30,11 @@
     }
 
     .link-style-border {
+      margin-right: 28px;
+      text-decoration-line: none;
+      font-size: 24px;
+      font-weight: 700;
+
       color: var(--color-text-white-blue);
       text-decoration-line: none;
       border-bottom: solid 2px var(--btn-header-border-color);
@@ -205,6 +209,11 @@
         font-size: 14px !important;
         margin: 0 6px;
         color: var(--color-text);
+      }
+
+      .link-style-border {
+        font-size: 14px !important;
+        margin: 0 6px;
       }
       .text-active {
         color: var(--color-text-active);
