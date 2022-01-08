@@ -154,7 +154,7 @@ const TableComponent = () => {
             );
           })}
         </TableBody>
-        <TableFooter>
+        <TableFooter className={cx('footer-wrapper')}>
           <TableRow>
             <TableCell colSpan={6} className={cx('table-footer')}>
               <TablePagination
