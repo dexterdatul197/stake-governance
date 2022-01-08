@@ -73,13 +73,17 @@ const Header: React.FC = () => {
         <Link
           to="/stake"
           onClick={testRouter}
-          className={stackBorder ? cx('link-style-border') : cx('link-style')}>
+          className={cx('link-style', {
+            'link-style-border': stackBorder
+          })}>
           Stake
         </Link>
         <Link
           to="/governance"
           onClick={setGovernaneStyle}
-          className={governanBorder ? cx('link-style-border') : cx('link-style')}>
+          className={cx('link-style', {
+            'link-style-border-right': governanBorder
+          })}>
           Governance
         </Link>
       </div>
