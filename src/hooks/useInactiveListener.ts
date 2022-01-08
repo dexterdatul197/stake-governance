@@ -21,7 +21,7 @@ export function useInactiveListener(suppress = false): void {
         );
         setTimeout(() => {
           dispatch(closeSnackbar());
-        }, 4000);
+        }, 5000);
       }
       localStorage.removeItem('ethereumAddress');
     }

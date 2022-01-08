@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import Web3 from 'web3';
 import { useWeb3React } from '@web3-react/core';
 import { useHistory } from 'react-router-dom';
@@ -10,7 +9,6 @@ import { Box } from '@mui/system';
 import classnames from 'classnames/bind';
 import React, { useState, useCallback } from 'react';
 import { MISSING_EXTENSION_ERROR } from '../../constant/uninstallExtentionException';
-import { connectCoinbase, connectMetaMask, connectTrust } from '../../helpers/connectWallet';
 import { openSnackbar, SnackbarVariant } from '../../store/snackbar';
 import {
   setEthereumAddress,
@@ -27,72 +25,18 @@ import wallet_connect from '../../assets/icon/wallet_connect.svg';
 
 import { injectedConnector } from '../../connectors/injectedConnector';
 import { switchNetwork } from '../../connectors/switchNetwork';
-import {
-  walletconnectConnector,
-  web3WalletConnect,
-  provider
-} from '../../connectors/walletconnectConnector';
+import { walletconnectConnector } from '../../connectors/walletconnectConnector';
+import { walletLinkConnector } from '../../connectors/walletlinkConnector';
 import bannerImg from '../../assets/imgs/bg-connect.png';
 const cx = classnames.bind(styles);
 
 const ConnectWalletPage: React.FC = () => {
-  const history = useHistory();
   const { connector, library, chainId, account, activate, deactivate, active, error } =
     useWeb3React<Web3>();
   const dispatch = useAppDispatch();
-  const wallet = useAppSelector((state) => state.wallet);
-  const [apiKeyError, setApiKeyError] = useState(false);
-  const [apiSecretError, setApiSecretError] = useState(false);
-  const [apiKey, setApiKey] = useState('');
-  const [apiSecret, setApiSecret] = useState('');
-  const openConnectWalletDialog = useAppSelector((state) => state.wallet.openConnectDialog);
-  const [coinbaseDialogOpen, setCoinbaseDialogOpen] = useState(false);
+
   const handleCloseConnectDialog = () => {
     dispatch(setOpenConnectDialog(false));
-  };
-
-  // Check network
-  const checkNetwork = () => {
-    if (!window.ethereum) {
-      dispatch(
-        openSnackbar({
-          message: 'Your brower are not install Metamask extension, please install it!',
-          variant: SnackbarVariant.ERROR
-        })
-      );
-    }
-    const netId = window.ethereum.networkVersion
-      ? +window.ethereum.networkVersion
-      : +window.ethereum.chainId;
-    if (netId) {
-      if (netId === 1 || netId === 3) {
-        if (netId === 3 && process.env.REACT_APP_ENV === 'prod') {
-          dispatch(
-            openSnackbar({
-              message:
-                'You are currently visiting the Ropsten Test Network for Strike Finance. Please change your metamask to access the Ethereum Mainnet.',
-              variant: SnackbarVariant.ERROR
-            })
-          );
-        } else if (netId === 1 && process.env.REACT_APP_ENV === 'dev') {
-          dispatch(
-            openSnackbar({
-              message:
-                'You are currently visiting the Main Network for Strike Finance. Please change your metamask to access the Ropsten Test Network.',
-              variant: SnackbarVariant.ERROR
-            })
-          );
-        }
-      } else {
-        dispatch(
-          openSnackbar({
-            message:
-              'You are currently connected to another network. Please connect to Ethereum Network',
-            variant: SnackbarVariant.ERROR
-          })
-        );
-      }
-    }
   };
 
   const windowObj = window as any;
@@ -136,30 +80,20 @@ const ConnectWalletPage: React.FC = () => {
     }
   };
 
-  // Connect Trust
-  const handleConnectTrust = async () => {};
-
   // Connect Coinbase
   const handleConnectCoinBase = () => {
-    dispatch(setOpenConnectDialog(false));
-    setCoinbaseDialogOpen(true);
+    try {
+      activate(walletLinkConnector)
+        .then(() => {
+          dispatch(setWalletName(walletsConfig[3]));
+        })
+        .finally(() => {
+          handleCloseConnectDialog();
+        });
+    } catch (e: any) {
+      console.log('handleConnectCoinBase', e);
+    }
   };
-
-  const handleCloseConnectCoibaseDialog = () => {
-    setCoinbaseDialogOpen(false);
-  };
-
-  const handleOnChangeApiKey = (event: any) => {
-    setApiKey(event.target.value);
-    setApiKeyError(false);
-  };
-
-  const handleOnChangeApiSecret = (event: any) => {
-    setApiSecret(event.target.value);
-    setApiSecretError(false);
-  };
-
-  const handleConnectCoinbase = async () => {};
 
   const listIcon = [
     {
@@ -167,16 +101,16 @@ const ConnectWalletPage: React.FC = () => {
       title: 'Metamask',
       onClickFunc: handleConnectMetaMask
     },
-    // {
-    //   icon: trust,
-    //   title: 'Trust Wallet',
-    //   onClickFunc: handleConnectTrust,
-    // },
-    // {
-    //   icon: coinbase,
-    //   title: 'Coinbase',
-    //   onClickFunc: handleConnectCoinBase,
-    // },
+    {
+      icon: trust,
+      title: 'Trust Wallet',
+      onClickFunc: handleConnectWalletConnect
+    },
+    {
+      icon: coinbase,
+      title: 'Coinbase',
+      onClickFunc: handleConnectCoinBase
+    },
     {
       icon: wallet_connect,
       title: 'Wallet Connect',

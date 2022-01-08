@@ -109,6 +109,9 @@ const Main: React.FC = () => {
 
   return (
     <div className={cx('text-head')}>
+      <div>
+        {wallet.walletName}-{wallet.ethereumAddress}
+      </div>
       {wallet.openConnectDialog ? (
         <ConnectWalletPage />
       ) : (
