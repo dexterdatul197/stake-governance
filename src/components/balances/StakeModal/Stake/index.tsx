@@ -13,6 +13,9 @@ import React, { useCallback } from 'react';
 import { useAppDispatch } from '../../../../store/hooks';
 import { openSnackbar, SnackbarVariant } from '../../../../store/snackbar';
 
+const commaNumber = require('comma-number');
+const format = commaNumber.bindWith(',', '.');
+
 interface Props {
   cx?: any;
   walletValue?: any;
@@ -144,7 +147,9 @@ const Stake = (props: Props) => {
         </Box>
         <Box className={cx('balance')}>
           <Box className={cx('balance__wallet-balance')}>
-            <Typography className={cx('title')}>Wallet Balance: {walletValue}</Typography>
+            <Typography className={cx('title')}>
+              Wallet Balance: {walletValue > 0 ? walletValue : 0.0000}
+            </Typography>
             <span className={cx('token')}>CHN</span>
           </Box>
           <Box className={cx('balance__stake-balance')}>

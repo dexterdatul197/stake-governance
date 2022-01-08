@@ -112,7 +112,14 @@ const Balances: React.FC = () => {
       const connectedAddress = currentAddress(wallet);
       const getValueStake = await stakingToken().methods.userInfo(0, connectedAddress).call();
       const getValueEarned = await stakingToken().methods.pendingReward(0, connectedAddress).call();
-      const formatValueStake = new BigNumber(getValueStake.amount).dividedBy('1e18').toFixed(4);
+      const formatValueStake =
+        Math.floor(
+          Number(
+            String(new BigNumber(getValueStake.amount).dividedBy('1e18')).match(
+              /^\d+(?:\.\d{0,5})?/
+            )
+          ) * 10000
+        ) / 10000;
       const formatValueEarned = new BigNumber(getValueEarned).dividedBy('1e18').toFixed(4);
       setStake(format(+formatValueStake));
       setEarn(format(+formatValueEarned));

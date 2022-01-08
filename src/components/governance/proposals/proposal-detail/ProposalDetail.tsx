@@ -61,8 +61,6 @@ const ProposalDetail: React.FC<Props> = (props) => {
   };
 
   const goToEthereumAddress = (address: string) => {
-    console.log('PROPOSAL DETAIL OPEN', ethAddressPage(), address);
-
     window.open(`${ethAddressPage()}/${address}`, '_blank');
   };
 

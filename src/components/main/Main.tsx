@@ -1,3 +1,5 @@
+import Web3 from 'web3';
+import { useWeb3React } from '@web3-react/core';
 import { BigNumber } from '@0x/utils';
 import { Autocomplete, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
@@ -30,6 +32,7 @@ const useStyles: any = makeStyles(() => ({
     }
   },
   input: {
+    textTransform: 'uppercase',
     color: 'var(--btn-hover-blue-green) !important'
   },
   endAdornment: {
@@ -48,6 +51,7 @@ const coinGeckoClient = new CoinGeckoClient({
 });
 
 const Main: React.FC = () => {
+  const { account } = useWeb3React<Web3>();
   const classes = useStyles();
   const [currencies, setCurrencies] = useState(['']);
   const { wallet } = useAppSelector((state) => ({
