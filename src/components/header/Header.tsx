@@ -61,6 +61,7 @@ const Header: React.FC = () => {
     }
   }, [account]);
   const isMobile = useIsMobile(576);
+
   return (
     <div className={cx('header-parent')}>
       <div className={cx('logo')}>
@@ -72,16 +73,21 @@ const Header: React.FC = () => {
         <Link
           to="/stake"
           onClick={testRouter}
-          className={stackBorder ? cx('link-style-border') : cx('link-style')}>
+          className={cx('link-style', {
+            'link-style-border': stackBorder
+          })}>
           Stake
         </Link>
         <Link
           to="/governance"
           onClick={setGovernaneStyle}
-          className={governanBorder ? cx('link-style-border') : cx('link-style')}>
+          className={cx('link-style', {
+            'link-style-border-right': governanBorder
+          })}>
           Governance
         </Link>
       </div>
+      {/* <h1 style={{ color: 'red' }}>{theme && theme === THEME_MODE.LIGHT ? '123' : '321'}</h1> */}
       {!isMobile && (
         <div className={cx('group-connect-theme')}>
           {/* <FormControlLabel

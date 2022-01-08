@@ -148,7 +148,7 @@ const Stake = (props: Props) => {
         <Box className={cx('balance')}>
           <Box className={cx('balance__wallet-balance')}>
             <Typography className={cx('title')}>
-              Wallet Balance: {walletValue > 0 ? walletValue : 0.0000}
+              Wallet Balance: {walletValue > 0 ? walletValue : 0.0}
             </Typography>
             <span className={cx('token')}>CHN</span>
           </Box>

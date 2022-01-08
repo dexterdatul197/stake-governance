@@ -15,7 +15,10 @@ import Web3 from 'web3';
 import { SetCalldataBlock } from '@0x/utils/lib/src/abi_encoder/calldata/blocks/set';
 
 const cx = classNames.bind(styles);
-
+const currentRPC =
+  process.env.REACT_APP_ENV === 'prod'
+    ? process.env.REACT_APP_MAINNET_RPC
+    : process.env.REACT_APP_RINKEBY_RPC ;
 const Footer: React.FC = () => {
   const isMobile = useIsMobile(576);
   const dispatch = useDispatch();
@@ -28,22 +31,22 @@ const Footer: React.FC = () => {
   };
 
   const getLatestBlock = async () => {
-    setInterval(async() => {
-      if (window.web3) {
-        const web3 = await new Web3(window.web3.currentProvider);
+    setInterval(async () => {
+      if (typeof currentRPC === 'string') {
+        const web3 = await new Web3(currentRPC);
         const block = await web3.eth.getBlockNumber();
         setBlock(block);
       }
     }, 15000);
-  }
+  };
 
   const openEther = () => {
-    window.open('https://etherscan.io','_blank');
-  }
+    window.open('https://etherscan.io', '_blank');
+  };
 
   useEffect(() => {
     getLatestBlock();
-  }, [])
+  }, []);
 
   return (
     <div className={cx('footer-component')}>
@@ -53,8 +56,7 @@ const Footer: React.FC = () => {
           <div className={cx('footer-theme')}>
             <span
               className={cx('footer-theme__item', theme === THEME_MODE.LIGHT ? 'active' : '')}
-              onClick={onSwitchTheme}
-            >
+              onClick={onSwitchTheme}>
               <img
                 className={cx('icon-theme')}
                 src={theme === THEME_MODE.LIGHT ? lightIcon : light_whiteIcon}
@@ -64,8 +66,7 @@ const Footer: React.FC = () => {
             </span>
             <span
               className={cx('footer-theme__item', theme === THEME_MODE.DARK ? 'active' : '')}
-              onClick={onSwitchTheme}
-            >
+              onClick={onSwitchTheme}>
               <img
                 className={cx('icon-theme')}
                 src={theme === THEME_MODE.DARK ? dark_whiteIcon : darkIcon}
@@ -80,7 +81,9 @@ const Footer: React.FC = () => {
           <div>&copy; Chain 1 open source</div>
           <div className={cx('right-footer')}>
             <div className={cx('status-circle')}></div>
-            <div onClick={openEther} className={cx('block-number')}>vi.o\Block: {block}</div>
+            <div onClick={openEther} className={cx('block-number')}>
+              vi.o\Block: {block}
+            </div>
           </div>
         </>
       )}

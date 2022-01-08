@@ -100,7 +100,7 @@ const Balances: React.FC = () => {
         const connectedAddress = currentAddress(wallet);
         const tokenBalance = await getCHNBalance().methods.balanceOf(connectedAddress).call();
         const formatToken = new BigNumber(tokenBalance).dividedBy('1e18').toFixed(4);
-        setWalletValue(format(+formatToken));
+        setWalletValue(format(formatToken));
       }
     } catch (error) {
       console.log(error);
@@ -121,8 +121,8 @@ const Balances: React.FC = () => {
           ) * 10000
         ) / 10000;
       const formatValueEarned = new BigNumber(getValueEarned).dividedBy('1e18').toFixed(4);
-      setStake(format(+formatValueStake));
-      setEarn(format(+formatValueEarned));
+      setStake(format(formatValueStake));
+      setEarn(format(formatValueEarned));
     } catch (error) {
       console.log(error);
     }
@@ -168,8 +168,7 @@ const Balances: React.FC = () => {
                 className={cx('switcher_stake', {
                   'button-active': isActive,
                   'button-deactive': !isActive
-                })}
-              >
+                })}>
                 Stake
               </Button>
               <Button
@@ -177,8 +176,7 @@ const Balances: React.FC = () => {
                 className={cx('switcher_withdraw', {
                   'button-active': isActiveWithDraw,
                   'button-deactive': !isActiveWithDraw
-                })}
-              >
+                })}>
                 WithDraw
               </Button>
             </Box>

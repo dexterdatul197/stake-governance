@@ -37,7 +37,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        background: #edf1f8;
+        background: var(--mb-bg-amount);
         border-radius: 10px;
         padding: 19px 20px 19px 20px;
 
@@ -53,7 +53,7 @@
 
           &__text {
             .token-title {
-              color: rgba(0, 28, 78, 0.38);
+              color: var(--mb-card-color-text);
               font-weight: 500;
               font-size: 16px;
             }
@@ -71,7 +71,7 @@
         text-align: right;
         &__price {
           display: block;
-          color: rgba(0, 28, 78, 0.38);
+          color: var(--mb-card-color-text);
           font-weight: 500;
           font-size: 16px;
         }
@@ -158,9 +158,12 @@
     .dialig-title {
       padding: 20px !important;
       font-size: 16px !important;
+      background: var(--background-stake-modal);
     }
     .dialog-content {
-      // padding: 0 20px 20px !important;
+      padding: 0 20px 20px !important;
+      background: var(--background-stake-modal);
+
       &__title {
         p {
           font-size: 12px !important;
@@ -197,7 +200,8 @@
       }
     }
     .dialog-actions {
-      padding: 20px 20px 0 !important;
+      padding: 20px !important;
+      background: var(--background-stake-modal);
       .button-action {
         padding: 12px !important;
         font-size: 14px !important;
