@@ -5,31 +5,107 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  Typography
+  Typography,
+  CircularProgress
 } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import React, { useCallback, useEffect, useState } from 'react';
 import { currentAddress } from '../../../../helpers/common';
 import { getCHNBalance, stakingToken } from '../../../../helpers/ContractService';
-import { useAppSelector } from '../../../../store/hooks';
+import { useAppSelector, useAppDispatch } from '../../../../store/hooks';
+import { openSnackbar, SnackbarVariant } from '../../../../store/snackbar';
 
 interface Props {
   cx?: any;
   handleBack: () => void;
-  handleNext: () => void;
   value?: any;
   walletValue?: any;
   handleCloseModal: () => void;
+  handleUpdateSmartContract: () => void;
 }
 
+const MAX_INT = '115792089237316195423570985008687907853269984665640564039457584007913129639935';
+
 const Transaction = (props: Props) => {
-  const { cx, handleBack, handleNext, walletValue, handleCloseModal, value } = props;
+  const { cx, handleBack, walletValue, handleCloseModal, value, handleUpdateSmartContract } = props;
   const wallet = useAppSelector((state: any) => state.wallet);
+  const dispatch = useAppDispatch();
+  const amount = value.default * walletValue;
+  const [done, setDone] = useState(false);
+  const formatAmount = new BigNumber(amount / 100).multipliedBy('1e18');
 
   const handleConfirmTransaction = () => {
-    handleNext();
+    stakingToken()
+      .methods.stake(0, formatAmount)
+      .send({ from: currentAddress(wallet) })
+      .then((res: any) => {
+        if (res.status === true) {
+          dispatch(
+            openSnackbar({
+              message: 'Staking success',
+              variant: SnackbarVariant.SUCCESS
+            })
+          );
+          setDone(true);
+          handleUpdateSmartContract();
+        } else {
+          dispatch(
+            openSnackbar({
+              message: 'Staking failed',
+              variant: SnackbarVariant.ERROR
+            })
+          );
+          handleCloseTransaction();
+        }
+      })
+      .catch((e: any) => {
+        console.log(e);
+      })
+      .finally(() => {
+        handleCloseTransaction();
+      });
   };
+
+  useEffect(() => {
+    getCHNBalance()
+      .methods.allowance(currentAddress(wallet), process.env.REACT_APP_STAKE_TESTNET_ADDRESS)
+      .call()
+      .then((res: any) => {
+        if (res === '0') {
+          getCHNBalance()
+            .methods.approve(process.env.REACT_APP_STAKE_TESTNET_ADDRESS, MAX_INT)
+            .send({ from: currentAddress(wallet) })
+            .then((res: any) => {
+              console.log('res approve: ', res);
+              if (res.status === true) {
+                dispatch(
+                  openSnackbar({
+                    message: 'Approve successful, please click confirm button',
+                    variant: SnackbarVariant.SUCCESS
+                  })
+                );
+              } else {
+                dispatch(
+                  openSnackbar({
+                    message: 'Approve faled',
+                    variant: SnackbarVariant.ERROR
+                  })
+                );
+              }
+            })
+            .catch((e: any) => console.log(e));
+        } else {
+          dispatch(
+            openSnackbar({
+              message: 'Please wait a moment',
+              variant: SnackbarVariant.SUCCESS
+            })
+          );
+          handleConfirmTransaction();
+        }
+      });
+  }, []);
 
   const handleCloseTransaction = () => {
     handleCloseModal();
@@ -37,6 +113,14 @@ const Transaction = (props: Props) => {
       handleBack();
     }, 500);
   };
+
+  useEffect(() => {
+    if (done === true) {
+      setTimeout(() => {
+        handleCloseTransaction();
+      }, 1000);
+    }
+  }, [done]);
   return (
     <React.Fragment>
       <DialogTitle className={cx('dialog-title__transaction')}>
@@ -56,9 +140,11 @@ const Transaction = (props: Props) => {
       </DialogContent>
       <DialogActions className={cx('dialog-actions__transaction')}>
         <Button
+          disabled={done === false}
           onClick={handleConfirmTransaction}
-          className={cx('dialog-actions__transaction__confirm')}
-        >
+          className={cx('dialog-actions__transaction__confirm', {
+            active: done === true
+          })}>
           Confirm
         </Button>
       </DialogActions>

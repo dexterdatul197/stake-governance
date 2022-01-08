@@ -124,7 +124,6 @@ const Balances: React.FC = () => {
       setStake(format(formatValueStake));
       setEarn(format(formatValueEarned));
     } catch (error) {
-      
       console.log(error);
     }
   }, [wallet]);
@@ -169,8 +168,7 @@ const Balances: React.FC = () => {
                 className={cx('switcher_stake', {
                   'button-active': isActive,
                   'button-deactive': !isActive
-                })}
-              >
+                })}>
                 Stake
               </Button>
               <Button
@@ -178,8 +176,7 @@ const Balances: React.FC = () => {
                 className={cx('switcher_withdraw', {
                   'button-active': isActiveWithDraw,
                   'button-deactive': !isActiveWithDraw
-                })}
-              >
+                })}>
                 WithDraw
               </Button>
             </Box>

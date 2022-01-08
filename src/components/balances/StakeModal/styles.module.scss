@@ -192,10 +192,24 @@
       width: 455px;
       font-size: 18px;
       font-weight: normal;
-      color: #ffffff;
-      background: #107def;
+      color: #ffffff !important;
+      background: rgba(31, 55, 100, 0.5);
       border-radius: 10px;
       text-transform: capitalize;
+
+      &:hover {
+        background-color: rgba(31, 55, 100, 0.5);
+      }
+    }
+    .active {
+      width: 455px;
+      font-size: 18px;
+      font-weight: normal;
+      color: #ffffff;
+      background-color: #107def;
+      border-radius: 10px;
+      text-transform: capitalize;
+      cursor: pointer;
 
       &:hover {
         background-color: #107def;
@@ -251,7 +265,7 @@
 @media screen and (max-width: 576px) {
   .dialog {
     //    padding: 29px 20px 26px 20px !important0;
-    
+
     .title-dialog {
       display: flex;
       justify-content: space-between;

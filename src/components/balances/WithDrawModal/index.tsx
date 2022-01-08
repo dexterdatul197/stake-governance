@@ -50,8 +50,7 @@ const BootstrapDialogTitle = (props: any) => {
             right: 8,
             top: 8,
             color: (theme) => theme.palette.grey[500]
-          }}
-        >
+          }}>
           <CloseIcon />
         </IconButton>
       ) : null}
@@ -82,11 +81,11 @@ const WithDraw = (props: Props) => {
         setProgress(false);
       }, 1000);
 
-      if (stake) {
+      if (stake > 0) {
+        handleCloseModalWithDraw();
         await stakingToken()
           .methods.withdraw(0, new BigNumber(value.defaultValue).multipliedBy('1e18'))
           .send({ from: currentAddress(wallet) });
-        handleCloseModalWithDraw();
         dispatch(
           openSnackbar({
             message: 'Withdraw Success',
@@ -94,11 +93,11 @@ const WithDraw = (props: Props) => {
           })
         );
         handleUpdateSmartContract();
-      } else if (earn) {
+      } else if (earn > 0) {
+        handleCloseModalWithDraw();
         await stakingToken()
           .methods.withdraw(0, new BigNumber(earn).multipliedBy('1e18'))
           .send({ from: currentAddress(wallet) });
-        handleCloseModalWithDraw();
         dispatch(
           openSnackbar({
             message: 'Withdraw Success',
@@ -145,8 +144,7 @@ const WithDraw = (props: Props) => {
         setValue({ ...value, defaultValue: stake });
       }}
       maxWidth="md"
-      disableEscapeKeyDown
-    >
+      disableEscapeKeyDown>
       <BootstrapDialogTitle
         id="customized-dialog-title"
         onClose={() => {
