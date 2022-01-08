@@ -21,6 +21,7 @@ import { useAppSelector, useAppDispatch } from '../../../store/hooks';
 import { openSnackbar, SnackbarVariant } from '../../../store/snackbar';
 import styles from './styles.module.scss';
 import { BigNumber } from '@0x/utils';
+import loadingSvg from 'src/assets/icon/loading.svg';
 
 const commaNumber = require('comma-number');
 const format = commaNumber.bindWith(',', '.');
@@ -50,8 +51,7 @@ const BootstrapDialogTitle = (props: any) => {
             right: 8,
             top: 8,
             color: (theme) => theme.palette.grey[500]
-          }}
-        >
+          }}>
           <CloseIcon />
         </IconButton>
       ) : null}
@@ -145,8 +145,7 @@ const WithDraw = (props: Props) => {
         setValue({ ...value, defaultValue: stake });
       }}
       maxWidth="md"
-      disableEscapeKeyDown
-    >
+      disableEscapeKeyDown>
       <BootstrapDialogTitle
         id="customized-dialog-title"
         onClose={() => {
@@ -182,7 +181,16 @@ const WithDraw = (props: Props) => {
       </DialogContent>
       <DialogActions className={cx('dialog-actions')}>
         <Button onClick={handleWithdraw} className={cx('button-action')}>
-          {progress ? <CircularProgress style={{ color: '#ffffff' }} /> : 'Withdraw'}
+          {progress || true ? (
+            <img
+              src={loadingSvg}
+              className={cx('loading-rotate')}
+              style={{ width: 18, margin: 0 }}
+              alt=""
+            />
+          ) : (
+            'Withdraw'
+          )}
         </Button>
       </DialogActions>
     </Dialog>

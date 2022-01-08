@@ -70,6 +70,9 @@ body {
   --mb-card-color-text-value: rgba(0, 28, 78, 0.87);
   --mb-card-btn: #edf1f8;
   --mb-card-border: rgba(0, 28, 78, 0.15);
+
+  // widthdraw mooile
+  --mb-bg-amount: #edf1f8;
 }
 [data-theme='dark'] {
   --btn-header-border-color: #72bf65;
@@ -128,6 +131,9 @@ body {
   --mb-card-color-text-value: rgba(255, 255, 255, 0.87);
   --mb-card-btn: rgba(36, 44, 59, 1);
   --mb-card-border: rgba(255, 255, 255, 0.15);
+
+  // widthdraw mooile
+  --mb-bg-amount: #121416;
 }
 .Snackbar {
   .css-zzms1-MuiSnackbar-root {
@@ -184,12 +190,34 @@ body {
     height: 0px;
   }
 }
+.css-12rl710-MuiPaper-root-MuiDialog-paper {
+  border-radius: 20px !important;
+  margin: 0px !important;
+}
+.loading-rotate {
+  -webkit-animation: spin 1s linear infinite;
+  -moz-animation: spin 1s linear infinite;
+  animation: spin 1s linear infinite;
+}
+
+@-moz-keyframes spin {
+  100% {
+    -moz-transform: rotate(360deg);
+  }
+}
+@-webkit-keyframes spin {
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+@keyframes spin {
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
 
 @media screen and (max-width: 576px) {
-  .css-12rl710-MuiPaper-root-MuiDialog-paper {
-    border-radius: 20px !important;
-    margin: 0px !important;
-  }
   .App {
     margin: 0;
   }
