@@ -61,6 +61,7 @@ const Header: React.FC = () => {
     }
   }, [account]);
   const isMobile = useIsMobile(576);
+
   return (
     <div className={cx('header-parent')}>
       <div className={cx('logo')}>
@@ -82,6 +83,7 @@ const Header: React.FC = () => {
           Governance
         </Link>
       </div>
+      {/* <h1 style={{ color: 'red' }}>{theme && theme === THEME_MODE.LIGHT ? '123' : '321'}</h1> */}
       {!isMobile && (
         <div className={cx('group-connect-theme')}>
           {/* <FormControlLabel

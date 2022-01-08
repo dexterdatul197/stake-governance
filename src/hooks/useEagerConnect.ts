@@ -17,7 +17,6 @@ export function useEagerConnect(): boolean {
       if (isAuthorized) {
         activate(injectedConnector, undefined, true)
           .then(() => {
-            console.log('activated eager connect');
             dispatch(setEthereumAddress(account));
             localStorage.setItem('ethereumAddress', account as string);
           })
