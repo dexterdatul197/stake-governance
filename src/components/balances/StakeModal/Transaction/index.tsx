@@ -24,14 +24,7 @@ interface Props {
 }
 
 const Transaction = (props: Props) => {
-  const {
-    cx,
-    handleBack,
-    handleNext,
-    walletValue,
-    handleCloseModal,
-    value,
-  } = props;
+  const { cx, handleBack, handleNext, walletValue, handleCloseModal, value } = props;
   const wallet = useAppSelector((state: any) => state.wallet);
 
   const handleConfirmTransaction = () => {
@@ -64,7 +57,8 @@ const Transaction = (props: Props) => {
       <DialogActions className={cx('dialog-actions__transaction')}>
         <Button
           onClick={handleConfirmTransaction}
-          className={cx('dialog-actions__transaction__confirm')}>
+          className={cx('dialog-actions__transaction__confirm')}
+        >
           Confirm
         </Button>
       </DialogActions>

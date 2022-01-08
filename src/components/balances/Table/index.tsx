@@ -106,7 +106,8 @@ const TableComponent = () => {
                 align={'left'}
                 padding={headCell.disablePadding ? 'none' : 'normal'}
                 sortDirection={orderBy === headCell.id ? order : false}
-                className={cx('table-head__cell')}>
+                className={cx('table-head__cell')}
+              >
                 {headCell.label}
               </TableCell>
             ))}
@@ -122,7 +123,8 @@ const TableComponent = () => {
                   id={labelId}
                   // scope="row"
                   align={'left'}
-                  className={cx('table-body__cell')}>
+                  className={cx('table-body__cell')}
+                >
                   {row.id}
                 </TableCell>
                 <TableCell align={'left'} className={cx('table-body__cell')}>
