@@ -53,7 +53,8 @@ const Footer: React.FC = () => {
           <div className={cx('footer-theme')}>
             <span
               className={cx('footer-theme__item', theme === THEME_MODE.LIGHT ? 'active' : '')}
-              onClick={onSwitchTheme}>
+              onClick={onSwitchTheme}
+            >
               <img
                 className={cx('icon-theme')}
                 src={theme === THEME_MODE.LIGHT ? lightIcon : light_whiteIcon}
@@ -63,7 +64,8 @@ const Footer: React.FC = () => {
             </span>
             <span
               className={cx('footer-theme__item', theme === THEME_MODE.DARK ? 'active' : '')}
-              onClick={onSwitchTheme}>
+              onClick={onSwitchTheme}
+            >
               <img
                 className={cx('icon-theme')}
                 src={theme === THEME_MODE.DARK ? dark_whiteIcon : darkIcon}
