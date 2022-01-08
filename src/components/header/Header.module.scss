@@ -34,6 +34,16 @@
       color: var(--color-text-white-blue);
       text-decoration-line: none;
       border-bottom: solid 2px var(--btn-header-border-color);
+      font-size: 24px;
+      font-weight: 700;
+      margin-right: 28px;
+    }
+    .link-style-border-right {
+      color: var(--color-text-white-blue);
+      text-decoration-line: none;
+      border-bottom: solid 2px var(--btn-header-border-color);
+      font-size: 24px;
+      font-weight: 700;
     }
   }
   .group-connect-theme {
@@ -77,8 +87,7 @@
       height: 86%;
       top: 3px;
       left: 3px;
-      box-shadow: 0px 2px 3px rgba(0, 28, 78, 0.15),
-        inset 0px 1px 1px rgba(255, 255, 255, 0.25);
+      box-shadow: 0px 2px 3px rgba(0, 28, 78, 0.15), inset 0px 1px 1px rgba(255, 255, 255, 0.25);
     }
     .names {
       font-size: 90%;
@@ -117,22 +126,22 @@
       }
     }
 
-    [type="checkbox"] {
+    [type='checkbox'] {
       display: none;
     }
     /* Toggle */
-    [type="checkbox"]:checked + .app .toggle {
+    [type='checkbox']:checked + .app .toggle {
       transform: translateX(100%);
       background-color: #282b32;
       height: 86%;
       top: 3px;
       left: -3px;
     }
-    [type="checkbox"]:checked + .app .dark {
+    [type='checkbox']:checked + .app .dark {
       opacity: 1;
       color: #fff;
     }
-    [type="checkbox"]:checked + .app .light {
+    [type='checkbox']:checked + .app .light {
       opacity: 0.5;
       color: rgba(255, 255, 255, 0.6);
     }
