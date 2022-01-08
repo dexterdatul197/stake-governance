@@ -57,7 +57,7 @@ const Header: React.FC = () => {
   useEffect(() => {
     if (account) {
       dispatch(setEthereumAddress(account));
-      localStorage.setItem('setEthereumAddress', account as string);
+      localStorage.setItem('ethereumAddress', account as string);
     }
   }, [account]);
   const isMobile = useIsMobile(576);
