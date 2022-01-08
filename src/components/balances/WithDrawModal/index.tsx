@@ -62,13 +62,16 @@ const BootstrapDialogTitle = (props: any) => {
 const WithDraw = (props: Props) => {
   const { openWithdraw, handleCloseModalWithDraw, earn, stake, handleUpdateSmartContract } = props;
   const wallet = useAppSelector((state: any) => state.wallet);
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState({
+    defaultValue: 0,
+    isValid: true
+  });
   const [progress, setProgress] = useState(false);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (stake) {
-      setValue(stake);
+      setValue({ ...value, defaultValue: stake });
     }
   }, [stake]);
 
@@ -81,7 +84,7 @@ const WithDraw = (props: Props) => {
 
       if (stake) {
         await stakingToken()
-          .methods.withdraw(0, new BigNumber(value).multipliedBy('1e18'))
+          .methods.withdraw(0, new BigNumber(value.defaultValue).multipliedBy('1e18'))
           .send({ from: currentAddress(wallet) });
         handleCloseModalWithDraw();
         dispatch(
@@ -118,11 +121,19 @@ const WithDraw = (props: Props) => {
     }
   };
 
+  const validateNumberField = (myNumber: any) => {
+    const numberRegEx = /\-?\d*\.?\d{1,2}/;
+    return numberRegEx.test(String(myNumber).toLowerCase());
+  };
+
   const handleChangeInputValue = useCallback(
     (event: any) => {
-      setValue(event.target.value);
+      const { value } = event.target;
+      const isValid = !value || validateNumberField(value);
+      const newValue = { ...value };
+      setValue({ ...newValue, defaultValue: value, isValid });
     },
-    [value]
+    [value.defaultValue]
   );
 
   return (
@@ -131,7 +142,7 @@ const WithDraw = (props: Props) => {
       open={openWithdraw}
       onClose={() => {
         handleCloseModalWithDraw();
-        setValue(stake);
+        setValue({ ...value, defaultValue: stake });
       }}
       maxWidth="md"
       disableEscapeKeyDown
@@ -140,10 +151,9 @@ const WithDraw = (props: Props) => {
         id="customized-dialog-title"
         onClose={() => {
           handleCloseModalWithDraw();
-          setValue(stake);
-        }}
-      >
-        Modal title
+          setValue({ ...value, defaultValue: stake });
+        }}>
+        Withdraw
       </BootstrapDialogTitle>
       <DialogContent className={cx('dialog-content')}>
         <Box className={cx('dialog-content__title')}>
@@ -163,9 +173,10 @@ const WithDraw = (props: Props) => {
             <Input
               className={cx('main-right__quantity')}
               disableUnderline
-              value={value ? value : 0}
+              value={value.defaultValue}
               onChange={handleChangeInputValue}
             />
+            {!value.isValid && <div style={{ color: 'red' }}>Entered Number is invalid</div>}
           </Box>
         </Box>
       </DialogContent>

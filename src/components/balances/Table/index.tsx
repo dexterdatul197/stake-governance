@@ -42,8 +42,8 @@ const TableComponent = () => {
   };
 
   const [filter, setFilter] = useState({
-    page: page + 1,
-    limit: rowsPerPage,
+    page: 1,
+    limit: 5,
     address: getUserAddress()
   });
 
@@ -56,7 +56,6 @@ const TableComponent = () => {
   }, [page, rowsPerPage]);
 
   useEffect(() => {
-    dispatch(getTransactionHistory(filter));
     eventBus.on(SocketEvent.transactionUpdated, async () => {
       await sleep(1000);
       if (page === 0) {

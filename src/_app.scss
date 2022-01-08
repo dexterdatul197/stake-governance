@@ -148,6 +148,8 @@ body {
   // position: absolute;
   // bottom: 0;
   width: 100%;
+  position: fixed;
+  bottom: 0;
 }
 
 .text-black-white {
@@ -176,6 +178,7 @@ body {
     // padding: 20px 24px;
     // height: calc(100vh - 120px);
     margin-top: 110px;
+    padding: 20px 16px;
   }
   .footer {
     height: 0px;
