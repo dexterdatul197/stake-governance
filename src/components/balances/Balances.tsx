@@ -124,6 +124,7 @@ const Balances: React.FC = () => {
       setStake(format(formatValueStake));
       setEarn(format(formatValueEarned));
     } catch (error) {
+      
       console.log(error);
     }
   }, [wallet]);
