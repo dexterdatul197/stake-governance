@@ -83,11 +83,11 @@ const WithDraw = (props: Props) => {
         setProgress(false);
       }, 1000);
 
-      if (stake) {
+      if (stake > 0) {
+        handleCloseModalWithDraw();
         await stakingToken()
           .methods.withdraw(0, new BigNumber(value.defaultValue).multipliedBy('1e18'))
           .send({ from: currentAddress(wallet) });
-        handleCloseModalWithDraw();
         dispatch(
           openSnackbar({
             message: 'Withdraw Success',
@@ -95,11 +95,11 @@ const WithDraw = (props: Props) => {
           })
         );
         handleUpdateSmartContract();
-      } else if (earn) {
+      } else if (earn > 0) {
+        handleCloseModalWithDraw();
         await stakingToken()
           .methods.withdraw(0, new BigNumber(earn).multipliedBy('1e18'))
           .send({ from: currentAddress(wallet) });
-        handleCloseModalWithDraw();
         dispatch(
           openSnackbar({
             message: 'Withdraw Success',
@@ -171,7 +171,7 @@ const WithDraw = (props: Props) => {
             </Box>
           </Box>
           <Box className={cx('main-right')}>
-            <Typography className={cx('main-right__price')}>${format(earn)}</Typography>
+            <Typography className={cx('main-right__price')}>{format(earn)}</Typography>
             <Input
               className={cx('main-right__quantity')}
               disableUnderline

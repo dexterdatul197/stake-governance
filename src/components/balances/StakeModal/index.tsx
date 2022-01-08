@@ -47,21 +47,21 @@ const Modal = memo((props: Props) => {
             value={value}
             cx={cx}
             handleBack={handleBack}
-            handleNext={handleNext}
             walletValue={walletValue}
             handleCloseModal={handleCloseModal}
-          />
-        );
-      case 2:
-        return (
-          <LoadingComponent
-            value={value}
-            walletValue={walletValue}
             handleUpdateSmartContract={handleUpdateSmartContract}
-            handleCloseModal={handleCloseModal}
-            handleBackBegin={handleBackBegin}
           />
         );
+      // case 2:
+      //   return (
+      //     <LoadingComponent
+      //       value={value}
+      //       walletValue={walletValue}
+      //       handleUpdateSmartContract={handleUpdateSmartContract}
+      //       handleCloseModal={handleCloseModal}
+      //       handleBackBegin={handleBackBegin}
+      //     />
+      //   );
     }
   };
 

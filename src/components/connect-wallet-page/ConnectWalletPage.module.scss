@@ -47,8 +47,10 @@
       &:hover {
         background: #107def;
         box-shadow: 1px 2px 6px rgba(0, 0, 0, 0.35);
-        color: #fff;
         cursor: pointer;
+        .title {
+          color: #fff;
+        }
       }
     }
   }
@@ -66,7 +68,7 @@
     position: relative;
     img {
       border-radius: 20px;
-      max-width: 100%;
+      width: 100%;
       height: auto;
     }
     span {
@@ -79,11 +81,11 @@
       color: #ffffff;
       text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.5);
       font-size: 64px;
-      font-family: 'Futura Md BT';
+      // font-family: 'Futura Md BT';
     }
   }
   .title-connect {
-    font-family: 'SF UI Display';
+    // font-family: 'SF UI Display';
     color: var(--color-text-white-black);
     letter-spacing: 0.015em;
     font-weight: bold;

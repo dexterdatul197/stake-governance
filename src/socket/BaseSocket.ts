@@ -2,7 +2,6 @@
 import io from 'socket.io-client';
 import eventBus from 'src/event/event-bus';
 import { SocketEvent } from 'src/socket/SocketEvent';
-import store from 'src/store/store';
 export class BaseSocket {
   private static instance: BaseSocket;
   // @ts-ignore
@@ -25,11 +24,18 @@ export class BaseSocket {
       // },
     });
     this.listenTransactionEvent();
+    this.listenTVLDataEvent();
   }
 
   listenTransactionEvent(): void {
     this.socket.on('staking_history', (data: any) => {
       eventBus.dispatch(SocketEvent.transactionUpdated, data);
+    });
+  }
+
+  listenTVLDataEvent(): void {
+    this.socket.on('tvl_data', (data: any) => {
+      eventBus.dispatch(SocketEvent.tvlDataUpdate, data);
     });
   }
 

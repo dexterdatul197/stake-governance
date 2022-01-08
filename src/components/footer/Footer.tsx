@@ -15,7 +15,10 @@ import Web3 from 'web3';
 import { SetCalldataBlock } from '@0x/utils/lib/src/abi_encoder/calldata/blocks/set';
 
 const cx = classNames.bind(styles);
-
+const currentRPC =
+  process.env.REACT_APP_ENV === 'prod'
+    ? process.env.REACT_APP_MAINNET_RPC
+    : process.env.REACT_APP_RINKEBY_RPC;
 const Footer: React.FC = () => {
   const isMobile = useIsMobile(576);
   const dispatch = useDispatch();
@@ -29,8 +32,8 @@ const Footer: React.FC = () => {
 
   const getLatestBlock = async () => {
     setInterval(async () => {
-      if (window.web3) {
-        const web3 = await new Web3(window.web3.currentProvider);
+      if (typeof currentRPC === 'string') {
+        const web3 = await new Web3(currentRPC);
         const block = await web3.eth.getBlockNumber();
         setBlock(block);
       }
