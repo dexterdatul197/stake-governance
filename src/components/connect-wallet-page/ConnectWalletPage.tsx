@@ -3,6 +3,7 @@ import Web3 from 'web3';
 import { useWeb3React } from '@web3-react/core';
 import { useHistory } from 'react-router-dom';
 import { Button } from '@material-ui/core';
+import { isMobile } from 'react-device-detect';
 import CloseIcon from '@material-ui/icons/Close';
 import { Dialog, IconButton, TextField, Typography } from '@mui/material';
 import { Box } from '@mui/system';
@@ -94,8 +95,14 @@ const ConnectWalletPage: React.FC = () => {
     }
   };
 
+  const windowObj = window as any;
+
   // Connect MetaMask
   const handleConnectMetaMask = async () => {
+    if (isMobile && !windowObj?.ethereum?.isMetaMask) {
+      window.location.assign(process.env.REACT_APP_DEEP_LINK_METAMASK || '#');
+      return;
+    }
     try {
       activate(injectedConnector).then(() => {
         dispatch(setWalletName(walletsConfig[0]));
