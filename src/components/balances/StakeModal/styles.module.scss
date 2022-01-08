@@ -286,6 +286,7 @@
       &__percent {
         display: contents;
         align-items: center;
+        display: flex;
         .percent-number {
           color: var(--btn-background-connect-color);
           line-height: 33px;
@@ -294,8 +295,7 @@
           text-align: center;
           margin-right: 8px;
           text-align: center;
-          width: 60px;
-          height: 24px;
+          width: 100%;
           input {
             text-align: center !important;
             -webkit-text-fill-color: var(--btn-background-connect-color);

@@ -28,22 +28,22 @@ const Footer: React.FC = () => {
   };
 
   const getLatestBlock = async () => {
-    setInterval(async() => {
+    setInterval(async () => {
       if (window.web3) {
         const web3 = await new Web3(window.web3.currentProvider);
         const block = await web3.eth.getBlockNumber();
         setBlock(block);
       }
     }, 15000);
-  }
+  };
 
   const openEther = () => {
-    window.open('https://etherscan.io','_blank');
-  }
+    window.open('https://etherscan.io', '_blank');
+  };
 
   useEffect(() => {
     getLatestBlock();
-  }, [])
+  }, []);
 
   return (
     <div className={cx('footer-component')}>
@@ -80,7 +80,9 @@ const Footer: React.FC = () => {
           <div>&copy; Chain 1 open source</div>
           <div className={cx('right-footer')}>
             <div className={cx('status-circle')}></div>
-            <div onClick={openEther} className={cx('block-number')}>vi.o\Block: {block}</div>
+            <div onClick={openEther} className={cx('block-number')}>
+              vi.o\Block: {block}
+            </div>
           </div>
         </>
       )}

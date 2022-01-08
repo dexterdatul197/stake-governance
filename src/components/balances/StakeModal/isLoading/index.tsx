@@ -85,8 +85,8 @@ const IsLoading = (props: Props) => {
               }
             })
             .catch((e: any) => console.log(e));
-        }else{
-          handleConfirmStake()
+        } else {
+          handleConfirmStake();
         }
       })
       .catch((e: any) => console.log(e));
