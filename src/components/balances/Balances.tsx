@@ -102,7 +102,7 @@ const Balances: React.FC = () => {
         const formatToken =
           Math.floor(
             Number(
-              String(new BigNumber(tokenBalance).dividedBy('1e18')).match(/^\d+(?:\.\d{0,5})?/)
+              String(new BigNumber(tokenBalance).dividedBy('1e18'))
             ) * 10000
           ) / 10000;
         setWalletValue(format(formatToken));
