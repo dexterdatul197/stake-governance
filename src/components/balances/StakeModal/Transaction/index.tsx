@@ -39,10 +39,11 @@ const Transaction = (props: Props) => {
   const formatAmount = new BigNumber(amount / 100).multipliedBy('1e18');
 
   // useEffect(() => {
+  //   const connectedAddress = currentAddress(wallet);
   //   const getValueCHN = async () => {
-
-  //   }
-  // },[])
+  //     await getCHNBalance().methods.balanceOf(connectedAddress).call();
+  //   };
+  // }, []);
 
   const handleConfirmTransaction = () => {
     setProgress(true);
@@ -126,7 +127,7 @@ const Transaction = (props: Props) => {
     }, 500);
     setTimeout(() => {
       handleBack();
-    },700)
+    }, 700);
   };
 
   return (

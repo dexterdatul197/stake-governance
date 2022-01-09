@@ -71,26 +71,44 @@ const WithDraw = (props: Props) => {
   const dispatch = useAppDispatch();
   const [earnValue, setEarnValue] = useState(0);
 
+  useEffect(() => {
+    if (earn) {
+      setEarnValue(earn);
+    }
+  }, [earn]);
+
   const getValueStake = async () => {
     const connectedAddress = currentAddress(wallet);
     const stakeValue = await stakingToken().methods.userInfo(0, connectedAddress).call();
-    const earn = await stakingToken().methods.pendingReward(0, connectedAddress).call();
-    console.log(earn);
-    setValue({ ...value, defaultValue: stake, stake: stakeValue.amount, earn: earn });
+    const earnValues = await stakingToken().methods.pendingReward(0, connectedAddress).call();
+    const formatStake =
+      Math.floor(
+        Number(
+          String(new BigNumber(stakeValue.amount).dividedBy('1e18')).match(/^\d+(?:\.\d{0,5})?/)
+        ) * 10000
+      ) / 10000;
+    const formatEarn =
+      Math.floor(
+        Number(String(new BigNumber(earnValues).dividedBy('1e18')).match(/^\d+(?:\.\d{0,5})?/)) *
+          10000
+      ) / 10000;
+    setValue({
+      ...value,
+      defaultValue: formatStake,
+      stake: stakeValue.amount,
+      earn: earnValues
+    });
   };
 
   useEffect(() => {
     getValueStake();
   }, []);
 
-  useEffect(() => {
-    if (stake) {
-      setValue({ ...value, defaultValue: stake });
-    }
-    if (earn) {
-      setEarnValue(earn);
-    }
-  }, [stake, earn]);
+  const handleCloseModalRefresh = () => {
+    handleCloseModalWithDraw();
+    setEarnValue(0);
+    setValue({ ...value, defaultValue: 0 });
+  };
 
   const handleWithdraw = async () => {
     try {
@@ -99,8 +117,8 @@ const WithDraw = (props: Props) => {
         setProgress(false);
       }, 1000);
 
-      if (stake > 0) {
-        handleCloseModalWithDraw();
+      if (stake !== 0) {
+        handleCloseModalRefresh();
         await stakingToken()
           .methods.withdraw(0, new BigNumber(value.defaultValue).multipliedBy('1e18'))
           .send({ from: currentAddress(wallet) });
@@ -112,7 +130,7 @@ const WithDraw = (props: Props) => {
         );
         handleUpdateSmartContract();
       } else if (stake === value.stake) {
-        handleCloseModalWithDraw();
+        handleCloseModalRefresh();
         await stakingToken()
           .methods.withdraw(0, new BigNumber(value.stake).multipliedBy('1e18'))
           .send({ from: currentAddress(wallet) });
@@ -123,8 +141,8 @@ const WithDraw = (props: Props) => {
           })
         );
         handleUpdateSmartContract();
-      } else if (earn > 0) {
-        handleCloseModalWithDraw();
+      } else if (value.earn !== 0) {
+        handleCloseModalRefresh();
         await stakingToken()
           .methods.withdraw(0, new BigNumber(value.earn).multipliedBy('1e18'))
           .send({ from: currentAddress(wallet) });
@@ -145,7 +163,7 @@ const WithDraw = (props: Props) => {
       }
     } catch (error) {
       console.log(error);
-      handleCloseModalWithDraw();
+      handleCloseModalRefresh();
       setProgress(false);
     }
   };
@@ -161,7 +179,7 @@ const WithDraw = (props: Props) => {
       const isValid = !value || validateNumberField(value);
       setValue({ ...value, defaultValue: value, isValid });
     },
-    [value.defaultValue]
+    [value.defaultValue, stake]
   );
 
   return (
@@ -169,8 +187,7 @@ const WithDraw = (props: Props) => {
       className={cx('dialog-container')}
       open={openWithdraw}
       onClose={() => {
-        handleCloseModalWithDraw();
-        setValue({ ...value, defaultValue: 0 });
+        handleCloseModalRefresh();
       }}
       maxWidth="md"
       disableEscapeKeyDown
@@ -178,10 +195,15 @@ const WithDraw = (props: Props) => {
       <BootstrapDialogTitle
         id="customized-dialog-title"
         onClose={() => {
+<<<<<<< HEAD
+          handleCloseModalRefresh();
+        }}>
+=======
           handleCloseModalWithDraw();
           setValue({ ...value, defaultValue: 0 });
         }}
       >
+>>>>>>> 84e3606c9ac5e8c5342585754a4b4c464d8ae9c0
         Withdraw
       </BootstrapDialogTitle>
       <DialogContent className={cx('dialog-content')}>
@@ -209,7 +231,7 @@ const WithDraw = (props: Props) => {
             <span onClick={getValueStake} className={cx('text-all')}>
               Max
             </span>
-            {value.defaultValue > stake && (
+            {value.defaultValue > Number(stake) && (
               <div style={{ color: 'red' }}>Entered Number is invalid</div>
             )}
             {!value.isValid && <div style={{ color: 'red' }}>Entered Number is invalid</div>}
@@ -218,7 +240,11 @@ const WithDraw = (props: Props) => {
       </DialogContent>
       <DialogActions className={cx('dialog-actions')}>
         <Button
-          disabled={!value.isValid || value.defaultValue > stake}
+          disabled={
+            !value.isValid ||
+            value.defaultValue > Number(stake) ||
+            (value.defaultValue === 0 && earnValue === 0)
+          }
           onClick={handleWithdraw}
           className={cx('button-action')}
         >
