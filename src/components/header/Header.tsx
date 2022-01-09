@@ -20,6 +20,7 @@ import logo from './../../assets/icon/CHN_dark_logo.png';
 import dark_logo from './../../assets/icon/CHN_light_logo.png';
 import style from './Header.module.scss';
 import useIsMobile from '../../hooks/useMobile';
+import { setSelectedCurrency } from '../chart/redux/currency';
 const cx = classnames.bind(style);
 
 const Header: React.FC = () => {
@@ -47,6 +48,7 @@ const Header: React.FC = () => {
     setStackBorder(false);
     setGovernanceBorder(false);
     dispatch(setOpenConnectDialog(false));
+    dispatch(setSelectedCurrency('usd'));
   };
   const theme = useAppSelector((state) => state.theme.themeMode);
   const onSwitchTheme = () => {
@@ -61,6 +63,12 @@ const Header: React.FC = () => {
     }
   }, [account]);
   const isMobile = useIsMobile(576);
+  useEffect(() => {
+    if (!wallet.ethereumAddress) {
+      setStackBorder(false);
+      setGovernanceBorder(false);
+    }
+  }, [wallet.ethereumAddress]);
 
   return (
     <div className={cx('header-parent')}>
