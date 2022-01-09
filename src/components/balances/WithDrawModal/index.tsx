@@ -14,13 +14,13 @@ import CloseIcon from '@mui/icons-material/Close';
 import classNames from 'classnames/bind';
 import { useCallback, useEffect, useState } from 'react';
 import loadingSvg from 'src/assets/icon/loading.svg';
+import Web3 from 'web3';
 import CHN_icon from '../../../assets/icon/CHN.svg';
 import { currentAddress } from '../../../helpers/common';
 import { stakingToken } from '../../../helpers/ContractService';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { openSnackbar, SnackbarVariant } from '../../../store/snackbar';
 import styles from './styles.module.scss';
-import Web3 from 'web3';
 
 const web3 = new Web3();
 
@@ -92,7 +92,7 @@ const WithDraw = (props: Props) => {
       ) / 10000;
     setValue({
       ...value,
-      defaultValue: stake,
+      defaultValue: formatStake,
       stake: stakeValue.amount,
       earn: earnValues
     });
@@ -186,12 +186,15 @@ const WithDraw = (props: Props) => {
     (event: any) => {
       const { value } = event.target;
       const isValid = !value || validateNumberField(value);
-      if (isValid) {
-        setValue({ ...value, defaultValue: value, isValid });
-      }
+      setValue({ ...value, defaultValue: value, isValid });
     },
-    [value.defaultValue, stake]
+    [value.defaultValue]
   );
+
+  useEffect(() => {
+    console.log(value.defaultValue);
+    console.log(typeof stake);
+  }, [value.defaultValue]);
 
   return (
     <Dialog
@@ -206,8 +209,7 @@ const WithDraw = (props: Props) => {
         id="customized-dialog-title"
         onClose={() => {
           handleCloseModalRefresh();
-        }}
-      >
+        }}>
         Withdraw
       </BootstrapDialogTitle>
       <DialogContent className={cx('dialog-content')}>
@@ -230,7 +232,8 @@ const WithDraw = (props: Props) => {
               disableUnderline
               type="text"
               onChange={handleInputChange}
-              value={value.defaultValue ? value.defaultValue : 0 }
+              value={value.defaultValue}
+              autoFocus
             />
             <span onClick={getValueStake} className={cx('text-all')}>
               Max
