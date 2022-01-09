@@ -75,7 +75,8 @@ const Header: React.FC = () => {
           onClick={testRouter}
           className={cx('link-style', {
             'link-style-border': stackBorder
-          })}>
+          })}
+        >
           Stake
         </Link>
         <Link
@@ -83,7 +84,8 @@ const Header: React.FC = () => {
           onClick={setGovernaneStyle}
           className={cx('link-style', {
             'link-style-border-right': governanBorder
-          })}>
+          })}
+        >
           Governance
         </Link>
       </div>
@@ -98,34 +100,30 @@ const Header: React.FC = () => {
           <input type="checkbox" id="switch" onChange={onSwitchTheme} />
           <div className={cx('app')}>
             <div className={cx('body')}>
-              <label htmlFor="switch">
-                <div className={cx('toggle')}></div>
-                <div className={cx('names')}>
-                  {theme === THEME_MODE.LIGHT ? (
-                    <>
-                      <p className={cx('light')}>
-                        <img className={cx('icon-theme')} src={lightIcon} alt="light icon" />
-                        light
-                      </p>
-                      <p className={cx('dark')}>
-                        <img className={cx('icon-theme')} src={darkIcon} alt="" />
-                        dark
-                      </p>
-                    </>
-                  ) : (
-                    <>
-                      <p className={cx('light')}>
-                        <img className={cx('icon-theme')} src={light_whiteIcon} alt="dark icon" />
-                        light
-                      </p>
-                      <p className={cx('dark')}>
-                        <img className={cx('icon-theme')} src={dark_whiteIcon} alt="" />
-                        dark
-                      </p>
-                    </>
-                  )}
-                </div>
-              </label>
+              <div className={cx('footer-theme')}>
+                <span
+                  className={cx('footer-theme__item', theme === THEME_MODE.LIGHT ? 'active' : '')}
+                  onClick={onSwitchTheme}
+                >
+                  <img
+                    className={cx('icon-theme')}
+                    src={theme === THEME_MODE.LIGHT ? lightIcon : light_whiteIcon}
+                    alt="light icon"
+                  />
+                  <span>Light</span>
+                </span>
+                <span
+                  className={cx('footer-theme__item', theme === THEME_MODE.DARK ? 'active' : '')}
+                  onClick={onSwitchTheme}
+                >
+                  <img
+                    className={cx('icon-theme')}
+                    src={theme === THEME_MODE.DARK ? dark_whiteIcon : darkIcon}
+                    alt="dark_icon"
+                  />
+                  <span>Dark</span>
+                </span>
+              </div>
             </div>
           </div>
           <div className={cx('header-wallet')}>

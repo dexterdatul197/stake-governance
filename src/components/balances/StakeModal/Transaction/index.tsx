@@ -144,7 +144,8 @@ const Transaction = (props: Props) => {
           onClick={handleConfirmTransaction}
           className={cx('dialog-actions__transaction__confirm', {
             active: done === true
-          })}>
+          })}
+        >
           Confirm
         </Button>
       </DialogActions>

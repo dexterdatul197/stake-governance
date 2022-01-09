@@ -36,7 +36,7 @@ export class BaseSocket {
   listenTVLDataEvent(): void {
     this.socket.on('tvl_data', (data: any) => {
       eventBus.dispatch(SocketEvent.tvlDataUpdate, data);
-    })
+    });
   }
 
   public reconnect(): void {
