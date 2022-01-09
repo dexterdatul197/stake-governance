@@ -10,7 +10,7 @@ import {
   Slider,
   Typography
 } from '@material-ui/core';
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useAppDispatch } from '../../../../store/hooks';
 import { openSnackbar, SnackbarVariant } from '../../../../store/snackbar';
 
@@ -28,7 +28,10 @@ interface Props {
 
 const Stake = (props: Props) => {
   const { cx, walletValue, handleNext, progress, value, setValue } = props;
-
+  const [isActivePercent1, setIsActivePercent1] = useState(false);
+  const [isActivePercent2, setIsActivePercent2] = useState(false);
+  const [isActivePercent3, setIsActivePercent3] = useState(false);
+  const [isActivePercent4, setIsActivePercent4] = useState(false);
   const dispatch = useAppDispatch();
   const handleChangeValue = useCallback(
     (event: any) => {
@@ -91,7 +94,28 @@ const Stake = (props: Props) => {
       handleNext();
     }
   };
-
+  useEffect(() => {
+    if (value.default === value.value1) {
+      setIsActivePercent1(true);
+    } else {
+      setIsActivePercent1(false);
+    }
+    if (value.default === value.value2) {
+      setIsActivePercent2(true);
+    } else {
+      setIsActivePercent2(false);
+    }
+    if (value.default === value.value3) {
+      setIsActivePercent3(true);
+    } else {
+      setIsActivePercent3(false);
+    }
+    if (value.default === value.all) {
+      setIsActivePercent4(true);
+    } else {
+      setIsActivePercent4(false);
+    }
+  }, [value.default]);
   return (
     <React.Fragment>
       <DialogTitle className={cx('title-dialog')}>
@@ -116,16 +140,28 @@ const Stake = (props: Props) => {
             getAriaValueText={valueText}
           />
           <Box className={cx('dialog-content__percent')}>
-            <span onClick={handleChangeInputPercent} className={cx('percent-number')}>
+            <span
+              onClick={handleChangeInputPercent}
+              className={cx('percent-number', { 'percent-number-active': isActivePercent1 })}
+            >
               {valueText(value.value1)}
             </span>
-            <span onClick={handkeChangeInputPercent2} className={cx('percent-number')}>
+            <span
+              onClick={handkeChangeInputPercent2}
+              className={cx('percent-number', { 'percent-number-active': isActivePercent2 })}
+            >
               {valueText(value.value2)}
             </span>
-            <span onClick={handkeChangeInputPercent3} className={cx('percent-number')}>
+            <span
+              onClick={handkeChangeInputPercent3}
+              className={cx('percent-number', { 'percent-number-active': isActivePercent3 })}
+            >
               {valueText(value.value3)}
             </span>
-            <span onClick={handkeChangeInputPercent4} className={cx('percent-number')}>
+            <span
+              onClick={handkeChangeInputPercent4}
+              className={cx('percent-number', { 'percent-number-active': isActivePercent4 })}
+            >
               {value.all ? 'All' : 0}
             </span>
           </Box>

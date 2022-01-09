@@ -35,6 +35,10 @@
     &__percent {
       display: flex;
       align-items: center;
+      .percent-number-active {
+        background: rgba(16, 125, 239, 1) !important;
+        color: white !important;
+      }
       .percent-number {
         color: var(--btn-background-connect-color);
         width: 92px;

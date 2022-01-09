@@ -23,18 +23,10 @@ const CardComponent: FC = () => {
   const transactionData = useAppSelector((state) => state.transactions.transactions);
   const [hasMore, setHasMore] = useState(true);
 
-  const [userAddress, setUserAddress] = useState('');
-
-  useEffect(() => {
-    if (wallet.ethereumAddress) {
-      setUserAddress(wallet.ethereumAddress);
-    }
-  }, [wallet.ethereumAddress]);
-
   const [filter, setFilter] = useState({
     page: 1,
     limit: limit,
-    address: userAddress,
+    address: wallet.ethereumAddress,
     totalPage: 1
   });
 
@@ -42,10 +34,10 @@ const CardComponent: FC = () => {
     setFilter({
       page: 1,
       limit: limit,
-      address: userAddress,
+      address: wallet.ethereumAddress,
       totalPage: 1
     });
-  }, [limit, userAddress]);
+  }, [limit, wallet.ethereumAddress]);
 
   useEffect(() => {
     dispatch(getTransactionHistory(filter));

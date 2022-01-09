@@ -34,27 +34,20 @@ const TableComponent = () => {
   const [orderBy] = useState('id');
   const transactionData = useAppSelector((state) => state.transactions.transactions);
   const wallet = useAppSelector((state) => state.wallet);
-  const [userAddress, setUserAddress] = useState('');
-
-  useEffect(() => {
-    if (wallet.ethereumAddress) {
-      setUserAddress(wallet.ethereumAddress);
-    }
-  }, [wallet.ethereumAddress]);
 
   const [filter, setFilter] = useState({
     page: 1,
     limit: 5,
-    address: userAddress
+    address: wallet.ethereumAddress
   });
 
   useEffect(() => {
     setFilter({
       page: page + 1,
       limit: rowsPerPage,
-      address: userAddress
+      address: wallet.ethereumAddress
     });
-  }, [page, rowsPerPage, userAddress]);
+  }, [page, rowsPerPage, wallet.ethereumAddress]);
 
   useEffect(() => {
     eventBus.on(SocketEvent.transactionUpdated, async () => {
