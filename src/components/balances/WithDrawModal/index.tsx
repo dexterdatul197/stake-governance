@@ -185,7 +185,8 @@ const WithDraw = (props: Props) => {
         id="customized-dialog-title"
         onClose={() => {
           handleCloseModalRefresh();
-        }}>
+        }}
+      >
         Withdraw
       </BootstrapDialogTitle>
       <DialogContent className={cx('dialog-content')}>
