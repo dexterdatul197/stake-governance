@@ -40,6 +40,7 @@ const Modal = memo((props: Props) => {
             progress={progress}
             setValue={setValue}
             value={value}
+            handleCloseModal={handleCloseModal}
           />
         );
       case 1:
@@ -90,13 +91,6 @@ const Modal = memo((props: Props) => {
       maxWidth="xs"
       className={cx('dialog')}
       open={openStake}
-      onClose={() => {
-        setValue({ ...value, default: 0 });
-        handleCloseModal();
-        setTimeout(() => {
-          setActiveStep(0);
-        }, 500);
-      }}
       PaperProps={{
         style: {
           backgroundColor: 'var(--background-stake-modal)',

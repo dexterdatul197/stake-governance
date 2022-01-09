@@ -13,6 +13,7 @@ import {
 import React, { useCallback, useEffect, useState } from 'react';
 import { useAppDispatch } from '../../../../store/hooks';
 import { openSnackbar, SnackbarVariant } from '../../../../store/snackbar';
+import CloseIcon from '@material-ui/icons/Close';
 
 const commaNumber = require('comma-number');
 const format = commaNumber.bindWith(',', '.');
@@ -24,10 +25,11 @@ interface Props {
   progress: Boolean;
   value?: any;
   setValue: (value: any) => void;
+  handleCloseModal?: () => void;
 }
 
 const Stake = (props: Props) => {
-  const { cx, walletValue, handleNext, progress, value, setValue } = props;
+  const { cx, walletValue, handleNext, progress, value, setValue, handleCloseModal } = props;
   const [isActivePercent1, setIsActivePercent1] = useState(false);
   const [isActivePercent2, setIsActivePercent2] = useState(false);
   const [isActivePercent3, setIsActivePercent3] = useState(false);
@@ -120,7 +122,7 @@ const Stake = (props: Props) => {
     <React.Fragment>
       <DialogTitle className={cx('title-dialog')}>
         <Typography className={cx('text-stake')}>Stake</Typography>
-        <Box></Box>
+        <CloseIcon onClick={handleCloseModal} style={{ color: 'var(--text-color-balance)',cursor: 'pointer' }} />
       </DialogTitle>
       <DialogContent className={cx('dialog-content')}>
         <Box className={cx('dialog-content__amount')}>
@@ -142,26 +144,22 @@ const Stake = (props: Props) => {
           <Box className={cx('dialog-content__percent')}>
             <span
               onClick={handleChangeInputPercent}
-              className={cx('percent-number', { 'percent-number-active': isActivePercent1 })}
-            >
+              className={cx('percent-number', { 'percent-number-active': isActivePercent1 })}>
               {valueText(value.value1)}
             </span>
             <span
               onClick={handkeChangeInputPercent2}
-              className={cx('percent-number', { 'percent-number-active': isActivePercent2 })}
-            >
+              className={cx('percent-number', { 'percent-number-active': isActivePercent2 })}>
               {valueText(value.value2)}
             </span>
             <span
               onClick={handkeChangeInputPercent3}
-              className={cx('percent-number', { 'percent-number-active': isActivePercent3 })}
-            >
+              className={cx('percent-number', { 'percent-number-active': isActivePercent3 })}>
               {valueText(value.value3)}
             </span>
             <span
               onClick={handkeChangeInputPercent4}
-              className={cx('percent-number', { 'percent-number-active': isActivePercent4 })}
-            >
+              className={cx('percent-number', { 'percent-number-active': isActivePercent4 })}>
               {value.all ? 'All' : 0}
             </span>
           </Box>
@@ -185,8 +183,7 @@ const Stake = (props: Props) => {
         <Button
           onClick={handleNextStep}
           className={cx('button-stake')}
-          disabled={new BigNumber(walletValue).lte(0)}
-        >
+          disabled={new BigNumber(walletValue).lte(0)}>
           {progress ? <CircularProgress style={{ color: '#ffffff' }} /> : 'Stake'}
         </Button>
       </DialogActions>

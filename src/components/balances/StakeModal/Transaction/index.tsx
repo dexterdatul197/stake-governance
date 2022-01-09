@@ -178,6 +178,12 @@ const Transaction = (props: Props) => {
       }, 500);
     }, 3000);
   };
+  const handleCloseModalTrans = () => {
+    handleCloseModal();
+    setTimeout(() => {
+      handleBack();
+    }, 300);
+  };
 
   return (
     <React.Fragment>
@@ -187,7 +193,12 @@ const Transaction = (props: Props) => {
             <ArrowBackIosIcon />
           </Button>
           <Typography className={cx('confirm-title')}>Confirm Transaction</Typography>
-          <CloseIcon onClick={handleCloseTransaction} className={cx('icon_left')} />
+          <Button
+            onClick={handleCloseModalTrans}
+            className={cx('icon_left')}
+            disabled={progress === true}>
+            <CloseIcon />
+          </Button>
         </Box>
       </DialogTitle>
       <DialogContent className={cx('dialog-content__transaction')}>
@@ -208,8 +219,7 @@ const Transaction = (props: Props) => {
         <Button
           disabled={done || progress}
           onClick={handleConfirm}
-          className={cx('dialog-actions__transaction__confirm')}
-        >
+          className={cx('dialog-actions__transaction__confirm')}>
           Confirm
         </Button>
       </DialogActions>
