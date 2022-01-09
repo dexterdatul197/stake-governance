@@ -27,32 +27,36 @@ interface Props {
   walletValue?: any;
   handleCloseModal: () => void;
   handleUpdateSmartContract: () => void;
+  chnToken?: any;
 }
 
 const MAX_INT = '115792089237316195423570985008687907853269984665640564039457584007913129639935';
 
 const Transaction = (props: Props) => {
-  const { cx, handleBack, walletValue, handleCloseModal, value, handleUpdateSmartContract } = props;
+  const {
+    cx,
+    handleBack,
+    walletValue,
+    handleCloseModal,
+    value,
+    handleUpdateSmartContract,
+    chnToken
+  } = props;
+
+  console.log('token: ', chnToken);
   const wallet = useAppSelector((state: any) => state.wallet);
   const web3 = new Web3();
   const dispatch = useAppDispatch();
-  const amount = value.default * walletValue;
+  const amount = new BigNumber(value.default).multipliedBy(web3.utils.fromWei(chnToken.toString()));
   const [done, setDone] = useState(false);
-  const [progress, setProgress] = useState(false);
-  const formatAmount = new BigNumber(amount / 100)
-  // web3.utils.toWei(String(formatAmount));
 
-  // useEffect(() => {
-  //   const connectedAddress = currentAddress(wallet);
-  //   const getValueCHN = async () => {
-  //     await getCHNBalance().methods.balanceOf(connectedAddress).call();
-  //   };
-  // }, []);
+  const [progress, setProgress] = useState(false);
+  const formatAmount = new BigNumber(amount).dividedBy(100);
 
   const handleConfirmTransaction = () => {
     setProgress(true);
     stakingToken()
-      .methods.stake(0, web3.utils.toWei(String(formatAmount),'ether'))
+      .methods.stake(0, web3.utils.toWei(String(formatAmount), 'ether'))
       .send({ from: currentAddress(wallet) })
       .then((res: any) => {
         if (res.status === true) {
