@@ -140,10 +140,11 @@ const Transaction = (props: Props) => {
               if (res.status === true) {
                 dispatch(
                   openSnackbar({
-                    message: 'Approve successful, please click confirm button',
+                    message: 'Approve successful',
                     variant: SnackbarVariant.SUCCESS
                   })
                 );
+                handleConfirmTransaction();
               } else {
                 dispatch(
                   openSnackbar({
