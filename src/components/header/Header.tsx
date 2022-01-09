@@ -20,49 +20,22 @@ import logo from './../../assets/icon/CHN_dark_logo.png';
 import dark_logo from './../../assets/icon/CHN_light_logo.png';
 import style from './Header.module.scss';
 import useIsMobile from '../../hooks/useMobile';
+import { setSelectedCurrency } from '../chart/redux/currency';
 const cx = classnames.bind(style);
 
 const Header: React.FC = () => {
   const { account } = useWeb3React<Web3>();
   const history = useHistory();
+  const pathName = history.location.pathname;
   const dispatch = useDispatch();
-  const location = useLocation();
-  const currentLocation = location.pathname.split('/');
 
-  const [stackBorder, setStackBorder] = useState(false);
-  const [governanBorder, setGovernanceBorder] = useState(false);
+  const testRouter = () => {};
 
-  useEffect(() => {
-    if (currentLocation[1] === 'stake') {
-      setStackBorder(true);
-      setGovernanceBorder(false);
-    } else if (currentLocation[1] === 'governance') {
-      setStackBorder(false);
-      setGovernanceBorder(true);
-    } else {
-      setStackBorder(false);
-      setGovernanceBorder(false);
-    }
-  }, [currentLocation]);
-
-  const testRouter = () => {
-    setStackBorder(true);
-    setGovernanceBorder(false);
-  };
-  const openDialogConnect = () => {
-    setStackBorder(true);
-    setGovernanceBorder(false);
-  };
-
-  const setGovernaneStyle = () => {
-    setStackBorder(false);
-    setGovernanceBorder(true);
-  };
+  const setGovernaneStyle = () => {};
 
   const disableBorderStyle = () => {
-    setStackBorder(false);
-    setGovernanceBorder(false);
     dispatch(setOpenConnectDialog(false));
+    dispatch(setSelectedCurrency('usd'));
   };
   const theme = useAppSelector((state) => state.theme.themeMode);
   const onSwitchTheme = () => {
@@ -89,7 +62,7 @@ const Header: React.FC = () => {
           to="/stake"
           onClick={testRouter}
           className={cx('link-style', {
-            'link-style-border': stackBorder
+            'link-style-border': '/stake' === pathName
           })}
         >
           Stake
@@ -98,7 +71,7 @@ const Header: React.FC = () => {
           to="/governance"
           onClick={setGovernaneStyle}
           className={cx('link-style', {
-            'link-style-border-right': governanBorder
+            'link-style-border-right': '/governance' === pathName
           })}
         >
           Governance

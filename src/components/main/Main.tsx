@@ -65,17 +65,24 @@ const Main: React.FC = () => {
 
   const getCurrencies = useCallback(async () => {
     const coinGeckoCurrencies = await coinGeckoClient.simpleSupportedCurrencies();
-    setCurrencies(coinGeckoCurrencies);
-    dispatch(setCurrencyList(coinGeckoCurrencies));
+    const res = coinGeckoCurrencies.map((item) => item.toUpperCase());
+    setCurrencies(res);
+    dispatch(setCurrencyList(res));
   }, [dispatch]);
 
   const handleOnChangeSelectCurrency = (event: any, value: any) => {
-    dispatch(setSelectedCurrency(value || 'usd'));
+    dispatch(setSelectedCurrency(value.toLowerCase() || 'usd'));
   };
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const getTotalSupply = async (ohcl: any) => {
-    const res = convertOHCL(ohcl);
+  const getTotalSupply = async () => {
+    const getOHCL = await coinGeckoClient.coinIdOHLC({
+      id: 'chain',
+      vs_currency: `${selectedCrc}`,
+      days: 30
+    });
+    setOhclData(getOHCL);
+    const res = convertOHCL(getOHCL);
     const latestOhcl = res[res.length - 1];
 
     const param = {
@@ -85,22 +92,12 @@ const Main: React.FC = () => {
     let tvlData = await getTVLData(param);
     setTvlData(tvlData);
     const lastTvlItem = tvlData[tvlData.length - 1];
-    const totalLock = new BigNumber(latestOhcl[1]).multipliedBy(new BigNumber(lastTvlItem.tvl));
+    const totalLock = new BigNumber(latestOhcl[2]).multipliedBy(new BigNumber(lastTvlItem.tvl));
     setTotalSupply(format(totalLock.toFixed(4).toString()));
   };
 
-  const getCoinGecko = async () => {
-    const getOHCL = await coinGeckoClient.coinIdOHLC({
-      id: 'chain',
-      vs_currency: `${selectedCrc}`,
-      days: 30
-    });
-    getTotalSupply(getOHCL);
-    setOhclData(getOHCL);
-  };
-
   useEffect(() => {
-    getCoinGecko();
+    getTotalSupply();
   }, [selectedCrc]);
 
   useEffect(() => {
@@ -114,7 +111,7 @@ const Main: React.FC = () => {
       ) : (
         <>
           <div className={cx('text-head-child')}>
-            <div className={cx('price')}>${totalSupply}</div>
+            <div className={cx('price')}>{totalSupply}</div>
             <Autocomplete
               classes={classes}
               options={currencies}
