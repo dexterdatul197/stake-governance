@@ -168,7 +168,8 @@ const Balances: React.FC = () => {
                 className={cx('switcher_stake', {
                   'button-active': isActive,
                   'button-deactive': !isActive
-                })}>
+                })}
+              >
                 Stake
               </Button>
               <Button
@@ -176,7 +177,8 @@ const Balances: React.FC = () => {
                 className={cx('switcher_withdraw', {
                   'button-active': isActiveWithDraw,
                   'button-deactive': !isActiveWithDraw
-                })}>
+                })}
+              >
                 WithDraw
               </Button>
             </Box>

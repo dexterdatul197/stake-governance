@@ -16,7 +16,8 @@ import { useInitial } from './hooks/useInitial';
 
 import './_app.scss';
 import { BaseSocket } from 'src/socket/BaseSocket';
-import { useAppSelector } from './store/hooks';
+import { useAppDispatch, useAppSelector } from './store/hooks';
+import { setTheme } from './store/theme';
 
 const App: React.FC = () => {
   const context = useWeb3React<Web3>();
@@ -24,8 +25,10 @@ const App: React.FC = () => {
   // handle logic to recognize the connector currently being activated
   const [activatingConnector, setActivatingConnector] = React.useState<any>();
 
-  // const theme = useAppSelector((state) => state.theme.themeMode);
-  // document.documentElement.setAttribute('data-theme', theme);
+  const dispatch = useAppDispatch();
+  const theme = useAppSelector((state) => state.theme.themeMode);
+  document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'light');
+  dispatch(setTheme(localStorage.getItem('theme') || 'light'));
 
   useEffect(() => {
     BaseSocket.getInstance().connect();
