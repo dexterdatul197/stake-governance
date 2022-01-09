@@ -134,7 +134,9 @@ const Transaction = (props: Props) => {
     <React.Fragment>
       <DialogTitle className={cx('dialog-title__transaction')}>
         <Box className={cx('children_content')}>
-          <ArrowBackIosIcon onClick={handleBack} className={cx('icon_right')} />
+          <Button onClick={handleBack} className={cx('icon_right')} disabled={progress === true}>
+            <ArrowBackIosIcon />
+          </Button>
           <Typography className={cx('confirm-title')}>Confirm Transaction</Typography>
           <CloseIcon onClick={handleCloseTransaction} className={cx('icon_left')} />
         </Box>
