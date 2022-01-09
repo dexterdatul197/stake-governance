@@ -44,7 +44,10 @@ export const getCHNBalance = () => {
 
 export const stakingToken = () => {
   const stakeABI = STAKING_RINKEBY_ABI;
-  const stakeAddress = process.env.REACT_APP_STAKE_TESTNET_ADDRESS;
+  const stakeAddress =
+    enviroment === 'prod'
+      ? process.env.REACT_APP_STAKE_TESTNET_ADDRESS
+      : process.env.REACT_APP_STAKE_MAINNET_ADDRESS;
   return new web3.eth.Contract(JSON.parse(stakeABI), stakeAddress);
 };
 
