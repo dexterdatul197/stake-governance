@@ -45,8 +45,8 @@
         text-align: center;
         margin-right: 8px;
         text-align: center;
-
-        input {
+        cursor: pointer;
+        span {
           text-align: center !important;
           -webkit-text-fill-color: var(--btn-background-connect-color);
           cursor: pointer;
@@ -298,7 +298,6 @@
         }
       }
       &__percent {
-        display: contents;
         align-items: center;
         display: flex;
         .percent-number {
@@ -310,7 +309,9 @@
           margin-right: 8px;
           text-align: center;
           width: 100%;
-          input {
+          font-size: 12px !important;
+          cursor: pointer !important;
+          span {
             text-align: center !important;
             -webkit-text-fill-color: var(--btn-background-connect-color);
             cursor: pointer;

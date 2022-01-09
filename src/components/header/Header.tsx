@@ -1,6 +1,6 @@
 import classnames from 'classnames/bind';
 import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
 import Web3 from 'web3';
 import { useWeb3React } from '@web3-react/core';
@@ -25,10 +25,26 @@ const cx = classnames.bind(style);
 const Header: React.FC = () => {
   const { account } = useWeb3React<Web3>();
   const history = useHistory();
-
   const dispatch = useDispatch();
+  const location = useLocation();
+  const currentLocation = location.pathname.split('/');
+
   const [stackBorder, setStackBorder] = useState(false);
   const [governanBorder, setGovernanceBorder] = useState(false);
+
+  useEffect(() => {
+    if (currentLocation[1] === 'stake') {
+      setStackBorder(true);
+      setGovernanceBorder(false);
+    } else if (currentLocation[1] === 'governance') {
+      setStackBorder(false);
+      setGovernanceBorder(true);
+    } else {
+      setStackBorder(false);
+      setGovernanceBorder(false);
+    }
+  }, [currentLocation]);
+
   const testRouter = () => {
     setStackBorder(true);
     setGovernanceBorder(false);
@@ -61,7 +77,6 @@ const Header: React.FC = () => {
     }
   }, [account]);
   const isMobile = useIsMobile(576);
-
   return (
     <div className={cx('header-parent')}>
       <div className={cx('logo')}>

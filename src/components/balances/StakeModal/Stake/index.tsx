@@ -116,34 +116,18 @@ const Stake = (props: Props) => {
             getAriaValueText={valueText}
           />
           <Box className={cx('dialog-content__percent')}>
-            <Input
-              onClick={handleChangeInputPercent}
-              className={cx('percent-number')}
-              disabled
-              disableUnderline
-              value={valueText(value.value1)}
-            />
-            <Input
-              onClick={handkeChangeInputPercent2}
-              className={cx('percent-number')}
-              disabled
-              disableUnderline
-              value={valueText(value.value2)}
-            />
-            <Input
-              onClick={handkeChangeInputPercent3}
-              className={cx('percent-number')}
-              disabled
-              disableUnderline
-              value={valueText(value.value3)}
-            />
-            <Input
-              onClick={handkeChangeInputPercent4}
-              className={cx('percent-number')}
-              disabled
-              disableUnderline
-              value={value.all ? 'All' : 0}
-            />
+            <span onClick={handleChangeInputPercent} className={cx('percent-number')}>
+              {valueText(value.value1)}
+            </span>
+            <span onClick={handkeChangeInputPercent2} className={cx('percent-number')}>
+              {valueText(value.value2)}
+            </span>
+            <span onClick={handkeChangeInputPercent3} className={cx('percent-number')}>
+              {valueText(value.value3)}
+            </span>
+            <span onClick={handkeChangeInputPercent4} className={cx('percent-number')}>
+              {value.all ? 'All' : 0}
+            </span>
           </Box>
         </Box>
         <Box className={cx('balance')}>
@@ -165,7 +149,8 @@ const Stake = (props: Props) => {
         <Button
           onClick={handleNextStep}
           className={cx('button-stake')}
-          disabled={new BigNumber(walletValue).lte(0)}>
+          disabled={new BigNumber(walletValue).lte(0)}
+        >
           {progress ? <CircularProgress style={{ color: '#ffffff' }} /> : 'Stake'}
         </Button>
       </DialogActions>

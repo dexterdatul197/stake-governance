@@ -34,26 +34,27 @@ const TableComponent = () => {
   const [orderBy] = useState('id');
   const transactionData = useAppSelector((state) => state.transactions.transactions);
   const wallet = useAppSelector((state) => state.wallet);
+  const [userAddress, setUserAddress] = useState('');
 
-  const getUserAddress = () => {
+  useEffect(() => {
     if (wallet.ethereumAddress) {
-      return wallet.ethereumAddress;
+      setUserAddress(wallet.ethereumAddress);
     }
-  };
+  }, [wallet.ethereumAddress]);
 
   const [filter, setFilter] = useState({
     page: 1,
     limit: 5,
-    address: getUserAddress()
+    address: userAddress
   });
 
   useEffect(() => {
     setFilter({
       page: page + 1,
       limit: rowsPerPage,
-      address: getUserAddress()
+      address: userAddress
     });
-  }, [page, rowsPerPage]);
+  }, [page, rowsPerPage, userAddress]);
 
   useEffect(() => {
     eventBus.on(SocketEvent.transactionUpdated, async () => {
@@ -63,7 +64,6 @@ const TableComponent = () => {
       }
     });
   }, []);
-
   useEffect(() => {
     dispatch(getTransactionHistory(filter));
   }, [filter]);
