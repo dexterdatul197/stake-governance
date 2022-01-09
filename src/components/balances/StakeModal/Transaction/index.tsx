@@ -165,7 +165,9 @@ const Transaction = (props: Props) => {
           );
           handleConfirmTransaction();
         }
-      });
+      })
+      .catch((e: any) => console.log(e))
+      
   };
 
   const handleCloseTransaction = () => {
@@ -177,7 +179,7 @@ const Transaction = (props: Props) => {
       setTimeout(() => {
         handleBack();
       }, 500);
-    }, 3000);
+    }, 1000);
   };
   const handleCloseModalTrans = () => {
     handleCloseModal();
