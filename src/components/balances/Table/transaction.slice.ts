@@ -10,6 +10,7 @@ export interface ITransaction {
   tx_hash: string;
   type: number;
   updated_at: string;
+  price: string;
 }
 
 const initialState = {

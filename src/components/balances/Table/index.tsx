@@ -9,6 +9,7 @@ import {
   TablePagination,
   TableRow
 } from '@material-ui/core';
+import BigNumber from 'bignumber.js';
 import classNames from 'classnames/bind';
 import { ethers } from 'ethers';
 import moment from 'moment';
@@ -47,13 +48,13 @@ const TableComponent = () => {
     address: getUserAddress()
   });
 
-  useEffect(() => {
-    setFilter({
-      page: page + 1,
-      limit: rowsPerPage,
-      address: getUserAddress()
-    });
-  }, [page, rowsPerPage]);
+  // useEffect(() => {
+  //   setFilter({
+  //     page: page + 1,
+  //     limit: rowsPerPage,
+  //     address: getUserAddress()
+  //   });
+  // }, [page, rowsPerPage]);
 
   useEffect(() => {
     eventBus.on(SocketEvent.transactionUpdated, async () => {
@@ -70,12 +71,17 @@ const TableComponent = () => {
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
+    setFilter({
+      page: newPage + 1,
+      limit: rowsPerPage,
+      address: getUserAddress()
+    });
   };
 
-  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
+  // const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   setRowsPerPage(parseInt(event.target.value, 10));
+  //   setPage(0);
+  // };
 
   const getTypeTxt = (type: number) => {
     switch (type) {
@@ -142,7 +148,14 @@ const TableComponent = () => {
                   <div className={cx('txt-type')}>{getTypeTxt(row.type)}</div>
                 </TableCell>
                 <TableCell align={'left'} className={cx('table-body__cell')}>
-                  {parseFloat(ethers.utils.formatEther((row.amount || '0') as string)).toFixed(4)}
+                  <span>{Number(ethers.utils.formatEther(row.amount)).toFixed(4)}</span>
+                  <span className={cx('txt-usd')}>
+                    {' $' +
+                      new BigNumber(ethers.utils.formatEther(row.amount))
+                        .multipliedBy(row.price)
+                        .toFixed(2)}
+                  </span>
+                  {/* {parseFloat(ethers.utils.formatEther((row.amount || '0') as string)).toFixed(4)} */}
                 </TableCell>
                 <TableCell align={'left'} className={cx('table-body__cell')}>
                   {moment(row.updated_at).format(FORMAT_DATE)}
@@ -154,17 +167,17 @@ const TableComponent = () => {
             );
           })}
         </TableBody>
-        <TableFooter>
+        <TableFooter className={cx('footer-wrapper')}>
           <TableRow>
             <TableCell colSpan={6} className={cx('table-footer')}>
               <TablePagination
-                rowsPerPageOptions={[5, 10, 15]}
+                rowsPerPageOptions={[]}
                 component="div"
                 count={transactionData.metadata.totalItem}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
+                // onRowsPerPageChange={handleChangeRowsPerPage}
                 className={cx('table-pagination')}
                 labelRowsPerPage="Items Per Page:"
               />
