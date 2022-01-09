@@ -46,6 +46,7 @@
           align-items: center;
           // padding-right: 382px;
           justify-content: space-between;
+          margin-bottom: 13px;
 
           &__icon {
             margin-right: 14px;
@@ -84,6 +85,11 @@
           input[type='text'] {
             text-align: right !important;
           }
+        }
+        .text-all {
+          color: var(--button-active-balance);
+          cursor: pointer;
+          font-weight: 600;
         }
       }
     }

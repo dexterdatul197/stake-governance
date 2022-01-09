@@ -15,7 +15,7 @@ import classNames from 'classnames/bind';
 import { useCallback, useEffect, useState } from 'react';
 import CHN_icon from '../../../assets/icon/CHN.svg';
 import { currentAddress } from '../../../helpers/common';
-import { getCHNBalance, stakingToken } from '../../../helpers/ContractService';
+import { stakingToken } from '../../../helpers/ContractService';
 import useIsMobile from '../../../hooks/useMobile';
 import { useAppSelector, useAppDispatch } from '../../../store/hooks';
 import { openSnackbar, SnackbarVariant } from '../../../store/snackbar';
@@ -31,9 +31,6 @@ const cx = classNames.bind(styles);
 interface Props {
   openWithdraw: boolean;
   handleCloseModalWithDraw: () => void;
-  walletValue?: any;
-  earn?: any;
-  stake?: any;
   handleUpdateSmartContract: () => void;
 }
 
@@ -60,80 +57,106 @@ const BootstrapDialogTitle = (props: any) => {
 };
 
 const WithDraw = (props: Props) => {
-  const { openWithdraw, handleCloseModalWithDraw, earn, stake, handleUpdateSmartContract } = props;
+  const { openWithdraw, handleCloseModalWithDraw, handleUpdateSmartContract } = props;
   const wallet = useAppSelector((state: any) => state.wallet);
-  const [value, setValue] = useState({
-    defaultValue: 0,
-    isValid: true
-  });
+  const [stake, setStake] = useState(0);
+  const [earn, setEarn] = useState(0);
+  const [hide, setHide] = useState(false);
   const [progress, setProgress] = useState(false);
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    if (stake) {
-      setValue({ ...value, defaultValue: stake });
-    }
-  }, [stake]);
-
-  const handleWithdraw = async () => {
-    try {
-      setProgress(true);
-      setTimeout(() => {
-        setProgress(false);
-      }, 1000);
-
-      if (stake > 0) {
-        handleCloseModalWithDraw();
-        await stakingToken()
-          .methods.withdraw(0, new BigNumber(value.defaultValue).multipliedBy('1e18'))
-          .send({ from: currentAddress(wallet) });
-        dispatch(
-          openSnackbar({
-            message: 'Withdraw Success',
-            variant: SnackbarVariant.SUCCESS
-          })
-        );
-        handleUpdateSmartContract();
-      } else if (earn > 0) {
-        handleCloseModalWithDraw();
-        await stakingToken()
-          .methods.withdraw(0, new BigNumber(earn).multipliedBy('1e18'))
-          .send({ from: currentAddress(wallet) });
-        dispatch(
-          openSnackbar({
-            message: 'Withdraw Success',
-            variant: SnackbarVariant.SUCCESS
-          })
-        );
-        handleUpdateSmartContract();
-      } else {
-        dispatch(
-          openSnackbar({
-            message: 'Withdraw Failed',
-            variant: SnackbarVariant.ERROR
-          })
-        );
-      }
-    } catch (error) {
-      console.log(error);
-      handleCloseModalWithDraw();
-      setProgress(false);
-    }
-  };
+  const [value, setValue] = useState({
+    value: 0,
+    isValid: true
+  });
 
   const validateNumberField = (myNumber: any) => {
     const numberRegEx = /\-?\d*\.?\d{1,2}/;
     return numberRegEx.test(String(myNumber).toLowerCase());
   };
 
-  const handleChangeInputValue = useCallback(
+  const getValueSC = async () => {
+    try {
+      const connectedAddress = currentAddress(wallet);
+      const getValueStake = await stakingToken().methods.userInfo(0, connectedAddress).call();
+      const getValueEarned = await stakingToken().methods.pendingReward(0, connectedAddress).call();
+      setStake(getValueStake.amount);
+      setEarn(getValueEarned);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    if (stake > 0) {
+      setValue({ ...value, value: stake });
+    }
+  }, [stake]);
+
+  // useEffect(() => {
+  //   if (Number(stake.default) > 0) {
+  //     Number(new BigNumber(stake.default).dividedBy('1e18'));
+  //   }
+
+  // }, [Number(stake.default)]);
+
+  // useEffect(() => {
+  //   getValueSC();
+  // }, []);
+
+  // const handleWithdraw = async () => {
+  //   try {
+  //     setProgress(true);
+  //     setTimeout(() => {
+  //       setProgress(false);
+  //     }, 1000);
+
+  //     if (stake > 0) {
+  //       handleCloseModalWithDraw();
+  //       await stakingToken()
+  //         .methods.withdraw(0, new BigNumber(value.defaultValue).multipliedBy('1e18'))
+  //         .send({ from: currentAddress(wallet) });
+  //       dispatch(
+  //         openSnackbar({
+  //           message: 'Withdraw Success',
+  //           variant: SnackbarVariant.SUCCESS
+  //         })
+  //       );
+  //       handleUpdateSmartContract();
+  //     } else if (earn > 0) {
+  //       handleCloseModalWithDraw();
+  //       await stakingToken()
+  //         .methods.withdraw(0, new BigNumber(earn).multipliedBy('1e18'))
+  //         .send({ from: currentAddress(wallet) });
+  //       dispatch(
+  //         openSnackbar({
+  //           message: 'Withdraw Success',
+  //           variant: SnackbarVariant.SUCCESS
+  //         })
+  //       );
+  //       handleUpdateSmartContract();
+  //     } else {
+  //       dispatch(
+  //         openSnackbar({
+  //           message: 'Withdraw Failed',
+  //           variant: SnackbarVariant.ERROR
+  //         })
+  //       );
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //     handleCloseModalWithDraw();
+  //     setProgress(false);
+  //   }
+  // };
+
+  const handleInputChange = useCallback(
     (event: any) => {
       const { value } = event.target;
       const isValid = !value || validateNumberField(value);
-      const newValue = { ...value };
-      setValue({ ...newValue, defaultValue: value, isValid });
+      setValue({ ...value, value, isValid });
     },
-    [value.defaultValue]
+    [stake]
   );
 
   return (
@@ -142,7 +165,8 @@ const WithDraw = (props: Props) => {
       open={openWithdraw}
       onClose={() => {
         handleCloseModalWithDraw();
-        setValue({ ...value, defaultValue: stake });
+        setStake(0);
+        setEarn(0);
       }}
       maxWidth="md"
       disableEscapeKeyDown>
@@ -150,7 +174,8 @@ const WithDraw = (props: Props) => {
         id="customized-dialog-title"
         onClose={() => {
           handleCloseModalWithDraw();
-          setValue({ ...value, defaultValue: stake });
+          setStake(0);
+          setEarn(0);
         }}>
         Withdraw
       </BootstrapDialogTitle>
@@ -168,19 +193,28 @@ const WithDraw = (props: Props) => {
             </Box>
           </Box>
           <Box className={cx('main-right')}>
-            <Typography className={cx('main-right__price')}>{format(earn)}</Typography>
+            <Typography className={cx('main-right__price')}>
+              {Math.floor(
+                Number(String(new BigNumber(earn).dividedBy('1e18')).match(/^\d+(?:\.\d{0,5})?/)) *
+                  10000
+              ) / 10000}
+            </Typography>
             <Input
               className={cx('main-right__quantity')}
               disableUnderline
-              value={value.defaultValue}
-              onChange={handleChangeInputValue}
+              onChange={handleInputChange}
+              value={Math.floor(value.value * Math.pow(10, -18) * 10000) / 10000}
             />
+            <span className={cx('text-all')} onClick={getValueSC}>
+              Max
+            </span>
+
             {!value.isValid && <div style={{ color: 'red' }}>Entered Number is invalid</div>}
           </Box>
         </Box>
       </DialogContent>
       <DialogActions className={cx('dialog-actions')}>
-        <Button onClick={handleWithdraw} className={cx('button-action')}>
+        <Button onClick={() => {}} className={cx('button-action')}>
           {progress ? (
             <img
               src={loadingSvg}

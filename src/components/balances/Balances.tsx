@@ -198,11 +198,8 @@ const Balances: React.FC = () => {
             handleUpdateSmartContract={handleUpdateSmartContract}
           />
           <ModalWithDraw
-            stake={stake}
-            earn={earn}
             openWithdraw={isOpenWithdraw}
             handleCloseModalWithDraw={handleCloseModalWithDraw}
-            walletValue={walletValue}
             handleUpdateSmartContract={handleUpdateSmartContract}
           />
         </Box>
