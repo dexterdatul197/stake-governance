@@ -1,6 +1,6 @@
 import classnames from 'classnames/bind';
 import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
 import Web3 from 'web3';
 import { useWeb3React } from '@web3-react/core';
@@ -50,7 +50,6 @@ const Header: React.FC = () => {
     }
   }, [account]);
   const isMobile = useIsMobile(576);
-
   return (
     <div className={cx('header-parent')}>
       <div className={cx('logo')}>
@@ -64,7 +63,8 @@ const Header: React.FC = () => {
           onClick={testRouter}
           className={cx('link-style', {
             'link-style-border': '/stake' === pathName
-          })}>
+          })}
+        >
           Stake
         </Link>
         <Link
@@ -72,7 +72,8 @@ const Header: React.FC = () => {
           onClick={setGovernaneStyle}
           className={cx('link-style', {
             'link-style-border-right': '/governance' === pathName
-          })}>
+          })}
+        >
           Governance
         </Link>
       </div>
@@ -90,7 +91,8 @@ const Header: React.FC = () => {
               <div className={cx('footer-theme')}>
                 <span
                   className={cx('footer-theme__item', theme === THEME_MODE.LIGHT ? 'active' : '')}
-                  onClick={onSwitchTheme}>
+                  onClick={onSwitchTheme}
+                >
                   <img
                     className={cx('icon-theme')}
                     src={theme === THEME_MODE.LIGHT ? lightIcon : light_whiteIcon}
@@ -100,7 +102,8 @@ const Header: React.FC = () => {
                 </span>
                 <span
                   className={cx('footer-theme__item', theme === THEME_MODE.DARK ? 'active' : '')}
-                  onClick={onSwitchTheme}>
+                  onClick={onSwitchTheme}
+                >
                   <img
                     className={cx('icon-theme')}
                     src={theme === THEME_MODE.DARK ? dark_whiteIcon : darkIcon}

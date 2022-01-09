@@ -65,7 +65,7 @@ const Main: React.FC = () => {
 
   const getCurrencies = useCallback(async () => {
     const coinGeckoCurrencies = await coinGeckoClient.simpleSupportedCurrencies();
-    const res = coinGeckoCurrencies.map(item => item.toUpperCase());
+    const res = coinGeckoCurrencies.map((item) => item.toUpperCase());
     setCurrencies(res);
     dispatch(setCurrencyList(res));
   }, [dispatch]);

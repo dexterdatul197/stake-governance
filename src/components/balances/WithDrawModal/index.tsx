@@ -49,7 +49,8 @@ const BootstrapDialogTitle = (props: any) => {
             right: 8,
             top: 8,
             color: (theme) => theme.palette.grey[500]
-          }}>
+          }}
+        >
           <CloseIcon />
         </IconButton>
       ) : null}
@@ -167,13 +168,15 @@ const WithDraw = (props: Props) => {
         setValue({ ...value, defaultValue: 0 });
       }}
       maxWidth="md"
-      disableEscapeKeyDown>
+      disableEscapeKeyDown
+    >
       <BootstrapDialogTitle
         id="customized-dialog-title"
         onClose={() => {
           handleCloseModalWithDraw();
           setValue({ ...value, defaultValue: 0 });
-        }}>
+        }}
+      >
         Withdraw
       </BootstrapDialogTitle>
       <DialogContent className={cx('dialog-content')}>
@@ -212,7 +215,8 @@ const WithDraw = (props: Props) => {
         <Button
           disabled={!value.isValid && value.defaultValue > stake}
           onClick={handleWithdraw}
-          className={cx('button-action')}>
+          className={cx('button-action')}
+        >
           {progress ? (
             <img
               src={loadingSvg}

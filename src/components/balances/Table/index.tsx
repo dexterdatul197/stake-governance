@@ -36,26 +36,20 @@ const TableComponent = () => {
   const transactionData = useAppSelector((state) => state.transactions.transactions);
   const wallet = useAppSelector((state) => state.wallet);
 
-  const getUserAddress = () => {
-    if (wallet.ethereumAddress) {
-      return wallet.ethereumAddress;
-    }
-  };
-
   const [filter, setFilter] = useState({
     page: 1,
     limit: 5,
-    address: getUserAddress()
+    address: wallet.ethereumAddress
   });
 
-  // useEffect(() => {
-  //   setFilter({
-  //     page: page + 1,
-  //     limit: rowsPerPage,
-  //     address: getUserAddress()
-  //   });
-  // }, [page, rowsPerPage]);
-
+  useEffect(() => {
+    setFilter({
+      page: page + 1,
+      limit: rowsPerPage,
+      address: wallet.ethereumAddress
+    });
+  }, [wallet.ethereumAddress]);
+  
   useEffect(() => {
     eventBus.on(SocketEvent.transactionUpdated, async () => {
       await sleep(1000);
@@ -64,7 +58,6 @@ const TableComponent = () => {
       }
     });
   }, []);
-
   useEffect(() => {
     dispatch(getTransactionHistory(filter));
   }, [filter]);
@@ -112,7 +105,8 @@ const TableComponent = () => {
                 align={'left'}
                 padding={headCell.disablePadding ? 'none' : 'normal'}
                 sortDirection={orderBy === headCell.id ? order : false}
-                className={cx('table-head__cell')}>
+                className={cx('table-head__cell')}
+              >
                 {headCell.label}
               </TableCell>
             ))}
@@ -128,7 +122,8 @@ const TableComponent = () => {
                   id={labelId}
                   // scope="row"
                   align={'left'}
-                  className={cx('table-body__cell')}>
+                  className={cx('table-body__cell')}
+                >
                   {row.id}
                 </TableCell>
                 <TableCell align={'left'} className={cx('table-body__cell')}>
