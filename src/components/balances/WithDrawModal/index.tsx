@@ -49,8 +49,7 @@ const BootstrapDialogTitle = (props: any) => {
             right: 8,
             top: 8,
             color: (theme) => theme.palette.grey[500]
-          }}
-        >
+          }}>
           <CloseIcon />
         </IconButton>
       ) : null}
@@ -169,15 +168,17 @@ const WithDraw = (props: Props) => {
   };
 
   const validateNumberField = (myNumber: any) => {
-    const numberRegEx = /\-?\d*\.?\d{1,2}/;
-    return numberRegEx.test(String(myNumber).toLowerCase());
+    const numberRegEx = /\d+(\.)?(\d+)?$/;
+    return numberRegEx.test(String(myNumber));
   };
 
   const handleInputChange = useCallback(
     (event: any) => {
       const { value } = event.target;
       const isValid = !value || validateNumberField(value);
-      setValue({ ...value, defaultValue: value, isValid });
+      if (isValid) {
+        setValue({ ...value, defaultValue: value, isValid });
+      }
     },
     [value.defaultValue, stake]
   );
@@ -190,8 +191,7 @@ const WithDraw = (props: Props) => {
         handleCloseModalRefresh();
       }}
       maxWidth="md"
-      disableEscapeKeyDown
-    >
+      disableEscapeKeyDown>
       <BootstrapDialogTitle
         id="customized-dialog-title"
         onClose={() => {
@@ -239,8 +239,7 @@ const WithDraw = (props: Props) => {
             (value.defaultValue === 0 && earnValue === 0)
           }
           onClick={handleWithdraw}
-          className={cx('button-action')}
-        >
+          className={cx('button-action')}>
           {progress ? (
             <img
               src={loadingSvg}
