@@ -69,11 +69,13 @@ const WithDraw = (props: Props) => {
   });
   const [progress, setProgress] = useState(false);
   const dispatch = useAppDispatch();
+  const [earnValue, setEarnValue] = useState(0);
 
   const getValueStake = async () => {
     const connectedAddress = currentAddress(wallet);
     const stakeValue = await stakingToken().methods.userInfo(0, connectedAddress).call();
     const earn = await stakingToken().methods.pendingReward(0, connectedAddress).call();
+    console.log(earn);
     setValue({ ...value, defaultValue: stake, stake: stakeValue.amount, earn: earn });
   };
 
@@ -85,7 +87,10 @@ const WithDraw = (props: Props) => {
     if (stake) {
       setValue({ ...value, defaultValue: stake });
     }
-  }, [stake]);
+    if (earn) {
+      setEarnValue(earn);
+    }
+  }, [stake, earn]);
 
   const handleWithdraw = async () => {
     try {
@@ -193,7 +198,7 @@ const WithDraw = (props: Props) => {
             </Box>
           </Box>
           <Box className={cx('main-right')}>
-            <Typography className={cx('main-right__price')}>{format(earn)}</Typography>
+            <Typography className={cx('main-right__price')}>{earnValue ? earnValue : 0}</Typography>
             <Input
               className={cx('main-right__quantity')}
               disableUnderline
@@ -213,7 +218,7 @@ const WithDraw = (props: Props) => {
       </DialogContent>
       <DialogActions className={cx('dialog-actions')}>
         <Button
-          disabled={!value.isValid && value.defaultValue > stake}
+          disabled={!value.isValid || value.defaultValue > stake}
           onClick={handleWithdraw}
           className={cx('button-action')}
         >

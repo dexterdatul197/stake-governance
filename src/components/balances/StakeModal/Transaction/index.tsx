@@ -15,6 +15,8 @@ import { currentAddress } from '../../../../helpers/common';
 import { getCHNBalance, stakingToken } from '../../../../helpers/ContractService';
 import { useAppSelector, useAppDispatch } from '../../../../store/hooks';
 import { openSnackbar, SnackbarVariant } from '../../../../store/snackbar';
+import { ReactComponent as DoneIcon } from '../../../../assets/icon/Done-icon.svg';
+import { setTimeout } from 'timers';
 
 interface Props {
   cx?: any;
@@ -33,21 +35,30 @@ const Transaction = (props: Props) => {
   const dispatch = useAppDispatch();
   const amount = value.default * walletValue;
   const [done, setDone] = useState(false);
+  const [progress, setProgress] = useState(false);
   const formatAmount = new BigNumber(amount / 100).multipliedBy('1e18');
 
+  // useEffect(() => {
+  //   const getValueCHN = async () => {
+
+  //   }
+  // },[])
+
   const handleConfirmTransaction = () => {
+    setProgress(true);
     stakingToken()
       .methods.stake(0, formatAmount)
       .send({ from: currentAddress(wallet) })
       .then((res: any) => {
         if (res.status === true) {
+          setDone(true);
+          setProgress(false);
           dispatch(
             openSnackbar({
               message: 'Staking success',
               variant: SnackbarVariant.SUCCESS
             })
           );
-          setDone(true);
           handleUpdateSmartContract();
         } else {
           dispatch(
@@ -67,7 +78,8 @@ const Transaction = (props: Props) => {
       });
   };
 
-  useEffect(() => {
+  const handleConfirm = () => {
+    setProgress(true);
     getCHNBalance()
       .methods.allowance(currentAddress(wallet), process.env.REACT_APP_STAKE_TESTNET_ADDRESS)
       .call()
@@ -96,6 +108,7 @@ const Transaction = (props: Props) => {
             })
             .catch((e: any) => console.log(e));
         } else {
+          setProgress(false);
           dispatch(
             openSnackbar({
               message: 'Please wait a moment',
@@ -105,22 +118,17 @@ const Transaction = (props: Props) => {
           handleConfirmTransaction();
         }
       });
-  }, []);
-
-  const handleCloseTransaction = () => {
-    handleCloseModal();
-    setTimeout(() => {
-      handleBack();
-    }, 500);
   };
 
-  useEffect(() => {
-    if (done === true) {
-      setTimeout(() => {
-        handleCloseTransaction();
-      }, 1000);
-    }
-  }, [done]);
+  const handleCloseTransaction = () => {
+    setTimeout(() => {
+      handleCloseModal();
+    }, 500);
+    setTimeout(() => {
+      handleBack();
+    },700)
+  };
+
   return (
     <React.Fragment>
       <DialogTitle className={cx('dialog-title__transaction')}>
@@ -132,20 +140,23 @@ const Transaction = (props: Props) => {
       </DialogTitle>
       <DialogContent className={cx('dialog-content__transaction')}>
         <Box className={cx('children_content')}>
-          <Typography className={cx('token-quantity')}>
-            {((value.default * walletValue) / 100).toFixed(4)}
-          </Typography>
-          <Typography className={cx('token-stake')}>CHN STAKE</Typography>
+          {done === false ? (
+            <React.Fragment>
+              <Typography className={cx('token-quantity')}>
+                {progress ? <CircularProgress /> : ((value.default * walletValue) / 100).toFixed(4)}
+              </Typography>
+              <Typography className={cx('token-stake')}>CHN STAKE</Typography>
+            </React.Fragment>
+          ) : (
+            <DoneIcon style={{ margin: 'auto' }} />
+          )}
         </Box>
       </DialogContent>
       <DialogActions className={cx('dialog-actions__transaction')}>
         <Button
-          disabled={done === false}
-          onClick={handleConfirmTransaction}
-          className={cx('dialog-actions__transaction__confirm', {
-            active: done === true
-          })}
-        >
+          disabled={done || progress}
+          onClick={handleConfirm}
+          className={cx('dialog-actions__transaction__confirm')}>
           Confirm
         </Button>
       </DialogActions>

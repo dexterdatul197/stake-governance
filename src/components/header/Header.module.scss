@@ -55,6 +55,7 @@
     flex: 1;
     justify-content: flex-end;
     align-items: center;
+    cursor: pointer;
     .app {
       margin-right: 28px;
       justify-content: center;
@@ -136,10 +137,10 @@
     .light {
       display: flex;
       align-items: center;
-
       font-size: 12px;
       font-weight: 500;
       color: #000000;
+      cursor: pointer;
       .icon-theme {
         margin-right: 11%;
         margin-top: 2%;
@@ -149,7 +150,7 @@
       opacity: 0.5;
       display: flex;
       align-items: center;
-
+      cursor: pointer;
       font-size: 12px;
       font-weight: 500;
       color: #000000;
