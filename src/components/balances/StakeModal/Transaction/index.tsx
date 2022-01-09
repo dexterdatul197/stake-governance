@@ -47,44 +47,82 @@ const Transaction = (props: Props) => {
   const wallet = useAppSelector((state: any) => state.wallet);
   const web3 = new Web3();
   const dispatch = useAppDispatch();
-  const amount = new BigNumber(value.default).multipliedBy(web3.utils.fromWei(chnToken.toString()));
   const [done, setDone] = useState(false);
-
   const [progress, setProgress] = useState(false);
+
+  const amount = new BigNumber(value.default).multipliedBy(
+    web3.utils.fromWei(chnToken.toString(), 'ether')
+  );
+  const price = new BigNumber(value.default).multipliedBy(walletValue).dividedBy(100);
   const formatAmount = new BigNumber(amount).dividedBy(100);
+
+  console.log(formatAmount);
 
   const handleConfirmTransaction = () => {
     setProgress(true);
-    stakingToken()
-      .methods.stake(0, web3.utils.toWei(String(formatAmount), 'ether'))
-      .send({ from: currentAddress(wallet) })
-      .then((res: any) => {
-        if (res.status === true) {
-          setDone(true);
-          setProgress(false);
-          dispatch(
-            openSnackbar({
-              message: 'Staking success',
-              variant: SnackbarVariant.SUCCESS
-            })
-          );
-          handleUpdateSmartContract();
-        } else {
-          dispatch(
-            openSnackbar({
-              message: 'Staking failed',
-              variant: SnackbarVariant.ERROR
-            })
-          );
+    if (value.default === 100) {
+      stakingToken()
+        .methods.stake(0, web3.utils.toWei(String(formatAmount), 'ether'))
+        .send({ from: currentAddress(wallet) })
+        .then((res: any) => {
+          if (res.status === true) {
+            setDone(true);
+            setProgress(false);
+            dispatch(
+              openSnackbar({
+                message: 'Staking success',
+                variant: SnackbarVariant.SUCCESS
+              })
+            );
+            handleUpdateSmartContract();
+          } else {
+            dispatch(
+              openSnackbar({
+                message: 'Staking failed',
+                variant: SnackbarVariant.ERROR
+              })
+            );
+            handleCloseTransaction();
+          }
+        })
+        .catch((e: any) => {
+          console.log(e);
+        })
+        .finally(() => {
           handleCloseTransaction();
-        }
-      })
-      .catch((e: any) => {
-        console.log(e);
-      })
-      .finally(() => {
-        handleCloseTransaction();
-      });
+        });
+    } else {
+      stakingToken()
+        .methods.stake(0, web3.utils.toWei(String(price), 'ether'))
+        .send({ from: currentAddress(wallet) })
+        .then((res: any) => {
+          if (res.status === true) {
+            setDone(true);
+            setProgress(false);
+            dispatch(
+              openSnackbar({
+                message: 'Staking success',
+                variant: SnackbarVariant.SUCCESS
+              })
+            );
+            handleUpdateSmartContract();
+          } else {
+            dispatch(
+              openSnackbar({
+                message: 'Staking failed',
+                variant: SnackbarVariant.ERROR
+              })
+            );
+            handleCloseTransaction();
+          }
+        })
+        .catch((e: any) => {
+          console.log(e);
+        })
+        .finally(() => {
+          handleCloseTransaction();
+        });
+    }
   };
 
   const handleConfirm = () => {

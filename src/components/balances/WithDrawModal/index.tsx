@@ -20,6 +20,9 @@ import { stakingToken } from '../../../helpers/ContractService';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { openSnackbar, SnackbarVariant } from '../../../store/snackbar';
 import styles from './styles.module.scss';
+import Web3 from 'web3';
+
+const web3 = new Web3();
 
 const commaNumber = require('comma-number');
 const format = commaNumber.bindWith(',', '.');
@@ -69,6 +72,7 @@ const WithDraw = (props: Props) => {
   const [progress, setProgress] = useState(false);
   const dispatch = useAppDispatch();
   const [earnValue, setEarnValue] = useState(0);
+  const [done, setDone] = useState(false);
 
   useEffect(() => {
     if (earn) {
@@ -107,15 +111,16 @@ const WithDraw = (props: Props) => {
   const handleWithdraw = async () => {
     try {
       setProgress(true);
+      setDone(true)
       setTimeout(() => {
         setProgress(false);
       }, 1000);
 
       if (stake > 0) {
-        handleCloseModalRefresh();
         await stakingToken()
-          .methods.withdraw(0, new BigNumber(value.defaultValue).multipliedBy('1e18'))
+          .methods.withdraw(0, web3.utils.toWei(String(value.defaultValue), 'ether'))
           .send({ from: currentAddress(wallet) });
+        setDone(false);
         dispatch(
           openSnackbar({
             message: 'Withdraw Success',
@@ -124,10 +129,10 @@ const WithDraw = (props: Props) => {
         );
         handleUpdateSmartContract();
       } else if (stake === value.stake) {
-        handleCloseModalRefresh();
         await stakingToken()
-          .methods.withdraw(0, new BigNumber(value.stake).multipliedBy('1e18'))
+          .methods.withdraw(0, web3.utils.toWei(String(value.stake), 'ether'))
           .send({ from: currentAddress(wallet) });
+        setDone(false);
         dispatch(
           openSnackbar({
             message: 'Withdraw Success',
@@ -138,8 +143,9 @@ const WithDraw = (props: Props) => {
       } else if (value.earn > 0) {
         handleCloseModalRefresh();
         await stakingToken()
-          .methods.withdraw(0, new BigNumber(value.earn).multipliedBy('1e18'))
+          .methods.withdraw(0, web3.utils.toWei(String(value.earn), 'ether'))
           .send({ from: currentAddress(wallet) });
+        setDone(false);
         dispatch(
           openSnackbar({
             message: 'Withdraw Success',
@@ -161,6 +167,12 @@ const WithDraw = (props: Props) => {
       setProgress(false);
     }
   };
+
+  useEffect(() => {
+    if (done  ) {
+      handleCloseModalRefresh();
+    }
+  }, [done]);
 
   const validateNumberField = (myNumber: any) => {
     const numberRegEx = /\-?\d*\.?\d{1,2}/;
@@ -233,7 +245,7 @@ const WithDraw = (props: Props) => {
           }
           onClick={handleWithdraw}
           className={cx('button-action')}>
-          {progress ? (
+          {done ? (
             <img
               src={loadingSvg}
               className={cx('loading-rotate')}

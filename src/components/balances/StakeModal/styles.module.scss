@@ -125,7 +125,7 @@
       align-items: center;
       min-width: 300px;
       width: 100%;
-      background: rgba(31, 55, 100, 0.5);
+      background: #107def;
       border-radius: 10px;
       padding-top: 20px;
       padding-bottom: 20px;
@@ -197,12 +197,11 @@
       font-size: 18px;
       font-weight: normal;
       color: #ffffff !important;
-      background: rgba(31, 55, 100, 0.5);
+      background-color: #107def !important;
       border-radius: 10px;
       text-transform: capitalize;
-
       &:hover {
-        background-color: rgba(31, 55, 100, 0.5);
+        background-color: #107def;
       }
     }
     .active {
