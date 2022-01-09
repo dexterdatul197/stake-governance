@@ -1,3 +1,4 @@
+import { BigNumber } from '@0x/utils';
 import {
   Box,
   Button,
@@ -161,7 +162,10 @@ const Stake = (props: Props) => {
         </Box>
       </DialogContent>
       <DialogActions className={cx('dialog-action')}>
-        <Button onClick={handleNextStep} className={cx('button-stake')}>
+        <Button
+          onClick={handleNextStep}
+          className={cx('button-stake')}
+          disabled={new BigNumber(walletValue).lte(0)}>
           {progress ? <CircularProgress style={{ color: '#ffffff' }} /> : 'Stake'}
         </Button>
       </DialogActions>
