@@ -86,13 +86,6 @@ const WithDraw = (props: Props) => {
           String(new BigNumber(stakeValue.amount).dividedBy('1e18')).match(/^\d+(?:\.\d{0,5})?/)
         ) * 10000
       ) / 10000;
-    const formatEarn =
-      Math.floor(
-        Number(String(new BigNumber(earnValues).dividedBy('1e18')).match(/^\d+(?:\.\d{0,5})?/)) *
-          10000
-      ) / 10000;
-
-      console.log(formatStake)
     setValue({
       ...value,
       defaultValue: formatStake,
@@ -179,13 +172,9 @@ const WithDraw = (props: Props) => {
       const { value } = event.target;
       const isValid = !value || validateNumberField(value);
       setValue({ ...value, defaultValue: value, isValid });
-      console.log(event.target.value);
     },
     [value.defaultValue, stake]
   );
-
-  useEffect(() => {
-  })
 
   return (
     <Dialog
