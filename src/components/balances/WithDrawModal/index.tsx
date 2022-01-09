@@ -92,7 +92,7 @@ const WithDraw = (props: Props) => {
       ) / 10000;
     setValue({
       ...value,
-      defaultValue: formatStake,
+      defaultValue: stake,
       stake: stakeValue.amount,
       earn: earnValues
     });
