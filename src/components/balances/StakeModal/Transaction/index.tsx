@@ -168,12 +168,15 @@ const Transaction = (props: Props) => {
   };
 
   const handleCloseTransaction = () => {
+    // setTimeout(() => {
+    //   handleBack();
+    // }, 400);
     setTimeout(() => {
       handleCloseModal();
+      setTimeout(() => {
+        handleBack();
+      }, 500);
     }, 3000);
-    setTimeout(() => {
-      handleBack();
-    }, 700);
   };
 
   return (
