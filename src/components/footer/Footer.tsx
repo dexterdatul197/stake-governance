@@ -31,13 +31,11 @@ const Footer: React.FC = () => {
   };
 
   const getLatestBlock = async () => {
-    setInterval(async () => {
-      if (typeof currentRPC === 'string') {
-        const web3 = await new Web3(currentRPC);
-        const block = await web3.eth.getBlockNumber();
-        setBlock(block);
-      }
-    }, 15000);
+    if (typeof currentRPC === 'string') {
+      const web3 = await new Web3(currentRPC);
+      const block = await web3.eth.getBlockNumber();
+      setBlock(block);
+    }
   };
 
   const openEther = () => {
@@ -46,6 +44,9 @@ const Footer: React.FC = () => {
 
   useEffect(() => {
     getLatestBlock();
+    setInterval(async () => {
+      getLatestBlock();
+    }, 15000);
   }, []);
 
   return (
@@ -56,8 +57,7 @@ const Footer: React.FC = () => {
           <div className={cx('footer-theme')}>
             <span
               className={cx('footer-theme__item', theme === THEME_MODE.LIGHT ? 'active' : '')}
-              onClick={onSwitchTheme}
-            >
+              onClick={onSwitchTheme}>
               <img
                 className={cx('icon-theme')}
                 src={theme === THEME_MODE.LIGHT ? lightIcon : light_whiteIcon}
@@ -67,8 +67,7 @@ const Footer: React.FC = () => {
             </span>
             <span
               className={cx('footer-theme__item', theme === THEME_MODE.DARK ? 'active' : '')}
-              onClick={onSwitchTheme}
-            >
+              onClick={onSwitchTheme}>
               <img
                 className={cx('icon-theme')}
                 src={theme === THEME_MODE.DARK ? dark_whiteIcon : darkIcon}
