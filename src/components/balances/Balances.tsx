@@ -99,13 +99,18 @@ const Balances: React.FC = () => {
       if (isConnected(wallet)) {
         const connectedAddress = currentAddress(wallet);
         const tokenBalance = await getCHNBalance().methods.balanceOf(connectedAddress).call();
-        const formatToken = new BigNumber(tokenBalance).dividedBy('1e18').toFixed(4);
+        const formatToken =
+          Math.floor(
+            Number(
+              String(new BigNumber(tokenBalance).dividedBy('1e18')).match(/^\d+(?:\.\d{0,5})?/)
+            ) * 10000
+          ) / 10000;
         setWalletValue(format(formatToken));
       }
     } catch (error) {
       console.log(error);
     }
-  }, [wallet]);
+  }, [wallet, walletValue]);
 
   const getTotalStakeInPool = useCallback(async () => {
     try {
@@ -120,13 +125,19 @@ const Balances: React.FC = () => {
             )
           ) * 10000
         ) / 10000;
-      const formatValueEarned = new BigNumber(getValueEarned).dividedBy('1e18').toFixed(4);
+      const formatValueEarned =
+        Math.floor(
+          Number(
+            String(new BigNumber(getValueEarned).dividedBy('1e18')).match(/^\d+(?:\.\d{0,5})?/)
+          ) * 10000
+        ) / 10000;
       setStake(format(formatValueStake));
       setEarn(format(formatValueEarned));
+      // handleUpdateSmartContract();
     } catch (error) {
       console.log(error);
     }
-  }, [wallet]);
+  }, [wallet, earn, stake]);
 
   useEffect(() => {
     getValueBalance();
