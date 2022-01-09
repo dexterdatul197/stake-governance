@@ -20,6 +20,9 @@ import { stakingToken } from '../../../helpers/ContractService';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { openSnackbar, SnackbarVariant } from '../../../store/snackbar';
 import styles from './styles.module.scss';
+import Web3 from 'web3';
+
+const web3 = new Web3();
 
 const commaNumber = require('comma-number');
 const format = commaNumber.bindWith(',', '.');
@@ -49,8 +52,7 @@ const BootstrapDialogTitle = (props: any) => {
             right: 8,
             top: 8,
             color: (theme) => theme.palette.grey[500]
-          }}
-        >
+          }}>
           <CloseIcon />
         </IconButton>
       ) : null}
@@ -70,6 +72,7 @@ const WithDraw = (props: Props) => {
   const [progress, setProgress] = useState(false);
   const dispatch = useAppDispatch();
   const [earnValue, setEarnValue] = useState(0);
+  const [done, setDone] = useState(false);
 
   useEffect(() => {
     if (earn) {
@@ -87,14 +90,9 @@ const WithDraw = (props: Props) => {
           String(new BigNumber(stakeValue.amount).dividedBy('1e18')).match(/^\d+(?:\.\d{0,5})?/)
         ) * 10000
       ) / 10000;
-    const formatEarn =
-      Math.floor(
-        Number(String(new BigNumber(earnValues).dividedBy('1e18')).match(/^\d+(?:\.\d{0,5})?/)) *
-          10000
-      ) / 10000;
     setValue({
       ...value,
-      defaultValue: formatStake,
+      defaultValue: stake,
       stake: stakeValue.amount,
       earn: earnValues
     });
@@ -106,22 +104,23 @@ const WithDraw = (props: Props) => {
 
   const handleCloseModalRefresh = () => {
     handleCloseModalWithDraw();
-    setEarnValue(0);
+    setEarnValue(earn);
     setValue({ ...value, defaultValue: 0 });
   };
 
   const handleWithdraw = async () => {
     try {
       setProgress(true);
+      setDone(true);
       setTimeout(() => {
         setProgress(false);
       }, 1000);
 
-      if (stake !== 0) {
-        handleCloseModalRefresh();
+      if (stake > 0) {
         await stakingToken()
-          .methods.withdraw(0, new BigNumber(value.defaultValue).multipliedBy('1e18'))
+          .methods.withdraw(0, web3.utils.toWei(String(value.defaultValue), 'ether'))
           .send({ from: currentAddress(wallet) });
+        setDone(false);
         dispatch(
           openSnackbar({
             message: 'Withdraw Success',
@@ -130,10 +129,10 @@ const WithDraw = (props: Props) => {
         );
         handleUpdateSmartContract();
       } else if (stake === value.stake) {
-        handleCloseModalRefresh();
         await stakingToken()
-          .methods.withdraw(0, new BigNumber(value.stake).multipliedBy('1e18'))
+          .methods.withdraw(0, web3.utils.toWei(String(value.stake), 'ether'))
           .send({ from: currentAddress(wallet) });
+        setDone(false);
         dispatch(
           openSnackbar({
             message: 'Withdraw Success',
@@ -141,11 +140,13 @@ const WithDraw = (props: Props) => {
           })
         );
         handleUpdateSmartContract();
-      } else if (value.earn !== 0) {
+      } else if (value.earn > 0) {
         handleCloseModalRefresh();
         await stakingToken()
-          .methods.withdraw(0, new BigNumber(value.earn).multipliedBy('1e18'))
+          .methods.withdraw(0, web3.utils.toWei(String(value.earn), 'ether'))
           .send({ from: currentAddress(wallet) });
+
+        setDone(false);
         dispatch(
           openSnackbar({
             message: 'Withdraw Success',
@@ -165,19 +166,29 @@ const WithDraw = (props: Props) => {
       console.log(error);
       handleCloseModalRefresh();
       setProgress(false);
+    } finally {
+      setDone(false);
     }
   };
 
+  useEffect(() => {
+    if (done === false) {
+      handleCloseModalRefresh();
+    }
+  }, [done]);
+
   const validateNumberField = (myNumber: any) => {
-    const numberRegEx = /\-?\d*\.?\d{1,2}/;
-    return numberRegEx.test(String(myNumber).toLowerCase());
+    const numberRegEx = /\d+(\.)?(\d+)?$/;
+    return numberRegEx.test(String(myNumber));
   };
 
   const handleInputChange = useCallback(
     (event: any) => {
       const { value } = event.target;
       const isValid = !value || validateNumberField(value);
-      setValue({ ...value, defaultValue: value, isValid });
+      if (isValid) {
+        setValue({ ...value, defaultValue: value, isValid });
+      }
     },
     [value.defaultValue, stake]
   );
@@ -190,13 +201,13 @@ const WithDraw = (props: Props) => {
         handleCloseModalRefresh();
       }}
       maxWidth="md"
-      disableEscapeKeyDown
-    >
+      disableEscapeKeyDown>
       <BootstrapDialogTitle
         id="customized-dialog-title"
         onClose={() => {
           handleCloseModalRefresh();
-        }}>
+        }}
+      >
         Withdraw
       </BootstrapDialogTitle>
       <DialogContent className={cx('dialog-content')}>
@@ -219,13 +230,13 @@ const WithDraw = (props: Props) => {
               disableUnderline
               type="text"
               onChange={handleInputChange}
-              value={value.defaultValue}
+              value={value.defaultValue ? value.defaultValue : 0 }
             />
             <span onClick={getValueStake} className={cx('text-all')}>
               Max
             </span>
             {value.defaultValue > Number(stake) && (
-              <div style={{ color: 'red' }}>Entered Number is invalid</div>
+              <div style={{ color: 'red' }}>Insufficient CHN balance</div>
             )}
             {!value.isValid && <div style={{ color: 'red' }}>Entered Number is invalid</div>}
           </Box>
@@ -236,12 +247,12 @@ const WithDraw = (props: Props) => {
           disabled={
             !value.isValid ||
             value.defaultValue > Number(stake) ||
-            (value.defaultValue === 0 && earnValue === 0)
+            (value.defaultValue === 0 && Number(earnValue) === 0) ||
+            done === true
           }
           onClick={handleWithdraw}
-          className={cx('button-action')}
-        >
-          {progress ? (
+          className={cx('button-action')}>
+          {done ? (
             <img
               src={loadingSvg}
               className={cx('loading-rotate')}

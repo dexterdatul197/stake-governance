@@ -17,6 +17,8 @@ import { useAppSelector, useAppDispatch } from '../../../../store/hooks';
 import { openSnackbar, SnackbarVariant } from '../../../../store/snackbar';
 import { ReactComponent as DoneIcon } from '../../../../assets/icon/Done-icon.svg';
 import { setTimeout } from 'timers';
+import { ethers } from 'ethers';
+import Web3 from 'web3';
 
 interface Props {
   cx?: any;
@@ -25,58 +27,102 @@ interface Props {
   walletValue?: any;
   handleCloseModal: () => void;
   handleUpdateSmartContract: () => void;
+  chnToken?: any;
 }
 
 const MAX_INT = '115792089237316195423570985008687907853269984665640564039457584007913129639935';
 
 const Transaction = (props: Props) => {
-  const { cx, handleBack, walletValue, handleCloseModal, value, handleUpdateSmartContract } = props;
+  const {
+    cx,
+    handleBack,
+    walletValue,
+    handleCloseModal,
+    value,
+    handleUpdateSmartContract,
+    chnToken
+  } = props;
+
+  console.log('token: ', chnToken);
   const wallet = useAppSelector((state: any) => state.wallet);
+  const web3 = new Web3();
   const dispatch = useAppDispatch();
-  const amount = value.default * walletValue;
   const [done, setDone] = useState(false);
   const [progress, setProgress] = useState(false);
-  const formatAmount = new BigNumber(amount / 100).multipliedBy('1e18');
 
-  // useEffect(() => {
-  //   const connectedAddress = currentAddress(wallet);
-  //   const getValueCHN = async () => {
-  //     await getCHNBalance().methods.balanceOf(connectedAddress).call();
-  //   };
-  // }, []);
+  const amount = new BigNumber(value.default).multipliedBy(
+    web3.utils.fromWei(chnToken.toString(), 'ether')
+  );
+  const price = new BigNumber(value.default).multipliedBy(walletValue).dividedBy(100);
+  const formatAmount = new BigNumber(amount).dividedBy(100);
+
+  console.log(formatAmount);
 
   const handleConfirmTransaction = () => {
     setProgress(true);
-    stakingToken()
-      .methods.stake(0, formatAmount)
-      .send({ from: currentAddress(wallet) })
-      .then((res: any) => {
-        if (res.status === true) {
-          setDone(true);
-          setProgress(false);
-          dispatch(
-            openSnackbar({
-              message: 'Staking success',
-              variant: SnackbarVariant.SUCCESS
-            })
-          );
-          handleUpdateSmartContract();
-        } else {
-          dispatch(
-            openSnackbar({
-              message: 'Staking failed',
-              variant: SnackbarVariant.ERROR
-            })
-          );
+    if (value.default === 100) {
+      stakingToken()
+        .methods.stake(0, web3.utils.toWei(String(formatAmount), 'ether'))
+        .send({ from: currentAddress(wallet) })
+        .then((res: any) => {
+          if (res.status === true) {
+            setDone(true);
+            setProgress(false);
+            dispatch(
+              openSnackbar({
+                message: 'Staking success',
+                variant: SnackbarVariant.SUCCESS
+              })
+            );
+            handleUpdateSmartContract();
+          } else {
+            dispatch(
+              openSnackbar({
+                message: 'Staking failed',
+                variant: SnackbarVariant.ERROR
+              })
+            );
+            handleCloseTransaction();
+          }
+        })
+        .catch((e: any) => {
+          console.log(e);
+        })
+        .finally(() => {
           handleCloseTransaction();
-        }
-      })
-      .catch((e: any) => {
-        console.log(e);
-      })
-      .finally(() => {
-        handleCloseTransaction();
-      });
+        });
+    } else {
+      stakingToken()
+        .methods.stake(0, web3.utils.toWei(String(price), 'ether'))
+        .send({ from: currentAddress(wallet) })
+        .then((res: any) => {
+          if (res.status === true) {
+            setDone(true);
+            setProgress(false);
+            dispatch(
+              openSnackbar({
+                message: 'Staking success',
+                variant: SnackbarVariant.SUCCESS
+              })
+            );
+            handleUpdateSmartContract();
+          } else {
+            dispatch(
+              openSnackbar({
+                message: 'Staking failed',
+                variant: SnackbarVariant.ERROR
+              })
+            );
+            handleCloseTransaction();
+          }
+        })
+        .catch((e: any) => {
+          console.log(e);
+        })
+        .finally(() => {
+          handleCloseTransaction();
+        });
+    }
   };
 
   const handleConfirm = () => {
@@ -122,19 +168,24 @@ const Transaction = (props: Props) => {
   };
 
   const handleCloseTransaction = () => {
+    // setTimeout(() => {
+    //   handleBack();
+    // }, 400);
     setTimeout(() => {
       handleCloseModal();
-    }, 500);
-    setTimeout(() => {
-      handleBack();
-    }, 700);
+      setTimeout(() => {
+        handleBack();
+      }, 500);
+    }, 3000);
   };
 
   return (
     <React.Fragment>
       <DialogTitle className={cx('dialog-title__transaction')}>
         <Box className={cx('children_content')}>
-          <ArrowBackIosIcon onClick={handleBack} className={cx('icon_right')} />
+          <Button onClick={handleBack} className={cx('icon_right')} disabled={progress === true}>
+            <ArrowBackIosIcon />
+          </Button>
           <Typography className={cx('confirm-title')}>Confirm Transaction</Typography>
           <CloseIcon onClick={handleCloseTransaction} className={cx('icon_left')} />
         </Box>
@@ -157,7 +208,8 @@ const Transaction = (props: Props) => {
         <Button
           disabled={done || progress}
           onClick={handleConfirm}
-          className={cx('dialog-actions__transaction__confirm')}>
+          className={cx('dialog-actions__transaction__confirm')}
+        >
           Confirm
         </Button>
       </DialogActions>

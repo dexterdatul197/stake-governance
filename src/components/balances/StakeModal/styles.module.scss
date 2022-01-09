@@ -125,7 +125,7 @@
       align-items: center;
       min-width: 300px;
       width: 100%;
-      background: rgba(31, 55, 100, 0.5);
+      background: #107def;
       border-radius: 10px;
       padding-top: 20px;
       padding-bottom: 20px;
@@ -146,19 +146,19 @@
         padding-right: 47px;
         padding-left: 8px;
         cursor: pointer;
-        color: #001c4e61;
+        color: var(--text-color-balance);
       }
       .icon_left {
         padding-left: 51px;
         padding-right: 8px;
         cursor: pointer;
-        color: #001c4e61;
+        color: var(--text-color-balance);
       }
       .confirm-title {
         font-size: 20px;
         display: block;
         font-weight: 600;
-        color: rgba(0, 28, 78, 0.87);
+        color: var(--text-color-balance);
         text-transform: capitalize;
       }
     }
@@ -179,12 +179,12 @@
     .token-quantity {
       font-size: 48px;
       font-weight: 600;
-      color: rgba(0, 28, 78, 0.87);
+      color: var(--text-color-balance);
     }
     .token-stake {
       font-size: 16px;
       font-weight: 600;
-      color: rgba(0, 28, 78, 0.87);
+      color: var(--text-color-balance);
     }
   }
 
@@ -197,12 +197,11 @@
       font-size: 18px;
       font-weight: normal;
       color: #ffffff !important;
-      background: rgba(31, 55, 100, 0.5);
+      background-color: #107def !important;
       border-radius: 10px;
       text-transform: capitalize;
-
       &:hover {
-        background-color: rgba(31, 55, 100, 0.5);
+        background-color: #107def;
       }
     }
     .active {

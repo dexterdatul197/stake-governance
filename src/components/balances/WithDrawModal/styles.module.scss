@@ -101,17 +101,17 @@
   justify-content: center;
   margin-bottom: 30px;
   .button-action {
-    background-color: #8196bb;
-    color: #ffffff;
+    background-color: #107def;
     font-size: 18px;
     font-weight: 700;
+    color: #ffffff;
     text-transform: capitalize;
     width: 100%;
     display: block;
     margin: 0 20px;
     border-radius: 10px;
     &:hover {
-      background-color: #8196bb;
+      background-color: #107def;
     }
   }
 }
