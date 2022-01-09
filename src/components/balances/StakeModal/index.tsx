@@ -14,10 +14,11 @@ interface Props {
   handleCloseModal: () => void;
   walletValue?: any;
   handleUpdateSmartContract: () => void;
+  chnToken?: any;
 }
 
 const Modal = memo((props: Props) => {
-  const { openStake, handleCloseModal, walletValue, handleUpdateSmartContract } = props;
+  const { openStake, handleCloseModal, walletValue, handleUpdateSmartContract, chnToken } = props;
   const [activeStep, setActiveStep] = useState(0);
   const [progress, setProgress] = useState(false);
 
@@ -50,6 +51,7 @@ const Modal = memo((props: Props) => {
             walletValue={walletValue}
             handleCloseModal={handleCloseModal}
             handleUpdateSmartContract={handleUpdateSmartContract}
+            chnToken={chnToken}
           />
         );
       // case 2:
@@ -101,8 +103,7 @@ const Modal = memo((props: Props) => {
           overflowY: 'unset',
           borderRadius: '20px'
         }
-      }}
-    >
+      }}>
       {renderStepContent(activeStep)}
     </Dialog>
   );

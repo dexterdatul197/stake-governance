@@ -73,6 +73,7 @@ const Balances: React.FC = () => {
   const [walletValue, setWalletValue] = useState(0);
   const [earn, setEarn] = useState(0);
   const [updateSmartContract, setUpdateSmartContract] = useState(false);
+  const [chnToken, setChntoken] = useState(0);
 
   const handleActiveClass = () => {
     dispatch({ type: 'OPEN_STAKE' });
@@ -100,11 +101,8 @@ const Balances: React.FC = () => {
         const connectedAddress = currentAddress(wallet);
         const tokenBalance = await getCHNBalance().methods.balanceOf(connectedAddress).call();
         const formatToken =
-          Math.floor(
-            Number(
-              String(new BigNumber(tokenBalance).dividedBy('1e18')).match(/^\d+(?:\.\d{0,5})?/)
-            ) * 10000
-          ) / 10000;
+          Math.floor(Number(String(new BigNumber(tokenBalance).dividedBy('1e18'))) * 10000) / 10000;
+        setChntoken(tokenBalance);
         setWalletValue(format(formatToken));
       }
     } catch (error) {
@@ -209,6 +207,7 @@ const Balances: React.FC = () => {
             openStake={isOpenStake}
             handleCloseModal={handleCloseModal}
             handleUpdateSmartContract={handleUpdateSmartContract}
+            chnToken={chnToken}
           />
           <ModalWithDraw
             stake={stake}
