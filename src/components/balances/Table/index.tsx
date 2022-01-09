@@ -9,6 +9,7 @@ import {
   TablePagination,
   TableRow
 } from '@material-ui/core';
+import BigNumber from 'bignumber.js';
 import classNames from 'classnames/bind';
 import { ethers } from 'ethers';
 import moment from 'moment';
@@ -47,13 +48,13 @@ const TableComponent = () => {
     address: getUserAddress()
   });
 
-  useEffect(() => {
-    setFilter({
-      page: page + 1,
-      limit: rowsPerPage,
-      address: getUserAddress()
-    });
-  }, [page, rowsPerPage]);
+  // useEffect(() => {
+  //   setFilter({
+  //     page: page + 1,
+  //     limit: rowsPerPage,
+  //     address: getUserAddress()
+  //   });
+  // }, [page, rowsPerPage]);
 
   useEffect(() => {
     eventBus.on(SocketEvent.transactionUpdated, async () => {
@@ -147,7 +148,13 @@ const TableComponent = () => {
                   <div className={cx('txt-type')}>{getTypeTxt(row.type)}</div>
                 </TableCell>
                 <TableCell align={'left'} className={cx('table-body__cell')}>
-                  {ethers.utils.formatEther(row.amount)}
+                  <span>{Number(ethers.utils.formatEther(row.amount)).toFixed(4)}</span>
+                  <span className={cx('txt-usd')}>
+                    {' $' +
+                      new BigNumber(ethers.utils.formatEther(row.amount))
+                        .multipliedBy(row.price)
+                        .toFixed(2)}
+                  </span>
                 </TableCell>
                 <TableCell align={'left'} className={cx('table-body__cell')}>
                   {moment(row.updated_at).format(FORMAT_DATE)}
