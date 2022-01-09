@@ -145,6 +145,7 @@ const WithDraw = (props: Props) => {
         await stakingToken()
           .methods.withdraw(0, web3.utils.toWei(String(value.earn), 'ether'))
           .send({ from: currentAddress(wallet) });
+
         setDone(false);
         dispatch(
           openSnackbar({
@@ -165,6 +166,8 @@ const WithDraw = (props: Props) => {
       console.log(error);
       handleCloseModalRefresh();
       setProgress(false);
+    } finally {
+      setDone(false);
     }
   };
 
