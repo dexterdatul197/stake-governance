@@ -151,10 +151,10 @@ const TableComponent = () => {
                   {/* {parseFloat(ethers.utils.formatEther((row.amount || '0') as string)).toFixed(4)} */}
                 </TableCell>
                 <TableCell align={'left'} className={cx('table-body__cell')}>
-                  <span>{Number(ethers.utils.formatEther(row.reward)).toFixed(4)}</span>
+                  <span>{Number(ethers.utils.formatEther(row.reward || '0')).toFixed(4)}</span>
                   <span className={cx('txt-usd')}>
                     {' $' +
-                      new BigNumber(ethers.utils.formatEther(row.reward))
+                      new BigNumber(ethers.utils.formatEther(row.reward || '0'))
                         .multipliedBy(row.price)
                         .toFixed(2)}
                   </span>

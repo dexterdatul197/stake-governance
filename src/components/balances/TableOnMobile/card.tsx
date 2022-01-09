@@ -46,6 +46,12 @@ export const Card: FC<CardProps> = (props) => {
         </div>
       </div>
       <div className={cx('card-items')}>
+        <div>Reward</div>
+        <div className={cx('card-items-2')}>
+          {ethers.utils.formatEther(props.transaction.reward)}
+        </div>
+      </div>
+      <div className={cx('card-items')}>
         <div>Date</div>
         <div className={cx('card-items-2')}>
           {moment(props.transaction.updated_at).format(FORMAT_DATE)}
