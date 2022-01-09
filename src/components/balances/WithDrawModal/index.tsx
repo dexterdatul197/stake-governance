@@ -80,9 +80,15 @@ const WithDraw = (props: Props) => {
     const connectedAddress = currentAddress(wallet);
     const stakeValue = await stakingToken().methods.userInfo(0, connectedAddress).call();
     const earnValues = await stakingToken().methods.pendingReward(0, connectedAddress).call();
+    const formatStake =
+      Math.floor(
+        Number(
+          String(new BigNumber(stakeValue.amount).dividedBy('1e18')).match(/^\d+(?:\.\d{0,5})?/)
+        ) * 10000
+      ) / 10000;
     setValue({
       ...value,
-      defaultValue: stake,
+      defaultValue: formatStake,
       stake: stakeValue.amount,
       earn: earnValues
     });
@@ -105,7 +111,7 @@ const WithDraw = (props: Props) => {
         setProgress(false);
       }, 1000);
 
-      if (stake !== 0) {
+      if (stake > 0) {
         handleCloseModalRefresh();
         await stakingToken()
           .methods.withdraw(0, new BigNumber(value.defaultValue).multipliedBy('1e18'))
@@ -129,7 +135,7 @@ const WithDraw = (props: Props) => {
           })
         );
         handleUpdateSmartContract();
-      } else if (value.earn !== 0) {
+      } else if (value.earn > 0) {
         handleCloseModalRefresh();
         await stakingToken()
           .methods.withdraw(0, new BigNumber(value.earn).multipliedBy('1e18'))
@@ -226,7 +232,7 @@ const WithDraw = (props: Props) => {
           disabled={
             !value.isValid ||
             value.defaultValue > Number(stake) ||
-            (value.defaultValue === 0 && earnValue === 0)
+            (value.defaultValue === 0 && Number(earnValue) === 0)
           }
           onClick={handleWithdraw}
           className={cx('button-action')}>
