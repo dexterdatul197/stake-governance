@@ -80,20 +80,9 @@ const WithDraw = (props: Props) => {
     const connectedAddress = currentAddress(wallet);
     const stakeValue = await stakingToken().methods.userInfo(0, connectedAddress).call();
     const earnValues = await stakingToken().methods.pendingReward(0, connectedAddress).call();
-    const formatStake =
-      Math.floor(
-        Number(
-          String(new BigNumber(stakeValue.amount).dividedBy('1e18')).match(/^\d+(?:\.\d{0,5})?/)
-        ) * 10000
-      ) / 10000;
-    const formatEarn =
-      Math.floor(
-        Number(String(new BigNumber(earnValues).dividedBy('1e18')).match(/^\d+(?:\.\d{0,5})?/)) *
-          10000
-      ) / 10000;
     setValue({
       ...value,
-      defaultValue: formatStake,
+      defaultValue: stake,
       stake: stakeValue.amount,
       earn: earnValues
     });
@@ -105,7 +94,7 @@ const WithDraw = (props: Props) => {
 
   const handleCloseModalRefresh = () => {
     handleCloseModalWithDraw();
-    setEarnValue(0);
+    setEarnValue(earn);
     setValue({ ...value, defaultValue: 0 });
   };
 
