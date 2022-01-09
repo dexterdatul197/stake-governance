@@ -146,19 +146,19 @@
         padding-right: 47px;
         padding-left: 8px;
         cursor: pointer;
-        color: #001c4e61;
+        color: var(--text-color-balance);
       }
       .icon_left {
         padding-left: 51px;
         padding-right: 8px;
         cursor: pointer;
-        color: #001c4e61;
+        color: var(--text-color-balance);
       }
       .confirm-title {
         font-size: 20px;
         display: block;
         font-weight: 600;
-        color: rgba(0, 28, 78, 0.87);
+        color: var(--text-color-balance);
         text-transform: capitalize;
       }
     }
@@ -179,12 +179,12 @@
     .token-quantity {
       font-size: 48px;
       font-weight: 600;
-      color: rgba(0, 28, 78, 0.87);
+      color: var(--text-color-balance);
     }
     .token-stake {
       font-size: 16px;
       font-weight: 600;
-      color: rgba(0, 28, 78, 0.87);
+      color: var(--text-color-balance);
     }
   }
 
