@@ -251,8 +251,7 @@ const WithDraw = (props: Props) => {
             !value.isValid ||
             value.defaultValue > Number(stake) ||
             (value.defaultValue === 0 && Number(earnValue) === 0) ||
-            done === true ||
-            value.defaultValue === typeof String
+            done === true
           }
           onClick={handleWithdraw}
           className={cx('button-action')}>
