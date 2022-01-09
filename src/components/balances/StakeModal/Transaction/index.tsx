@@ -17,6 +17,8 @@ import { useAppSelector, useAppDispatch } from '../../../../store/hooks';
 import { openSnackbar, SnackbarVariant } from '../../../../store/snackbar';
 import { ReactComponent as DoneIcon } from '../../../../assets/icon/Done-icon.svg';
 import { setTimeout } from 'timers';
+import { ethers } from 'ethers';
+import Web3 from 'web3';
 
 interface Props {
   cx?: any;
@@ -32,11 +34,13 @@ const MAX_INT = '115792089237316195423570985008687907853269984665640564039457584
 const Transaction = (props: Props) => {
   const { cx, handleBack, walletValue, handleCloseModal, value, handleUpdateSmartContract } = props;
   const wallet = useAppSelector((state: any) => state.wallet);
+  const web3 = new Web3();
   const dispatch = useAppDispatch();
   const amount = value.default * walletValue;
   const [done, setDone] = useState(false);
   const [progress, setProgress] = useState(false);
-  const formatAmount = new BigNumber(amount / 100).multipliedBy('1e18');
+  const formatAmount = new BigNumber(amount / 100)
+  // web3.utils.toWei(String(formatAmount));
 
   // useEffect(() => {
   //   const connectedAddress = currentAddress(wallet);
@@ -48,7 +52,7 @@ const Transaction = (props: Props) => {
   const handleConfirmTransaction = () => {
     setProgress(true);
     stakingToken()
-      .methods.stake(0, formatAmount)
+      .methods.stake(0, web3.utils.toWei(String(formatAmount),'ether'))
       .send({ from: currentAddress(wallet) })
       .then((res: any) => {
         if (res.status === true) {
@@ -134,7 +138,7 @@ const Transaction = (props: Props) => {
     <React.Fragment>
       <DialogTitle className={cx('dialog-title__transaction')}>
         <Box className={cx('children_content')}>
-          <Button onClick={handleBack} className={cx('icon_right')} disabled={progress === true}>
+          <Button onClick={handleBack} className={cx('icon_right')} disabled={progress === false}>
             <ArrowBackIosIcon />
           </Button>
           <Typography className={cx('confirm-title')}>Confirm Transaction</Typography>
