@@ -210,7 +210,7 @@ const WithDraw = (props: Props) => {
       </DialogContent>
       <DialogActions className={cx('dialog-actions')}>
         <Button
-          disabled={!value.isValid && value.defaultValue > stake}
+          disabled={!value.isValid || value.defaultValue > stake}
           onClick={handleWithdraw}
           className={cx('button-action')}>
           {progress ? (
