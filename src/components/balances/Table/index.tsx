@@ -106,8 +106,7 @@ const TableComponent = () => {
                 align={'left'}
                 padding={headCell.disablePadding ? 'none' : 'normal'}
                 sortDirection={orderBy === headCell.id ? order : false}
-                className={cx('table-head__cell')}
-              >
+                className={cx('table-head__cell')}>
                 {headCell.label}
               </TableCell>
             ))}
@@ -123,8 +122,7 @@ const TableComponent = () => {
                   id={labelId}
                   // scope="row"
                   align={'left'}
-                  className={cx('table-body__cell')}
-                >
+                  className={cx('table-body__cell')}>
                   {row.id}
                 </TableCell>
                 <TableCell align={'left'} className={cx('table-body__cell')}>
@@ -144,7 +142,7 @@ const TableComponent = () => {
                   <div className={cx('txt-type')}>{getTypeTxt(row.type)}</div>
                 </TableCell>
                 <TableCell align={'left'} className={cx('table-body__cell')}>
-                  {ethers.utils.formatEther(row.amount)}
+                  {parseFloat(ethers.utils.formatEther((row.amount || '0') as string)).toFixed(4)}
                 </TableCell>
                 <TableCell align={'left'} className={cx('table-body__cell')}>
                   {moment(row.updated_at).format(FORMAT_DATE)}
