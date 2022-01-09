@@ -225,7 +225,7 @@ const WithDraw = (props: Props) => {
               Max
             </span>
             {value.defaultValue > Number(stake) && (
-              <div style={{ color: 'red' }}>Entered Number is invalid</div>
+              <div style={{ color: 'red' }}>Insufficient CHN balance</div>
             )}
             {!value.isValid && <div style={{ color: 'red' }}>Entered Number is invalid</div>}
           </Box>
