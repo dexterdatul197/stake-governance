@@ -1,0 +1,11 @@
+{
+  "apps": [
+    {
+      "name": "chn-staking-fe-test",
+      "script": "yarn deploy",
+      "env": {
+        "PORT": "10002"
+      }
+    }
+  ]
+}

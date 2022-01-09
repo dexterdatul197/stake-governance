@@ -1,3 +1,4 @@
+import { BigNumber } from '@0x/utils';
 import {
   Box,
   Button,
@@ -7,21 +8,18 @@ import {
   DialogTitle,
   IconButton,
   Input,
-  Typography,
-  CircularProgress
+  Typography
 } from '@material-ui/core';
 import CloseIcon from '@mui/icons-material/Close';
 import classNames from 'classnames/bind';
 import { useCallback, useEffect, useState } from 'react';
+import loadingSvg from 'src/assets/icon/loading.svg';
 import CHN_icon from '../../../assets/icon/CHN.svg';
 import { currentAddress } from '../../../helpers/common';
-import { getCHNBalance, stakingToken } from '../../../helpers/ContractService';
-import useIsMobile from '../../../hooks/useMobile';
-import { useAppSelector, useAppDispatch } from '../../../store/hooks';
+import { stakingToken } from '../../../helpers/ContractService';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { openSnackbar, SnackbarVariant } from '../../../store/snackbar';
 import styles from './styles.module.scss';
-import { BigNumber } from '@0x/utils';
-import loadingSvg from 'src/assets/icon/loading.svg';
 
 const commaNumber = require('comma-number');
 const format = commaNumber.bindWith(',', '.');
@@ -51,8 +49,7 @@ const BootstrapDialogTitle = (props: any) => {
             right: 8,
             top: 8,
             color: (theme) => theme.palette.grey[500]
-          }}
-        >
+          }}>
           <CloseIcon />
         </IconButton>
       ) : null}
@@ -65,10 +62,23 @@ const WithDraw = (props: Props) => {
   const wallet = useAppSelector((state: any) => state.wallet);
   const [value, setValue] = useState({
     defaultValue: 0,
+    stake: 0,
+    earn: 0,
     isValid: true
   });
   const [progress, setProgress] = useState(false);
   const dispatch = useAppDispatch();
+
+  const getValueStake = async () => {
+    const connectedAddress = currentAddress(wallet);
+    const stakeValue = await stakingToken().methods.userInfo(0, connectedAddress).call();
+    const earn = await stakingToken().methods.pendingReward(0, connectedAddress).call();
+    setValue({ ...value, defaultValue: stake, stake: stakeValue.amount, earn: earn });
+  };
+
+  useEffect(() => {
+    getValueStake();
+  }, []);
 
   useEffect(() => {
     if (stake) {
@@ -95,10 +105,22 @@ const WithDraw = (props: Props) => {
           })
         );
         handleUpdateSmartContract();
+      } else if (stake === value.stake) {
+        handleCloseModalWithDraw();
+        await stakingToken()
+          .methods.withdraw(0, new BigNumber(value.stake).multipliedBy('1e18'))
+          .send({ from: currentAddress(wallet) });
+        dispatch(
+          openSnackbar({
+            message: 'Withdraw Success',
+            variant: SnackbarVariant.SUCCESS
+          })
+        );
+        handleUpdateSmartContract();
       } else if (earn > 0) {
         handleCloseModalWithDraw();
         await stakingToken()
-          .methods.withdraw(0, new BigNumber(earn).multipliedBy('1e18'))
+          .methods.withdraw(0, new BigNumber(value.earn).multipliedBy('1e18'))
           .send({ from: currentAddress(wallet) });
         dispatch(
           openSnackbar({
@@ -127,12 +149,11 @@ const WithDraw = (props: Props) => {
     return numberRegEx.test(String(myNumber).toLowerCase());
   };
 
-  const handleChangeInputValue = useCallback(
+  const handleInputChange = useCallback(
     (event: any) => {
       const { value } = event.target;
       const isValid = !value || validateNumberField(value);
-      const newValue = { ...value };
-      setValue({ ...newValue, defaultValue: value, isValid });
+      setValue({ ...value, defaultValue: value, isValid });
     },
     [value.defaultValue]
   );
@@ -143,18 +164,16 @@ const WithDraw = (props: Props) => {
       open={openWithdraw}
       onClose={() => {
         handleCloseModalWithDraw();
-        setValue({ ...value, defaultValue: stake });
+        setValue({ ...value, defaultValue: 0 });
       }}
       maxWidth="md"
-      disableEscapeKeyDown
-    >
+      disableEscapeKeyDown>
       <BootstrapDialogTitle
         id="customized-dialog-title"
         onClose={() => {
           handleCloseModalWithDraw();
-          setValue({ ...value, defaultValue: stake });
-        }}
-      >
+          setValue({ ...value, defaultValue: 0 });
+        }}>
         Withdraw
       </BootstrapDialogTitle>
       <DialogContent className={cx('dialog-content')}>
@@ -175,15 +194,25 @@ const WithDraw = (props: Props) => {
             <Input
               className={cx('main-right__quantity')}
               disableUnderline
+              type="text"
+              onChange={handleInputChange}
               value={value.defaultValue}
-              onChange={handleChangeInputValue}
             />
+            <span onClick={getValueStake} className={cx('text-all')}>
+              Max
+            </span>
+            {value.defaultValue > stake && (
+              <div style={{ color: 'red' }}>Entered Number is invalid</div>
+            )}
             {!value.isValid && <div style={{ color: 'red' }}>Entered Number is invalid</div>}
           </Box>
         </Box>
       </DialogContent>
       <DialogActions className={cx('dialog-actions')}>
-        <Button onClick={handleWithdraw} className={cx('button-action')}>
+        <Button
+          disabled={!value.isValid && value.defaultValue > stake}
+          onClick={handleWithdraw}
+          className={cx('button-action')}>
           {progress ? (
             <img
               src={loadingSvg}
