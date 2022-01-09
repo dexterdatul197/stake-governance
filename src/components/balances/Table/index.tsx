@@ -70,12 +70,17 @@ const TableComponent = () => {
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
+    setFilter({
+      page: newPage + 1,
+      limit: rowsPerPage,
+      address: getUserAddress()
+    });
   };
 
-  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
+  // const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   setRowsPerPage(parseInt(event.target.value, 10));
+  //   setPage(0);
+  // };
 
   const getTypeTxt = (type: number) => {
     switch (type) {
@@ -106,8 +111,7 @@ const TableComponent = () => {
                 align={'left'}
                 padding={headCell.disablePadding ? 'none' : 'normal'}
                 sortDirection={orderBy === headCell.id ? order : false}
-                className={cx('table-head__cell')}
-              >
+                className={cx('table-head__cell')}>
                 {headCell.label}
               </TableCell>
             ))}
@@ -123,8 +127,7 @@ const TableComponent = () => {
                   id={labelId}
                   // scope="row"
                   align={'left'}
-                  className={cx('table-body__cell')}
-                >
+                  className={cx('table-body__cell')}>
                   {row.id}
                 </TableCell>
                 <TableCell align={'left'} className={cx('table-body__cell')}>
@@ -160,13 +163,13 @@ const TableComponent = () => {
           <TableRow>
             <TableCell colSpan={6} className={cx('table-footer')}>
               <TablePagination
-                rowsPerPageOptions={[5, 10, 15]}
+                rowsPerPageOptions={[]}
                 component="div"
                 count={transactionData.metadata.totalItem}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
+                // onRowsPerPageChange={handleChangeRowsPerPage}
                 className={cx('table-pagination')}
                 labelRowsPerPage="Items Per Page:"
               />
