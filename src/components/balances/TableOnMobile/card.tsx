@@ -48,7 +48,7 @@ export const Card: FC<CardProps> = (props) => {
       <div className={cx('card-items')}>
         <div>Reward</div>
         <div className={cx('card-items-2')}>
-          {ethers.utils.formatEther(props.transaction.reward)}
+          {props.transaction.type === 1 ? ethers.utils.formatEther(props.transaction.reward) : '--'}
         </div>
       </div>
       <div className={cx('card-items')}>
