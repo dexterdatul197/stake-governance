@@ -230,7 +230,7 @@ const WithDraw = (props: Props) => {
               disableUnderline
               type="text"
               onChange={handleInputChange}
-              value={value.defaultValue}
+              value={value.defaultValue ? value.defaultValue : 0 }
             />
             <span onClick={getValueStake} className={cx('text-all')}>
               Max
@@ -247,7 +247,8 @@ const WithDraw = (props: Props) => {
           disabled={
             !value.isValid ||
             value.defaultValue > Number(stake) ||
-            (value.defaultValue === 0 && Number(earnValue) === 0)
+            (value.defaultValue === 0 && Number(earnValue) === 0) ||
+            done === true
           }
           onClick={handleWithdraw}
           className={cx('button-action')}>
