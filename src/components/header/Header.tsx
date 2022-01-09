@@ -20,33 +20,22 @@ import logo from './../../assets/icon/CHN_dark_logo.png';
 import dark_logo from './../../assets/icon/CHN_light_logo.png';
 import style from './Header.module.scss';
 import useIsMobile from '../../hooks/useMobile';
+import { setSelectedCurrency } from '../chart/redux/currency';
 const cx = classnames.bind(style);
 
 const Header: React.FC = () => {
   const { account } = useWeb3React<Web3>();
   const history = useHistory();
-
+  const pathName = history.location.pathname;
   const dispatch = useDispatch();
-  const [stackBorder, setStackBorder] = useState(false);
-  const [governanBorder, setGovernanceBorder] = useState(false);
-  const testRouter = () => {
-    setStackBorder(true);
-    setGovernanceBorder(false);
-  };
-  const openDialogConnect = () => {
-    setStackBorder(true);
-    setGovernanceBorder(false);
-  };
 
-  const setGovernaneStyle = () => {
-    setStackBorder(false);
-    setGovernanceBorder(true);
-  };
+  const testRouter = () => {};
+
+  const setGovernaneStyle = () => {};
 
   const disableBorderStyle = () => {
-    setStackBorder(false);
-    setGovernanceBorder(false);
     dispatch(setOpenConnectDialog(false));
+    dispatch(setSelectedCurrency('usd'));
   };
   const theme = useAppSelector((state) => state.theme.themeMode);
   const onSwitchTheme = () => {
@@ -74,7 +63,7 @@ const Header: React.FC = () => {
           to="/stake"
           onClick={testRouter}
           className={cx('link-style', {
-            'link-style-border': stackBorder
+            'link-style-border': '/stake' === pathName
           })}>
           Stake
         </Link>
@@ -82,7 +71,7 @@ const Header: React.FC = () => {
           to="/governance"
           onClick={setGovernaneStyle}
           className={cx('link-style', {
-            'link-style-border-right': governanBorder
+            'link-style-border-right': '/governance' === pathName
           })}>
           Governance
         </Link>
@@ -98,34 +87,28 @@ const Header: React.FC = () => {
           <input type="checkbox" id="switch" onChange={onSwitchTheme} />
           <div className={cx('app')}>
             <div className={cx('body')}>
-              <label htmlFor="switch">
-                <div className={cx('toggle')}></div>
-                <div className={cx('names')}>
-                  {theme === THEME_MODE.LIGHT ? (
-                    <>
-                      <p className={cx('light')}>
-                        <img className={cx('icon-theme')} src={lightIcon} alt="light icon" />
-                        light
-                      </p>
-                      <p className={cx('dark')}>
-                        <img className={cx('icon-theme')} src={darkIcon} alt="" />
-                        dark
-                      </p>
-                    </>
-                  ) : (
-                    <>
-                      <p className={cx('light')}>
-                        <img className={cx('icon-theme')} src={light_whiteIcon} alt="dark icon" />
-                        light
-                      </p>
-                      <p className={cx('dark')}>
-                        <img className={cx('icon-theme')} src={dark_whiteIcon} alt="" />
-                        dark
-                      </p>
-                    </>
-                  )}
-                </div>
-              </label>
+              <div className={cx('footer-theme')}>
+                <span
+                  className={cx('footer-theme__item', theme === THEME_MODE.LIGHT ? 'active' : '')}
+                  onClick={onSwitchTheme}>
+                  <img
+                    className={cx('icon-theme')}
+                    src={theme === THEME_MODE.LIGHT ? lightIcon : light_whiteIcon}
+                    alt="light icon"
+                  />
+                  <span>Light</span>
+                </span>
+                <span
+                  className={cx('footer-theme__item', theme === THEME_MODE.DARK ? 'active' : '')}
+                  onClick={onSwitchTheme}>
+                  <img
+                    className={cx('icon-theme')}
+                    src={theme === THEME_MODE.DARK ? dark_whiteIcon : darkIcon}
+                    alt="dark_icon"
+                  />
+                  <span>Dark</span>
+                </span>
+              </div>
             </div>
           </div>
           <div className={cx('header-wallet')}>

@@ -155,6 +155,7 @@ const TableComponent = () => {
                         .multipliedBy(row.price)
                         .toFixed(2)}
                   </span>
+                  {/* {parseFloat(ethers.utils.formatEther((row.amount || '0') as string)).toFixed(4)} */}
                 </TableCell>
                 <TableCell align={'left'} className={cx('table-body__cell')}>
                   {moment(row.updated_at).format(FORMAT_DATE)}
