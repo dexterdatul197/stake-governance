@@ -111,7 +111,7 @@ const WithDraw = (props: Props) => {
   const handleWithdraw = async () => {
     try {
       setProgress(true);
-      setDone(true)
+      setDone(true);
       setTimeout(() => {
         setProgress(false);
       }, 1000);
@@ -169,7 +169,7 @@ const WithDraw = (props: Props) => {
   };
 
   useEffect(() => {
-    if (done  ) {
+    if (done === false) {
       handleCloseModalRefresh();
     }
   }, [done]);
