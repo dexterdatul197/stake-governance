@@ -80,7 +80,7 @@ const AreaChart: React.FC<Props> = (props) => {
     const res = convertOHCL(data);
     // const latestResData = tvlData[tvlData.length - 1];
     // latestResData.tvl = latestTVL;
-    
+
     const categories: any = res.map((item: number[]) => convertToDate(item[0]));
     const seriesPrice = res.map((item: number[]) => item[2]);
     let tvlFinally = tvlData.map((item: TVLData) => new BigNumber(item.tvl).toFixed(4));
@@ -116,8 +116,7 @@ const AreaChart: React.FC<Props> = (props) => {
   };
 
   useEffect(() => {
-    eventBus.on(SocketEvent.tvlDataUpdate, async (data: any) => {
-    })
+    eventBus.on(SocketEvent.tvlDataUpdate, async (data: any) => {});
     chainPriceDataForChart(props.ohclData, props.tvlData);
   }, [props.ohclData, props.tvlData]);
 
