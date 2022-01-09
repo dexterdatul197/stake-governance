@@ -19,6 +19,24 @@ $color: #107def;
       opacity: 0.8;
     }
   }
+  .button-logout {
+    background-color: var(--main-background-color);
+    padding: 10px 17px;
+    width: 175px;
+    box-shadow: border-box;
+    border-radius: 30px;
+    border: var(--color-text) solid 1px;
+    letter-spacing: 0.015em;
+    display: flex;
+    justify-content: center;
+    color: var(--color-text);
+    cursor: pointer;
+    letter-spacing: 0.015em;
+    &:hover {
+      cursor: pointer;
+      opacity: 0.8;
+    }
+  }
   .center-items {
     display: flex;
     justify-content: center;
@@ -66,6 +84,18 @@ $color: #107def;
         color: var(--text-color-stake);
       }
     }
+    .button-logout {
+      background: var(--main-background-color);
+      border-radius: 30px;
+      color: var(--text-color);
+      display: flex;
+      padding: 10px 16px;
+
+      &__text {
+        margin-left: 8px;
+        color: var(--text-color);
+      }
+    }
   }
   @media screen and (max-width: 768px) {
     .button {
@@ -78,6 +108,18 @@ $color: #107def;
       &__text {
         margin-left: 8px;
         color: var(--text-color-stake);
+      }
+    }
+    .button {
+      background: var(--main-background-color);
+      border-radius: 30px;
+      color: var(--text-color);
+      display: flex;
+      padding: 10px 16px;
+
+      &__text {
+        margin-left: 8px;
+        color: var(--text-color);
       }
     }
   }

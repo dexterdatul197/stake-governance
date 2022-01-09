@@ -178,15 +178,17 @@ const WithDraw = (props: Props) => {
   }, [done]);
 
   const validateNumberField = (myNumber: any) => {
-    const numberRegEx = /\-?\d*\.?\d{1,2}/;
-    return numberRegEx.test(String(myNumber).toLowerCase());
+    const numberRegEx = /\d+(\.)?(\d+)?$/;
+    return numberRegEx.test(String(myNumber));
   };
 
   const handleInputChange = useCallback(
     (event: any) => {
       const { value } = event.target;
       const isValid = !value || validateNumberField(value);
-      setValue({ ...value, defaultValue: value, isValid });
+      if (isValid) {
+        setValue({ ...value, defaultValue: value, isValid });
+      }
     },
     [value.defaultValue, stake]
   );
@@ -204,7 +206,8 @@ const WithDraw = (props: Props) => {
         id="customized-dialog-title"
         onClose={() => {
           handleCloseModalRefresh();
-        }}>
+        }}
+      >
         Withdraw
       </BootstrapDialogTitle>
       <DialogContent className={cx('dialog-content')}>
