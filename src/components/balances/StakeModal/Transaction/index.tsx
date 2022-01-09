@@ -170,7 +170,7 @@ const Transaction = (props: Props) => {
   const handleCloseTransaction = () => {
     setTimeout(() => {
       handleCloseModal();
-    }, 500);
+    }, 3000);
     setTimeout(() => {
       handleBack();
     }, 700);
