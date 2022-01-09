@@ -26,27 +26,14 @@ const cx = classnames.bind(style);
 const Header: React.FC = () => {
   const { account } = useWeb3React<Web3>();
   const history = useHistory();
-
+  const pathName = history.location.pathname;
   const dispatch = useDispatch();
-  const [stackBorder, setStackBorder] = useState(false);
-  const [governanBorder, setGovernanceBorder] = useState(false);
-  const testRouter = () => {
-    setStackBorder(true);
-    setGovernanceBorder(false);
-  };
-  const openDialogConnect = () => {
-    setStackBorder(true);
-    setGovernanceBorder(false);
-  };
 
-  const setGovernaneStyle = () => {
-    setStackBorder(false);
-    setGovernanceBorder(true);
-  };
+  const testRouter = () => {};
+
+  const setGovernaneStyle = () => {};
 
   const disableBorderStyle = () => {
-    setStackBorder(false);
-    setGovernanceBorder(false);
     dispatch(setOpenConnectDialog(false));
     dispatch(setSelectedCurrency('usd'));
   };
@@ -63,12 +50,6 @@ const Header: React.FC = () => {
     }
   }, [account]);
   const isMobile = useIsMobile(576);
-  useEffect(() => {
-    if (!wallet.ethereumAddress) {
-      setStackBorder(false);
-      setGovernanceBorder(false);
-    }
-  }, [wallet.ethereumAddress]);
 
   return (
     <div className={cx('header-parent')}>
@@ -82,18 +63,16 @@ const Header: React.FC = () => {
           to="/stake"
           onClick={testRouter}
           className={cx('link-style', {
-            'link-style-border': stackBorder
-          })}
-        >
+            'link-style-border': '/stake' === pathName
+          })}>
           Stake
         </Link>
         <Link
           to="/governance"
           onClick={setGovernaneStyle}
           className={cx('link-style', {
-            'link-style-border-right': governanBorder
-          })}
-        >
+            'link-style-border-right': '/governance' === pathName
+          })}>
           Governance
         </Link>
       </div>
@@ -111,8 +90,7 @@ const Header: React.FC = () => {
               <div className={cx('footer-theme')}>
                 <span
                   className={cx('footer-theme__item', theme === THEME_MODE.LIGHT ? 'active' : '')}
-                  onClick={onSwitchTheme}
-                >
+                  onClick={onSwitchTheme}>
                   <img
                     className={cx('icon-theme')}
                     src={theme === THEME_MODE.LIGHT ? lightIcon : light_whiteIcon}
@@ -122,8 +100,7 @@ const Header: React.FC = () => {
                 </span>
                 <span
                   className={cx('footer-theme__item', theme === THEME_MODE.DARK ? 'active' : '')}
-                  onClick={onSwitchTheme}
-                >
+                  onClick={onSwitchTheme}>
                   <img
                     className={cx('icon-theme')}
                     src={theme === THEME_MODE.DARK ? dark_whiteIcon : darkIcon}
