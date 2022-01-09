@@ -3,6 +3,7 @@ interface Data {
   transactionHash: string;
   type: string;
   amount: string;
+  reward: string;
   date: string;
   status: string;
 }
@@ -61,6 +62,12 @@ export const headCells: readonly HeadCell[] = [
     numeric: true,
     disablePadding: false,
     label: 'Amount'
+  },
+  {
+    id: 'reward',
+    numeric: true,
+    disablePadding: false,
+    label: 'Reward'
   },
   {
     id: 'date',

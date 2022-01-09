@@ -4,6 +4,7 @@ import { getTransactionHistory } from 'src/apis/apis';
 export interface ITransaction {
   address: string;
   amount: string;
+  reward: string;
   block_hash: string;
   created_at: string;
   id: number;
