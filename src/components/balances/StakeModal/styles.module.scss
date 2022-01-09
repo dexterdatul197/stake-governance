@@ -304,6 +304,10 @@
       &__percent {
         align-items: center;
         display: flex;
+        .percent-number-active {
+          background: rgba(16, 125, 239, 1) !important;
+          color: white !important;
+        }
         .percent-number {
           color: var(--btn-background-connect-color);
           line-height: 33px;
