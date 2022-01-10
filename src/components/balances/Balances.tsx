@@ -101,10 +101,9 @@ const Balances: React.FC = () => {
       if (isConnected(wallet)) {
         const connectedAddress = currentAddress(wallet);
         const tokenBalance = await getCHNBalance().methods.balanceOf(connectedAddress).call();
-        const formatToken =
-          Math.floor(Number(String(new BigNumber(tokenBalance).dividedBy('1e18'))) * 10000) / 10000;
+        const formatToken = new BigNumber(tokenBalance).dividedBy('1e18');
         setChntoken(tokenBalance);
-        setWalletValue(format(formatToken));
+        setWalletValue(format(formatToken.toFixed(4).toString()));
       }
     } catch (error) {
       console.log(error);
@@ -116,23 +115,11 @@ const Balances: React.FC = () => {
       const connectedAddress = currentAddress(wallet);
       const getValueStake = await stakingToken().methods.userInfo(0, connectedAddress).call();
       const getValueEarned = await stakingToken().methods.pendingReward(0, connectedAddress).call();
-      const formatValueStake =
-        Math.floor(
-          Number(
-            String(new BigNumber(getValueStake.amount).dividedBy('1e18')).match(
-              /^\d+(?:\.\d{0,5})?/
-            )
-          ) * 10000
-        ) / 10000;
-      const formatValueEarned =
-        Math.floor(
-          Number(
-            String(new BigNumber(getValueEarned).dividedBy('1e18')).match(/^\d+(?:\.\d{0,5})?/)
-          ) * 10000
-        ) / 10000;
+      const formatValueStake = new BigNumber(getValueStake.amount).div(1e18);
+      const formatValueEarned = new BigNumber(getValueEarned).div(1e18);
       dispatch(setVotingWeight(format(formatValueStake)));
-      setStake(format(formatValueStake));
-      setEarn(format(formatValueEarned));
+      setStake(format(formatValueStake.toFixed(4).toString()));
+      setEarn(format(formatValueEarned.toFixed(4).toString()));
       // handleUpdateSmartContract();
     } catch (error) {
       console.log(error);
