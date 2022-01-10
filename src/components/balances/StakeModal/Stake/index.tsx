@@ -116,6 +116,7 @@ const Stake = (props: Props) => {
       setIsActivePercent4(false);
     }
   }, [value.default]);
+
   return (
     <React.Fragment>
       <DialogTitle className={cx('title-dialog')}>
