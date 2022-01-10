@@ -114,7 +114,10 @@ const WithDraw = (props: Props) => {
 
       if (stake > 0) {
         await stakingToken()
-          .methods.withdraw(0, web3.utils.toWei(String(value.defaultValue), 'ether'))
+          .methods.withdraw(
+            0,
+            new BigNumber(web3.utils.toWei(String(value.stake), 'ether')).div('1e18')
+          )
           .send({ from: currentAddress(wallet) });
         setDone(false);
         dispatch(
@@ -186,12 +189,9 @@ const WithDraw = (props: Props) => {
     },
     [value.defaultValue]
   );
-
   useEffect(() => {
-    console.log(value.defaultValue);
-    console.log(typeof stake);
-  }, [value.defaultValue]);
-
+    console.log(value.stake);
+  }, [value.stake]);
   return (
     <Dialog
       className={cx('dialog-container')}
