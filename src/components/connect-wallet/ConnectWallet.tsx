@@ -53,7 +53,7 @@ const ConnectWallet: React.FC = () => {
     <>
       {wallet.ethereumAddress ? (
         <div className={cx('button-logout', 'center-items')} onClick={handleLogout}>
-          <span className={cx('button__text')}>Logout</span>
+          <span className={cx('button__text')}>Log Out</span>
         </div>
       ) : (
         <div className={cx('button')} onClick={handleOpenConnectWalletDialog}>
