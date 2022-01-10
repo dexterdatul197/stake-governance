@@ -83,7 +83,6 @@ const WithDraw = (props: Props) => {
   const getValueStake = async () => {
     const connectedAddress = currentAddress(wallet);
     const stakeValue = await stakingToken().methods.userInfo(0, connectedAddress).call();
-    console.log('stakeValue', stakeValue);
     const earnValues = await stakingToken().methods.pendingReward(0, connectedAddress).call();
     const formatStake =
       Math.floor(
@@ -104,8 +103,6 @@ const WithDraw = (props: Props) => {
     setEarnValue(earn);
     setValue({ ...value, defaultValue: 0 });
   };
-
-  console.log('outside', value.stake);
 
   const handleWithdraw = async () => {
     try {
@@ -232,7 +229,8 @@ const WithDraw = (props: Props) => {
               disableUnderline
               type="text"
               onChange={handleInputChange}
-              value={value.defaultValue}
+              placeholder="0"
+              value={value.defaultValue === 0 ? '' : value.defaultValue}
             />
             <span onClick={getValueStake} className={cx('text-all')}>
               Max
