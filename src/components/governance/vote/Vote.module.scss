@@ -1,6 +1,6 @@
 :root {
   .governance-vote {
-    width: 30%;
+    // width: 30%;
     padding: 10px;
     background-color: var(--background-governance-color);
     border-radius: 20px;
@@ -8,6 +8,12 @@
     padding-bottom: 20px;
     height: fit-content;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    @media screen and (max-width: 576px) {
+      margin-bottom: 20px;
+    }
+    @media screen and (min-width: 577px) {
+      width: 30%;
+    }
   }
   .vote-title {
     color: var(--color-text-white-black);
