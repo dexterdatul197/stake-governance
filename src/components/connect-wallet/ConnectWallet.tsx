@@ -44,7 +44,9 @@ const ConnectWallet: React.FC = () => {
 
   const handleLogout = () => {
     deactivate();
+    const currentTheme = localStorage.getItem('theme') as string;
     localStorage.clear();
+    localStorage.setItem('theme', currentTheme);
     dispatch(setEthereumAddress(''));
     history.push('/');
   };
