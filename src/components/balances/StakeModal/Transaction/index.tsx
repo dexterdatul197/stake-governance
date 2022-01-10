@@ -11,7 +11,7 @@ import {
 import CloseIcon from '@material-ui/icons/Close';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import React, { useCallback, useEffect, useState } from 'react';
-import { currentAddress } from '../../../../helpers/common';
+import { currentAddress, format } from '../../../../helpers/common';
 import { getCHNBalance, stakingToken } from '../../../../helpers/ContractService';
 import { useAppSelector, useAppDispatch } from '../../../../store/hooks';
 import { openSnackbar, SnackbarVariant } from '../../../../store/snackbar';
@@ -208,7 +208,7 @@ const Transaction = (props: Props) => {
           {done === false ? (
             <React.Fragment>
               <Typography className={cx('token-quantity')}>
-                {progress ? <CircularProgress /> : ((value.default * walletValue) / 100).toFixed(4)}
+                {progress ? <CircularProgress /> : format(((new BigNumber(value.default).multipliedBy(new BigNumber(walletValue))).div(new BigNumber('100'))).toFixed(4).toString())}
               </Typography>
               <Typography className={cx('token-stake')}>CHN STAKE</Typography>
             </React.Fragment>

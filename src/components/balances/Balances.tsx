@@ -71,7 +71,7 @@ const Balances: React.FC = () => {
   const currencies = useAppSelector((state: any) => state.currency.currenciesList);
   const wallet = useAppSelector((state: any) => state.wallet);
   const [stake, setStake] = useState(0);
-  const [walletValue, setWalletValue] = useState(0);
+  const [walletValue, setWalletValue] = useState('0');
   const [earn, setEarn] = useState(0);
   const [updateSmartContract, setUpdateSmartContract] = useState(false);
   const [chnToken, setChntoken] = useState(0);
@@ -103,7 +103,7 @@ const Balances: React.FC = () => {
         const tokenBalance = await getCHNBalance().methods.balanceOf(connectedAddress).call();
         const formatToken = new BigNumber(tokenBalance).dividedBy('1e18');
         setChntoken(tokenBalance);
-        setWalletValue(format(formatToken.toFixed(4).toString()));
+        setWalletValue(formatToken.toFixed(4).toString());
       }
     } catch (error) {
       console.log(error);
@@ -150,7 +150,7 @@ const Balances: React.FC = () => {
               </Box>
               <Box className={cx('wallet')}>
                 <span className={cx('wallet__title')}>Wallet:</span>
-                <span className={cx('wallet__value')}>{walletValue}</span>
+                <span className={cx('wallet__value')}>{format(walletValue)}</span>
                 <span className={cx('wallet__token')}>CHN</span>
               </Box>
               <Box className={cx('earn')}>
