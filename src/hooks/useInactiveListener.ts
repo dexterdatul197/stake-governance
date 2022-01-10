@@ -15,7 +15,7 @@ export function useInactiveListener(suppress = false): void {
       if (error instanceof UnsupportedChainIdError) {
         dispatch(
           openSnackbar({
-            message: String(error).replace('UnsupportedChainIdError: ', ''),
+            message: 'Please select the correct network',
             variant: SnackbarVariant.ERROR
           })
         );

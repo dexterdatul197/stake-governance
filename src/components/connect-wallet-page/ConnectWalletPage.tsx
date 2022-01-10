@@ -47,6 +47,15 @@ const ConnectWalletPage: React.FC = () => {
       window.location.assign(process.env.REACT_APP_DEEP_LINK_METAMASK || '#');
       return;
     }
+    if (!windowObj?.ethereum?.isMetaMask) {
+      dispatch(
+        openSnackbar({
+          message: 'Please install Metamask',
+          variant: SnackbarVariant.ERROR
+        })
+      );
+      return;
+    }
     try {
       activate(injectedConnector).then(() => {
         dispatch(setWalletName(walletsConfig[0]));
@@ -100,22 +109,22 @@ const ConnectWalletPage: React.FC = () => {
       icon: metamask,
       title: 'Metamask',
       onClickFunc: handleConnectMetaMask
-    },
-    {
-      icon: trust,
-      title: 'Trust Wallet',
-      onClickFunc: handleConnectWalletConnect
-    },
-    {
-      icon: coinbase,
-      title: 'Coinbase',
-      onClickFunc: handleConnectCoinBase
-    },
-    {
-      icon: wallet_connect,
-      title: 'Wallet Connect',
-      onClickFunc: handleConnectWalletConnect
     }
+    // {
+    //   icon: trust,
+    //   title: 'Trust Wallet',
+    //   onClickFunc: handleConnectWalletConnect
+    // },
+    // {
+    //   icon: coinbase,
+    //   title: 'Coinbase',
+    //   onClickFunc: handleConnectCoinBase
+    // },
+    // {
+    //   icon: wallet_connect,
+    //   title: 'Wallet Connect',
+    //   onClickFunc: handleConnectWalletConnect
+    // }
   ];
 
   const renderData = useCallback((content) => {
