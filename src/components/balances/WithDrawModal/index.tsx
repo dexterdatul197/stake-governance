@@ -111,25 +111,10 @@ const WithDraw = (props: Props) => {
       setTimeout(() => {
         setProgress(false);
       }, 1000);
-
+      const price = web3.utils.toWei(String(value.stake), 'ether');
       if (stake > 0) {
         await stakingToken()
-          .methods.withdraw(
-            0,
-            new BigNumber(web3.utils.toWei(String(value.stake), 'ether')).div('1e18')
-          )
-          .send({ from: currentAddress(wallet) });
-        setDone(false);
-        dispatch(
-          openSnackbar({
-            message: 'Withdraw Success',
-            variant: SnackbarVariant.SUCCESS
-          })
-        );
-        handleUpdateSmartContract();
-      } else if (stake === value.stake) {
-        await stakingToken()
-          .methods.withdraw(0, web3.utils.toWei(String(value.stake), 'ether'))
+          .methods.withdraw(0, web3.utils.fromWei(String(price), 'ether'))
           .send({ from: currentAddress(wallet) });
         setDone(false);
         dispatch(
@@ -189,9 +174,11 @@ const WithDraw = (props: Props) => {
     },
     [value.defaultValue]
   );
-  useEffect(() => {
-    console.log(value.stake);
-  }, [value.stake]);
+
+  // useEffect(() => {
+  //   console.log(web3.utils.fromWei(String(price), 'ether'));
+  // }, [value.stake]);
+
   return (
     <Dialog
       className={cx('dialog-container')}
