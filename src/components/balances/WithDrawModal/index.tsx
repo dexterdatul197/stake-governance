@@ -98,10 +98,6 @@ const WithDraw = (props: Props) => {
     });
   };
 
-  useEffect(() => {
-    getValueStake();
-  }, []);
-
   const handleCloseModalRefresh = () => {
     handleCloseModalWithDraw();
     setEarnValue(earn);
@@ -233,7 +229,6 @@ const WithDraw = (props: Props) => {
               type="text"
               onChange={handleInputChange}
               value={value.defaultValue}
-              autoFocus
             />
             <span onClick={getValueStake} className={cx('text-all')}>
               Max
