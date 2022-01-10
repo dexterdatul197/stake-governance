@@ -118,6 +118,21 @@ const Main: React.FC = () => {
               defaultValue={'usd'}
               onChange={handleOnChangeSelectCurrency}
               renderInput={(item) => <TextField {...item} margin="normal" fullWidth />}
+              popupIcon={
+                <svg
+                  width="20"
+                  height="10"
+                  viewBox="0 0 23 14"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M1.22803 1.58691L11.3367 11.6956L21.4454 1.58691"
+                    stroke="#107DEF"
+                    strokeWidth="2"
+                  />
+                </svg>
+              }
               size={'small'}
               id="combo-box-demo"
             />

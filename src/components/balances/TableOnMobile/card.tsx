@@ -42,13 +42,15 @@ export const Card: FC<CardProps> = (props) => {
       <div className={cx('card-items')}>
         <div>Amount</div>
         <div className={cx('card-items-2')}>
-          {ethers.utils.formatEther(props.transaction.amount)}
+          {Number(ethers.utils.formatEther(props.transaction.amount)).toFixed(4)}
         </div>
       </div>
       <div className={cx('card-items')}>
         <div>Reward</div>
         <div className={cx('card-items-2')}>
-          {props.transaction.type === 1 ? ethers.utils.formatEther(props.transaction.reward) : '--'}
+          {props.transaction.type === 1
+            ? Number(ethers.utils.formatEther(props.transaction.reward || 0)).toFixed(4)
+            : '--'}
         </div>
       </div>
       <div className={cx('card-items')}>
