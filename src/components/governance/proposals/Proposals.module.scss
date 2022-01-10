@@ -1,10 +1,12 @@
 :root {
   .governance-proposal {
-    width: 65%;
     background-color: var(--background-governance-color);
     padding: 10px;
     border-radius: 20px;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    @media screen and (min-width: 577px) {
+      width: 65%;
+    }
   }
   .text-header {
     color: var(--color-text-white-black);

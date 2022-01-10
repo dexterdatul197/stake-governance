@@ -29,7 +29,7 @@ const Vote: React.FC<Props> = (props) => {
       // // check amount strike in wallet > proposalThreshold()
       const proposalThreshold = await governance().methods.proposalThreshold().call();
       const checkCHNamount = new BigNumber(votingWeight).comparedTo(
-        new BigNumber(proposalThreshold)
+        new BigNumber(proposalThreshold).div(1e18)
       );
       // check user dont have any proposal with status active or pending
       console.log(
@@ -96,7 +96,8 @@ const Vote: React.FC<Props> = (props) => {
       <div className={cx('vote-title')}>Vote Weight</div>
       <div className={cx('vote-content')}>
         <div className={cx('vote-value')}>
-          {votingWeight} <span>CHN</span>
+          <span className={cx('stake_value')}>{votingWeight}</span>
+          <span className={cx('stake_token')}>CHN</span>
         </div>
       </div>
       <Button onClick={handleOpenCreateForm} className={cx('create-proposal')}>
@@ -109,7 +110,10 @@ const Vote: React.FC<Props> = (props) => {
         {!openLoading && 'Create Proposal'}
       </Button>
       <div className={cx('border-bottom')}></div>
-      <div className={cx('rank')}>Rank: 43</div>
+      <div className={cx('rank')}>
+        <span className={cx('rank-title')}>Rank:</span>
+        <span className={cx('rank-value')}>0</span>
+      </div>
       <div className={cx('view-leader-board')}>View leader board</div>
     </div>
   );

@@ -1,6 +1,6 @@
 :root {
   .governance-vote {
-    width: 30%;
+    // width: 30%;
     padding: 10px;
     background-color: var(--background-governance-color);
     border-radius: 20px;
@@ -8,6 +8,12 @@
     padding-bottom: 20px;
     height: fit-content;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    @media screen and (max-width: 576px) {
+      margin-bottom: 20px;
+    }
+    @media screen and (min-width: 577px) {
+      width: 30%;
+    }
   }
   .vote-title {
     color: var(--color-text-white-black);
@@ -20,7 +26,7 @@
     height: 3em;
     line-height: 1.7;
   }
-  .vote-value, .rank {
+  .vote-value {
       color: var(--color-text-white-blue);
       font-size: 1.1em;
   }
@@ -48,5 +54,30 @@
       width: 50%;
       margin: 0 auto;
       cursor: pointer;
+  }
+  .stake_value {
+    margin-right: 10px;
+    font-weight: bold;
+  }
+  .stake_token {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-color-stake);
+    width: 92px;
+    height: 33px;
+    padding: 5px 10px;
+    background: rgba(16, 125, 239, 0.1);
+    border-radius: 30px;
+    text-align: center;
+    line-height: 33px;
+    flex: 1;
+  }
+  .rank-title {
+    color: var(--color-text-white-black);
+    margin-right: 10px;
+  }
+  .rank-value {
+    color: var(--text-color-stake);
+    font-weight: 700;
   }
 }
