@@ -1,8 +1,9 @@
 import { BigNumber } from '@0x/utils';
 import { Button, CircularProgress } from '@material-ui/core';
 import classNames from 'classnames/bind';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { getRank } from '../../../apis/apis';
 import { currentAddress, format } from '../../../helpers/common';
 import { isConnected } from '../../../helpers/connectWallet';
 import { governance } from '../../../helpers/ContractService';
@@ -21,6 +22,7 @@ const Vote: React.FC<Props> = (props) => {
   const wallet = useAppSelector((state) => state.wallet);
   const votingWeight = useAppSelector((state) => state.governance.voteingWeight);
   const [openLoading, setOpenLoading] = useState(false);
+  const [rank, setRank] = useState('0');
   const handleOpenCreateForm = async () => {
     if (isConnected(wallet)) {
       let createProposal = true;
@@ -91,6 +93,13 @@ const Vote: React.FC<Props> = (props) => {
       );
     }
   };
+  const getRankApi = async() => {
+    const rank = await getRank(currentAddress(wallet));
+    setRank(rank.toString());
+  }
+  useEffect(() => {
+    getRankApi();
+  }, []);
   return (
     <div className={cx('governance-vote')}>
       <div className={cx('vote-title')}>Vote Weight</div>
@@ -112,7 +121,7 @@ const Vote: React.FC<Props> = (props) => {
       <div className={cx('border-bottom')}></div>
       <div className={cx('rank')}>
         <span className={cx('rank-title')}>Rank:</span>
-        <span className={cx('rank-value')}>0</span>
+        <span className={cx('rank-value')}>{rank}</span>
       </div>
       <div className={cx('view-leader-board')}>View leader board</div>
     </div>
