@@ -24,13 +24,8 @@ const Governance: React.FC = () => {
       const connectedAddress = currentAddress(wallet);
       // const chnAmount = await getCHNBalance().methods.balanceOf(connectedAddress).call();
       const chnAmount = await stakingToken().methods.userInfo(0, connectedAddress).call();
-      const formatValueStake =
-        Math.floor(
-          Number(
-            String(new BigNumber(chnAmount.amount).dividedBy('1e18')).match(/^\d+(?:\.\d{0,5})?/)
-          ) * 10000
-        ) / 10000;
-      dispatch(setVotingWeight(format(formatValueStake)));
+      const formatValueStake = new BigNumber(chnAmount.amount).div(1e18);
+      dispatch(setVotingWeight(format(formatValueStake.toFixed(4).toString())));
       setIsLoading(false);
     } else {
       setIsLoading(true);
