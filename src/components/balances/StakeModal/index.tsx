@@ -20,7 +20,6 @@ interface Props {
 const Modal = memo((props: Props) => {
   const { openStake, handleCloseModal, walletValue, handleUpdateSmartContract, chnToken } = props;
   const [activeStep, setActiveStep] = useState(0);
-  const [progress, setProgress] = useState(false);
 
   const [value, setValue] = useState({
     default: 0,
@@ -37,7 +36,6 @@ const Modal = memo((props: Props) => {
             cx={cx}
             walletValue={walletValue}
             handleNext={handleNext}
-            progress={progress}
             setValue={setValue}
             value={value}
             handleCloseModal={handleCloseModal}
@@ -69,11 +67,7 @@ const Modal = memo((props: Props) => {
   };
 
   const handleNext = () => {
-    setProgress(true);
-    setTimeout(() => {
-      setActiveStep((prevActiveStep) => prevActiveStep + 1);
-      setProgress(false);
-    }, 1000);
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
   const handleBack = () => {
