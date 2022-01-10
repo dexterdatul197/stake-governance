@@ -112,9 +112,22 @@ const WithDraw = (props: Props) => {
         setProgress(false);
       }, 1000);
       const price = web3.utils.toWei(String(value.stake), 'ether');
-      if (stake > 0) {
+      if (stake === value.stake) {
         await stakingToken()
           .methods.withdraw(0, web3.utils.fromWei(String(price), 'ether'))
+          .send({ from: currentAddress(wallet) });
+        setDone(false);
+        dispatch(
+          openSnackbar({
+            message: 'Withdraw Success',
+            variant: SnackbarVariant.SUCCESS
+          })
+        );
+        handleUpdateSmartContract();
+      } else if (stake !== 0) {
+        const priceDefault = web3.utils.toWei(String(value.defaultValue), 'ether');
+        await stakingToken()
+          .methods.withdraw(0, priceDefault)
           .send({ from: currentAddress(wallet) });
         setDone(false);
         dispatch(
@@ -170,14 +183,10 @@ const WithDraw = (props: Props) => {
     (event: any) => {
       const { value } = event.target;
       const isValid = !value || validateNumberField(value);
-      setValue({ ...value, defaultValue: value, isValid });
+      setValue({ ...value, defaultValue: Number(value), isValid });
     },
     [value.defaultValue]
   );
-
-  // useEffect(() => {
-  //   console.log(web3.utils.fromWei(String(price), 'ether'));
-  // }, [value.stake]);
 
   return (
     <Dialog
