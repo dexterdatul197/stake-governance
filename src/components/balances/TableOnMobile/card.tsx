@@ -5,6 +5,7 @@ import moment from 'moment';
 import { ITransaction } from './transaction.slice';
 import classNames from 'classnames/bind';
 import styles from './styles.module.scss';
+import arrowRightUp from '../../../assets/icon/arrow-right-up.svg';
 
 const cx = classNames.bind(styles);
 
@@ -34,6 +35,14 @@ export const Card: FC<CardProps> = (props) => {
       <div className={cx('card-items')}>
         <div>{props.transaction.id}</div>
         <div className={cx('card-head-item')}>{get_ellipsis_mid(props.transaction.tx_hash)}</div>
+        <img
+          className={cx('icon-redirect')}
+          onClick={() => {
+            window.open(`${process.env.REACT_APP_EXPLORER + props.transaction.tx_hash}`);
+          }}
+          src={arrowRightUp}
+          alt=""
+        />
       </div>
       <div className={cx('card-items')}>
         <div>Type</div>
