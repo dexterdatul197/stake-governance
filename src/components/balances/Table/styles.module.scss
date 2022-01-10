@@ -72,9 +72,12 @@
         border-bottom: none;
         .table-pagination {
           padding-bottom: 23px;
-          color: var(--color-text-white-black);
+          color: var(--color-text);
           font-size: 14px;
           font-weight: 600;
+          svg {
+            color: var(--color-text) !important;
+          }
         }
       }
     }
