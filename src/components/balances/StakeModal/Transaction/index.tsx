@@ -43,7 +43,6 @@ const Transaction = (props: Props) => {
     chnToken
   } = props;
 
-  console.log('token: ', chnToken);
   const wallet = useAppSelector((state: any) => state.wallet);
   const web3 = new Web3();
   const dispatch = useAppDispatch();
