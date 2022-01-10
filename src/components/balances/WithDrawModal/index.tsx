@@ -83,6 +83,7 @@ const WithDraw = (props: Props) => {
   const getValueStake = async () => {
     const connectedAddress = currentAddress(wallet);
     const stakeValue = await stakingToken().methods.userInfo(0, connectedAddress).call();
+    console.log('stakeValue', stakeValue);
     const earnValues = await stakingToken().methods.pendingReward(0, connectedAddress).call();
     const formatStake =
       Math.floor(
@@ -104,6 +105,8 @@ const WithDraw = (props: Props) => {
     setValue({ ...value, defaultValue: 0 });
   };
 
+  console.log('outside', value.stake);
+
   const handleWithdraw = async () => {
     try {
       setProgress(true);
@@ -111,10 +114,11 @@ const WithDraw = (props: Props) => {
       setTimeout(() => {
         setProgress(false);
       }, 1000);
-      const price = web3.utils.toWei(String(value.stake), 'ether');
-      if (stake === value.stake) {
+
+      // withdraw max
+      if (new BigNumber(stake).eq(value.stake)) {
         await stakingToken()
-          .methods.withdraw(0, web3.utils.fromWei(String(price), 'ether'))
+          .methods.withdraw(0, value.stake)
           .send({ from: currentAddress(wallet) });
         setDone(false);
         dispatch(
@@ -124,6 +128,8 @@ const WithDraw = (props: Props) => {
           })
         );
         handleUpdateSmartContract();
+
+        // custom withdraw
       } else if (stake !== 0) {
         const priceDefault = web3.utils.toWei(String(value.defaultValue), 'ether');
         await stakingToken()
