@@ -145,22 +145,26 @@ const Stake = (props: Props) => {
           <Box className={cx('dialog-content__percent')}>
             <span
               onClick={handleChangeInputPercent}
-              className={cx('percent-number', { 'percent-number-active': isActivePercent1 })}>
+              className={cx('percent-number', { 'percent-number-active': isActivePercent1 })}
+            >
               {valueText(value.value1)}
             </span>
             <span
               onClick={handkeChangeInputPercent2}
-              className={cx('percent-number', { 'percent-number-active': isActivePercent2 })}>
+              className={cx('percent-number', { 'percent-number-active': isActivePercent2 })}
+            >
               {valueText(value.value2)}
             </span>
             <span
               onClick={handkeChangeInputPercent3}
-              className={cx('percent-number', { 'percent-number-active': isActivePercent3 })}>
+              className={cx('percent-number', { 'percent-number-active': isActivePercent3 })}
+            >
               {valueText(value.value3)}
             </span>
             <span
               onClick={handkeChangeInputPercent4}
-              className={cx('percent-number', { 'percent-number-active': isActivePercent4 })}>
+              className={cx('percent-number', { 'percent-number-active': isActivePercent4 })}
+            >
               {value.all ? 'All' : 0}
             </span>
           </Box>
@@ -184,7 +188,8 @@ const Stake = (props: Props) => {
         <Button
           onClick={handleNextStep}
           className={cx('button-stake')}
-          disabled={new BigNumber(walletValue).lte(0)}>
+          disabled={new BigNumber(walletValue).lte(0)}
+        >
           Stake
         </Button>
       </DialogActions>

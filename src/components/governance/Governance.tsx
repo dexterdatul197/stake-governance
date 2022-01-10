@@ -27,9 +27,7 @@ const Governance: React.FC = () => {
       const formatValueStake =
         Math.floor(
           Number(
-            String(new BigNumber(chnAmount.amount).dividedBy('1e18')).match(
-              /^\d+(?:\.\d{0,5})?/
-            )
+            String(new BigNumber(chnAmount.amount).dividedBy('1e18')).match(/^\d+(?:\.\d{0,5})?/)
           ) * 10000
         ) / 10000;
       dispatch(setVotingWeight(format(formatValueStake)));

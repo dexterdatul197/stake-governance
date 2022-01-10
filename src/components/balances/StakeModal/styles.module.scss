@@ -123,7 +123,6 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      min-width: 300px;
       width: 100%;
       background: #107def;
       border-radius: 10px;
@@ -309,12 +308,11 @@
         }
         .percent-number {
           color: var(--btn-background-connect-color);
-          line-height: 33px;
+          line-height: 25px;
+          height: 24px;
           background: rgba(16, 125, 239, 0.1);
           border-radius: 30px;
-          text-align: center;
           margin-right: 8px;
-          text-align: center;
           width: 100%;
           font-size: 12px !important;
           cursor: pointer !important;
@@ -337,8 +335,8 @@
           align-items: center;
           align-content: center;
           justify-content: flex-start;
+          padding-right: auto;
           .title {
-            margin-top: 16px !important;
             font-size: 14px;
             font-weight: 600;
             color: var(--color-text-white-black);
@@ -351,6 +349,17 @@
             }
             padding-left: 10px;
             padding-bottom: 0px;
+          }
+          .token {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-color-stake);
+            width: 78px;
+            height: 24px;
+            background: rgba(16, 125, 239, 0.1);
+            border-radius: 30px;
+            text-align: center;
+            line-height: 17.71px;
           }
         }
 
@@ -360,10 +369,10 @@
           align-content: center;
           justify-content: flex-start;
           .title {
-            margin-top: 16px !important;
             font-size: 14px;
             font-weight: 600;
             color: var(--color-text-white-black);
+            padding-right: auto;
           }
           .autocomplete {
             input {
@@ -373,6 +382,17 @@
             }
             padding-left: 10px;
             padding-bottom: 0px;
+          }
+          .token {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-color-stake);
+            width: 78px;
+            height: 24px;
+            background: rgba(16, 125, 239, 0.1);
+            border-radius: 30px;
+            text-align: center;
+            line-height: 17.71px;
           }
         }
       }
@@ -387,6 +407,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        min-width: 288px;
         width: 100%;
         background: rgba(31, 55, 100, 0.5);
         border-radius: 10px;
@@ -405,30 +426,29 @@
         align-items: center;
         justify-content: space-between;
         p {
-          margin-left: 50px !important;
-          margin-right: 50px !important;
           font-size: 18px !important;
+          line-height: 22.77px;
         }
         svg {
           padding: 0 !important;
         }
         .icon_right {
-          padding-right: 47px;
-          padding-left: 8px;
+          padding-right: 0px;
+          padding-left: 0px;
           cursor: pointer;
-          color: #001c4e61;
+          color: var(--text-color-balance);
         }
         .icon_left {
-          padding-left: 51px;
-          padding-right: 8px;
+          padding-left: 0px;
+          padding-right: 0px;
           cursor: pointer;
-          color: #001c4e61;
+          color: var(--text-color-balance);
         }
         .confirm-title {
           font-size: 20px;
           display: block;
           font-weight: 600;
-          color: rgba(0, 28, 78, 0.87);
+          color: var(--text-color-balance);
           text-transform: capitalize;
         }
       }
@@ -449,12 +469,12 @@
       .token-quantity {
         font-size: 36px;
         font-weight: 600;
-        color: rgba(0, 28, 78, 0.87);
+        color: var(--text-color-balance);
       }
       .token-stake {
         font-size: 14px;
         font-weight: 600;
-        color: rgba(0, 28, 78, 0.87);
+        color: var(--text-color-balance);
       }
     }
 
@@ -463,7 +483,7 @@
       justify-content: center;
       padding: 0px 13px 38px 13px;
       &__confirm {
-        min-width: 300px;
+        min-width: 329px;
         width: 100%;
         font-size: 14px;
         font-weight: normal;

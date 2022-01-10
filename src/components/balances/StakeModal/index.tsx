@@ -91,7 +91,8 @@ const Modal = memo((props: Props) => {
           overflowY: 'unset',
           borderRadius: '20px'
         }
-      }}>
+      }}
+    >
       {renderStepContent(activeStep)}
     </Dialog>
   );

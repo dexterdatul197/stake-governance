@@ -12,6 +12,10 @@
     justify-content: center;
     height: 3em;
     line-height: 1.5;
+    input {
+      text-overflow: none !important;
+      min-width: 50px !important;
+    }
   }
   .text-head .price {
     font-size: 25px;
