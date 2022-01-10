@@ -152,6 +152,9 @@ body {
 .footer {
   height: 100px;
   background: var(--footer-background-color);
+  position: fixed;
+  width: 100%;
+  bottom: 0;
   // position: absolute;
   // bottom: 0;
   width: 100%;
@@ -198,6 +201,7 @@ body {
     padding: 20px 16px;
   }
   .footer {
+    
     height: 0px;
   }
 }
