@@ -13,6 +13,7 @@ import TableComponent from './Table';
 import CardComponent from './TableOnMobile';
 import ModalWithDraw from './WithDrawModal';
 import ConnectWalletPage from '../connect-wallet-page/ConnectWalletPage';
+import { setVotingWeight } from '../governance/redux/Governance';
 
 const commaNumber = require('comma-number');
 const format = commaNumber.bindWith(',', '.');
@@ -129,6 +130,7 @@ const Balances: React.FC = () => {
             String(new BigNumber(getValueEarned).dividedBy('1e18')).match(/^\d+(?:\.\d{0,5})?/)
           ) * 10000
         ) / 10000;
+      dispatch(setVotingWeight(format(formatValueStake)));
       setStake(format(formatValueStake));
       setEarn(format(formatValueEarned));
       // handleUpdateSmartContract();
