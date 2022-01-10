@@ -22,6 +22,8 @@
       display: flex;
       flex-direction: row;
       margin-bottom: 14px;
+      text-align: center;
+      line-height: 20px;
       .card-items-2 {
         margin-left: auto;
         color: var(--mb-card-color-text-value);
@@ -40,11 +42,14 @@
         background-color: var(--mb-card-btn);
         padding: 4px 8px 4px 8px;
       }
+      .icon-redirect {
+        cursor: pointer;
+      }
     }
   }
 }
 @media screen and (max-width: 576px) {
   .card-container {
-    width:auto;
+    width: auto;
   }
 }
