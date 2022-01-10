@@ -1,6 +1,6 @@
 body {
   background-color: var(--main-background-color);
-  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   margin: 0;
   display: flex;
   flex-direction: column;
@@ -74,7 +74,7 @@ body {
   // widthdraw mooile
   --mb-bg-amount: #edf1f8;
 }
-[data-theme='dark'] {
+[data-theme="dark"] {
   --btn-header-border-color: #72bf65;
   --header-bar-color: #1b1c1f;
   --main-background-color: #121316;
@@ -142,7 +142,7 @@ body {
 }
 .area-chart-main {
   padding: 20px 100px;
-  margin-bottom :100px;
+  margin-bottom: 100px;
   // min-width: 637px;
   background-color: var(--main-background-color);
   // height: calc(100% - 50px);
@@ -175,8 +175,18 @@ body {
 .pd-15 {
   padding: 15px;
 }
-
+.makeStyles-root-1 {
+  min-width: 100px !important;
+  width: 10% !important;
+}
+.makeStyles-endAdornment-4 > .MuiAutocomplete-popupIndicator {
+  margin-top: 3px !important;
+}
 @media screen and (max-width: 768px) {
+  .makeStyles-root-1 {
+    min-width: 100px !important;
+    width: 10% !important;
+  }
   .App {
     margin: 0;
     box-sizing: border-box;
@@ -223,6 +233,10 @@ body {
 @media screen and (max-width: 576px) {
   .App {
     margin: 0;
+  }
+  .makeStyles-root-1 {
+    min-width: 78px !important;
+    width: 10% !important;
   }
   .area-chart-main {
     padding: 16px !important;
