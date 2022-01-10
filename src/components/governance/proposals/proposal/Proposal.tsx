@@ -44,7 +44,7 @@ const Proposal: React.FC<Props> = (props) => {
   };
 
   const redirectToProposalDetail = (proposalId: number) => {
-    history.push(`/proposal/${proposalId}`);
+    // history.push(`/proposal/${proposalId}`);
   };
 
   useEffect(() => {

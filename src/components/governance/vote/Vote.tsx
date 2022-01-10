@@ -20,7 +20,6 @@ const Vote: React.FC<Props> = (props) => {
   const dispatch = useDispatch();
   const wallet = useAppSelector((state) => state.wallet);
   const votingWeight = useAppSelector((state) => state.governance.voteingWeight);
-
   const [openLoading, setOpenLoading] = useState(false);
   const handleOpenCreateForm = async () => {
     if (isConnected(wallet)) {
@@ -92,15 +91,12 @@ const Vote: React.FC<Props> = (props) => {
       );
     }
   };
-  const convertVotingWeight = (voteWeight: string | undefined) => {
-    return voteWeight ? format(new BigNumber(voteWeight).div(1e18).toFixed(4).toString()) : '';
-  };
   return (
     <div className={cx('governance-vote')}>
       <div className={cx('vote-title')}>Vote Weight</div>
       <div className={cx('vote-content')}>
         <div className={cx('vote-value')}>
-          {convertVotingWeight(votingWeight)} <span>CHN</span>
+          {votingWeight} <span>CHN</span>
         </div>
       </div>
       <Button onClick={handleOpenCreateForm} className={cx('create-proposal')}>

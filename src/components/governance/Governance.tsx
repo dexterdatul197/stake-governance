@@ -3,9 +3,9 @@ import { CircularProgress } from '@material-ui/core';
 import classNames from 'classnames/bind';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { currentAddress } from '../../helpers/common';
+import { currentAddress, format } from '../../helpers/common';
 import { isConnected } from '../../helpers/connectWallet';
-import { getCHNBalance } from '../../helpers/ContractService';
+import { getCHNBalance, stakingToken } from '../../helpers/ContractService';
 import { useAppSelector } from '../../store/hooks';
 import { openSnackbar, SnackbarVariant } from '../../store/snackbar';
 import ConnectWalletPage from '../connect-wallet-page/ConnectWalletPage';
@@ -18,15 +18,21 @@ const Governance: React.FC = () => {
   const dispatch = useDispatch();
   const wallet = useAppSelector((state) => state.wallet);
   const [isLoading, setIsLoading] = useState(false);
-  const [voting, setVoting] = useState('0');
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const getBalanceOf = async () => {
     if (isConnected(wallet)) {
       const connectedAddress = currentAddress(wallet);
-      const chnAmount = await getCHNBalance().methods.balanceOf(connectedAddress).call();
-      dispatch(setVotingWeight(chnAmount));
-      const vote = new BigNumber(chnAmount).div(1e18).toString();
-      setVoting(vote);
+      // const chnAmount = await getCHNBalance().methods.balanceOf(connectedAddress).call();
+      const chnAmount = await stakingToken().methods.userInfo(0, connectedAddress).call();
+      const formatValueStake =
+        Math.floor(
+          Number(
+            String(new BigNumber(chnAmount.amount).dividedBy('1e18')).match(
+              /^\d+(?:\.\d{0,5})?/
+            )
+          ) * 10000
+        ) / 10000;
+      dispatch(setVotingWeight(format(formatValueStake)));
       setIsLoading(false);
     } else {
       setIsLoading(true);

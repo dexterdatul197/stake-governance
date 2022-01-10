@@ -82,8 +82,8 @@ const AreaChart: React.FC<Props> = (props) => {
     // latestResData.tvl = latestTVL;
 
     const categories: any = res.map((item: number[]) => convertToDate(item[0]));
-    const seriesPrice = res.map((item: number[]) => item[2]);
-    let tvlFinally = tvlData.map((item: TVLData) => new BigNumber(item.tvl).toFixed(4));
+    const seriesPrice = res.map((item: number[]) => new BigNumber(item[2]).toFixed(4).toString());
+    let tvlFinally = tvlData.map((item: TVLData) => new BigNumber(item.tvl).toFixed(4).toString());
 
     if (tvlFinally.length > seriesPrice.length) {
       const indexRemove = tvlFinally.length - seriesPrice.length;
