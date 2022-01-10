@@ -2,7 +2,6 @@ import { BigNumber } from '@0x/utils';
 import {
   Box,
   Button,
-  CircularProgress,
   DialogActions,
   DialogContent,
   DialogTitle,
@@ -10,10 +9,10 @@ import {
   Slider,
   Typography
 } from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useAppDispatch } from '../../../../store/hooks';
 import { openSnackbar, SnackbarVariant } from '../../../../store/snackbar';
-import CloseIcon from '@material-ui/icons/Close';
 
 const commaNumber = require('comma-number');
 const format = commaNumber.bindWith(',', '.');
@@ -22,14 +21,13 @@ interface Props {
   cx?: any;
   walletValue?: any;
   handleNext: () => void;
-  progress: Boolean;
   value?: any;
   setValue: (value: any) => void;
   handleCloseModal?: () => void;
 }
 
 const Stake = (props: Props) => {
-  const { cx, walletValue, handleNext, progress, value, setValue, handleCloseModal } = props;
+  const { cx, walletValue, handleNext, value, setValue, handleCloseModal } = props;
   const [isActivePercent1, setIsActivePercent1] = useState(false);
   const [isActivePercent2, setIsActivePercent2] = useState(false);
   const [isActivePercent3, setIsActivePercent3] = useState(false);
@@ -192,7 +190,7 @@ const Stake = (props: Props) => {
           className={cx('button-stake')}
           disabled={new BigNumber(walletValue).lte(0)}
         >
-          {progress ? <CircularProgress style={{ color: '#ffffff' }} /> : 'Stake'}
+          Stake
         </Button>
       </DialogActions>
     </React.Fragment>
