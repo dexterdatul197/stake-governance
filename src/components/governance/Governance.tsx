@@ -22,10 +22,9 @@ const Governance: React.FC = () => {
   const getBalanceOf = async () => {
     if (isConnected(wallet)) {
       const connectedAddress = currentAddress(wallet);
-      // const chnAmount = await getCHNBalance().methods.balanceOf(connectedAddress).call();
       const chnAmount = await stakingToken().methods.userInfo(0, connectedAddress).call();
       const formatValueStake = new BigNumber(chnAmount.amount).div(1e18);
-      dispatch(setVotingWeight(format(formatValueStake.toFixed(4).toString())));
+      dispatch(setVotingWeight(formatValueStake.toFixed(4).toString()));
       setIsLoading(false);
     } else {
       setIsLoading(true);
