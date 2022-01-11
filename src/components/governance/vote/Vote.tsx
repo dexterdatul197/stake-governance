@@ -34,13 +34,6 @@ const Vote: React.FC<Props> = (props) => {
         new BigNumber(proposalThreshold).div(1e18)
       );
       // check user dont have any proposal with status active or pending
-      console.log(
-        'COMPARE THRESHOLD: ',
-        format(votingWeight),
-        format(proposalThreshold),
-        checkCHNamount
-      );
-
       const voteContract = governance();
       const lastestProposalId = await voteContract.methods
         .latestProposalIds(connectedAddress)
@@ -105,7 +98,7 @@ const Vote: React.FC<Props> = (props) => {
       <div className={cx('vote-title')}>Vote Weight</div>
       <div className={cx('vote-content')}>
         <div className={cx('vote-value')}>
-          <span className={cx('stake_value')}>{votingWeight}</span>
+          <span className={cx('stake_value')}>{format(votingWeight)}</span>
           <span className={cx('stake_token')}>CHN</span>
         </div>
       </div>

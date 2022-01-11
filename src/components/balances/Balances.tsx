@@ -117,7 +117,7 @@ const Balances: React.FC = () => {
       const getValueEarned = await stakingToken().methods.pendingReward(0, connectedAddress).call();
       const formatValueStake = new BigNumber(getValueStake.amount).div(1e18);
       const formatValueEarned = new BigNumber(getValueEarned).div(1e18);
-      dispatch(setVotingWeight(format(formatValueStake)));
+      dispatch(setVotingWeight(formatValueStake));
       setStake(format(formatValueStake.toFixed(4).toString()));
       setEarn(format(formatValueEarned.toFixed(4).toString()));
       // handleUpdateSmartContract();
