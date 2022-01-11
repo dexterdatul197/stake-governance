@@ -18,6 +18,7 @@ import './_app.scss';
 import { BaseSocket } from 'src/socket/BaseSocket';
 import { useAppDispatch, useAppSelector } from './store/hooks';
 import { setTheme } from './store/theme';
+import LeaderBoard from './components/governance/leaderboard/LeaderBoard';
 
 const App: React.FC = () => {
   const context = useWeb3React<Web3>();
@@ -56,6 +57,7 @@ const App: React.FC = () => {
           <Route exact path="/" component={Main} />
           <Route exact path="/stake" component={Balances} />
           <Route exact path="/governance" component={Governance} />
+          <Route exact path="/governance/leaderboard" component={LeaderBoard} />
           <Route exact path="/proposal/:proposalId" component={ProposalDetail} />
         </Switch>
       </div>

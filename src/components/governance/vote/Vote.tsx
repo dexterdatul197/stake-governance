@@ -3,6 +3,7 @@ import { Button, CircularProgress } from '@material-ui/core';
 import classNames from 'classnames/bind';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { getRank } from '../../../apis/apis';
 import { currentAddress, format } from '../../../helpers/common';
 import { isConnected } from '../../../helpers/connectWallet';
@@ -19,6 +20,7 @@ interface Props {
 
 const Vote: React.FC<Props> = (props) => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const wallet = useAppSelector((state) => state.wallet);
   const votingWeight = useAppSelector((state) => state.governance.voteingWeight);
   const [openLoading, setOpenLoading] = useState(false);
@@ -86,6 +88,10 @@ const Vote: React.FC<Props> = (props) => {
       );
     }
   };
+  const handleRedirectToLeaderboard = () => {
+    history.push(`/governance/leaderboard`);
+  }
+
   const getRankApi = async() => {
     const rank = await getRank(currentAddress(wallet));
     setRank(rank.toString());
@@ -116,7 +122,10 @@ const Vote: React.FC<Props> = (props) => {
         <span className={cx('rank-title')}>Rank:</span>
         <span className={cx('rank-value')}>{rank}</span>
       </div>
-      <div className={cx('view-leader-board')}>View leader board</div>
+      <div 
+        className={cx('view-leader-board')}
+        onClick={handleRedirectToLeaderboard}
+      >View leader board</div>
     </div>
   );
 };
