@@ -6,11 +6,11 @@ import styles from './LeaderBoard.module.scss';
 const cx = classNames.bind(styles);
 
 const LeaderBoard: React.FC = () => {
-    return (
-        <div className={cx('leader-board')}>
-            <BackArrow title="Leaderboard" />
-            <div>Table</div>
-        </div>
-    )
-}
+  return (
+    <div className={cx('leader-board')}>
+      <BackArrow title="Leaderboard" />
+      <div>Table</div>
+    </div>
+  );
+};
 export default LeaderBoard;

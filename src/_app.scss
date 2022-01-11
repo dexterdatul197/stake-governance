@@ -73,6 +73,9 @@ body {
 
   // widthdraw mooile
   --mb-bg-amount: #edf1f8;
+
+  //proposal dialog
+  --bg-head-mdeditor: #f5f5f5;
 }
 [data-theme="dark"] {
   --btn-header-border-color: #72bf65;
@@ -134,6 +137,9 @@ body {
 
   // widthdraw mooile
   --mb-bg-amount: #121416;
+
+  //proposal dialog
+  --bg-head-mdeditor: #2b2c32;
 }
 .Snackbar {
   .css-zzms1-MuiSnackbar-root {
@@ -201,7 +207,6 @@ body {
     padding: 20px 16px;
   }
   .footer {
-    
     height: 0px;
   }
 }
@@ -233,7 +238,24 @@ body {
     transform: rotate(360deg);
   }
 }
-
+.rc-md-editor {
+  .rc-md-navigation {
+    border-radius: 15px 15px 0px 0px !important;
+    background-color: var(--bg-head-mdeditor) !important;
+  }
+  .editor-container {
+    border-radius: 0px 0px 15px 15px !important;
+    background-color: var(--main-background-color) !important;
+    p {
+      color: var(--color-text) !important;
+    }
+    textarea {
+      color: var(--color-text) !important;
+      border-radius: 0px 0px 0px 15px !important;
+      background-color: var(--main-background-color) !important;
+    }
+  }
+}
 @media screen and (max-width: 576px) {
   .App {
     margin: 0;

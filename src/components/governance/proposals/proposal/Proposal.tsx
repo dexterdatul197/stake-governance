@@ -44,7 +44,7 @@ const Proposal: React.FC<Props> = (props) => {
   };
 
   const redirectToProposalDetail = (proposalId: number) => {
-    // history.push(`/proposal/${proposalId}`);
+    history.push(`/proposal/${proposalId}`);
   };
 
   useEffect(() => {
@@ -79,7 +79,7 @@ const Proposal: React.FC<Props> = (props) => {
             <div className={cx('vote-status-text')}>VOTED</div>
           )}
           {voteStatus && voteStatus === 'novoted' && proposal.state === 'Active' && (
-            <div className="flex align-center" onClick={(e) => e.stopPropagation()}>
+            <div className={cx('flex-align-center')} onClick={(e) => e.stopPropagation()}>
               <Button
                 className={cx('btn-upvote')}
                 disabled={
