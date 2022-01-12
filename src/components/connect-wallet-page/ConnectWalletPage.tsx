@@ -14,7 +14,8 @@ import {
   setEthereumAddress,
   setOpenConnectDialog,
   setWalletName,
-  walletsConfig
+  setProvider,
+  WALLET_NAMES
 } from '../connect-wallet/redux/wallet';
 import { useAppDispatch, useAppSelector } from './../../store/hooks';
 import styles from './ConnectWalletPage.module.scss';
@@ -25,8 +26,9 @@ import wallet_connect from '../../assets/icon/wallet_connect.svg';
 
 import { injectedConnector } from '../../connectors/injectedConnector';
 import { switchNetwork } from '../../connectors/switchNetwork';
-import { walletconnectConnector } from '../../connectors/walletconnectConnector';
 import { walletLinkConnector } from '../../connectors/walletlinkConnector';
+import { genProvider } from '../../connectors/walletconnectConnector';
+import { CONNECTORS } from '../../connectors';
 import bannerImg from '../../assets/imgs/bg-connect.png';
 const cx = classnames.bind(styles);
 
@@ -58,7 +60,8 @@ const ConnectWalletPage: React.FC = () => {
     }
     try {
       activate(injectedConnector).then(() => {
-        dispatch(setWalletName(walletsConfig[0]));
+        dispatch(setWalletName(WALLET_NAMES.METAMASK));
+        dispatch(setProvider(CONNECTORS.METAMASK));
       });
       switchNetwork(process.env.REACT_APP_CHAIN_ID || '');
     } catch (e: any) {
@@ -77,13 +80,34 @@ const ConnectWalletPage: React.FC = () => {
   // Connect Wallet connect
   const handleConnectWalletConnect = async () => {
     try {
-      activate(walletconnectConnector)
-        .then(() => {
-          dispatch(setWalletName(walletsConfig[1]));
-        })
-        .finally(() => {
-          handleCloseConnectDialog();
-        });
+      const provider = genProvider();
+      const addresses = (await provider.enable()) || [];
+      provider.on('connect', (e: any) => console.log('connect', e));
+      provider.on('disconnect', (code: number, error: string) => {
+        console.log('disconnect', code, error);
+        dispatch(setWalletName(''));
+        dispatch(setEthereumAddress(''));
+        dispatch(setProvider(undefined));
+      });
+      provider.on('accountsChanged', (accounts: string[]) => {
+        console.log('accountsChanged', accounts);
+        dispatch(setEthereumAddress(accounts[0]));
+      });
+      provider.on('chainChanged', (chainId: number) => {
+        console.log('chainChanged ID', chainId);
+        if (String(chainId) !== process.env.REACT_APP_CHAIN_ID) {
+          dispatch(
+            openSnackbar({
+              message: 'No support this chain',
+              variant: SnackbarVariant.ERROR
+            })
+          );
+        }
+      });
+      dispatch(setWalletName(WALLET_NAMES.WALLET_CONNECT));
+      dispatch(setEthereumAddress(addresses[0]));
+      dispatch(setProvider(provider));
+      handleCloseConnectDialog();
     } catch (error: any) {
       console.log('handleConnectWalletConnect', error);
     }
@@ -94,7 +118,7 @@ const ConnectWalletPage: React.FC = () => {
     try {
       activate(walletLinkConnector)
         .then(() => {
-          dispatch(setWalletName(walletsConfig[3]));
+          dispatch(setWalletName(WALLET_NAMES.COINBASE));
         })
         .finally(() => {
           handleCloseConnectDialog();
@@ -109,22 +133,22 @@ const ConnectWalletPage: React.FC = () => {
       icon: metamask,
       title: 'Metamask',
       onClickFunc: handleConnectMetaMask
+    },
+    {
+      icon: trust,
+      title: 'Trust Wallet',
+      onClickFunc: handleConnectWalletConnect
+    },
+    {
+      icon: coinbase,
+      title: 'Coinbase',
+      onClickFunc: handleConnectCoinBase
+    },
+    {
+      icon: wallet_connect,
+      title: 'Wallet Connect',
+      onClickFunc: handleConnectWalletConnect
     }
-    // {
-    //   icon: trust,
-    //   title: 'Trust Wallet',
-    //   onClickFunc: handleConnectWalletConnect
-    // },
-    // {
-    //   icon: coinbase,
-    //   title: 'Coinbase',
-    //   onClickFunc: handleConnectCoinBase
-    // },
-    // {
-    //   icon: wallet_connect,
-    //   title: 'Wallet Connect',
-    //   onClickFunc: handleConnectWalletConnect
-    // }
   ];
 
   const renderData = useCallback((content) => {
