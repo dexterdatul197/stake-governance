@@ -32,4 +32,4 @@ export const getTVLData = async (body: Filter) => {
 export const getRank = async (id: string) => {
   const res = await axiosInstance(options).get(`/voter/rank/${id}`);
   return res.data;
-}
+};

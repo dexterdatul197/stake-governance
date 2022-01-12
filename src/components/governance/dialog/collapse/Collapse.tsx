@@ -86,7 +86,7 @@ const CollapseItem: React.FC<Props> = ({
         <img src={editIcon} alt="edit_icon" onClick={() => handleRemove(index)} />
       </div>
       <Collapse key={activeKey} timeout="auto" in={openCollapse}>
-        <div key={activeKey}>
+        <div key={activeKey} className={cx('div-input')}>
           <div className={cx('border-style')}></div>
           <StakeInputBase
             validate={true}

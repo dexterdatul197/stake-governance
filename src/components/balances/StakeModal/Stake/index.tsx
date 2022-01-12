@@ -28,9 +28,9 @@ interface Props {
 
 const Stake = (props: Props) => {
   const { cx, walletValue, handleNext, value, setValue, handleCloseModal } = props;
-  const aa = (new BigNumber(value.default)).times(walletValue).toString();
+  const aa = new BigNumber(value.default).times(walletValue).toString();
   console.log('POPUP AAAAA>>>>>>>>>>>>>>>>>>: ', new BigNumber(value.default).toString());
-  
+
   const [isActivePercent1, setIsActivePercent1] = useState(false);
   const [isActivePercent2, setIsActivePercent2] = useState(false);
   const [isActivePercent3, setIsActivePercent3] = useState(false);
@@ -176,13 +176,21 @@ const Stake = (props: Props) => {
         <Box className={cx('balance')}>
           <Box className={cx('balance__wallet-balance')}>
             <Typography className={cx('title')}>
-              Wallet Balance: {walletValue > 0 ? format(new BigNumber(walletValue).toFixed(4).toString()) : 0.0}
+              Wallet Balance:{' '}
+              {walletValue > 0 ? format(new BigNumber(walletValue).toFixed(4).toString()) : 0.0}
             </Typography>
             <span className={cx('token')}>CHN</span>
           </Box>
           <Box className={cx('balance__stake-balance')}>
             <Typography className={cx('title')}>
-              Stake Balance: {format(((new BigNumber(value.default).multipliedBy(new BigNumber(walletValue))).div(new BigNumber('100'))).toFixed(4).toString())}
+              Stake Balance:{' '}
+              {format(
+                new BigNumber(value.default)
+                  .multipliedBy(new BigNumber(walletValue))
+                  .div(new BigNumber('100'))
+                  .toFixed(4)
+                  .toString()
+              )}
             </Typography>
             <span className={cx('token')}>CHN</span>
           </Box>

@@ -208,7 +208,17 @@ const Transaction = (props: Props) => {
           {done === false ? (
             <React.Fragment>
               <Typography className={cx('token-quantity')}>
-                {progress ? <CircularProgress /> : format(((new BigNumber(value.default).multipliedBy(new BigNumber(walletValue))).div(new BigNumber('100'))).toFixed(4).toString())}
+                {progress ? (
+                  <CircularProgress />
+                ) : (
+                  format(
+                    new BigNumber(value.default)
+                      .multipliedBy(new BigNumber(walletValue))
+                      .div(new BigNumber('100'))
+                      .toFixed(4)
+                      .toString()
+                  )
+                )}
               </Typography>
               <Typography className={cx('token-stake')}>CHN STAKE</Typography>
             </React.Fragment>

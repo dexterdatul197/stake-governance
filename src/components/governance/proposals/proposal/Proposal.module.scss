@@ -16,16 +16,23 @@
     cursor: pointer;
   }
   .row-content-left:nth-child(1) {
-    width: 60%;
     text-overflow: ellipsis;
-    overflow: hidden;
     white-space: nowrap;
+    width: auto;
+    .proposal-id-time {
+      justify-content: space-between;
+    }
   }
   .row-content-btn {
+    width: auto;
     display: flex;
     justify-content: space-between;
     // width: 28%;
     color: #fff;
+    .flex-align-center {
+      display: flex;
+      align-items: center;
+    }
   }
   .vote-status-text {
     color: var(--color-text-white-black);
@@ -78,5 +85,95 @@
   }
   .proposal-status-passed {
     color: #9dd562;
+  }
+}
+@media screen and (max-width: 768px) {
+  :root {
+    .row-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 20px;
+      border: solid 1px #001c4e;
+      border-radius: 10px;
+      color: #ccc;
+      margin: 10px 0;
+    }
+    .row-content-left {
+      color: var(--color-text-white-black);
+    }
+    .row-content-left:hover,
+    .row-content-btn:hover {
+      cursor: pointer;
+    }
+    .row-content-left:nth-child(1) {
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .row-content-btn {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px;
+      // width: 28%;
+      color: #fff;
+      .flex-align-center {
+        display: flex;
+        width: 100%;
+      }
+    }
+    .vote-status-text {
+      color: var(--color-text-white-black);
+    }
+    .proposal-title {
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+    .row-content-btn .vote {
+      color: var(--color-text-white-black);
+    }
+    .proposal-id-time {
+      display: flex;
+      justify-content: flex-start;
+      font-size: 14px;
+    }
+    .proposal-id {
+      width: 10%;
+    }
+    .btn-upvote,
+    .btn-downvote {
+      padding: 10px 20px;
+      border-radius: 20px;
+      cursor: pointer;
+      color: #fff;
+      width: 100%;
+      font-size: 12px !important;
+    }
+    .btn-upvote:hover {
+      background-color: #72bf65;
+    }
+    .btn-upvote {
+      background-color: #72bf65;
+      margin-right: 5px;
+    }
+    .btn-downvote:hover {
+      background-color: #ec5656;
+    }
+    .btn-downvote {
+      background-color: #ec5656;
+    }
+    .no-proposal {
+      text-align: center;
+    }
+    .proposal-status {
+      color: #277ee6;
+      width: 15%;
+      text-align: right;
+    }
+    .proposal-status-failed {
+      color: #7c7878;
+    }
+    .proposal-status-passed {
+      color: #9dd562;
+    }
   }
 }
