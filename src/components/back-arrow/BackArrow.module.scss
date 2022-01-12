@@ -1,13 +1,23 @@
-:root{
-    .back-arrow {
-        display: flex;
+:root {
+  .back-arrow {
+    display: flex;
+    align-items: center;
+  }
+  .arrow-left {
+    cursor: pointer;
+    width: 3%;
+    .icon {
+      padding-top: 6px;
+      padding-right: 24px;
+      display: block;
+     
     }
-    .arrow-left {
-        cursor: pointer;
-        width: 3%;
+  }
+  .title {
+    color: var(--color-text-white-black);
+    font-size: 24px;
+    @media screen and (max-width: 768px){
+      padding-left: 15px!important;
     }
-    .title {
-        color: var(--color-text-white-black);
-        font-size: 24px;
-    }
+  }
 }

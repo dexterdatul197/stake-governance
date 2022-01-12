@@ -19,6 +19,7 @@ import { BaseSocket } from 'src/socket/BaseSocket';
 import { useAppDispatch, useAppSelector } from './store/hooks';
 import { setTheme } from './store/theme';
 import LeaderBoard from './components/governance/leaderboard/LeaderBoard';
+import LeaderBoardDetail from './components/governance/leaderBoardDetail';
 
 const App: React.FC = () => {
   const context = useWeb3React<Web3>();
