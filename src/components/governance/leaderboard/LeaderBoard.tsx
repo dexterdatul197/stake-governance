@@ -9,7 +9,7 @@ const LeaderBoard: React.FC = () => {
     return (
         <div className={cx('leader-board')}>
             <BackArrow title="Leaderboard" />
-            <div>Table</div>
+            <div></div>
         </div>
     )
 }
