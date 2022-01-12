@@ -3,6 +3,7 @@ import Balances from '../components/balances/Balances';
 import Governance from '../components/governance/Governance';
 import LeaderBoard from '../components/governance/leaderboard/LeaderBoard';
 import ProposalDetail from '../components/governance/proposals/proposal-detail/ProposalDetail';
+import LeaderBoardDetail from '../components/governance/leaderBoardDetail';
 const routers = {
   stake: {
     exact: true,

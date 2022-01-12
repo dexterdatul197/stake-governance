@@ -32,4 +32,9 @@ export const getTVLData = async (body: Filter) => {
 export const getRank = async (id: string) => {
   const res = await axiosInstance(options).get(`/voter/rank/${id}`);
   return res.data;
-}
+};
+
+export const getDataLeaderBoard = async (page: number, limit: number) => {
+  const res = await axiosInstance(options).get(`/voter/account?page=${page}&limit=${limit}`);
+  return res.data;
+};
