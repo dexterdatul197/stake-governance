@@ -17,7 +17,6 @@ import { useAppSelector, useAppDispatch } from '../../../../store/hooks';
 import { openSnackbar, SnackbarVariant } from '../../../../store/snackbar';
 import { ReactComponent as DoneIcon } from '../../../../assets/icon/Done-icon.svg';
 import { setTimeout } from 'timers';
-import { ethers } from 'ethers';
 import Web3 from 'web3';
 
 interface Props {
@@ -126,6 +125,7 @@ const Transaction = (props: Props) => {
 
   const handleConfirm = () => {
     setProgress(true);
+
     getCHNBalance()
       .methods.allowance(currentAddress(wallet), process.env.REACT_APP_STAKE_TESTNET_ADDRESS)
       .call()
@@ -197,8 +197,7 @@ const Transaction = (props: Props) => {
           <Button
             onClick={handleCloseModalTrans}
             className={cx('icon_left')}
-            disabled={progress === true}
-          >
+            disabled={progress === true}>
             <CloseIcon />
           </Button>
         </Box>
@@ -208,7 +207,17 @@ const Transaction = (props: Props) => {
           {done === false ? (
             <React.Fragment>
               <Typography className={cx('token-quantity')}>
-                {progress ? <CircularProgress /> : format(((new BigNumber(value.default).multipliedBy(new BigNumber(walletValue))).div(new BigNumber('100'))).toFixed(4).toString())}
+                {progress ? (
+                  <CircularProgress />
+                ) : (
+                  format(
+                    new BigNumber(value.default)
+                      .multipliedBy(new BigNumber(walletValue))
+                      .div(new BigNumber('100'))
+                      .toFixed(4)
+                      .toString()
+                  )
+                )}
               </Typography>
               <Typography className={cx('token-stake')}>CHN STAKE</Typography>
             </React.Fragment>
@@ -221,8 +230,7 @@ const Transaction = (props: Props) => {
         <Button
           disabled={done || progress}
           onClick={handleConfirm}
-          className={cx('dialog-actions__transaction__confirm')}
-        >
+          className={cx('dialog-actions__transaction__confirm')}>
           Confirm
         </Button>
       </DialogActions>
