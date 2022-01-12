@@ -13,6 +13,26 @@ export type Filter = {
   endTime?: number;
 };
 
+export type VoteData = {
+  id: string;
+  address: string;
+  has_voted: number;
+  support: number;
+  votes: string;
+  proposal_id: number;
+  block_number: number;
+  block_timestamp: number;
+  created_at: string;
+  updated_at: string;
+};
+
+export type VoteFormData = {
+  percent: string;
+  type: string;
+  votes: VoteData[];
+  sumVotes: string;
+};
+
 export interface ProposalFormData {
   id: number;
   description: string;

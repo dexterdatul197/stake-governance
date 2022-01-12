@@ -1,11 +1,12 @@
 import classNames from 'classnames/bind';
+import { BigNumber } from 'ethers';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
-import { getProposalDetail } from '../../../../apis/apis';
+import { getProposalDetail, getVotes } from '../../../../apis/apis';
 import AddressArrowSVG from '../../../../assets/icon/AddressArrowSVG';
 import { getStatus } from '../../../../helpers/common';
 import { ethAddressPage } from '../../../../helpers/ContractService';
-import { ProposalDetailForm } from '../../../../interfaces/SFormData';
+import { ProposalDetailForm, VoteFormData } from '../../../../interfaces/SFormData';
 import BackArrow from '../../../back-arrow/BackArrow';
 import ProposalHistory from '../proposal-history/ProposalHistory';
 import VoteCard from '../vote-card/VoteCard';
@@ -16,6 +17,18 @@ interface Props {
   match?: any;
 }
 const ProposalDetail: React.FC<Props> = (props) => {
+  const [forVotes, setForVotes] = useState<VoteFormData>({
+    percent: '',
+    type: '',
+    votes: [],
+    sumVotes: ''
+  });
+  const [againstVotes, setAgainstVotes] = useState<VoteFormData>({
+    percent: '',
+    type: '',
+    votes: [],
+    sumVotes: ''
+  });
   const [proposalDetail, setProposalDetail] = useState<ProposalDetailForm>({
     againstVotes: '',
     callDatas: [],
@@ -55,9 +68,40 @@ const ProposalDetail: React.FC<Props> = (props) => {
     values: [],
     voterCount: ''
   });
+  const [forPercent, setForPercent] = useState(0);
+  const [againstPercent, setAgainstPercent] = useState(0);
+
   const getProposal = async () => {
     const proposalDetail = await getProposalDetail(props.match.params.proposalId);
+    const forVotes = await getVotes(props.match.params.proposalId, true);
+    const againstVotes = await getVotes(props.match.params.proposalId, false);
+
+    const total =
+      Number(forVotes.metadata.sumVotes || '0') + Number(againstVotes.metadata.sumVotes || '0');
+    setForPercent(
+      isNaN((Number(forVotes.metadata.sumVotes || '0') * 100) / total)
+        ? 0
+        : (Number(forVotes.metadata.sumVotes || '0') * 100) / total
+    );
+    setAgainstPercent(
+      isNaN((Number(againstVotes.metadata.sumVotes || '0') * 100) / total)
+        ? 0
+        : (Number(againstVotes.metadata.sumVotes || '0') * 100) / total
+    );
+
     setProposalDetail(proposalDetail.data);
+    setForVotes({
+      percent: forPercent.toFixed(10),
+      type: 'Up Vote',
+      votes: forVotes.data,
+      sumVotes: forVotes.metadata.sumVotes
+    });
+    setAgainstVotes({
+      percent: againstPercent.toFixed(10),
+      type: 'Down Vote',
+      votes: againstVotes.data,
+      sumVotes: againstVotes.metadata.sumVotes
+    });
   };
 
   const goToEthereumAddress = (address: string) => {
@@ -87,10 +131,10 @@ const ProposalDetail: React.FC<Props> = (props) => {
           </div>
           <div className={cx('detail-info')}>
             <div className={cx('vote-card')}>
-              <VoteCard />
+              <VoteCard props={forVotes} />
             </div>
             <div className={cx('vote-card')}>
-              <VoteCard />
+              <VoteCard props={againstVotes} />
             </div>
           </div>
         </div>

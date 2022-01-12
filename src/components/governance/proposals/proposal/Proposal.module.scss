@@ -1,6 +1,7 @@
 :root {
   .proposal-item {
     display: flex;
+    flex-direction: row;
     justify-content: space-between;
     padding: 20px;
     border: solid 1px #001c4e;
@@ -89,11 +90,11 @@
 }
 @media screen and (max-width: 768px) {
   :root {
-    .row-content {
+    .proposal-item {
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: 20px;
+      padding: 10px;
       border: solid 1px #001c4e;
       border-radius: 10px;
       color: #ccc;
@@ -113,7 +114,8 @@
     .row-content-btn {
       display: flex;
       justify-content: space-between;
-      padding: 10px;
+      padding: 0px;
+      margin-top: 10px;
       // width: 28%;
       color: #fff;
       .flex-align-center {

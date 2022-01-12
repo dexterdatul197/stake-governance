@@ -18,19 +18,19 @@
         border-radius: 15px;
         padding: 10px;
         background-color: var(--background-proposal-detail-card);
+        box-shadow: 0px 4px 30px 0px rgba(0, 28, 78, 0.05);
+
     }
     .block-left {
         width: 76%;
     }
     .block-right {
         width: 20%;
-        height: 200px;
     }
     .description {
         margin-top: 20px;
     }
     .vote-card {
         width: 46%;
-        height: 300px;
     }
 }

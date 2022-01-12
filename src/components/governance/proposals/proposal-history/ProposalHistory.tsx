@@ -13,7 +13,7 @@ const ProposalHistory: React.FC<Props> = ({ proposalInfo }) => {
 
   return (
     <div className={cx('proposal-history')}>
-      <p className="text-black-white"></p>
+      <div className={cx('history-title')}>Proposal History</div>
     </div>
   );
 };
