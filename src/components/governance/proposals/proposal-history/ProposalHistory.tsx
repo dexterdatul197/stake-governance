@@ -39,7 +39,7 @@ const ProposalHistory: React.FC<Props> = ({ proposalInfo }) => {
               ? proposalInfo.state === 'Defeated'
                 ? 'Failed'
                 : 'Canceled'
-              : `${proposalInfo?.state === 'Succeeded' ? 'Succeeded' : 'Succeed'}`
+              : `${proposalInfo?.state === 'Successded' ? 'Succeeded' : 'Succeed'}`
           }
           description={
             proposalInfo?.endTimestamp ? moment(proposalInfo.endTimestamp * 1000).format('LLL') : ''
