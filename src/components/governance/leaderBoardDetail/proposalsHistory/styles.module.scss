@@ -21,6 +21,7 @@
     padding: 16px 24px 17px 24px;
     display: flex;
     align-items: center;
+    margin-bottom: 10px;
 
     &__column_1 {
       flex: 1;
@@ -42,10 +43,20 @@
           font-weight: 500;
           padding-right: 56px;
         }
-        span:nth-child(3) {
+        .Passed {
           font-size: 16px;
           font-weight: 600;
           color: #3ee046;
+        }
+        .Defeated {
+          color: #d63031;
+          font-size: 16px;
+          font-weight: 600;
+        }
+        .Active {
+          color: #0984e3;
+          font-size: 16px;
+          font-weight: 600;
         }
       }
     }

@@ -28,6 +28,12 @@ const routers = {
     path: '/governance/leaderboard',
     component: LeaderBoard,
     route: Route
+  },
+  LeaderBoardDetail: {
+    exact: true,
+    path: '/governance/leaderboard/leaderboard-detail',
+    component: LeaderBoardDetail,
+    route: Route
   }
 };
 export default routers;

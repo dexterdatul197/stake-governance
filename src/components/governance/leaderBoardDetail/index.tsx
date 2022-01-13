@@ -1,82 +1,76 @@
 import { Box, Paper, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
 import classNames from 'classnames/bind';
-import React from 'react';
+import { useState, useEffect } from 'react';
 import BackArrow from '../../back-arrow/BackArrow';
 import styles from './styles.module.scss';
 import { ReactComponent as AddressIcon } from '../../../assets/icon/icon-address.svg';
 import { ReactComponent as UserIcon } from '../../../assets/icon/user.svg';
 import ProposalHistory from './proposalsHistory';
+import { getDataLeaderBoardDetail } from '../../../apis/apis';
+import { ethAddressPage } from '../../../helpers/ContractService';
+import { format } from '../../../helpers/common';
+import { getCHNBalance, stakingToken } from '../../../helpers/ContractService';
+import { BigNumber } from '@0x/utils';
+import Web3 from 'web3';
 
+const web3 = new Web3();
 const cx = classNames.bind(styles);
-const data = Array.from(Array(5)).map((_) => ({
-  action: 'Received CHN',
-  time: '138 days ago',
-  result: '600,000'
-}));
 
-const Detail = () => {
+interface Props {
+  address: any;
+  match?: any;
+}
+
+const Detail = (props: Props) => {
+  const address = props.match.params.address;
+  const [chn, setCHN] = useState(0);
+  const [balance, setBalance] = useState(0);
+
+  useEffect(() => {
+    const getBalance = async () => {
+      const CHN = await getCHNBalance().methods.balanceOf(address).call();
+      const getValueStake = await stakingToken().methods.userInfo(0, address).call();
+      const formatCHN = new BigNumber(CHN).div('1e18').div(10);
+      const formatStake = new BigNumber(getValueStake.amount).div('1e18');
+      setCHN(format(formatCHN.toFixed(4).toString()));
+      setBalance(format(formatStake.toFixed(4).toString()));
+    };
+    getBalance();
+  }, [chn]);
+
+  const goToEthereumAddress = (address: string) => {
+    window.open(`${ethAddressPage()}/${address}`, '_blank');
+  };
+
   return (
     <Box className={cx('details')}>
       <BackArrow title="Details" />
       <Box className={cx('main')}>
         <Box className={cx('main__address')}>
-          <span>0xD5...7d35</span>
-          <span>
-            0xD578b88163b3c55bC8D87510695aD1f2E2607d35 <AddressIcon style={{ cursor: 'pointer' }} />
+          <span>{`${address.substr(0, 4)}...${address.substr(address.length - 4, 4)}`}</span>
+          <span onClick={() => goToEthereumAddress(address)}>
+            {address} <AddressIcon style={{ cursor: 'pointer' }} />
           </span>
         </Box>
 
         <Box className={cx('holding_transaction')}>
           <Box className={cx('holding')}>
-            <span className={cx('holding__title')}>Holding</span>
+            <span className={cx('title')}>Holding</span>
             <Box className={cx('holding__balance')}>
-              <span>Balance</span>
-              <span>600</span>
-            </Box>
-            <Box className={cx('holding__chn')}>
-              <Box className={cx('content-left')}>
-                <span>CHN</span>
-                <span>600,547.9349</span>
+              <Box className={cx('holding__balance__left')}>
+                <span>Balance</span>
+                <span>{balance}</span>
               </Box>
-              <Box className={cx('content-right')}>
-                <UserIcon />
-                <span className={cx('number')}>89</span>
+              <Box className={cx('holding__balance__right')}>
+                <Box className={cx('content-left')}>
+                  <span>CHN</span>
+                  <span>{chn}</span>
+                </Box>
               </Box>
             </Box>
-            <Box className={cx('holding__delegating')}>
-              <span>Delegating To</span>
-              <span>Undelegated</span>
-            </Box>
-          </Box>
-          <Box className={cx('transaction')}>
-            <span className={cx('title')}>Transactions</span>
-            <Table className={cx('table')}>
-              <TableHead className={cx('table__table-head')}>
-                <TableRow className={cx('table-row')}>
-                  <TableCell align="left" className={cx('table-row__table-cell')}>
-                    Action
-                  </TableCell>
-                  <TableCell className={cx('table-row__table-cell')}>Time</TableCell>
-                  <TableCell className={cx('table-row__table-cell')}>Result</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody className={cx('table__table-body')}>
-                {data.map((item, index) => {
-                  const { action, time, result } = item;
-                  return (
-                    <TableRow key={index} className={cx('table-row')}>
-                      <TableCell className={cx('table-row__table-cell')}>{action}</TableCell>
-                      <TableCell className={cx('table-row__table-cell')}>{time}</TableCell>
-                      <TableCell className={cx('table-row__table-cell')}>{result}</TableCell>
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
-            <span className={cx('more')}>More</span>
           </Box>
         </Box>
-        <ProposalHistory />
+        <ProposalHistory address={address} />
       </Box>
     </Box>
   );
