@@ -8,7 +8,7 @@ import styles from './VoteCard.module.scss';
 
 const cx = classNames.bind(styles);
 interface Props {
-  props?: VoteFormData;
+  voting?: VoteFormData;
 }
 
 const get_ellipsis_mid = (str: string) => {
@@ -22,10 +22,10 @@ const formatCardNumber = (num: string) => {
   return format(Web3.utils.fromWei(num));
 };
 
-const VoteCard: React.FC<Props> = ({ props }) => {
-  const sumVotes = formatCardNumber(props?.sumVotes as string);
+const VoteCard: React.FC<Props> = ({ voting }) => {
+  const sumVotes = formatCardNumber(voting?.sumVotes as string);
 
-  const noDataVoteLength = 4 - (props?.votes.length || (0 as number));
+  const noDataVoteLength = 4 - (voting?.votes.length || (0 as number));
   const noDataVote = [];
   if (noDataVoteLength > 0) {
     for (let i = 0; i < noDataVoteLength; i++) {
@@ -38,26 +38,26 @@ const VoteCard: React.FC<Props> = ({ props }) => {
     }
   }
 
-  console.log('percent: ', props?.percent);
+  console.log('percent: ', voting?.percent);
   return (
     <div className={cx('vote-card')}>
       <div className={cx('vote-card-title')}>
-        <div>{props?.type}</div>
+        <div>{voting?.type}</div>
         <div>{sumVotes}</div>
       </div>
       <div
         className={cx('vote-card-progress')}
         style={{
-          width: `${props?.percent}%`,
+          width: `${voting?.percent}%`,
           backgroundColor:
-            props?.type === 'Up Vote' ? 'rgba(114, 191, 101, 1)' : 'rgba(236, 86, 86, 1)'
+            voting?.type === 'Up Vote' ? 'rgba(114, 191, 101, 1)' : 'rgba(236, 86, 86, 1)'
         }}
       ></div>
       <div className={cx('vote-card-col')}>
-        <div>{props?.votes.length || 0} addresses</div>
+        <div>{voting?.votes.length || 0} addresses</div>
         <div>Vote</div>
       </div>
-      {props?.votes.map((vote: VoteData, index: number) => {
+      {voting?.votes.map((vote: VoteData, index: number) => {
         return (
           <div className={cx('vote-card-content')} key={index}>
             <div>{get_ellipsis_mid(vote?.address)}</div>

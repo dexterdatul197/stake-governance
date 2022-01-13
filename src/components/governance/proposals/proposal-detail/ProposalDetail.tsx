@@ -138,10 +138,10 @@ const ProposalDetail: React.FC<Props> = (props) => {
           </div>
           <div className={cx('detail-info')}>
             <div className={cx('vote-card')}>
-              <VoteCard props={forVotes} />
+              <VoteCard voting={forVotes} />
             </div>
             <div className={cx('vote-card')}>
-              <VoteCard props={againstVotes} />
+              <VoteCard voting={againstVotes} />
             </div>
           </div>
         </div>
