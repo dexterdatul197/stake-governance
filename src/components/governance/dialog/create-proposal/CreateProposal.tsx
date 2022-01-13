@@ -35,18 +35,27 @@ const CreateProposal: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [title, setTitle] = useState('');
-
+  const provider = useAppSelector((state) => state.wallet.provider);
   const [formData, setFormData] = useState<SFormData[]>([
     {
       targetAddress: '',
-      value: '',
+      value: [],
       signature: '',
       callData: []
     }
   ]);
+  
   const openDialog = useAppSelector((state) => state.governance.openCreateProposalDialog);
   const handleCloseConnectDialog = () => {
     dispatch(setOpenCreateProposalDialog(false));
+    setFormData([
+      {
+        targetAddress: '',
+        value: [],
+        signature: '',
+        callData: []
+      }
+    ])
   };
   const handleClickConfirm = async () => {
     const targetAddresses = [];
@@ -88,17 +97,9 @@ const CreateProposal: React.FC = () => {
     setIsLoading(true);
     const governanceContract = governance();
     try {
-      console.log(
-        'BEFORE CREATE PROPOSAL: ',
-        currentAddress(currentAccount),
-        targetAddresses,
-        values,
-        signatures
-      );
       const responseCreate = await governanceContract.methods
         .propose(targetAddresses, values, signatures, callDatas, description)
         .send({ from: currentAddress(currentAccount) });
-      console.log('RESPONSE OF CREATE PROPOSAL: ', responseCreate);
       if (responseCreate) {
         const proposalId = Number(responseCreate.events.ProposalCreated.returnValues.id);
         const proposalState = await governanceContract.methods.state(proposalId).call();
@@ -136,7 +137,6 @@ const CreateProposal: React.FC = () => {
         dispatch(getProposalList({ page: 1, limit: 5 }));
       }
     } catch (error) {
-      console.log('ERROR RESPONSE WHEN CREATE PROPOSAL: ', error);
       dispatch(
         openSnackbar({ message: 'Creating proposal is failed!', variant: SnackbarVariant.ERROR })
       );

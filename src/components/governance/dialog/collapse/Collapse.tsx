@@ -29,14 +29,14 @@ const CollapseItem: React.FC<Props> = ({
     if (type === 'next') {
       formData.splice(index + 1, 0, {
         targetAddress: '',
-        value: '',
+        value: [],
         signature: '',
         callData: []
       });
     } else {
       formData.splice(index, 0, {
         targetAddress: '',
-        value: '',
+        value: [],
         signature: '',
         callData: []
       });
@@ -52,7 +52,7 @@ const CollapseItem: React.FC<Props> = ({
     if (type === 'targetAddress') {
       formData[idx].targetAddress = v;
     } else if (type === 'value') {
-      formData[idx].value = v;
+      formData[idx].value[subIdx] = v;
     } else if (type === 'calldata') {
       formData[idx].callData[subIdx] = v;
     }
@@ -73,10 +73,12 @@ const CollapseItem: React.FC<Props> = ({
   };
   const handleKeyUpCallData = (e: any, cIndex: number) => {
     handleKeyUpCommon('calldata', index, cIndex, e.target.value);
+    handleKeyUpCommon('value', index, cIndex, e.target.value);
   };
   const handleKeyUpSignature = (e: any) => {
     handleParseFunc(e.target.value);
   };
+  
   return (
     <div className={cx('collapse-item-style')}>
       <div className={cx('action-style')}>
@@ -91,6 +93,7 @@ const CollapseItem: React.FC<Props> = ({
           <StakeInputBase
             validate={true}
             name="Address"
+            value={formData[index].targetAddress}
             placeholder="Address"
             onKeyUp={handleKeyupAddress}
           />
@@ -98,6 +101,7 @@ const CollapseItem: React.FC<Props> = ({
             validate={true}
             placeholder="aasumeOwnship(address,string,unit256)"
             name="Signature"
+            value={formData[index].signature}
             onKeyUp={handleKeyUpSignature}
           />
           {fCallData.map((c: any, cIndex: number) => {
@@ -106,6 +110,7 @@ const CollapseItem: React.FC<Props> = ({
                 key={cIndex}
                 validate={true}
                 placeholder={`${c}(callData)`}
+                value={formData[index].value.length > 0 ? formData[index].value[cIndex] : ''}
                 name="CallData"
                 onKeyUp={(e) => handleKeyUpCallData(e, cIndex)}
               />

@@ -1,6 +1,6 @@
 export interface SFormData {
   targetAddress: string;
-  value: string;
+  value: any[];
   signature: string;
   callData: any[];
 }
@@ -126,5 +126,3 @@ export interface TVLDataRes {
   tvl: string;
   timestamp: number;
 }
-
-export interface CoinGekoOHCL {}
