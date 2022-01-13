@@ -10,7 +10,6 @@
         }
         .history-content {
             .step {
-                margin-top: 10px;
                 color: var(--color-text);
                 display: flex;
                 flex-direction: row;
@@ -24,6 +23,12 @@
                         font-weight: 500;
                         color: var(--color-text-head-vote);
                     }
+                }
+                @media screen and(min-width: 770px) {
+                    margin: 15px 0px;
+                }
+                @media screen and(min-width: 1000px) {
+                    margin: 27px 0px;
                 }
             }
         }

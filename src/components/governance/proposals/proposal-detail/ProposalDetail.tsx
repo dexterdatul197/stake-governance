@@ -262,7 +262,7 @@ const ProposalDetail: React.FC<Props> = (props) => {
           proposalDetail.state !== 'Canceled' && (
             <div className={cx('update-proposal-status')}>
               <Button
-                className="cancel-btn"
+                className={cx('cancel-btn')}
                 disabled={
                   isCancelLoading ||
                   proposerVotingWeight >= proposalThreshold ||
@@ -275,7 +275,7 @@ const ProposalDetail: React.FC<Props> = (props) => {
               </Button>
               {proposalDetail.state === 'Successded' && (
                 <Button
-                  className="queud-btn"
+                  className={cx('queud-btn')}
                   disabled={isLoading || status === 'success'}
                   onClick={() => handleUpdateProposal('Queue')}
                 >
@@ -285,7 +285,7 @@ const ProposalDetail: React.FC<Props> = (props) => {
               )}
               {proposalDetail.state === 'Queued' && (
                 <Button
-                  className="execute-btn"
+                  className={cx('execute-btn')}
                   disabled={isLoading || status === 'success' || !isPossibleExcuted}
                   onClick={() => handleUpdateProposal('Execute')}
                 >
@@ -304,7 +304,7 @@ const ProposalDetail: React.FC<Props> = (props) => {
           proposalDetail.state !== 'Defeated' &&
           proposalDetail.state !== 'Canceled' &&
           proposerVotingWeight >= proposalThreshold && (
-            <p className="center warning">
+            <p className={cx('center-warning')}>
               You can not cancel the proposal while the proposer voting weight meets proposal
               threshold
             </p>
@@ -312,7 +312,7 @@ const ProposalDetail: React.FC<Props> = (props) => {
       </div>
       <div className={cx('description')}>
         <div className={cx('text-black-white')}>Description</div>
-        <p className="">{proposalDetail.description}</p>
+        <p className={cx('description-value')}>{proposalDetail.description}</p>
       </div>
     </div>
   );
