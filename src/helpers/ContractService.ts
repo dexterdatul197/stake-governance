@@ -56,3 +56,34 @@ export const ethAddressPage = () => {
     ? process.env.REACT_APP_ETHEREUM_MAIN_ADDRESS
     : process.env.REACT_APP_ETHEREUM_TESTNET_ADDRESS;
 };
+
+const call = (method: any, params: any) => {
+  return new Promise((resolve, reject) => {
+    method(...params)
+      .call()
+      .then((res: any) => {
+        resolve(res);
+      })
+      .catch((err: any) => {
+        reject(err);
+      });
+  });
+};
+
+const send = (method: any, params: any, from: any) => {
+  return new Promise((resolve, reject) => {
+    method(...params)
+      .send({ from })
+      .then((res: any) => {
+        resolve(res);
+      })
+      .catch((err: any) => {
+        reject(err);
+      });
+  });
+};
+
+export const methods = {
+  call,
+  send
+};
