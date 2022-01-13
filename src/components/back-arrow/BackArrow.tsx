@@ -17,7 +17,9 @@ const BackArrow: React.FC<Props> = ({ title = '' }) => {
   return (
     <div className={cx('back-arrow')}>
       <div className={cx('arrow-left')} onClick={goToPreviousPath}>
-        <ArrowLeftSVG color={theme === 'light' ? '#0D0D0D' : '#fff'} />
+        <span className={cx('icon')}>
+          <ArrowLeftSVG color={theme === 'light' ? '#0D0D0D' : '#fff'} />
+        </span>
       </div>
       <div className={cx('title')}>{title}</div>
     </div>

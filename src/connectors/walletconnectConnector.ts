@@ -1,11 +1,11 @@
-import Web3 from 'web3';
 import WalletConnectProvider from '@walletconnect/web3-provider';
-import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 
-export const walletconnectConnector = new WalletConnectConnector({
-  rpc: {
-    [process.env.REACT_APP_CHAIN_ID as string]: process.env.REACT_APP_TRUST_BRIDGE || '',
-    '1': process.env.REACT_APP_TRUST_BRIDGE || '' // fallback
-  },
-  qrcode: true
-});
+export const genProvider = () => {
+  return new WalletConnectProvider({
+    rpc: {
+      4: 'https://rinkeby.infura.io/v3/6f446ee5f1b5485b8a2d3fa2708957c1'
+    },
+    infuraId: '6f446ee5f1b5485b8a2d3fa2708957c1',
+    pollingInterval: 3000
+  });
+};

@@ -1,0 +1,82 @@
+.table {
+  padding: 31px 16px 0px 16px;
+  .paper {
+    padding: 26px 17px 15px 17px;
+    box-shadow: 0px 4px 30px rgba(0, 28, 78, 0.05);
+    border-radius: 14px;
+    .title {
+      font-size: 16px;
+      font-weight: 600;
+      color: rgba(0, 28, 78, 0.87);
+      text-transform: capitalize;
+    }
+    .children-content {
+      &__rank {
+        color: rgba(0, 28, 78, 0.38);
+        font-size: 12px;
+        font-weight: 600;
+      }
+      &__main {
+        border-bottom: 1px solid rgba(0, 28, 78, 0.15);
+        .txHash,
+        .chn,
+        .vote-weight,
+        .proposal {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
+        .txHash {
+          padding-top: 15px;
+          span:nth-child(1) {
+            color: rgba(0, 28, 78, 0.87);
+            font-size: 12px;
+            font-weight: 600;
+          }
+          span:nth-child(2) {
+            color: rgba(0, 28, 78, 0.87);
+            font-size: 14px;
+            font-weight: 500;
+          }
+        }
+        .chn {
+          span:nth-child(1) {
+            color: rgba(0, 28, 78, 0.38);
+            font-size: 12px;
+            font-weight: 600;
+          }
+          span:nth-child(2) {
+            color: rgba(0, 28, 78, 0.87);
+            font-size: 14px;
+            font-weight: 500;
+          }
+        }
+        .vote-weight {
+          span:nth-child(1) {
+            color: rgba(0, 28, 78, 0.38);
+            font-size: 12px;
+            font-weight: 600;
+          }
+          span:nth-child(2) {
+            color: rgba(0, 28, 78, 0.87);
+            font-size: 14px;
+            font-weight: 500;
+          }
+        }
+        .proposal {
+          padding-bottom: 15px;
+          span:nth-child(1) {
+            color: rgba(0, 28, 78, 0.38);
+            font-size: 12px;
+            font-weight: 600;
+          }
+          span:nth-child(2) {
+            color: rgba(0, 28, 78, 0.87);
+            font-size: 14px;
+            font-weight: 500;
+          }
+        }
+      }
+    }
+  }
+}
