@@ -21,6 +21,7 @@ interface Props {
   name?: string;
   width?: number | string | undefined;
   placeholder?: string;
+  value?: string;
   onChange?: (v: any) => void;
   onKeyUp?: (e: any) => void;
 }
@@ -32,17 +33,18 @@ const StakeInputBase: React.FC<Props> = ({
   width = '95%',
   placeholder = '',
   onChange = () => {},
-  onKeyUp = () => {}
+  onKeyUp = () => {},
+  value = ''
 }) => {
   const [messageErr, setMessageErr] = useState('');
-  const [value, setValue] = useState('');
+  const [inputValue, setInputValue] = useState(value);
   const handleOnChange = (event: any) => {
     setMessageErr('');
-    setValue(event.target.value);
+    setInputValue(event.target.value);
     onChange(event.target.value);
   };
   const handleBlur = () => {
-    if (value.length === 0) {
+    if (inputValue.length === 0) {
       setMessageErr(`${name} cannot empty!`);
     }
   };
@@ -54,7 +56,7 @@ const StakeInputBase: React.FC<Props> = ({
       <input
         type={type}
         onChange={handleOnChange}
-        value={value}
+        value={inputValue}
         onBlur={handleBlur}
         className={cx('input-style')}
         placeholder={placeholder}
