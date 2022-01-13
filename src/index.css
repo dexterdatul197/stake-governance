@@ -28,11 +28,3 @@ code {
   -webkit-text-fill-color: var(--color-text-white-black) !important;
   opacity: 1 !important;
 }
-
-.css-5xe99f-MuiLinearProgress-bar1 {
-  background-color: #3EE046 !important;
-}
-
-.css-eglki6-MuiLinearProgress-root {
-  background-color: transparent !important;
-}

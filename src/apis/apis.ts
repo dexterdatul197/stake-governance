@@ -38,3 +38,13 @@ export const getDataLeaderBoard = async (page: number, limit: number) => {
   const res = await axiosInstance(options).get(`/voter/account?page=${page}&limit=${limit}`);
   return res.data;
 };
+
+export const getDataLeaderBoardId = async (id: string) => {
+  const res = await axiosInstance(options).get(`/voter/account/${id}`);
+  return res.data;
+};
+
+export const getDataLeaderBoardDetail = async (address: any, page: number, limit: number) => {
+  const res = await axiosInstance(options).get(`/voter/history/${address}?page=${page}&limit=${limit}`);
+  return res.data;
+};

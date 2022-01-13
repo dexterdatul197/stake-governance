@@ -1,111 +1,56 @@
 import { Box, Paper } from '@material-ui/core';
-import React, { useCallback } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
 import styles from './styles.module.scss';
 import { checkNotEmptyArr } from '../../../helpers/common';
-import { check } from 'prettier';
-import { AddBoxSharp } from '@mui/icons-material';
+import { getDataLeaderBoard } from '../../../apis/apis';
+import { BigNumber } from '@0x/utils';
+import { useHistory } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
-const dataTable = [
-  {
-    rank: 1,
-    txHash: '0xD578b88163b3c55bC8D87510695...',
-    chn: '292,097.25992705',
-    voteWeight: '62.55%',
-    proposalVote: 17
-  },
-  {
-    rank: 2,
-    txHash: '0xD578b88163b3c55bC8D87510695...',
-    chn: '292,097.25992705',
-    voteWeight: '62.55%',
-    proposalVote: 17
-  },
-  {
-    rank: 3,
-    txHash: '0xD578b88163b3c55bC8D87510695...',
-    chn: '292,097.25992705',
-    voteWeight: '62.55%',
-    proposalVote: 17
-  },
-  {
-    rank: 4,
-    txHash: '0xD578b88163b3c55bC8D87510695...',
-    chn: '292,097.25992705',
-    voteWeight: '62.55%',
-    proposalVote: 17
-  },
-  {
-    rank: 5,
-    txHash: '0xD578b88163b3c55bC8D87510695...',
-    chn: '292,097.25992705',
-    voteWeight: '62.55%',
-    proposalVote: 17
-  },
-  {
-    rank: 6,
-    txHash: '0xD578b88163b3c55bC8D87510695...',
-    chn: '292,097.25992705',
-    voteWeight: '62.55%',
-    proposalVote: 17
-  },
-  {
-    rank: 7,
-    txHash: '0xD578b88163b3c55bC8D87510695...',
-    chn: '292,097.25992705',
-    voteWeight: '62.55%',
-    proposalVote: 17
-  },
-  {
-    rank: 8,
-    txHash: '0xD578b88163b3c55bC8D87510695...',
-    chn: '292,097.25992705',
-    voteWeight: '62.55%',
-    proposalVote: 17
-  },
-  {
-    rank: 9,
-    txHash: '0xD578b88163b3c55bC8D87510695...',
-    chn: '292,097.25992705',
-    voteWeight: '62.55%',
-    proposalVote: 17
-  },
-  {
-    rank: 10,
-    txHash: '0xD578b88163b3c55bC8D87510695...',
-    chn: '292,097.25992705',
-    voteWeight: '62.55%',
-    proposalVote: 17
-  }
-];
+const TableMobile = (props: any) => {
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(12);
+  const [data, setData] = useState([]);
+  const history = useHistory();
 
-const TableMobile = () => {
+  useEffect(() => {
+    const getdataLeaderBoard = async () => {
+      const dataLeaderBoard = await getDataLeaderBoard(page, limit);
+      setData(dataLeaderBoard.data);
+    };
+    getdataLeaderBoard();
+  }, []);
+
   const renderData = useCallback(
     (content) =>
       checkNotEmptyArr(content)
-        ? content.map((item: any) => {
-            const { rank, txHash, chn, voteWeight, proposalVote } = item;
+        ? content.map((item: any, index: any) => {
+            const { id, address, vote_weight, proposals_voted } = item;
             return (
-              <React.Fragment key={rank}>
+              <Box
+                key={index}
+                onClick={() =>
+                  history.push(`/governance/leaderboard/leaderboard-detail/${address}`)
+                }>
                 <Box className={cx('txHash')}>
-                  <span>{rank}</span>
-                  <span>{txHash}</span>
+                  <span>{index}</span>
+                  <span>{address.substr(0, 19)}...</span>
                 </Box>
                 <Box className={cx('chn')}>
                   <span>CHN</span>
-                  <span>{chn}</span>
+                  <span>{vote_weight}</span>
                 </Box>
                 <Box className={cx('vote-weight')}>
                   <span>Vote Weight</span>
-                  <span>{voteWeight}</span>
+                  <span>{Number(new BigNumber(vote_weight).multipliedBy(100))} %</span>
                 </Box>
                 <Box className={cx('proposal')}>
                   <span>Proposals Vote</span>
-                  <span>{proposalVote}</span>
+                  <span>{proposals_voted}</span>
                 </Box>
-              </React.Fragment>
+              </Box>
             );
           })
         : null,
@@ -117,23 +62,30 @@ const TableMobile = () => {
         <span className={cx('title')}>addresses by voting weight </span>
         <Box className={cx('children-content')}>
           <span className={cx('children-content__rank')}>Rank</span>
-          {dataTable.map((item) => {
-            const { rank, txHash, chn, voteWeight, proposalVote } = item;
-            const content = [
-              {
-                rank: rank,
-                txHash: txHash,
-                chn: chn,
-                voteWeight: voteWeight,
-                proposalVote: proposalVote
-              }
-            ];
-            return (
-              <Box key={rank} className={cx('children-content__main')}>
-                {renderData(content)}
-              </Box>
-            );
-          })}
+          {checkNotEmptyArr(data)
+            ? data
+                .sort((a: any, b: any) =>
+                  Number(parseFloat(a.vote_weight) < parseFloat(b.vote_weight)) ? 1 : -1
+                )
+                .map((item, index) => {
+                  const { id, address, vote_weight, proposals_voted } = item;
+                  const content = [
+                    {
+                      id: id,
+                      rank: index,
+                      address: address,
+                      chn: vote_weight,
+                      vote_weight: vote_weight,
+                      proposals_voted: proposals_voted
+                    }
+                  ];
+                  return (
+                    <Box key={index} className={cx('children-content__main')}>
+                      {renderData(content)}
+                    </Box>
+                  );
+                })
+            : null}
         </Box>
       </Paper>
     </Box>

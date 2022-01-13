@@ -16,30 +16,16 @@ import { checkNotEmptyArr } from '../../../helpers/common';
 import LeaderBoardMobile from '../leaderboardMobile';
 import useMobile from '../../../hooks/useMobile';
 import { getDataLeaderBoard } from '../../../apis/apis';
+import { BigNumber } from '@0x/utils';
+import { useHistory } from 'react-router-dom';
 const cx = classNames.bind(styles);
-
-const dataTable = [
-  {
-    rank: 1,
-    txHash: '0xD578b88163b3c55bC8D87510695aD1f2E2607d35',
-    chn: '292,097.25992705',
-    voteWeight: '62.55%',
-    proposalVote: 17
-  },
-  {
-    rank: 2,
-    txHash: '0xD578b88163b3c55bC8D87510695aD1f2E2607d35',
-    chn: '292,097.25992705',
-    voteWeight: '62.55%',
-    proposalVote: 17
-  }
-];
 
 const LeaderBoard: React.FC = () => {
   const isMobile = useMobile(820);
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(12);
-  const [data, setData] = useState({});
+  const [data, setData] = useState([]);
+  const history = useHistory();
 
   useEffect(() => {
     const getdataLeaderBoard = async () => {
@@ -49,26 +35,25 @@ const LeaderBoard: React.FC = () => {
     getdataLeaderBoard();
   }, []);
 
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
 
-  const renderData = useCallback((content) => {
+  const renderData = useCallback((content, parentData) => {
     return checkNotEmptyArr(content)
-      ? content.map((item: any) => {
-          const { rank, txHash, proposalVote, chn, voteWeight } = item;
+      ? content.map((item: any, index: any) => {
+          const { id, address, vote_weight, proposals_voted } = item;
           return (
-            <React.Fragment key={rank}>
-              <TableCell className={cx('table-row__table-cell')}>{rank}</TableCell>
-              <TableCell className={cx('table-row__table-cell')}>{txHash}</TableCell>
+            <React.Fragment key={id}>
+              <TableCell className={cx('table-row__table-cell')}>
+                {parentData + index + 1}
+              </TableCell>
+              <TableCell className={cx('table-row__table-cell')}>{address}</TableCell>
               <TableCell align="right" className={cx('table-row__table-cell')}>
-                {chn}
+                {vote_weight}
               </TableCell>
               <TableCell align="right" className={cx('table-row__table-cell')}>
-                {voteWeight}
+                {Number(new BigNumber(vote_weight).multipliedBy(100))} %
               </TableCell>
               <TableCell align="right" className={cx('table-row__table-cell')}>
-                {proposalVote}
+                {proposals_voted}
               </TableCell>
             </React.Fragment>
           );
@@ -103,23 +88,37 @@ const LeaderBoard: React.FC = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody className={cx('table-body')}>
-                  {dataTable.map((item, index) => {
-                    const { rank, txHash, chn, voteWeight, proposalVote } = item;
-                    const content = [
-                      {
-                        rank: rank,
-                        txHash: txHash,
-                        chn: chn,
-                        voteWeight: voteWeight,
-                        proposalVote: proposalVote
-                      }
-                    ];
-                    return (
-                      <TableRow className={cx('table-row')} key={rank}>
-                        {renderData(content)}
-                      </TableRow>
-                    );
-                  })}
+                  {checkNotEmptyArr(data)
+                    ? data
+                        .sort((a: any, b: any) =>
+                          Number(parseFloat(a.vote_weight) < parseFloat(b.vote_weight)) ? 1 : -1
+                        )
+                        .map((item, index) => {
+                          const { id, address, vote_weight, proposals_voted } = item;
+                          const content = [
+                            {
+                              id: id,
+                              rank: index,
+                              address: address,
+                              chn: vote_weight,
+                              vote_weight: vote_weight,
+                              proposals_voted: proposals_voted
+                            }
+                          ];
+                          return (
+                            <TableRow
+                              onClick={() =>
+                                history.push(
+                                  `/governance/leaderboard/leaderboard-detail/${address}`
+                                )
+                              }
+                              className={cx('table-row')}
+                              key={index}>
+                              {renderData(content, index)}
+                            </TableRow>
+                          );
+                        })
+                    : null}
                 </TableBody>
               </Table>
             </TableContainer>

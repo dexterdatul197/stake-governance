@@ -1,33 +1,166 @@
-import { Box, LinearProgress } from '@material-ui/core';
-import React from 'react';
+import { Box, TablePagination } from '@material-ui/core';
+import React, { useCallback, useEffect, useState } from 'react';
 import styles from './styles.module.scss';
 import classNames from 'classnames/bind';
+import { checkNotEmptyArr } from 'src/helpers/common';
+import { BigNumber } from '@0x/utils';
+import moment from 'moment';
+import { styled } from '@mui/material/styles';
+import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress';
+import { getDataLeaderBoardDetail } from 'src/apis/apis';
+
 const cx = classNames.bind(styles);
 
-const HistoryDetail = () => {
+const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
+  height: 8,
+  borderRadius: 13,
+  marginBottom: '10px',
+  [`&.${linearProgressClasses.colorPrimary}`]: {
+    backgroundColor: theme.palette.grey[theme.palette.mode === 'light' ? 200 : 800]
+  },
+  [`& .${linearProgressClasses.bar}`]: {
+    borderRadius: 13,
+    backgroundColor: theme.palette.mode === 'light' ? '#3EE046' : '#308fe8'
+  }
+}));
+
+const BorderLinearProgressDefeate = styled(LinearProgress)(({ theme }) => ({
+  height: 8,
+  borderRadius: 13,
+  marginBottom: '10px',
+  [`&.${linearProgressClasses.colorPrimary}`]: {
+    backgroundColor: theme.palette.grey[theme.palette.mode === 'light' ? 200 : 800]
+  },
+  [`& .${linearProgressClasses.bar}`]: {
+    borderRadius: 13,
+    backgroundColor: theme.palette.mode === 'light' ? '#EC5656' : '#308fe8'
+  }
+}));
+
+interface Props {
+  address: any;
+}
+
+const HistoryDetail = (props: Props) => {
+  const { address } = props;
+  const [rowPerPage, setRowPerPage] = useState(5);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [dataDetail, setDataDetail] = useState([]);
+  const [totalItem, setTotalItem] = useState();
+  const [conditionFilter, setConditionFilter] = useState({
+    page: 1,
+    limit: 5
+  });
+
+  useEffect(() => {
+    const getDataDetail = async () => {
+      const data = await getDataLeaderBoardDetail(
+        address,
+        conditionFilter.page,
+        conditionFilter.limit
+      );
+      setTotalItem(data.metadata.totalItem);
+      setDataDetail(data.data);
+    };
+    getDataDetail();
+  }, [conditionFilter.page, conditionFilter.limit]);
+
+  const handleChangePage = (event: unknown, newPage: number) => {
+    setCurrentPage(newPage);
+    setConditionFilter({
+      page: newPage + 1,
+      limit: rowPerPage
+    });
+  };
+  console.log(totalItem);
+
+  const convertState = (state: any) => {
+    switch (state) {
+      case 'Successded':
+        return 'Passed';
+      case 'Defeated':
+        return 'Defeated';
+      case 'Active':
+        return 'Active';
+      default:
+        break;
+    }
+  };
+
+  const renderData = useCallback((content, parentData) => {
+    return checkNotEmptyArr(content)
+      ? content.map((item: any, index: any) => {
+          const { description, forVotes, againstVotes, createdAt, state, support, id } = item;
+          const total = new BigNumber(parseInt(forVotes)).plus(
+            new BigNumber(parseInt(againstVotes))
+          );
+          const percentForvote = new BigNumber(parseInt(forVotes) * 100).div(total).toString(10);
+
+          const percentAgainstVotes = new BigNumber(parseInt(againstVotes) * 100)
+            .div(total)
+            .toString(10);
+
+          return (
+            <React.Fragment key={id}>
+              <Box className={cx('history-content__main__column_1')}>
+                <span className={cx('title')}>{description}</span>
+                <Box className={cx('text')}>
+                  <span>{id}</span>
+                  <span> {moment(createdAt).format('MMMM Do, YYYY')}</span>
+                  <span className={cx(convertState(state))}>{convertState(state)}</span>
+                </Box>
+              </Box>
+              <Box className={cx('history-content__main__column_2')}>
+                <BorderLinearProgress variant="determinate" value={Number(percentForvote)} />
+                <BorderLinearProgressDefeate
+                  variant="determinate"
+                  value={Number(percentAgainstVotes)}
+                />
+              </Box>
+              <Box className={cx('history-content__main__column_3')}>
+                {support === 1 ? 'Up Vote' : 'Down Vote'}
+              </Box>
+            </React.Fragment>
+          );
+        })
+      : null;
+  }, []);
+
   return (
     <Box className={cx('history-content')}>
       <span className={cx('history-content__title')}>Proposal History</span>
-      <Box className={cx('history-content__main')}>
-        <Box className={cx('history-content__main__column_1')}>
-          <span className={cx('title')}>Lorem Ipsum is simply dummy text of the printing </span>
-          <Box className={cx('text')}>
-            <span>1</span>
-            <span>November 29, 2021</span>
-            <span>Passed</span>
-          </Box>
-        </Box>
-        <Box className={cx('history-content__main__column_2')}>
-          <LinearProgress
-            className={cx('progress-up')}
-            variant="determinate"
-            color="success"
-            value={50}
-          />
-          <LinearProgress color="error" className={cx('progress-down')} variant="determinate" value={30} />
-        </Box>
-        <Box className={cx('history-content__main__column_3')}>up Vote </Box>
-      </Box>
+      {checkNotEmptyArr(dataDetail)
+        ? dataDetail.map((item: any, index: any) => {
+            const { proposal, voter } = item;
+            const { description, createdAt, state, forVotes, againstVotes, id } = proposal;
+            const { support } = voter;
+
+            const content = [
+              {
+                id: id,
+                description: description,
+                createdAt: createdAt,
+                state: state,
+                forVotes: forVotes,
+                againstVotes: againstVotes,
+                support: support
+              }
+            ];
+            return (
+              <Box className={cx('history-content__main')} key={id}>
+                {renderData(content, index)}
+              </Box>
+            );
+          })
+        : null}
+      <TablePagination
+        component={'div'}
+        rowsPerPageOptions={[]}
+        rowsPerPage={rowPerPage}
+        page={currentPage}
+        onPageChange={handleChangePage}
+        count={totalItem || 0}
+      />
     </Box>
   );
 };

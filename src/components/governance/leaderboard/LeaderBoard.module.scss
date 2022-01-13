@@ -14,12 +14,13 @@
       padding: 47px 40px 34px 40px;
       box-shadow: 0px 4px 30px rgba(0, 28, 78, 0.05);
       border-radius: 14px;
+      background-color: var(--background-table);
       span:nth-child(1) {
         display: block;
         padding-bottom: 36px;
         font-size: 18px;
         font-weight: 600;
-        color: rgba(0, 28, 78, 0.87);
+        color: var(--text-table);
         text-transform: capitalize;
       }
       .table-container {
@@ -29,7 +30,7 @@
               &__table-cell {
                 font-size: 16px;
                 font-weight: 600;
-                color: rgba(0, 28, 78, 0.38);
+                color: var(--text-table);
                 border-bottom: none !important;
               }
             }
@@ -37,12 +38,12 @@
           .table-body {
             .table-row {
               &:hover {
-                background-color: #f5f7fa;
+                background-color: var(--hover-table);
               }
               &__table-cell {
                 font-size: 14px;
                 font-weight: 500;
-                color: rgba(0, 28, 78, 0.87);
+                color: var(--text-table);
                 border-bottom: none !important;
                 cursor: pointer;
               }

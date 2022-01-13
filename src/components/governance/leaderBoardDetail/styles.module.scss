@@ -21,71 +21,77 @@
         font-size: 16px;
         font-weight: 500;
         color: rgba(0, 28, 78, 0.87);
+        cursor: pointer;
       }
     }
     .holding_transaction {
       display: flex;
       align-items: center;
       margin-top: 55px;
+      width: 100%;
       .holding {
-        flex: 1;
+        width: 100%;
         padding: 12px 55px 36px 55px;
-        margin-right: 33px;
         border: 1px solid rgba(0, 28, 78, 0.15);
         box-shadow: 0px 4px 30px rgba(0, 28, 78, 0.05);
         border-radius: 14px;
-        &__title {
+        .title {
           font-size: 18px;
           font-weight: 600;
           color: rgba(0, 28, 78, 0.87);
-          margin-bottom: 33px;
+          padding-bottom: 28px;
           display: block;
         }
         &__balance {
-          border-bottom: 1px solid #c4c4c4;
-          span:nth-child(1) {
-            font-size: 16px;
-            font-weight: 500;
-            color: rgba(0, 28, 78, 0.87);
-            display: block;
-            margin-bottom: 15px;
-          }
-          span:nth-child(2) {
-            color: rgba(0, 28, 78, 0.87);
-            font-size: 20px;
-            font-weight: 700;
-            display: block;
-            margin-bottom: 20px;
-          }
-        }
-        &__chn {
-          border-bottom: 1px solid #c4c4c4;
           display: flex;
-          justify-content: space-between;
           align-items: center;
-          .content-left {
+          justify-content: space-between;
+          &__left {
+            flex: 1;
             span:nth-child(1) {
-              display: block;
-              margin-top: 14px;
-              margin-bottom: 15px;
               font-size: 16px;
               font-weight: 500;
               color: rgba(0, 28, 78, 0.87);
+              display: block;
+              padding-bottom: 15px;
             }
             span:nth-child(2) {
               color: rgba(0, 28, 78, 0.87);
               font-size: 20px;
               font-weight: 700;
               display: block;
-              margin-bottom: 20px;
             }
           }
-          .content-right {
-            .number {
-              padding-left: 6px;
+          &__right {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex: 1;
+            border-left: 1px solid #C4C4C4;
+            padding-left: 5%;
+            .content-left {
+              span:nth-child(1) {
+                display: block;
+                font-size: 16px;
+                font-weight: 500;
+                padding-bottom: 15px;
+                color: rgba(0, 28, 78, 0.87);
+              }
+              span:nth-child(2) {
+                color: rgba(0, 28, 78, 0.87);
+                font-size: 20px;
+                font-weight: 700;
+                display: block;
+              }
+            }
+            .content-right {
+              .number {
+                padding-left: 6px;
+              }
             }
           }
         }
+
         &__delegating {
           span:nth-child(1) {
             display: block;
@@ -101,53 +107,6 @@
             font-weight: 700;
             display: block;
           }
-        }
-      }
-      .transaction {
-        flex: 2;
-        border: 1px solid rgba(0, 28, 78, 0.15);
-        box-shadow: 0px 4px 30px rgba(0, 28, 78, 0.05);
-        border-radius: 14px;
-        padding: 12px 55px 20px 55px;
-        .title {
-          margin-bottom: 33px;
-          font-size: 18px;
-          color: rgba(0, 28, 78, 0.87);
-          font-weight: 600;
-          padding-left: 13px;
-        }
-        .table {
-          &__table-head {
-            .table-row {
-              &__table-cell {
-                border-bottom: none !important;
-                padding-bottom: 0px !important;
-                font-size: 16px;
-                font-weight: 500;
-                color: rgba(0, 28, 78, 0.87);
-              }
-            }
-          }
-          &__table-body {
-            .table-row {
-              &__table-cell {
-                border-bottom: none !important;
-                padding-bottom: 4px !important;
-                font-size: 16px;
-                font-weight: 500;
-                color: rgba(0, 28, 78, 0.87);
-              }
-            }
-          }
-        }
-        .more {
-          display: block;
-          padding-top: 29px;
-          text-align: center;
-          cursor: pointer;
-          font-size: 18px;
-          font-weight: 600;
-          color: rgba(0, 28, 78, 0.87);
         }
       }
     }

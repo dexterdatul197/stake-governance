@@ -59,6 +59,11 @@ const App: React.FC = () => {
           <Route exact path="/stake" component={Balances} />
           <Route exact path="/governance" component={Governance} />
           <Route exact path="/governance/leaderboard" component={LeaderBoard} />
+          <Route
+            exact
+            path="/governance/leaderboard/leaderboard-detail/:address"
+            component={LeaderBoardDetail}
+          />
           <Route exact path="/proposal/:proposalId" component={ProposalDetail} />
         </Switch>
       </div>
