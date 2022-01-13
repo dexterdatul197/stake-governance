@@ -1,3 +1,66 @@
-:root{
-    
+:root {
+    .vote-card {
+        padding: 10px;
+        .vote-card-title {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            font-size: 16px;
+            font-weight: 600;
+            line-height: 19px;
+            color: var(--color-text);
+            overflow: hidden;
+        }
+        .vote-card-progress {
+            height: 6px;
+            background-color: rgba(114, 191, 101, 1);
+            border-radius: 13px;
+            width: 100%;
+            margin-top: 10px;
+        }
+        .vote-card-col {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 16.71px;
+            color: var(--color-text-head-vote);
+            margin-top: 10px;
+        }
+        .vote-card-content {
+            padding: 16px 0px 16px 0px;
+            border-bottom: #efefef 1px solid;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            font-size: 16px;
+            font-weight: 600;
+            line-height: 19px;
+            overflow: hidden;
+            color: var(--color-text);
+            .vote-card-content-vote {
+                color: var(--color-text-white-black);
+            }
+        }
+        .vote-card-content-none {
+            padding: 16px 0px 16px 0px;
+            border-bottom: #efefef 1px solid;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            font-size: 16px;
+            font-weight: 600;
+            line-height: 19px;
+            color: var(--color-text-head-vote);
+        }
+        .vote-card-btn {
+            font-size: 16px;
+            font-weight: 600;
+            line-height: 19px;
+            text-align: center;
+            margin: 28px 0px 28px 0px;
+            cursor: pointer;
+        }
+    }
 }

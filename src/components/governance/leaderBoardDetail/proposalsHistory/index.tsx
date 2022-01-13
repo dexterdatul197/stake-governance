@@ -24,7 +24,12 @@ const HistoryDetail = () => {
             color="success"
             value={50}
           />
-          <LinearProgress color="error" className={cx('progress-down')} variant="determinate" value={30} />
+          <LinearProgress
+            color="error"
+            className={cx('progress-down')}
+            variant="determinate"
+            value={30}
+          />
         </Box>
         <Box className={cx('history-content__main__column_3')}>up Vote </Box>
       </Box>

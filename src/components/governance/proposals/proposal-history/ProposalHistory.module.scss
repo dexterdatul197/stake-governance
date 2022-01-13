@@ -1,3 +1,31 @@
-:root{
-    
+:root {
+    .proposal-history {
+        padding: 20px 14px 20px 14px;
+        color: var(--color-text);
+        .history-title {
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 600;
+            text-align: left;
+        }
+        .history-content {
+            .step {
+                margin-top: 10px;
+                color: var(--color-text);
+                display: flex;
+                flex-direction: row;
+                align-items: flex-start;
+                .step-content {
+                    margin-left: 5px;
+                    display: flex;
+                    flex-direction: column;
+                    .step-content-description {
+                        font-size: 14px;
+                        font-weight: 500;
+                        color: var(--color-text-head-vote);
+                    }
+                }
+            }
+        }
+    }
 }

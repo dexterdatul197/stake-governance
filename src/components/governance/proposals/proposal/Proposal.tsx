@@ -61,44 +61,59 @@ const Proposal: React.FC<Props> = (props) => {
             className={cx(
               `proposal-status-${getStatus(proposal.state).toLowerCase()}`,
               'proposal-status'
-            )}>
+            )}
+          >
             {getStatus(proposal.state)}
           </div>
         </div>
       </div>
-      <div className={cx('row-content-btn')}>
-        {voteStatus && voteStatus === 'novoted' && proposal.state !== 'Active' && (
-          <div 
-            className={cx('vote-status-text')}
-            onClick={() => redirectToProposalDetail(proposal.id)}
-          >NO VOTE</div>
-        )}
-        {voteStatus && voteStatus === 'voted' && (
-          <div 
-            className={cx('vote-status-text')}
-            onClick={() => redirectToProposalDetail(proposal.id)}
-          >VOTED</div>
-        )}
-        {voteStatus && voteStatus === 'novoted' && proposal.state === 'Active' && (
-          <div className="flex align-center" onClick={(e) => e.stopPropagation()}>
-            <Button
-              className={cx('btn-upvote')}
-              disabled={
-                votingWeight === '0' || !proposal || (proposal && proposal.state !== 'Active') || isLoading
-              }
-              onClick={() => handleVote('like')}>
-              {isLoading && voteType === 'like' && <Icon type="loading" />} Up Vote
-            </Button>
-            <Button
-              className={cx('btn-downvote')}
-              disabled={
-                votingWeight === '0' || !proposal || (proposal && proposal.state !== 'Active') || isLoading
-              }
-              onClick={() => handleVote('dislike')}>
-              {isLoading && voteType === 'dislike' && <Icon type="loading" />} Down Vote
-            </Button>
-          </div>
-        )}
+      <div className={cx('row-content-right')}>
+        <div className={cx('row-content-btn')}>
+          {voteStatus && voteStatus === 'novoted' && proposal.state !== 'Active' && (
+            <div
+              className={cx('vote-status-text')}
+              onClick={() => redirectToProposalDetail(proposal.id)}
+            >
+              NO VOTE
+            </div>
+          )}
+          {voteStatus && voteStatus === 'voted' && (
+            <div
+              className={cx('vote-status-text')}
+              onClick={() => redirectToProposalDetail(proposal.id)}
+            >
+              VOTED
+            </div>
+          )}
+          {voteStatus && voteStatus === 'novoted' && proposal.state === 'Active' && (
+            <div className={cx('flex-align-center')} onClick={(e) => e.stopPropagation()}>
+              <Button
+                className={cx('btn-upvote')}
+                disabled={
+                  votingWeight === '0' ||
+                  !proposal ||
+                  (proposal && proposal.state !== 'Active') ||
+                  isLoading
+                }
+                onClick={() => handleVote('like')}
+              >
+                {isLoading && voteType === 'like' && <Icon type="loading" />} Up Vote
+              </Button>
+              <Button
+                className={cx('btn-downvote')}
+                disabled={
+                  votingWeight === '0' ||
+                  !proposal ||
+                  (proposal && proposal.state !== 'Active') ||
+                  isLoading
+                }
+                onClick={() => handleVote('dislike')}
+              >
+                {isLoading && voteType === 'dislike' && <Icon type="loading" />} Down Vote
+              </Button>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

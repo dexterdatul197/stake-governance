@@ -7,7 +7,6 @@ import { ReactComponent as AddressIcon } from '../../../assets/icon/icon-address
 import { ReactComponent as UserIcon } from '../../../assets/icon/user.svg';
 import ProposalHistory from './proposalsHistory';
 
-
 const cx = classNames.bind(styles);
 const data = Array.from(Array(5)).map((_) => ({
   action: 'Received CHN',
