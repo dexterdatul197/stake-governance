@@ -23,9 +23,13 @@
         padding: 10px;
         background-color: var(--background-proposal-detail-card);
         box-shadow: 0px 4px 30px 0px rgba(0, 28, 78, 0.05);
-        .text-black-white {
-            font-weight: 600;
+        .description-value {
+            color: var(--color-text-white-black);
         }
+    }
+    .text-black-white {
+        font-weight: 600;
+        color: var(--color-text-white-black);
     }
     .block-left {
         width: 76%;
@@ -77,6 +81,10 @@
                 margin: 0px 8px 0px 8px;
             }
         }
+    }
+    .center-warning {
+        text-align: center;
+        color: var(--color-text-white-black);
     }
 }
 

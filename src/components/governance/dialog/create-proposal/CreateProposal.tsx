@@ -55,7 +55,8 @@ const CreateProposal: React.FC = () => {
         signature: '',
         callData: []
       }
-    ])
+    ]);
+    setDescription('');
   };
   const handleClickConfirm = async () => {
     const targetAddresses = [];
