@@ -27,6 +27,7 @@ export type VoteData = {
 };
 
 export type VoteFormData = {
+  totalVotes: number;
   percent: string;
   type: string;
   votes: VoteData[];

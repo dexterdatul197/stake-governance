@@ -18,12 +18,14 @@ interface Props {
 }
 const ProposalDetail: React.FC<Props> = (props) => {
   const [forVotes, setForVotes] = useState<VoteFormData>({
+    totalVotes: 0,
     percent: '',
     type: '',
     votes: [],
     sumVotes: ''
   });
   const [againstVotes, setAgainstVotes] = useState<VoteFormData>({
+    totalVotes: 0,
     percent: '',
     type: '',
     votes: [],
@@ -68,11 +70,20 @@ const ProposalDetail: React.FC<Props> = (props) => {
     values: [],
     voterCount: ''
   });
+  const [limitUpVote, setLimitUpVote] = useState(4);
+  const [limitDownVote, setLimitDownVote] = useState(4);
+
+  const callbackViewAllUpVote = (childData: number) => {
+    setLimitUpVote(childData);
+  };
+  const callbackViewAllDownVote = (childData: number) => {
+    setLimitDownVote(childData);
+  };
 
   const getProposal = async () => {
     const proposalDetail = await getProposalDetail(props.match.params.proposalId);
-    const forVotes = await getVotes(props.match.params.proposalId, true);
-    const againstVotes = await getVotes(props.match.params.proposalId, false);
+    const forVotes = await getVotes(props.match.params.proposalId, true, limitUpVote);
+    const againstVotes = await getVotes(props.match.params.proposalId, false, limitDownVote);
 
     const total =
       Number(forVotes.metadata.sumVotes || '0') + Number(againstVotes.metadata.sumVotes || '0');
@@ -87,12 +98,14 @@ const ProposalDetail: React.FC<Props> = (props) => {
 
     setProposalDetail(proposalDetail.data);
     setForVotes({
+      totalVotes: forVotes.metadata.totalItem,
       percent: forPercent.toFixed(10),
       type: 'Up Vote',
       votes: forVotes.data,
       sumVotes: forVotes.metadata.sumVotes
     });
     setAgainstVotes({
+      totalVotes: againstVotes.metadata.totalItem,
       percent: againstPercent.toFixed(10),
       type: 'Down Vote',
       votes: againstVotes.data,
@@ -106,7 +119,7 @@ const ProposalDetail: React.FC<Props> = (props) => {
 
   useEffect(() => {
     getProposal();
-  }, []);
+  }, [limitUpVote, limitDownVote]);
 
   return (
     <div className={cx('proposal-detail')}>
@@ -138,10 +151,10 @@ const ProposalDetail: React.FC<Props> = (props) => {
           </div>
           <div className={cx('detail-info')}>
             <div className={cx('vote-card')}>
-              <VoteCard voting={forVotes} />
+              <VoteCard voting={forVotes} parrentCallback={callbackViewAllUpVote} />
             </div>
             <div className={cx('vote-card')}>
-              <VoteCard voting={againstVotes} />
+              <VoteCard voting={againstVotes} parrentCallback={callbackViewAllDownVote} />
             </div>
           </div>
         </div>

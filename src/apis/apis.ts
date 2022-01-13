@@ -24,8 +24,8 @@ export const getProposalDetail = async (id: number) => {
   return res.data;
 };
 
-export const getVotes = async (id: number, type: boolean) => {
-  const res = await axiosInstance(options).get(`/voter/${id}?support=${type}`);
+export const getVotes = async (id: number, type: boolean, limit: number) => {
+  const res = await axiosInstance(options).get(`/voter/${id}?support=${type}&limit=${limit}`);
   return res.data;
 };
 

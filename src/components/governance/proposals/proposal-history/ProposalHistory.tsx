@@ -11,8 +11,6 @@ interface Props {
 const cx = classNames.bind(styles);
 
 const ProposalHistory: React.FC<Props> = ({ proposalInfo }) => {
-  console.log('Proposal history:', proposalInfo);
-
   return (
     <div className={cx('proposal-history')}>
       <div className={cx('history-title')}>Proposal History</div>

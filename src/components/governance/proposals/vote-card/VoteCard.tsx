@@ -9,6 +9,7 @@ import styles from './VoteCard.module.scss';
 const cx = classNames.bind(styles);
 interface Props {
   voting?: VoteFormData;
+  parrentCallback: (childData: number) => void;
 }
 
 const get_ellipsis_mid = (str: string) => {
@@ -22,7 +23,7 @@ const formatCardNumber = (num: string) => {
   return format(Web3.utils.fromWei(num));
 };
 
-const VoteCard: React.FC<Props> = ({ voting }) => {
+const VoteCard: React.FC<Props> = ({ voting, parrentCallback }) => {
   const sumVotes = formatCardNumber(voting?.sumVotes as string);
 
   const noDataVoteLength = 4 - (voting?.votes.length || (0 as number));
@@ -38,7 +39,6 @@ const VoteCard: React.FC<Props> = ({ voting }) => {
     }
   }
 
-  console.log('percent: ', voting?.percent);
   return (
     <div className={cx('vote-card')}>
       <div className={cx('vote-card-title')}>
@@ -66,6 +66,16 @@ const VoteCard: React.FC<Props> = ({ voting }) => {
         );
       })}
       {noDataVoteLength > 0 && noDataVote}
+      {voting?.votes.length !== voting?.totalVotes && (
+        <div
+          className={cx('vote-card-btn')}
+          onClick={() => {
+            parrentCallback(voting?.totalVotes || 0);
+          }}
+        >
+          View All
+        </div>
+      )}
     </div>
   );
 };
