@@ -64,7 +64,7 @@ const Detail = (props: Props) => {
               </Box>
               <Box className={cx('holding__balance__right')}>
                 <Box className={cx('content-left')}>
-                  <span>CHN</span>
+                  <span>CHN Stake</span>
                   <span>{chn}</span>
                 </Box>
               </Box>
