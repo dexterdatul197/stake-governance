@@ -28,3 +28,7 @@ code {
   -webkit-text-fill-color: var(--color-text-white-black) !important;
   opacity: 1 !important;
 }
+
+.css-zylse7-MuiButtonBase-root-MuiIconButton-root.Mui-disabled {
+  color: var(--text-table)!important;
+}

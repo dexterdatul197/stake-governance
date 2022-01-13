@@ -48,9 +48,10 @@ const Detail = (props: Props) => {
       <Box className={cx('main')}>
         <Box className={cx('main__address')}>
           <span>{`${address.substr(0, 4)}...${address.substr(address.length - 4, 4)}`}</span>
-          <span onClick={() => goToEthereumAddress(address)}>
-            {address} <AddressIcon style={{ cursor: 'pointer' }} />
-          </span>
+          <Box className={cx('address')}>
+            <span onClick={() => goToEthereumAddress(address)}>{address}</span>
+            <AddressIcon style={{ cursor: 'pointer' }} />
+          </Box>
         </Box>
 
         <Box className={cx('holding_transaction')}>
