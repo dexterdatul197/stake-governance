@@ -12,7 +12,7 @@ import classNames from 'classnames/bind';
 import React, { useCallback, useEffect, useState } from 'react';
 import BackArrow from '../../back-arrow/BackArrow';
 import styles from './LeaderBoard.module.scss';
-import { checkNotEmptyArr } from '../../../helpers/common';
+import { checkNotEmptyArr, format } from '../../../helpers/common';
 import LeaderBoardMobile from '../leaderboardMobile';
 import useMobile from '../../../hooks/useMobile';
 import { getDataLeaderBoard } from '../../../apis/apis';
@@ -39,7 +39,7 @@ const LeaderBoard: React.FC = () => {
   const renderData = useCallback((content, parentData) => {
     return checkNotEmptyArr(content)
       ? content.map((item: any, index: any) => {
-          const { id, address, vote_weight, proposals_voted } = item;
+          const { id, address, chn, vote_weight, proposals_voted } = item;
           return (
             <React.Fragment key={id}>
               <TableCell className={cx('table-row__table-cell')}>
@@ -47,7 +47,7 @@ const LeaderBoard: React.FC = () => {
               </TableCell>
               <TableCell className={cx('table-row__table-cell')}>{address}</TableCell>
               <TableCell align="right" className={cx('table-row__table-cell')}>
-                {vote_weight}
+                {format(new BigNumber(chn).div(1e18).toFixed(4).toString())}
               </TableCell>
               <TableCell align="right" className={cx('table-row__table-cell')}>
                 {Number(new BigNumber(vote_weight).multipliedBy(100))} %
@@ -77,7 +77,7 @@ const LeaderBoard: React.FC = () => {
                     <TableCell className={cx('table-row__table-cell')}>Rank</TableCell>
                     <TableCell className={cx('table-row__table-cell')}></TableCell>
                     <TableCell align="right" className={cx('table-row__table-cell')}>
-                      CHN
+                      CHN Stake
                     </TableCell>
                     <TableCell align="right" className={cx('table-row__table-cell')}>
                       VoteWeight
@@ -94,13 +94,13 @@ const LeaderBoard: React.FC = () => {
                           Number(parseFloat(a.vote_weight) < parseFloat(b.vote_weight)) ? 1 : -1
                         )
                         .map((item, index) => {
-                          const { id, address, vote_weight, proposals_voted } = item;
+                          const { id, address, votes, vote_weight, proposals_voted } = item;
                           const content = [
                             {
                               id: id,
                               rank: index,
                               address: address,
-                              chn: vote_weight,
+                              chn: votes,
                               vote_weight: vote_weight,
                               proposals_voted: proposals_voted
                             }
