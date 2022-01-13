@@ -121,9 +121,20 @@ const ProposalDetail: React.FC<Props> = (props) => {
             {proposalDetail.proposer} <AddressArrowSVG />
           </div>
           <div className={cx('proposer-status')}>
-            <span>{proposalDetail.id}</span>
-            <span>{moment(proposalDetail.createdAt).format('MMMM Do, YYYY')}</span>
-            <span>{getStatus(proposalDetail.state)}</span>
+            <div className={cx('proposer-status-left')}>
+              <div>{proposalDetail.id}</div>
+              <div className={cx('proposer-status-left-date')}>
+                {moment(proposalDetail.createdAt).format('MMMM Do, YYYY')}
+              </div>
+            </div>
+            <div
+              className={cx(
+                `proposal-status-${getStatus(proposalDetail.state).toLowerCase()}`,
+                'proposal-status'
+              )}
+            >
+              {getStatus(proposalDetail.state)}
+            </div>
           </div>
           <div className={cx('detail-info')}>
             <div className={cx('vote-card')}>

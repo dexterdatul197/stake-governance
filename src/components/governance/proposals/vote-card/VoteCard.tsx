@@ -21,8 +21,23 @@ const get_ellipsis_mid = (str: string) => {
 const formatCardNumber = (num: string) => {
   return format(Web3.utils.fromWei(num));
 };
+
 const VoteCard: React.FC<Props> = ({ props }) => {
   const sumVotes = formatCardNumber(props?.sumVotes as string);
+
+  const noDataVoteLength = 4 - (props?.votes.length || (0 as number));
+  const noDataVote = [];
+  if (noDataVoteLength > 0) {
+    for (let i = 0; i < noDataVoteLength; i++) {
+      noDataVote.push(
+        <div className={cx('vote-card-content-none')} key={i}>
+          <div>--</div>
+          <div>--</div>
+        </div>
+      );
+    }
+  }
+
   console.log('percent: ', props?.percent);
   return (
     <div className={cx('vote-card')}>
@@ -50,6 +65,7 @@ const VoteCard: React.FC<Props> = ({ props }) => {
           </div>
         );
       })}
+      {noDataVoteLength > 0 && noDataVote}
     </div>
   );
 };

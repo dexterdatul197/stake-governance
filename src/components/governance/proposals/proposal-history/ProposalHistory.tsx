@@ -2,7 +2,6 @@ import classNames from 'classnames/bind';
 import React from 'react';
 import { ProposalDetailForm } from '../../../../interfaces/SFormData';
 import styles from './ProposalHistory.module.scss';
-import CheckedIcon from '../../../../assets/icon/checked.svg';
 import Step from './Step';
 import moment from 'moment';
 
@@ -25,6 +24,7 @@ const ProposalHistory: React.FC<Props> = ({ proposalInfo }) => {
               ? moment(proposalInfo.createdTimestamp * 1000).format('LLL')
               : ''
           }
+          unCheck={proposalInfo?.createdTimestamp ? false : true}
         />
         <Step
           title="Active"
@@ -33,6 +33,7 @@ const ProposalHistory: React.FC<Props> = ({ proposalInfo }) => {
               ? moment(proposalInfo.startTimestamp * 1000).format('LLL')
               : ''
           }
+          unCheck={proposalInfo?.startTimestamp ? false : true}
         />
         <Step
           title={
@@ -45,6 +46,7 @@ const ProposalHistory: React.FC<Props> = ({ proposalInfo }) => {
           description={
             proposalInfo?.endTimestamp ? moment(proposalInfo.endTimestamp * 1000).format('LLL') : ''
           }
+          unCheck={proposalInfo?.endTimestamp ? false : true}
         />
         <Step
           title={`${proposalInfo?.state === 'Queued' ? 'Queued' : 'Queue'}`}
@@ -53,6 +55,7 @@ const ProposalHistory: React.FC<Props> = ({ proposalInfo }) => {
               ? moment(proposalInfo.queuedTimestamp * 1000).format('LLL')
               : ''
           }
+          unCheck={proposalInfo?.queuedTimestamp ? false : true}
         />
         <Step
           title={
@@ -65,6 +68,7 @@ const ProposalHistory: React.FC<Props> = ({ proposalInfo }) => {
               ? moment(proposalInfo.executedTimestamp * 1000).format('LLL')
               : ''
           }
+          unCheck={proposalInfo?.executedTimestamp ? false : true}
         />
       </div>
     </div>

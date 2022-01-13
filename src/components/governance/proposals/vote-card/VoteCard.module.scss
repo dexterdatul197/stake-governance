@@ -1,4 +1,4 @@
-:root{
+:root {
     .vote-card {
         padding: 10px;
         .vote-card-title {
@@ -14,7 +14,7 @@
             height: 6px;
             background-color: rgba(114, 191, 101, 1);
             border-radius: 13px;
-            width: 100%;            
+            width: 100%;
             margin-top: 10px;
         }
         .vote-card-col {
@@ -29,17 +29,29 @@
         }
         .vote-card-content {
             padding: 16px 0px 16px 0px;
-            border-bottom: #EFEFEF 1px solid;
+            border-bottom: #efefef 1px solid;
             display: flex;
             flex-direction: row;
             justify-content: space-between;
             font-size: 16px;
             font-weight: 600;
             line-height: 19px;
+            overflow: hidden;
             color: var(--color-text);
             .vote-card-content-vote {
                 color: var(--color-text-white-black);
             }
+        }
+        .vote-card-content-none {
+            padding: 16px 0px 16px 0px;
+            border-bottom: #efefef 1px solid;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            font-size: 16px;
+            font-weight: 600;
+            line-height: 19px;
+            color: var(--color-text-head-vote);
         }
     }
 }
