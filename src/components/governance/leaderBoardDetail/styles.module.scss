@@ -1,27 +1,40 @@
 .details {
   .main {
-    width: 100%;
     padding-top: 36px;
     margin: auto;
     &__address {
-      width: calc(100% - 68%);
       box-shadow: 0px 4px 30px rgba(0, 28, 78, 0.05);
       border-radius: 14px;
       padding: 13px 0 14px 50px;
       border: 1px solid rgba(0, 28, 78, 0.15);
+      background-color:var(--background-table);
+      @media screen and (max-width: 820px) {
+       padding: 17px 19px 14px 19px
+      }
 
       span:nth-child(1) {
         font-size: 20px;
         font-weight: 700;
-        color: rgba(0, 28, 78, 0.87);
+        color: var(--text-table);
         display: block;
         padding-bottom: 3px;
+        @media screen and (max-width: 768px) {
+          font-size: 16px;
+        }
       }
-      span:nth-child(2) {
-        font-size: 16px;
-        font-weight: 500;
-        color: rgba(0, 28, 78, 0.87);
-        cursor: pointer;
+      .address {
+        display: flex;
+        align-items: center;
+        span:nth-child(1) {
+          font-size: 16px;
+          font-weight: 500;
+          color: var(--text-table);
+          margin-right: 16px;
+          cursor: pointer;
+          @media screen and (max-width: 768px) {
+            font-size: 12px;
+          }
+        }
       }
     }
     .holding_transaction {
@@ -35,31 +48,55 @@
         border: 1px solid rgba(0, 28, 78, 0.15);
         box-shadow: 0px 4px 30px rgba(0, 28, 78, 0.05);
         border-radius: 14px;
+        background-color:var(--background-table);
+        @media screen and (max-width: 768px) {
+          padding: 19px 19px 39px 19px;
+        }
+
         .title {
           font-size: 18px;
           font-weight: 600;
-          color: rgba(0, 28, 78, 0.87);
+          color: var(--text-table);
           padding-bottom: 28px;
           display: block;
+          @media screen and (max-width: 768px) {
+            font-size: 16px;
+          }
         }
         &__balance {
           display: flex;
           align-items: center;
           justify-content: space-between;
+          @media screen and (max-width: 768px) {
+            flex-direction: column;
+            align-items: flex-start;
+          }
           &__left {
             flex: 1;
+            @media screen and (max-width: 768px) {
+              border-bottom: 1px solid #c4c4c4;
+              width: 100%;
+            }
             span:nth-child(1) {
               font-size: 16px;
               font-weight: 500;
-              color: rgba(0, 28, 78, 0.87);
+              color: var(--text-table);
               display: block;
               padding-bottom: 15px;
+              @media screen and (max-width: 768px) {
+                padding-bottom: 8px !important;
+                font-size: 12px;
+              }
             }
             span:nth-child(2) {
-              color: rgba(0, 28, 78, 0.87);
+              color: var(--text-table);
               font-size: 20px;
               font-weight: 700;
               display: block;
+              @media screen and (max-width: 768px) {
+                padding-bottom: 16px;
+                font-size: 12px;
+              }
             }
           }
           &__right {
@@ -67,21 +104,34 @@
             justify-content: space-between;
             align-items: center;
             flex: 1;
-            border-left: 1px solid #C4C4C4;
+            border-left: 1px solid #c4c4c4;
             padding-left: 5%;
+            @media screen and (max-width: 768px) {
+              border-left: none;
+              padding-left: 0;
+              width: 100%;
+              padding-top: 16px;
+            }
             .content-left {
               span:nth-child(1) {
                 display: block;
                 font-size: 16px;
                 font-weight: 500;
                 padding-bottom: 15px;
-                color: rgba(0, 28, 78, 0.87);
+                color: var(--text-table);
+                @media screen and (max-width: 768px) {
+                  padding-bottom: 8px !important;
+                  font-size: 12px;
+                }
               }
               span:nth-child(2) {
-                color: rgba(0, 28, 78, 0.87);
+                color: var(--text-table);
                 font-size: 20px;
                 font-weight: 700;
                 display: block;
+                @media screen and (max-width: 768px) {
+                  font-size: 12px;
+                }
               }
             }
             .content-right {
@@ -89,23 +139,6 @@
                 padding-left: 6px;
               }
             }
-          }
-        }
-
-        &__delegating {
-          span:nth-child(1) {
-            display: block;
-            margin-top: 19px;
-            font-size: 16px;
-            font-weight: 500;
-            margin-bottom: 10px;
-            color: rgba(0, 28, 78, 0.87);
-          }
-          span:nth-child(2) {
-            color: rgba(0, 28, 78, 0.87);
-            font-size: 20px;
-            font-weight: 700;
-            display: block;
           }
         }
       }

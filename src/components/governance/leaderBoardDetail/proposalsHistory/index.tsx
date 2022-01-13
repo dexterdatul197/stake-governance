@@ -1,13 +1,15 @@
-import { Box, TablePagination } from '@material-ui/core';
-import React, { useCallback, useEffect, useState } from 'react';
-import styles from './styles.module.scss';
-import classNames from 'classnames/bind';
-import { checkNotEmptyArr } from 'src/helpers/common';
 import { BigNumber } from '@0x/utils';
-import moment from 'moment';
-import { styled } from '@mui/material/styles';
+import { Box, TablePagination } from '@material-ui/core';
 import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress';
+import { styled } from '@mui/material/styles';
+import classNames from 'classnames/bind';
+import moment from 'moment';
+import React, { useCallback, useEffect, useState } from 'react';
 import { getDataLeaderBoardDetail } from 'src/apis/apis';
+import { checkNotEmptyArr } from 'src/helpers/common';
+import styles from './styles.module.scss';
+import TableMobile from '../proposalsHistoryMobile';
+import useMobile from '../../../../hooks/useMobile';
 
 const cx = classNames.bind(styles);
 
@@ -51,6 +53,7 @@ const HistoryDetail = (props: Props) => {
     page: 1,
     limit: 5
   });
+  const isMobile = useMobile(820);
 
   useEffect(() => {
     const getDataDetail = async () => {
@@ -129,30 +132,40 @@ const HistoryDetail = (props: Props) => {
   return (
     <Box className={cx('history-content')}>
       <span className={cx('history-content__title')}>Proposal History</span>
-      {checkNotEmptyArr(dataDetail)
-        ? dataDetail.map((item: any, index: any) => {
-            const { proposal, voter } = item;
-            const { description, createdAt, state, forVotes, againstVotes, id } = proposal;
-            const { support } = voter;
+      {isMobile ? (
+        <TableMobile
+          BorderLinearProgress={BorderLinearProgress}
+          BorderLinearProgressDefeate={BorderLinearProgressDefeate}
+          dataDetail={dataDetail}
+          checkNotEmptyArr={checkNotEmptyArr}
+          moment={moment}
+          convertState={convertState}
+        />
+      ) : checkNotEmptyArr(dataDetail) ? (
+        dataDetail.map((item: any, index: any) => {
+          const { proposal, voter } = item;
+          const { description, createdAt, state, forVotes, againstVotes, id } = proposal;
+          const { support } = voter;
 
-            const content = [
-              {
-                id: id,
-                description: description,
-                createdAt: createdAt,
-                state: state,
-                forVotes: forVotes,
-                againstVotes: againstVotes,
-                support: support
-              }
-            ];
-            return (
-              <Box className={cx('history-content__main')} key={id}>
-                {renderData(content, index)}
-              </Box>
-            );
-          })
-        : null}
+          const content = [
+            {
+              id: id,
+              description: description,
+              createdAt: createdAt,
+              state: state,
+              forVotes: forVotes,
+              againstVotes: againstVotes,
+              support: support
+            }
+          ];
+          return (
+            <Box className={cx('history-content__main')} key={id}>
+              {renderData(content, index)}
+            </Box>
+          );
+        })
+      ) : null}
+
       <TablePagination
         component={'div'}
         rowsPerPageOptions={[]}
@@ -160,6 +173,7 @@ const HistoryDetail = (props: Props) => {
         page={currentPage}
         onPageChange={handleChangePage}
         count={totalItem || 0}
+        className={cx('table-pagination')}
       />
     </Box>
   );

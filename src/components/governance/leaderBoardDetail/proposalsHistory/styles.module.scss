@@ -1,17 +1,24 @@
 .history-content {
   padding: 24px 55px 14px 55px;
-  background: #ffffff;
+  background-color: var(--background-table);
   border: 1px solid rgba(0, 28, 78, 0.15);
   box-sizing: border-box;
   box-shadow: 0px 4px 30px rgba(0, 28, 78, 0.05);
   border-radius: 14px;
   margin-top: 37px;
+  @media screen and (max-width: 768px) {
+    padding: 20px 19px 19px 19px;
+  }
   &__title {
     font-size: 18px;
     font-weight: 600;
-    color: rgba(0, 28, 78, 0.87);
+    color: var( --text-table);
     padding-bottom: 29px;
     display: block;
+    @media screen and (max-width: 768px) {
+      padding-bottom: 26px;
+      font-size: 16px;
+    }
   }
 
   &__main {
@@ -28,7 +35,7 @@
       .title {
         font-size: 20px;
         font-weight: 600;
-        color: rgba(0, 28, 78, 0.87);
+        color: var( --text-table);
         padding-bottom: 8px;
         display: block;
       }
@@ -37,11 +44,13 @@
           font-size: 14px;
           font-weight: 500;
           padding-right: 39px;
+          color:var(--color-text-detail)
         }
         span:nth-child(2) {
           font-size: 14px;
           font-weight: 500;
           padding-right: 56px;
+          color:var(--color-text-detail)
         }
         .Passed {
           font-size: 16px;
@@ -80,7 +89,10 @@
       text-transform: capitalize;
       font-size: 16px;
       font-weight: 500;
-      color: rgba(0, 28, 78, 0.87);
+      color: var( --text-table);
     }
+  }
+  .table-pagination{
+    color: var(--text-table)
   }
 }
