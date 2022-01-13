@@ -84,13 +84,12 @@ const ProposalDetail: React.FC<Props> = (props) => {
   const [isCancelLoading, setIsCancelLoading] = useState(false);
   const [status, setStatus] = useState('pending');
   const [cancelStatus, setCancelStatus] = useState('pending');
-  const [proposalThreshold, setProposalThreshold] = useState('0');
-  const [proposerVotingWeight, setProposerVotingWeight] = useState('0');
+  const [proposalThreshold, setProposalThreshold] = useState(0);
+  const [proposerVotingWeight, setProposerVotingWeight] = useState(0);
   const [isPossibleExcuted, setIsPossibleExcuted] = useState(false);
   const [excuteEta, setExcuteEta] = useState('');
   const [limitUpVote, setLimitUpVote] = useState(4);
   const [limitDownVote, setLimitDownVote] = useState(4);
-
   const votingWeight = useAppSelector((state) => state.governance.voteingWeight);
 
   const wallet = useAppSelector((state) => state.wallet);
@@ -105,12 +104,12 @@ const ProposalDetail: React.FC<Props> = (props) => {
     if (wallet.ethereumAddress && proposalDetail.id) {
       const voteContract = governance();
       await methods.call(voteContract.methods.proposalThreshold, []).then((res: any) => {
-        setProposalThreshold(Web3.utils.fromWei(res, 'ether'));
+        setProposalThreshold(+Web3.utils.fromWei(res, 'ether'));
       });
-      setProposerVotingWeight((+votingWeight).toFixed(0) || '0')
+      setProposerVotingWeight(+votingWeight);
     }
   }, [wallet.ethereumAddress, proposalDetail]);
-  
+
   useEffect(() => {
     if (wallet.ethereumAddress) {
       updateBalance();
@@ -266,7 +265,7 @@ const ProposalDetail: React.FC<Props> = (props) => {
                 className="cancel-btn"
                 disabled={
                   isCancelLoading ||
-                  BigNumber.from(proposerVotingWeight) >= BigNumber.from(proposalThreshold) ||
+                  proposerVotingWeight >= proposalThreshold ||
                   cancelStatus === 'success'
                 }
                 onClick={() => handleUpdateProposal('Cancel')}
@@ -304,7 +303,7 @@ const ProposalDetail: React.FC<Props> = (props) => {
         {proposalDetail.state !== 'Executed' &&
           proposalDetail.state !== 'Defeated' &&
           proposalDetail.state !== 'Canceled' &&
-          BigNumber.from(proposerVotingWeight) >= BigNumber.from(proposalThreshold) && (
+          proposerVotingWeight >= proposalThreshold && (
             <p className="center warning">
               You can not cancel the proposal while the proposer voting weight meets proposal
               threshold
@@ -312,9 +311,7 @@ const ProposalDetail: React.FC<Props> = (props) => {
           )}
       </div>
       <div className={cx('description')}>
-        <div className={cx('text-black-white')}>
-          Description
-        </div>
+        <div className={cx('text-black-white')}>Description</div>
         <p className="">{proposalDetail.description}</p>
       </div>
     </div>
