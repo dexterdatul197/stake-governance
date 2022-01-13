@@ -312,7 +312,9 @@ const ProposalDetail: React.FC<Props> = (props) => {
           )}
       </div>
       <div className={cx('description')}>
-        <div className="text-black-white">Description</div>
+        <div className="text-black-white" style={{ fontWeight: '600' }}>
+          Description
+        </div>
         <p className="text-black-white">{proposalDetail.description}</p>
       </div>
     </div>
