@@ -39,6 +39,8 @@ body {
   --background-proposal-detail-card: #fff;
   --color-address-contract: rgba(0, 0, 0, 0.6);
   --color-line: #e0e0e0;
+  --color-text-head-vote: rgba(0, 28, 78, 0.38);
+
 
   --connect-button: #107def;
   --background-connect-button: rgba(16, 125, 239, 0.1);
@@ -78,6 +80,9 @@ body {
 
   // widthdraw mooile
   --mb-bg-amount: #edf1f8;
+
+  //proposal dialog
+  --bg-head-mdeditor: #f5f5f5;
 }
 [data-theme='dark'] {
   --btn-header-border-color: #72bf65;
@@ -108,7 +113,7 @@ body {
   --background-proposal-detail-card: #1b1c1f;
   --color-address-contract: rgba(255, 255, 255, 0.6);
   --color-line: #333;
-
+  --color-text-head-vote: rgba(255, 255, 255, 0.38);
   //balance
   --bg-txt-type: #2d3c57;
   --background-color-balance: #1b1c1f;
@@ -144,6 +149,9 @@ body {
 
   // widthdraw mooile
   --mb-bg-amount: #121416;
+
+  //proposal dialog
+  --bg-head-mdeditor: #2b2c32;
 }
 .Snackbar {
   .css-zzms1-MuiSnackbar-root {
@@ -242,7 +250,24 @@ body {
     transform: rotate(360deg);
   }
 }
-
+.rc-md-editor {
+  .rc-md-navigation {
+    border-radius: 15px 15px 0px 0px !important;
+    background-color: var(--bg-head-mdeditor) !important;
+  }
+  .editor-container {
+    border-radius: 0px 0px 15px 15px !important;
+    background-color: var(--main-background-color) !important;
+    p {
+      color: var(--color-text) !important;
+    }
+    textarea {
+      color: var(--color-text) !important;
+      border-radius: 0px 0px 0px 15px !important;
+      background-color: var(--main-background-color) !important;
+    }
+  }
+}
 @media screen and (max-width: 576px) {
   .App {
     margin: 0;

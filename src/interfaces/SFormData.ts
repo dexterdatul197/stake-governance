@@ -1,6 +1,6 @@
 export interface SFormData {
   targetAddress: string;
-  value: string;
+  value: any[];
   signature: string;
   callData: any[];
 }
@@ -11,6 +11,27 @@ export type Filter = {
   address?: string;
   startTime?: number;
   endTime?: number;
+};
+
+export type VoteData = {
+  id: string;
+  address: string;
+  has_voted: number;
+  support: number;
+  votes: string;
+  proposal_id: number;
+  block_number: number;
+  block_timestamp: number;
+  created_at: string;
+  updated_at: string;
+};
+
+export type VoteFormData = {
+  totalVotes: number;
+  percent: string;
+  type: string;
+  votes: VoteData[];
+  sumVotes: string;
 };
 
 export interface ProposalFormData {
@@ -105,5 +126,3 @@ export interface TVLDataRes {
   tvl: string;
   timestamp: number;
 }
-
-export interface CoinGekoOHCL {}

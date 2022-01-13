@@ -24,6 +24,11 @@ export const getProposalDetail = async (id: number) => {
   return res.data;
 };
 
+export const getVotes = async (id: number, type: boolean, limit: number) => {
+  const res = await axiosInstance(options).get(`/voter/${id}?support=${type}&limit=${limit}`);
+  return res.data;
+};
+
 export const getTVLData = async (body: Filter) => {
   const res = await axiosInstance(options).get(`/staking/tvl${qsStringify(body)}`);
   return res.data.data;

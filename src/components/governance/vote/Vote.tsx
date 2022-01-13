@@ -90,12 +90,12 @@ const Vote: React.FC<Props> = (props) => {
   };
   const handleRedirectToLeaderboard = () => {
     history.push(`/governance/leaderboard`);
-  }
+  };
 
-  const getRankApi = async() => {
+  const getRankApi = async () => {
     const rank = await getRank(currentAddress(wallet));
     setRank(rank.toString());
-  }
+  };
   useEffect(() => {
     getRankApi();
   }, []);
@@ -122,10 +122,9 @@ const Vote: React.FC<Props> = (props) => {
         <span className={cx('rank-title')}>Rank:</span>
         <span className={cx('rank-value')}>{rank}</span>
       </div>
-      <div 
-        className={cx('view-leader-board')}
-        onClick={handleRedirectToLeaderboard}
-      >View leader board</div>
+      <div className={cx('view-leader-board')} onClick={handleRedirectToLeaderboard}>
+        View leader board
+      </div>
     </div>
   );
 };
