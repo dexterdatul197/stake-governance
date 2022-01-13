@@ -32,28 +32,24 @@ const paginationStyle = makeStyles(() => ({
 const Proposals: React.FC = () => {
   const dispatch = useDispatch();
   const paginationClasses = paginationStyle();
-  const handleChangePage = (event: unknown, newPage: number) => {
-    setCurrentPage(newPage);
-    conditionFilter.page = newPage + 1;
-    setConditionFilter(conditionFilter);
-  };
+
   const currentAccount = useAppSelector((state) => state.wallet);
   const proposals = useAppSelector((state) => state.proposals.proposals);
-  // const [count, setCount] = useState(0);
   const [rowPerPage, setRowPerPage] = useState(5);
-  const [currentPage, setCurrentPage] = useState(1);
-  const handleChangeRowsPerPage = (item: any) => {
-    setRowPerPage(parseInt(item.target.value, 10));
-    conditionFilter.limit = item.target.value;
-    setConditionFilter(conditionFilter);
-    setCurrentPage(0);
-  };
+  const [currentPage, setCurrentPage] = useState(0);
   const [conditionFilter, setConditionFilter] = useState<Filter>({
     page: 1,
     limit: 5
   });
-  // Get FREE CHN in Rinkeby
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+
+  const handleChangePage = (event: unknown, newPage: number) => {
+    setCurrentPage(newPage);
+    setConditionFilter({
+      page: newPage + 1,
+      limit: rowPerPage
+    });
+  };
+
   const minForUser = async () => {
     // TODO: need remove, only apply in test
     // if (currentAddress(currentAccount))
@@ -62,13 +58,8 @@ const Proposals: React.FC = () => {
   };
 
   useEffect(() => {
-    setCurrentPage(proposals.metadata.page);
-  }, [proposals]);
-
-  useEffect(() => {
     minForUser();
     dispatch(getProposalList(conditionFilter));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [conditionFilter.limit, conditionFilter.page, currentAccount, dispatch]);
 
   return (
@@ -82,13 +73,12 @@ const Proposals: React.FC = () => {
         <div className={cx('no-proposal')}>No Proposals</div>
       )}
       <TablePagination
-        rowsPerPageOptions={[5, 10, 25]}
+        rowsPerPageOptions={[]}
         component="div"
-        count={proposals.metadata.totalItem}
+        count={proposals.metadata.totalItem || 0}
         rowsPerPage={rowPerPage}
         page={currentPage}
         onPageChange={handleChangePage}
-        onRowsPerPageChange={(row) => handleChangeRowsPerPage(row)}
         classes={paginationClasses}
       />
     </div>
