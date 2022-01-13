@@ -23,13 +23,21 @@ const formatCardNumber = (num: string) => {
 };
 const VoteCard: React.FC<Props> = ({ props }) => {
   const sumVotes = formatCardNumber(props?.sumVotes as string);
-  //console.log("percent: ", props?.percent)
+  console.log('percent: ', props?.percent);
   return (
     <div className={cx('vote-card')}>
       <div className={cx('vote-card-title')}>
         <div>{props?.type}</div>
         <div>{sumVotes}</div>
       </div>
+      <div
+        className={cx('vote-card-progress')}
+        style={{
+          width: `${props?.percent}%`,
+          backgroundColor:
+            props?.type === 'Up Vote' ? 'rgba(114, 191, 101, 1)' : 'rgba(236, 86, 86, 1)'
+        }}
+      ></div>
       <div className={cx('vote-card-col')}>
         <div>{props?.votes.length || 0} addresses</div>
         <div>Vote</div>

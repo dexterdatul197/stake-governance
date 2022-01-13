@@ -1,10 +1,11 @@
-:root{
+:root {
     .title {
         margin-top: 55px;
         font-size: 20px;
         font-weight: bold;
     }
-    .proposal-block, .detail-info {
+    .proposal-block,
+    .detail-info {
         display: flex;
         justify-content: space-between;
         margin-top: 15px;
@@ -13,16 +14,20 @@
         cursor: pointer;
         color: var(--color-address-contract);
     }
-    .block-right, .vote-card, .description {
+    .block-right,
+    .vote-card,
+    .description {
         border: solid 1px rgba(0, 28, 78, 0.38);
         border-radius: 15px;
         padding: 10px;
         background-color: var(--background-proposal-detail-card);
         box-shadow: 0px 4px 30px 0px rgba(0, 28, 78, 0.05);
-
     }
     .block-left {
         width: 76%;
+        .proposer-status {
+            color: var(--color-text);
+        }
     }
     .block-right {
         width: 20%;
@@ -32,5 +37,48 @@
     }
     .vote-card {
         width: 46%;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    :root {
+        .title {
+            margin-top: 55px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .proposal-block,
+        .detail-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+        .proposer-id {
+            cursor: pointer;
+            color: var(--color-address-contract);
+        }
+        .block-right,
+        .vote-card,
+        .description {
+            border: solid 1px rgba(0, 28, 78, 0.38);
+            border-radius: 15px;
+            padding: 10px;
+            background-color: var(--background-proposal-detail-card);
+            box-shadow: 0px 4px 30px 0px rgba(0, 28, 78, 0.05);
+            margin-top: 16px;
+        }
+        .block-left {
+            width: auto;
+        }
+        .block-right {
+            width: auto;
+        }
+        .description {
+            margin-top: 20px;
+        }
+        .vote-card {
+            width: auto;
+        }
     }
 }

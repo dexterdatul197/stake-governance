@@ -68,8 +68,6 @@ const ProposalDetail: React.FC<Props> = (props) => {
     values: [],
     voterCount: ''
   });
-  const [forPercent, setForPercent] = useState(0);
-  const [againstPercent, setAgainstPercent] = useState(0);
 
   const getProposal = async () => {
     const proposalDetail = await getProposalDetail(props.match.params.proposalId);
@@ -78,16 +76,14 @@ const ProposalDetail: React.FC<Props> = (props) => {
 
     const total =
       Number(forVotes.metadata.sumVotes || '0') + Number(againstVotes.metadata.sumVotes || '0');
-    setForPercent(
-      isNaN((Number(forVotes.metadata.sumVotes || '0') * 100) / total)
-        ? 0
-        : (Number(forVotes.metadata.sumVotes || '0') * 100) / total
-    );
-    setAgainstPercent(
-      isNaN((Number(againstVotes.metadata.sumVotes || '0') * 100) / total)
-        ? 0
-        : (Number(againstVotes.metadata.sumVotes || '0') * 100) / total
-    );
+
+    const forPercent = isNaN((Number(forVotes.metadata.sumVotes || '0') * 100) / total)
+      ? 0
+      : (Number(forVotes.metadata.sumVotes || '0') * 100) / total;
+
+    const againstPercent = isNaN((Number(againstVotes.metadata.sumVotes || '0') * 100) / total)
+      ? 0
+      : (Number(againstVotes.metadata.sumVotes || '0') * 100) / total;
 
     setProposalDetail(proposalDetail.data);
     setForVotes({

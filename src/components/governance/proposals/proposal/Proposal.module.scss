@@ -110,6 +110,7 @@
     .row-content-left:nth-child(1) {
       text-overflow: ellipsis;
       white-space: nowrap;
+      overflow: hidden;
     }
     .row-content-btn {
       display: flex;
