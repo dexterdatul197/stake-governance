@@ -4,10 +4,11 @@
     flex-direction: row;
     justify-content: space-between;
     padding: 20px;
-    border: solid 1px #001c4e;
+    border: solid 1px var(--color-text-head-vote);
     border-radius: 10px;
     color: #ccc;
     margin: 10px 0;
+    cursor: pointer;
   }
   .row-content-left {
     color: var(--color-text-white-black);
@@ -18,7 +19,6 @@
   }
   .row-content-left:nth-child(1) {
     white-space: nowrap;
-    overflow: hidden;
     width: auto;
     max-width: 50%;
     .proposal-id-time {
@@ -146,6 +146,7 @@
       color: var(--color-text-white-black);
     }
     .proposal-id-time {
+      overflow: hidden;
       display: flex;
       justify-content: flex-start;
       font-size: 14px;

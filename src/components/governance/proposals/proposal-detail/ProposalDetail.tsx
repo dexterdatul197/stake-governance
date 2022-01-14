@@ -12,7 +12,8 @@ import {
   ethAddressPage,
   getCHNBalance,
   governance,
-  methods, stakingToken
+  methods,
+  stakingToken
 } from '../../../../helpers/ContractService';
 import { ProposalDetailForm, VoteFormData } from '../../../../interfaces/SFormData';
 import BackArrow from '../../../back-arrow/BackArrow';
@@ -243,7 +244,10 @@ const ProposalDetail: React.FC<Props> = (props) => {
         <div className={cx('block-left')}>
           <div className={cx('proposer-id', 'pd-td-10')}>
             <div>{proposalDetail.proposer}</div>
-            <div onClick={() => goToEthereumAddress(proposalDetail.proposer)}>
+            <div
+              className={cx('proposer-id-icon')}
+              onClick={() => goToEthereumAddress(proposalDetail.proposer)}
+            >
               <AddressArrowSVG />
             </div>
           </div>
@@ -303,7 +307,7 @@ const ProposalDetail: React.FC<Props> = (props) => {
                   {status === 'pending' || status === 'failure' ? 'Queue' : 'Queued'}
                 </Button>
               )}
-              {proposalDetail.state === 'Queued' && (
+              {proposalDetail.state === 'Queued' && !proposalDetail.executedTimestamp && (
                 <Button
                   className={cx('execute-btn')}
                   disabled={isLoading || status === 'success' || !isPossibleExcuted}

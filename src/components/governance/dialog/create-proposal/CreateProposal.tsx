@@ -40,6 +40,7 @@ const CreateProposal: React.FC = () => {
   const provider = useAppSelector((state) => state.wallet.provider);
   const [formData, setFormData] = useState<SFormData[]>([
     {
+      isRemove: false,
       targetAddress: '',
       value: [],
       signature: '',
@@ -52,6 +53,7 @@ const CreateProposal: React.FC = () => {
     dispatch(setOpenCreateProposalDialog(false));
     setFormData([
       {
+        isRemove: false,
         targetAddress: '',
         value: [],
         signature: '',
@@ -207,14 +209,16 @@ const CreateProposal: React.FC = () => {
           padding: '25px',
           borderRadius: '20px'
         }
-      }}>
+      }}
+    >
       {/* header: title + btn close */}
       <Box
         display={'flex'}
         justifyContent={'space-between'}
         sx={{
           marginBottom: '20px'
-        }}>
+        }}
+      >
         <Typography component={'div'} className={cx('title')}>
           <Box>
             <div className={cx('text-title')}>Create Proposal</div>
@@ -224,7 +228,8 @@ const CreateProposal: React.FC = () => {
           <IconButton
             onClick={handleCloseConnectDialog}
             size={'small'}
-            className={cx('close-button')}>
+            className={cx('close-button')}
+          >
             <CloseIcon />
           </IconButton>
         </Typography>
@@ -267,18 +272,20 @@ const CreateProposal: React.FC = () => {
             <div className={cx('sub-title-text', 'sub-title-action')}>Actions</div>
             <div className={cx(`card-style`, `${theme === 'dark' ? 'card-style-border' : ''}`)}>
               {formData.map((f, index) => {
-                return (
-                  <div key={index}>
-                    <CollapseItem
-                      index={index}
-                      formData={formData}
-                      maxOperation={maxOperation}
-                      fCallData={f.callData}
-                      setFormData={childUpdateFormData}
-                      triggerAlert={triggerAlert}
-                    />
-                  </div>
-                );
+                if (!f.isRemove) {
+                  return (
+                    <div key={index}>
+                      <CollapseItem
+                        index={index}
+                        formData={formData}
+                        maxOperation={maxOperation}
+                        fCallData={f.callData}
+                        setFormData={childUpdateFormData}
+                        triggerAlert={triggerAlert}
+                      />
+                    </div>
+                  );
+                }
               })}
             </div>
           </div>
@@ -289,7 +296,8 @@ const CreateProposal: React.FC = () => {
         sx={{
           margin: '10px 0',
           paddingRight: '10px'
-        }}>
+        }}
+      >
         <div className={cx('wrap-btn')}>
           {/* <div className={cx('btn-confirm')} onClick={handleClickConfirm}>
             Confirm
@@ -297,7 +305,8 @@ const CreateProposal: React.FC = () => {
           <Button
             className={cx('btn-create')}
             // disabled={isLoading || formData.length > maxOperation || description.trim().length === 0}
-            onClick={handleClickConfirm}>
+            onClick={handleClickConfirm}
+          >
             {isLoading && (
               <div>
                 <CircularProgress size={20} color="inherit" />
