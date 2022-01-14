@@ -12,7 +12,7 @@ import classNames from 'classnames/bind';
 import React, { useCallback, useEffect, useState } from 'react';
 import BackArrow from '../../back-arrow/BackArrow';
 import styles from './LeaderBoard.module.scss';
-import { checkNotEmptyArr } from '../../../helpers/common';
+import { checkNotEmptyArr, format } from '../../../helpers/common';
 import LeaderBoardMobile from '../leaderboardMobile';
 import useMobile from '../../../hooks/useMobile';
 import { getDataLeaderBoard } from '../../../apis/apis';
@@ -35,11 +35,13 @@ const LeaderBoard: React.FC = () => {
     getdataLeaderBoard();
   }, []);
 
+  console.log(data);
 
   const renderData = useCallback((content, parentData) => {
     return checkNotEmptyArr(content)
       ? content.map((item: any, index: any) => {
-          const { id, address, vote_weight, proposals_voted } = item;
+          const { id, address, voteWeight, proposals_voted, chnStake } = item;
+          const formatChnStake = new BigNumber(chnStake).div('1e18');
           return (
             <React.Fragment key={id}>
               <TableCell className={cx('table-row__table-cell')}>
@@ -47,10 +49,10 @@ const LeaderBoard: React.FC = () => {
               </TableCell>
               <TableCell className={cx('table-row__table-cell')}>{address}</TableCell>
               <TableCell align="right" className={cx('table-row__table-cell')}>
-                {vote_weight}
+                {format(Number(formatChnStake))}
               </TableCell>
               <TableCell align="right" className={cx('table-row__table-cell')}>
-                {Number(new BigNumber(vote_weight).multipliedBy(100))} %
+                {Number(new BigNumber(voteWeight).multipliedBy(100))} %
               </TableCell>
               <TableCell align="right" className={cx('table-row__table-cell')}>
                 {proposals_voted}
@@ -91,17 +93,17 @@ const LeaderBoard: React.FC = () => {
                   {checkNotEmptyArr(data)
                     ? data
                         .sort((a: any, b: any) =>
-                          Number(parseFloat(a.vote_weight) < parseFloat(b.vote_weight)) ? 1 : -1
+                          new BigNumber(b.chnStake).minus(new BigNumber(a.chnStake)).toNumber()
                         )
                         .map((item, index) => {
-                          const { id, address, vote_weight, proposals_voted } = item;
+                          const { id, address, voteWeight, proposals_voted, chnStake } = item;
                           const content = [
                             {
                               id: id,
                               rank: index,
                               address: address,
-                              chn: vote_weight,
-                              vote_weight: vote_weight,
+                              chnStake: chnStake,
+                              voteWeight: voteWeight,
                               proposals_voted: proposals_voted
                             }
                           ];

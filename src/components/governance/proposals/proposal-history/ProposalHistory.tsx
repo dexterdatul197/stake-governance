@@ -13,7 +13,7 @@ const cx = classNames.bind(styles);
 const ProposalHistory: React.FC<Props> = ({ proposalInfo }) => {
   return (
     <div className={cx('proposal-history')}>
-      <div className={cx('history-title')}>Proposal History</div>
+      <div className={cx('history-title')}>Proposal </div>
       <div className={cx('history-content')}>
         <Step
           title="Created"

@@ -60,12 +60,12 @@ const Detail = (props: Props) => {
             <Box className={cx('holding__balance')}>
               <Box className={cx('holding__balance__left')}>
                 <span>Balance</span>
-                <span>{balance}</span>
+                <span>{chn}</span>
               </Box>
               <Box className={cx('holding__balance__right')}>
                 <Box className={cx('content-left')}>
                   <span>CHN</span>
-                  <span>{chn}</span>
+                  <span>{balance}</span>
                 </Box>
               </Box>
             </Box>
