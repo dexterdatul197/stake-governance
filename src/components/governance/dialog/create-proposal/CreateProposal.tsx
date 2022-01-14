@@ -44,7 +44,7 @@ const CreateProposal: React.FC = () => {
       callData: []
     }
   ]);
-  
+
   const openDialog = useAppSelector((state) => state.governance.openCreateProposalDialog);
   const handleCloseConnectDialog = () => {
     dispatch(setOpenCreateProposalDialog(false));

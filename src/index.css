@@ -30,5 +30,5 @@ code {
 }
 
 .css-zylse7-MuiButtonBase-root-MuiIconButton-root.Mui-disabled {
-  color: var(--text-table)!important;
+  color: var(--text-table) !important;
 }

@@ -2,7 +2,7 @@
 import { Collapse } from '@material-ui/core';
 import classNames from 'classnames/bind';
 import React, { useState } from 'react';
-import editIcon from '../../../../assets/icon/edit_icon.png';
+import removeIcon from '../../../../assets/icon/trash.svg';
 import { getArgs } from '../../../../helpers/common';
 import { SFormData } from '../../../../interfaces/SFormData';
 import StakeInputBase from '../../../base/input/StakeInputBase';
@@ -45,7 +45,7 @@ const CollapseItem: React.FC<Props> = ({
     setActiveKey(type === 'next' ? index + 1 : index);
   };
   const handleRemove = (index: number) => {
-    if (index !== 0) formData = formData.filter((_f, idx) => idx < index);
+    if (index !== 0) formData = formData.filter((_f, idx) => idx !== index);
     setFormData(formData);
   };
   const handleKeyUpCommon = (type: string, idx: number, subIdx: any, v: any) => {
@@ -78,14 +78,14 @@ const CollapseItem: React.FC<Props> = ({
   const handleKeyUpSignature = (e: any) => {
     handleParseFunc(e.target.value);
   };
-  
+  console.log(index);
   return (
     <div className={cx('collapse-item-style')}>
       <div className={cx('action-style')}>
         <div className={cx('action-text')} onClick={() => setOpenCollapse(!openCollapse)}>
           Action {index}
         </div>
-        <img src={editIcon} alt="edit_icon" onClick={() => handleRemove(index)} />
+        <img src={removeIcon} alt="edit_icon" onClick={() => handleRemove(index)} />
       </div>
       <Collapse key={activeKey} timeout="auto" in={openCollapse}>
         <div key={activeKey} className={cx('div-input')}>

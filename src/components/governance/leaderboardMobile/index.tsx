@@ -33,7 +33,8 @@ const TableMobile = (props: any) => {
                 key={index}
                 onClick={() =>
                   history.push(`/governance/leaderboard/leaderboard-detail/${address}`)
-                }>
+                }
+              >
                 <Box className={cx('txHash')}>
                   <span>{index}</span>
                   <span>{address.substr(0, 19)}...</span>
