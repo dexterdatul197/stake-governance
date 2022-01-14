@@ -1,7 +1,6 @@
 import { useDispatch } from 'react-redux';
 import { useWeb3React, UnsupportedChainIdError } from '@web3-react/core';
 import { useEffect } from 'react';
-import { injectedConnector } from '../connectors/injectedConnector';
 import { openSnackbar, SnackbarVariant, closeSnackbar } from '../store/snackbar';
 import { setEthereumAddress, setWalletName } from 'src/components/connect-wallet/redux/wallet';
 

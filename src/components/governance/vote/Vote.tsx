@@ -38,7 +38,7 @@ const Vote: React.FC<Props> = (props) => {
       );
       // check user dont have any proposal with status active or pending
       const voteContract = await governance();
-      const lastestProposalId = await voteContract.methods.latestProposalIds(connectedAddress);
+      const lastestProposalId = await voteContract.latestProposalIds(connectedAddress);
       //TODO:need remove comment to cancel lastestProposalId
       // const cancelLastestProposal = await voteContract.cancel(lastestProposalId).send({from: connectedAddress});
       // console.log('CANCEL PROPOSAL: ', cancelLastestProposal);

@@ -140,7 +140,7 @@ const WithDraw = (props: Props) => {
         handleUpdateSmartContract();
       } else if (value.earn > 0) {
         handleCloseModalRefresh();
-        await contract.methods.withdraw(0, web3.utils.toWei(String(value.earn), 'ether'));
+        await contract.withdraw(0, web3.utils.toWei(String(value.earn), 'ether'));
 
         setDone(false);
         dispatch(

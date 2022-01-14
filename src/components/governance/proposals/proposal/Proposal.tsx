@@ -37,7 +37,7 @@ const Proposal: React.FC<Props> = (props) => {
     setIsLoading(true);
     setVoteType(support);
     const contract = await governance();
-    contract.methods.castVote(props.proposal.id, support === 'like');
+    contract.castVote(props.proposal.id, support === 'like');
     setIsLoading(false);
   };
 

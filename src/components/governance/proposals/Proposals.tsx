@@ -52,7 +52,7 @@ const Proposals: React.FC = () => {
   const minForUser = async () => {
     // TODO: need remove, only apply in test
     // if (currentAddress(currentAccount))
-    // await getCHNBalance().mintForUser(new BigNumber('100000000000000000000')).send({from: currentAddress(currentAccount)});
+    // await getCHNBalance().mintForUser(new BigNumber('100000000000000000000'))
     // console.log('RECEIVE FREE CHN TOKEN');
   };
 
