@@ -244,7 +244,10 @@ const ProposalDetail: React.FC<Props> = (props) => {
         <div className={cx('block-left')}>
           <div className={cx('proposer-id', 'pd-td-10')}>
             <div>{proposalDetail.proposer}</div>
-            <div onClick={() => goToEthereumAddress(proposalDetail.proposer)}>
+            <div
+              className={cx('proposer-id-icon')}
+              onClick={() => goToEthereumAddress(proposalDetail.proposer)}
+            >
               <AddressArrowSVG />
             </div>
           </div>
