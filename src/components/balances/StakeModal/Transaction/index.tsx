@@ -127,13 +127,13 @@ const Transaction = (props: Props) => {
 
     contract
       .allowance(currentAddress(wallet), process.env.REACT_APP_STAKE_TESTNET_ADDRESS)
-
       .then((res: any) => {
-        if (res === '0') {
+        console.log('res: ', res._hex);
+        if (res._hex === '0x00') {
           contract
             .approve(process.env.REACT_APP_STAKE_TESTNET_ADDRESS, MAX_INT)
-
             .then((res: any) => {
+              console.log('res approve: ', res)
               if (res.status === true) {
                 dispatch(
                   openSnackbar({
@@ -145,7 +145,7 @@ const Transaction = (props: Props) => {
               } else {
                 dispatch(
                   openSnackbar({
-                    message: 'Approve faled',
+                    message: 'Approve failed',
                     variant: SnackbarVariant.ERROR
                   })
                 );

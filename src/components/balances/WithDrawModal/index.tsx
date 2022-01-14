@@ -109,7 +109,7 @@ const WithDraw = (props: Props) => {
         setProgress(false);
       }, 1000);
       const contract = await stakingToken();
-      console.log(contract.status)
+      console.log(contract.status);
       // withdraw max
       if (new BigNumber(stake).eq(value.stake)) {
         await contract.withdraw(0, value.stake);
