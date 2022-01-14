@@ -61,25 +61,17 @@ const Transaction = (props: Props) => {
       contract
         .stake(0, web3.utils.toWei(String(formatAmount), 'ether'))
         .then((res: any) => {
-          if (res.status === true) {
-            setDone(true);
-            setProgress(false);
-            dispatch(
-              openSnackbar({
-                message: 'Staking success',
-                variant: SnackbarVariant.SUCCESS
-              })
-            );
-            handleUpdateSmartContract();
-          } else {
-            dispatch(
-              openSnackbar({
-                message: 'Staking failed',
-                variant: SnackbarVariant.ERROR
-              })
-            );
-            handleCloseTransaction();
-          }
+          handleUpdateSmartContract();
+          setDone(true);
+          setProgress(false);
+
+          dispatch(
+            openSnackbar({
+              message: 'Staking success',
+              variant: SnackbarVariant.SUCCESS
+            })
+          );
+          handleUpdateSmartContract();
         })
         .catch((e: any) => {
           console.log(e);
@@ -91,32 +83,22 @@ const Transaction = (props: Props) => {
       contract
         .stake(0, web3.utils.toWei(String(price), 'ether'))
         .then((res: any) => {
-          if (res.status === true) {
-            setDone(true);
-            setProgress(false);
-            dispatch(
-              openSnackbar({
-                message: 'Staking success',
-                variant: SnackbarVariant.SUCCESS
-              })
-            );
-            handleUpdateSmartContract();
-          } else {
-            dispatch(
-              openSnackbar({
-                message: 'Staking failed',
-                variant: SnackbarVariant.ERROR
-              })
-            );
-            handleCloseTransaction();
-          }
+          console.log('res stake: ', res);
+          handleUpdateSmartContract();
+          setDone(true);
+          setProgress(false);
+          dispatch(
+            openSnackbar({
+              message: 'Staking success',
+              variant: SnackbarVariant.SUCCESS
+            })
+          );
         })
         .catch((e: any) => {
           console.log(e);
         })
         .finally(() => {
           handleCloseTransaction();
-          handleUpdateSmartContract();
         });
     }
   };
@@ -133,23 +115,14 @@ const Transaction = (props: Props) => {
           contract
             .approve(process.env.REACT_APP_STAKE_TESTNET_ADDRESS, MAX_INT)
             .then((res: any) => {
-              console.log('res approve: ', res)
-              if (res.status === true) {
-                dispatch(
-                  openSnackbar({
-                    message: 'Approve successful',
-                    variant: SnackbarVariant.SUCCESS
-                  })
-                );
-                handleConfirmTransaction();
-              } else {
-                dispatch(
-                  openSnackbar({
-                    message: 'Approve failed',
-                    variant: SnackbarVariant.ERROR
-                  })
-                );
-              }
+              console.log('res approve: ', res);
+              dispatch(
+                openSnackbar({
+                  message: 'Approve successful',
+                  variant: SnackbarVariant.SUCCESS
+                })
+              );
+              handleConfirmTransaction();
             })
             .catch((e: any) => console.log(e));
         } else {
@@ -160,7 +133,6 @@ const Transaction = (props: Props) => {
               variant: SnackbarVariant.SUCCESS
             })
           );
-          console.log(2222);
           handleConfirmTransaction();
         }
       })
