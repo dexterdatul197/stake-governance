@@ -164,6 +164,8 @@ const WithDraw = (props: Props) => {
       setProgress(false);
     } finally {
       setDone(false);
+      setProgress(false);
+      handleCloseModalRefresh();
     }
   };
 

@@ -38,7 +38,6 @@ const CreateProposal: React.FC = () => {
   const [title, setTitle] = useState('');
   const [triggerAlert, setTriggerAlert] = useState(false);
   const wallet = useAppSelector((state) => state.wallet);
-  const provider = useAppSelector((state) => state.wallet.provider);
   const [formData, setFormData] = useState<SFormData[]>([
     {
       isRemove: false,

@@ -16,7 +16,6 @@ import {
   setEthereumAddress,
   setOpenConnectDialog,
   setWalletName,
-  setProvider,
   WALLET_NAMES
 } from '../connect-wallet/redux/wallet';
 import { useAppDispatch, useAppSelector } from './../../store/hooks';
@@ -63,7 +62,6 @@ const ConnectWalletPage: React.FC = () => {
     try {
       activate(injectedConnector).then(() => {
         dispatch(setWalletName(WALLET_NAMES.METAMASK));
-        dispatch(setProvider(CONNECTORS.METAMASK));
       });
       switchNetwork(process.env.REACT_APP_CHAIN_ID || '');
     } catch (e: any) {

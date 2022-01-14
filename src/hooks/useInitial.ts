@@ -10,9 +10,8 @@ import {
 const KEY_ADDRESS_COINBASE = '-walletlink:https://www.walletlink.org:Addresses';
 
 export const useInitial = () => {
-  const { wallet, provider } = useAppSelector((state: any) => ({
-    wallet: state.wallet,
-    provider: state.wallet.provider
+  const { wallet } = useAppSelector((state: any) => ({
+    wallet: state.wallet
   }));
   const dispatch = useDispatch();
 
