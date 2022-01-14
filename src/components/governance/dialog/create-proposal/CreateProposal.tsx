@@ -37,6 +37,7 @@ const CreateProposal: React.FC = () => {
   const [errorMsg, setErrorMsg] = useState('');
   const [title, setTitle] = useState('');
   const [triggerAlert, setTriggerAlert] = useState(false);
+  const wallet = useAppSelector((state) => state.wallet);
   const provider = useAppSelector((state) => state.wallet.provider);
   const [formData, setFormData] = useState<SFormData[]>([
     {
@@ -189,6 +190,10 @@ const CreateProposal: React.FC = () => {
   const handleChangeTitle = (value: string) => {
     setTitle(value);
   };
+
+  useEffect(() => {
+    handleCloseConnectDialog();
+  }, [wallet.ethereumAddress]);
 
   useEffect(() => {
     if (isConnected(currentAccount)) {
