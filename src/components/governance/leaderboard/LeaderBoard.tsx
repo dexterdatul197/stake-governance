@@ -40,7 +40,7 @@ const LeaderBoard: React.FC = () => {
   const renderData = useCallback((content, parentData) => {
     return checkNotEmptyArr(content)
       ? content.map((item: any, index: any) => {
-          const { id, address, voteWeight, proposals_voted, chnStake } = item;
+          const { id, address, voteWeight, proposalsVoted, chnStake } = item;
           const formatChnStake = new BigNumber(chnStake).div('1e18');
           return (
             <React.Fragment key={id}>
@@ -55,7 +55,7 @@ const LeaderBoard: React.FC = () => {
                 {Number(new BigNumber(voteWeight).multipliedBy(100))} %
               </TableCell>
               <TableCell align="right" className={cx('table-row__table-cell')}>
-                {proposals_voted}
+                {proposalsVoted}
               </TableCell>
             </React.Fragment>
           );
@@ -96,7 +96,7 @@ const LeaderBoard: React.FC = () => {
                           new BigNumber(b.chnStake).minus(new BigNumber(a.chnStake)).toNumber()
                         )
                         .map((item, index) => {
-                          const { id, address, voteWeight, proposals_voted, chnStake } = item;
+                          const { id, address, voteWeight, proposalsVoted, chnStake } = item;
                           const content = [
                             {
                               id: id,
@@ -104,7 +104,7 @@ const LeaderBoard: React.FC = () => {
                               address: address,
                               chnStake: chnStake,
                               voteWeight: voteWeight,
-                              proposals_voted: proposals_voted
+                              proposalsVoted: proposalsVoted
                             }
                           ];
                           return (
