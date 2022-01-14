@@ -1,4 +1,5 @@
 export interface SFormData {
+  isRemove: boolean;
   targetAddress: string;
   value: any[];
   signature: string;

@@ -32,6 +32,7 @@ const CollapseItem: React.FC<Props> = ({
   const handleAdd = (type: string, index: number) => {
     if (type === 'next') {
       formData.splice(index + 1, 0, {
+        isRemove: false,
         targetAddress: '',
         value: [],
         signature: '',
@@ -39,6 +40,7 @@ const CollapseItem: React.FC<Props> = ({
       });
     } else {
       formData.splice(index, 0, {
+        isRemove: false,
         targetAddress: '',
         value: [],
         signature: '',
@@ -49,7 +51,7 @@ const CollapseItem: React.FC<Props> = ({
     setActiveKey(type === 'next' ? index + 1 : index);
   };
   const handleRemove = (index: number) => {
-    if (index !== 0) formData = formData.filter((_f, idx) => idx !== index);
+    if (index !== 0) formData[index].isRemove = true;
     setFormData(formData);
   };
   const handleKeyUpCommon = (type: string, idx: number, subIdx: any, v: any) => {
@@ -111,7 +113,7 @@ const CollapseItem: React.FC<Props> = ({
           />
           <StakeInputBase
             validate={true}
-            placeholder="assumeOwnership(address,string,unit256)"
+            placeholder="assumeOwnership(address,string,uint256)"
             name="Signature"
             value={formData[index].signature}
             onKeyUp={handleKeyUpSignature}
