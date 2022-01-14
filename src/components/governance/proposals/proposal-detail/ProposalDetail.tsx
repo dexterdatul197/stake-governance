@@ -100,7 +100,8 @@ const ProposalDetail: React.FC<Props> = (props) => {
   const getBalanceOf = async () => {
     if (isConnected(wallet)) {
       const connectedAddress = currentAddress(wallet);
-      const chnAmount = await stakingToken().methods.userInfo(0, connectedAddress).call();
+      const contract = await stakingToken();
+      const chnAmount = await contract.userInfo(0, connectedAddress);
       const formatValueStake = new BigNumber0x(chnAmount.amount).div(1e18);
       dispatch(setVotingWeight(formatValueStake.toFixed(4).toString()));
       setIsLoading(false);
