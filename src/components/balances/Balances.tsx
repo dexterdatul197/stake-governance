@@ -124,7 +124,6 @@ const Balances: React.FC = () => {
       dispatch(setVotingWeight(formatValueStake));
       setStake(format(parseFloat(formatValueStake).toFixed(4).toString()));
       setEarn(format(parseFloat(formatValueEarned).toFixed(4).toString()));
-     console.log("hihihihihihihihhihi")
     } catch (error) {
       console.log(error);
     }
