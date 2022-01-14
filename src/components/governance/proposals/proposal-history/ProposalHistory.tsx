@@ -19,7 +19,7 @@ const ProposalHistory: React.FC<Props> = ({ proposalInfo }) => {
           title="Created"
           description={
             proposalInfo?.createdTimestamp
-              ? moment(proposalInfo.createdTimestamp).format('LLL')
+              ? moment(proposalInfo.createdTimestamp * 1000).format('LLL')
               : ''
           }
           unCheck={proposalInfo?.createdAt ? false : true}

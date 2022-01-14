@@ -1,6 +1,6 @@
 body {
   background-color: var(--main-background-color);
-  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   margin: 0;
   display: flex;
   flex-direction: column;
@@ -42,7 +42,6 @@ body {
   --color-line: #e0e0e0;
   --color-text-head-vote: rgba(0, 28, 78, 0.38);
 
-
   --connect-button: #107def;
   --background-connect-button: rgba(16, 125, 239, 0.1);
 
@@ -58,10 +57,10 @@ body {
   --text-color-transaction: rgba(0, 28, 78, 0.87);
   --color-text-history: rgba(0, 28, 78, 0.87);
 
-   //Leaderboard
-   --background-table: #FFFFFF;
-   --text-table: rgba(0, 28, 78, 0.87);
-   --hover-table: #F5F7FA;
+  //Leaderboard
+  --background-table: #ffffff;
+  --text-table: rgba(0, 28, 78, 0.87);
+  --hover-table: #f5f7fa;
 
   //balance
   --bg-txt-type: #eaf4fb;
@@ -85,7 +84,7 @@ body {
   //proposal dialog
   --bg-head-mdeditor: #f5f5f5;
 }
-[data-theme='dark'] {
+[data-theme="dark"] {
   --btn-header-border-color: #72bf65;
   --header-bar-color: #1b1c1f;
   --main-background-color: #121316;
@@ -259,9 +258,13 @@ body {
   }
 }
 .rc-md-editor {
+  background-color: #107def;
+  border: 1px solid #107def;
   .rc-md-navigation {
     border-radius: 15px 15px 0px 0px !important;
     background-color: var(--bg-head-mdeditor) !important;
+    background-color: #107def;
+    border-color: #107def;
   }
   .editor-container {
     border-radius: 0px 0px 15px 15px !important;

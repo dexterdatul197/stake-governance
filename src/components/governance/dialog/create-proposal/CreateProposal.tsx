@@ -195,7 +195,7 @@ const CreateProposal: React.FC = () => {
       getMaxOperation();
     }
   }, [currentAccount]);
-
+  let collapseIndex = -1;
   return (
     <Dialog
       open={openDialog}
@@ -273,9 +273,11 @@ const CreateProposal: React.FC = () => {
             <div className={cx(`card-style`, `${theme === 'dark' ? 'card-style-border' : ''}`)}>
               {formData.map((f, index) => {
                 if (!f.isRemove) {
+                  collapseIndex += 1;
                   return (
                     <div key={index}>
                       <CollapseItem
+                        collapseIndex={collapseIndex}
                         index={index}
                         formData={formData}
                         maxOperation={maxOperation}

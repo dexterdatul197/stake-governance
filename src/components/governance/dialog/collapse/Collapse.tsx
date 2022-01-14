@@ -8,6 +8,7 @@ import { SFormData } from '../../../../interfaces/SFormData';
 import StakeInputBase from '../../../base/input/StakeInputBase';
 import styles from './Collapse.module.scss';
 interface Props {
+  collapseIndex?: number;
   index?: number;
   maxOperation?: number;
   fCallData?: any[];
@@ -18,6 +19,7 @@ interface Props {
 const cx = classNames.bind(styles);
 
 const CollapseItem: React.FC<Props> = ({
+  collapseIndex = 0,
   index = 0,
   maxOperation = 0,
   fCallData = [],
@@ -96,7 +98,7 @@ const CollapseItem: React.FC<Props> = ({
     <div className={cx('collapse-item-style')}>
       <div className={cx('action-style')}>
         <div className={cx('action-text')} onClick={() => setOpenCollapse(!openCollapse)}>
-          Action {index}
+          Action {collapseIndex}
         </div>
         <img src={removeIcon} alt="edit_icon" onClick={() => handleRemove(index)} />
       </div>
