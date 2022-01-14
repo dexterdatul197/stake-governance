@@ -101,7 +101,7 @@ const LeaderBoard: React.FC = () => {
                           new BigNumber(b.chnStake).minus(new BigNumber(a.chnStake)).toNumber()
                         )
                         .filter((item: any) => {
-                          return item.chnStake !== 0;
+                          return Number(item.chnStake) !== 0
                         })
                         .map((item, index) => {
                           const { id, address, voteWeight, proposalsVoted, chnStake } = item;
@@ -122,7 +122,8 @@ const LeaderBoard: React.FC = () => {
                                 )
                               }
                               className={cx('table-row')}
-                              key={index}>
+                              key={index}
+                            >
                               {renderData(content, index)}
                             </TableRow>
                           );
