@@ -154,6 +154,7 @@ const WithDraw = (props: Props) => {
           })
         );
       }
+      handleUpdateSmartContract();
     } catch (error) {
       console.log(error);
       handleCloseModalRefresh();
