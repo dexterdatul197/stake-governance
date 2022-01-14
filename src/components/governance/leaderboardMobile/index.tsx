@@ -46,7 +46,7 @@ const TableMobile = (props: any) => {
                 </Box>
                 <Box className={cx('vote-weight')}>
                   <span>Vote Weight</span>
-                  <span>{Number(new BigNumber(voteWeight).multipliedBy(100))} %</span>
+                  <span>{new BigNumber(voteWeight).multipliedBy(100).toFixed(4).toString()} %</span>
                 </Box>
                 <Box className={cx('proposal')}>
                   <span>Proposals Vote</span>
