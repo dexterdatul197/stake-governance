@@ -234,8 +234,7 @@ const ProposalDetail: React.FC<Props> = (props) => {
 
   useEffect(() => {
     getProposal();
-  }, [limitUpVote, limitDownVote]);
-
+  }, [limitUpVote, limitDownVote, status]);
   return (
     <div className={cx('proposal-detail')}>
       <BackArrow title="Detail" />
