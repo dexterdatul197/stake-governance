@@ -100,7 +100,7 @@ const CollapseItem: React.FC<Props> = ({
       </div>
       <Collapse key={activeKey} timeout="auto" in={openCollapse}>
         <div key={activeKey} className={cx('div-input')}>
-          <div className={cx('border-style')}/>
+          <div className={cx('border-style')} />
           <StakeInputBase
             validate={true}
             name="Address"
