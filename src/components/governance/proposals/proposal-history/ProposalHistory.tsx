@@ -19,10 +19,10 @@ const ProposalHistory: React.FC<Props> = ({ proposalInfo }) => {
           title="Created"
           description={
             proposalInfo?.createdTimestamp
-              ? moment(proposalInfo.createdTimestamp * 1000).format('LLL')
+              ? moment(proposalInfo.createdTimestamp).format('LLL')
               : ''
           }
-          unCheck={proposalInfo?.createdTimestamp ? false : true}
+          unCheck={proposalInfo?.createdAt ? false : true}
         />
         <Step
           title="Active"

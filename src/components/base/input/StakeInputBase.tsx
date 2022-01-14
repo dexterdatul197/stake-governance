@@ -1,6 +1,7 @@
 import classNames from 'classnames/bind';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './StakeInputBase.module.scss';
+
 const cx = classNames.bind(styles);
 
 interface Props {
@@ -24,6 +25,7 @@ interface Props {
   value?: string;
   onChange?: (v: any) => void;
   onKeyUp?: (e: any) => void;
+  triggerAlert?: boolean;
 }
 
 const StakeInputBase: React.FC<Props> = ({
@@ -34,8 +36,10 @@ const StakeInputBase: React.FC<Props> = ({
   placeholder = '',
   onChange = () => {},
   onKeyUp = () => {},
-  value = ''
+  value = '',
+  triggerAlert = false
 }) => {
+  const [triggerCount, setTriggerCount] = useState(0);
   const [messageErr, setMessageErr] = useState('');
   const [inputValue, setInputValue] = useState(value);
   const handleOnChange = (event: any) => {
@@ -51,6 +55,14 @@ const StakeInputBase: React.FC<Props> = ({
   const handleKeyUp = (e: any) => {
     onKeyUp(e);
   };
+
+  useEffect((): any => {
+    setTriggerCount(triggerCount + 1);
+    if (triggerCount > 0) {
+      handleBlur();
+    }
+  }, [triggerAlert]);
+
   return (
     <div className={cx('wrap-input-base')}>
       <input

@@ -35,6 +35,7 @@ const LeaderBoard: React.FC = () => {
     getdataLeaderBoard();
   }, []);
 
+<<<<<<< HEAD
   console.log(data);
 
   const renderData = useCallback((content, parentData) => {
@@ -42,6 +43,12 @@ const LeaderBoard: React.FC = () => {
       ? content.map((item: any, index: any) => {
           const { id, address, voteWeight, proposals_voted, chnStake } = item;
           const formatChnStake = new BigNumber(chnStake).div('1e18');
+=======
+  const renderData = useCallback((content, parentData) => {
+    return checkNotEmptyArr(content)
+      ? content.map((item: any, index: any) => {
+          const { id, address, chn, vote_weight, proposals_voted } = item;
+>>>>>>> a4c1a1f39c9a188c6bb1c283eeb9d1f224161863
           return (
             <React.Fragment key={id}>
               <TableCell className={cx('table-row__table-cell')}>
@@ -49,7 +56,11 @@ const LeaderBoard: React.FC = () => {
               </TableCell>
               <TableCell className={cx('table-row__table-cell')}>{address}</TableCell>
               <TableCell align="right" className={cx('table-row__table-cell')}>
+<<<<<<< HEAD
                 {format(Number(formatChnStake))}
+=======
+                {format(new BigNumber(chn).div(1e18).toFixed(4).toString())}
+>>>>>>> a4c1a1f39c9a188c6bb1c283eeb9d1f224161863
               </TableCell>
               <TableCell align="right" className={cx('table-row__table-cell')}>
                 {Number(new BigNumber(voteWeight).multipliedBy(100))} %
@@ -79,7 +90,7 @@ const LeaderBoard: React.FC = () => {
                     <TableCell className={cx('table-row__table-cell')}>Rank</TableCell>
                     <TableCell className={cx('table-row__table-cell')}></TableCell>
                     <TableCell align="right" className={cx('table-row__table-cell')}>
-                      CHN
+                      CHN Stake
                     </TableCell>
                     <TableCell align="right" className={cx('table-row__table-cell')}>
                       VoteWeight
@@ -96,14 +107,23 @@ const LeaderBoard: React.FC = () => {
                           new BigNumber(b.chnStake).minus(new BigNumber(a.chnStake)).toNumber()
                         )
                         .map((item, index) => {
+<<<<<<< HEAD
                           const { id, address, voteWeight, proposals_voted, chnStake } = item;
+=======
+                          const { id, address, votes, vote_weight, proposals_voted } = item;
+>>>>>>> a4c1a1f39c9a188c6bb1c283eeb9d1f224161863
                           const content = [
                             {
                               id: id,
                               rank: index,
                               address: address,
+<<<<<<< HEAD
                               chnStake: chnStake,
                               voteWeight: voteWeight,
+=======
+                              chn: votes,
+                              vote_weight: vote_weight,
+>>>>>>> a4c1a1f39c9a188c6bb1c283eeb9d1f224161863
                               proposals_voted: proposals_voted
                             }
                           ];
@@ -115,7 +135,8 @@ const LeaderBoard: React.FC = () => {
                                 )
                               }
                               className={cx('table-row')}
-                              key={index}>
+                              key={index}
+                            >
                               {renderData(content, index)}
                             </TableRow>
                           );
