@@ -85,15 +85,11 @@ const WithDraw = (props: Props) => {
     const contract = await stakingToken();
     const stakeValue = await contract.userInfo(0, connectedAddress);
     const earnValues = await contract.pendingReward(0, connectedAddress);
-    const formatStake =
-      Math.floor(
-        Number(
-          String(new BigNumber(stakeValue.amount).dividedBy('1e18')).match(/^\d+(?:\.\d{0,5})?/)
-        ) * 10000
-      ) / 10000;
+    const formatStake = web3.utils.fromWei(String(stakeValue.amount), 'ether');
+
     setValue({
       ...value,
-      defaultValue: formatStake,
+      defaultValue: Number(parseFloat(formatStake).toFixed(4)),
       stake: stakeValue.amount,
       earn: earnValues
     });
@@ -113,7 +109,7 @@ const WithDraw = (props: Props) => {
         setProgress(false);
       }, 1000);
       const contract = await stakingToken();
-
+      console.log(contract.status)
       // withdraw max
       if (new BigNumber(stake).eq(value.stake)) {
         await contract.withdraw(0, value.stake);
@@ -166,6 +162,7 @@ const WithDraw = (props: Props) => {
       setDone(false);
       setProgress(false);
       handleCloseModalRefresh();
+      handleUpdateSmartContract();
     }
   };
 

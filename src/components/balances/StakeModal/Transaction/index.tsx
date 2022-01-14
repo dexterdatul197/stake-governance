@@ -90,7 +90,6 @@ const Transaction = (props: Props) => {
     } else {
       contract
         .stake(0, web3.utils.toWei(String(price), 'ether'))
-
         .then((res: any) => {
           if (res.status === true) {
             setDone(true);
@@ -117,6 +116,7 @@ const Transaction = (props: Props) => {
         })
         .finally(() => {
           handleCloseTransaction();
+          handleUpdateSmartContract();
         });
     }
   };
