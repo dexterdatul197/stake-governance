@@ -11,10 +11,12 @@
         margin-top: 15px;
     }
     .proposer-id {
-        cursor: pointer;
         color: var(--color-address-contract);
         overflow: hidden;
         display: flex;
+        .proposer-id-icon {
+            cursor: pointer;
+        }
     }
     .block-right,
     .vote-card,
@@ -105,7 +107,6 @@
             margin-top: 15px;
         }
         .proposer-id {
-            cursor: pointer;
             color: var(--color-address-contract);
             padding: 10px 16px 10px 16px;
             flex-direction: column;

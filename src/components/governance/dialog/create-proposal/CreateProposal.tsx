@@ -40,6 +40,7 @@ const CreateProposal: React.FC = () => {
   const provider = useAppSelector((state) => state.wallet.provider);
   const [formData, setFormData] = useState<SFormData[]>([
     {
+      isRemove: false,
       targetAddress: '',
       value: [],
       signature: '',
@@ -52,6 +53,7 @@ const CreateProposal: React.FC = () => {
     dispatch(setOpenCreateProposalDialog(false));
     setFormData([
       {
+        isRemove: false,
         targetAddress: '',
         value: [],
         signature: '',
@@ -270,18 +272,20 @@ const CreateProposal: React.FC = () => {
             <div className={cx('sub-title-text', 'sub-title-action')}>Actions</div>
             <div className={cx(`card-style`, `${theme === 'dark' ? 'card-style-border' : ''}`)}>
               {formData.map((f, index) => {
-                return (
-                  <div key={index}>
-                    <CollapseItem
-                      index={index}
-                      formData={formData}
-                      maxOperation={maxOperation}
-                      fCallData={f.callData}
-                      setFormData={childUpdateFormData}
-                      triggerAlert={triggerAlert}
-                    />
-                  </div>
-                );
+                if (!f.isRemove) {
+                  return (
+                    <div key={index}>
+                      <CollapseItem
+                        index={index}
+                        formData={formData}
+                        maxOperation={maxOperation}
+                        fCallData={f.callData}
+                        setFormData={childUpdateFormData}
+                        triggerAlert={triggerAlert}
+                      />
+                    </div>
+                  );
+                }
               })}
             </div>
           </div>
