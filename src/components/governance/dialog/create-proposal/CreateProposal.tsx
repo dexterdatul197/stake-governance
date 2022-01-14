@@ -24,6 +24,7 @@ interface TextBinding {
   html: any;
   text: string;
 }
+
 const cx = classNames.bind(styles);
 const mdParser = new MarkdownIt();
 const CreateProposal: React.FC = () => {
@@ -35,6 +36,7 @@ const CreateProposal: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [title, setTitle] = useState('');
+  const [triggerAlert, setTriggerAlert] = useState(false);
   const provider = useAppSelector((state) => state.wallet.provider);
   const [formData, setFormData] = useState<SFormData[]>([
     {
@@ -44,7 +46,7 @@ const CreateProposal: React.FC = () => {
       callData: []
     }
   ]);
-  
+
   const openDialog = useAppSelector((state) => state.governance.openCreateProposalDialog);
   const handleCloseConnectDialog = () => {
     dispatch(setOpenCreateProposalDialog(false));
@@ -59,16 +61,37 @@ const CreateProposal: React.FC = () => {
     setDescription('');
   };
   const handleClickConfirm = async () => {
+    // ================= check required input form =================
+
+    setErrorMsg('');
+    setTriggerAlert((prev) => !prev);
+    let isFulfilledInput = true;
+    if (title.trim().length === 0) {
+      isFulfilledInput = false;
+    }
+
+    // check form data (action input forms)
+    for (const data of formData) {
+      if (data.targetAddress.trim().length === 0 || data.signature.trim().length === 0) {
+        isFulfilledInput = false;
+        break;
+      }
+    }
+
+    if (description.trim().length === 0) {
+      setErrorMsg('Description is required');
+      isFulfilledInput = false;
+    }
+
+    if (!isFulfilledInput) return;
+
+    // =============== end check input form ==================
+
     const targetAddresses = [];
     const values = [];
     const signatures = [];
     const callDatas = [];
-    if (description.trim().length === 0) {
-      setErrorMsg('Description is required');
-      return;
-    } else {
-      setErrorMsg('');
-    }
+
     try {
       for (let i = 0; i < formData.length; i += 1) {
         const callDataValues = [];
@@ -79,7 +102,7 @@ const CreateProposal: React.FC = () => {
         callDataTypes = getArgs(formData[i]['signature']);
         for (let j = 0; j < formData[i].callData.length; j += 1) {
           if (callDataTypes[j].toLowerCase() === 'bool') {
-            callDataValues.push(formData[i].callData[j].toLowerCase() === 'true' ? true : false);
+            callDataValues.push(formData[i].callData[j].toLowerCase() === 'true');
           } else {
             callDataValues.push(formData[i].callData[j]);
           }
@@ -155,6 +178,9 @@ const CreateProposal: React.FC = () => {
   };
 
   const childUpdateFormData = (newFormData: SFormData[]) => {
+    console.log({
+      newFormData
+    });
     setFormData([...JSON.parse(JSON.stringify(newFormData))]);
   };
 
@@ -181,16 +207,14 @@ const CreateProposal: React.FC = () => {
           padding: '25px',
           borderRadius: '20px'
         }
-      }}
-    >
+      }}>
       {/* header: title + btn close */}
       <Box
         display={'flex'}
         justifyContent={'space-between'}
         sx={{
           marginBottom: '20px'
-        }}
-      >
+        }}>
         <Typography component={'div'} className={cx('title')}>
           <Box>
             <div className={cx('text-title')}>Create Proposal</div>
@@ -200,8 +224,7 @@ const CreateProposal: React.FC = () => {
           <IconButton
             onClick={handleCloseConnectDialog}
             size={'small'}
-            className={cx('close-button')}
-          >
+            className={cx('close-button')}>
             <CloseIcon />
           </IconButton>
         </Typography>
@@ -219,7 +242,12 @@ const CreateProposal: React.FC = () => {
             <div className={cx('sub-title-text')}>Proposal Description</div>
             <div className={cx('box-title')}>Title</div>
             <div className={cx('div-input')}>
-              <StakeInputBase onChange={handleChangeTitle} />
+              <StakeInputBase
+                onChange={handleChangeTitle}
+                validate={true}
+                name={'Title'}
+                triggerAlert={triggerAlert}
+              />
             </div>
             <div className={cx('box-title')}>Details</div>
             <div className={cx('div-input')}>
@@ -247,6 +275,7 @@ const CreateProposal: React.FC = () => {
                       maxOperation={maxOperation}
                       fCallData={f.callData}
                       setFormData={childUpdateFormData}
+                      triggerAlert={triggerAlert}
                     />
                   </div>
                 );
@@ -260,8 +289,7 @@ const CreateProposal: React.FC = () => {
         sx={{
           margin: '10px 0',
           paddingRight: '10px'
-        }}
-      >
+        }}>
         <div className={cx('wrap-btn')}>
           {/* <div className={cx('btn-confirm')} onClick={handleClickConfirm}>
             Confirm
@@ -269,8 +297,7 @@ const CreateProposal: React.FC = () => {
           <Button
             className={cx('btn-create')}
             // disabled={isLoading || formData.length > maxOperation || description.trim().length === 0}
-            onClick={handleClickConfirm}
-          >
+            onClick={handleClickConfirm}>
             {isLoading && (
               <div>
                 <CircularProgress size={20} color="inherit" />

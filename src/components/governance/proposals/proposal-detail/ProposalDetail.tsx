@@ -221,11 +221,11 @@ const ProposalDetail: React.FC<Props> = (props) => {
       <div className={cx('title', 'text-black-white')}>{proposalDetail.title}</div>
       <div className={cx('proposal-block')}>
         <div className={cx('block-left')}>
-          <div
-            className={cx('proposer-id', 'pd-td-10')}
-            onClick={() => goToEthereumAddress(proposalDetail.proposer)}
-          >
-            {proposalDetail.proposer} <AddressArrowSVG />
+          <div className={cx('proposer-id', 'pd-td-10')}>
+            <div>{proposalDetail.proposer}</div>
+            <div onClick={() => goToEthereumAddress(proposalDetail.proposer)}>
+              <AddressArrowSVG />
+            </div>
           </div>
           <div className={cx('proposer-status')}>
             <div className={cx('proposer-status-left')}>
@@ -312,7 +312,7 @@ const ProposalDetail: React.FC<Props> = (props) => {
       </div>
       <div className={cx('description')}>
         <div className={cx('text-black-white')}>Description</div>
-        <p className={cx('description-value')}>{proposalDetail.description}</p>
+        <div className={cx('description-value')}>{proposalDetail.description}</div>
       </div>
     </div>
   );

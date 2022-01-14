@@ -35,7 +35,6 @@ const LeaderBoard: React.FC = () => {
     getdataLeaderBoard();
   }, []);
 
-
   const renderData = useCallback((content, parentData) => {
     return checkNotEmptyArr(content)
       ? content.map((item: any, index: any) => {
@@ -113,7 +112,8 @@ const LeaderBoard: React.FC = () => {
                                 )
                               }
                               className={cx('table-row')}
-                              key={index}>
+                              key={index}
+                            >
                               {renderData(content, index)}
                             </TableRow>
                           );

@@ -1,6 +1,7 @@
 import classNames from 'classnames/bind';
 import { BigNumber } from 'ethers';
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import { format } from 'src/helpers/common';
 import { VoteData, VoteFormData } from 'src/interfaces/SFormData';
 import Web3 from 'web3';
@@ -25,7 +26,7 @@ const formatCardNumber = (num: string) => {
 
 const VoteCard: React.FC<Props> = ({ voting, parrentCallback }) => {
   const sumVotes = formatCardNumber(voting?.sumVotes as string);
-
+  const history = useHistory();
   const noDataVoteLength = 4 - (voting?.votes.length || (0 as number));
   const noDataVote = [];
   if (noDataVoteLength > 0) {
@@ -38,7 +39,9 @@ const VoteCard: React.FC<Props> = ({ voting, parrentCallback }) => {
       );
     }
   }
-
+  const handleRedirectToLeaderboardDetail = (address: string) => {
+    history.push(`/governance/leaderboard/leaderboard-detail/` + address);
+  };
   return (
     <div className={cx('vote-card')}>
       <div className={cx('vote-card-title')}>
@@ -60,7 +63,14 @@ const VoteCard: React.FC<Props> = ({ voting, parrentCallback }) => {
       {voting?.votes.map((vote: VoteData, index: number) => {
         return (
           <div className={cx('vote-card-content')} key={index}>
-            <div>{get_ellipsis_mid(vote?.address)}</div>
+            <div
+              className={cx('vote-card-content-address')}
+              onClick={() => {
+                handleRedirectToLeaderboardDetail(vote?.address);
+              }}
+            >
+              {get_ellipsis_mid(vote?.address)}
+            </div>
             <div className={cx('vote-card-content-vote')}>{formatCardNumber(vote?.votes)}</div>
           </div>
         );

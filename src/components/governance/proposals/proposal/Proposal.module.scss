@@ -17,11 +17,17 @@
     cursor: pointer;
   }
   .row-content-left:nth-child(1) {
-    text-overflow: ellipsis;
     white-space: nowrap;
+    overflow: hidden;
     width: auto;
+    max-width: 50%;
     .proposal-id-time {
-      justify-content: space-between;
+      .proposal-time {
+        margin-right: 10px;
+      }
+      .proposal-status {
+        margin-right: 10px;
+      }
     }
   }
   .row-content-btn {
@@ -41,6 +47,8 @@
   .proposal-title {
     font-size: 16px;
     margin-bottom: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .row-content-btn .vote {
     color: var(--color-text-white-black);
@@ -110,7 +118,10 @@
     .row-content-left:nth-child(1) {
       text-overflow: ellipsis;
       white-space: nowrap;
-      overflow: hidden;
+      max-width: 100%;
+      .proposal-id-time {
+        justify-content: space-between;
+      }
     }
     .row-content-btn {
       display: flex;
