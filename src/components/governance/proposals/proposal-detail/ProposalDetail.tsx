@@ -304,7 +304,7 @@ const ProposalDetail: React.FC<Props> = (props) => {
                   {status === 'pending' || status === 'failure' ? 'Queue' : 'Queued'}
                 </Button>
               )}
-              {proposalDetail.state === 'Queued' && (
+              {proposalDetail.state === 'Queued' && !proposalDetail.executedTimestamp && (
                 <Button
                   className={cx('execute-btn')}
                   disabled={isLoading || status === 'success' || !isPossibleExcuted}
