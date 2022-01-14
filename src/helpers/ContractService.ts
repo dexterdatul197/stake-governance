@@ -1,3 +1,4 @@
+import { getConnector } from './../connectors/index';
 import Web3 from 'web3';
 import {
   MISSING_EXTENSION_ERROR,
@@ -30,7 +31,9 @@ export const governance = () => {
     enviroment === 'prod'
       ? process.env.REACT_APP_GOVERNANCE_MAIN_ADDRESS
       : process.env.REACT_APP_GOVERNANCE_TESTNET_ADDRESS;
-  return new web3.eth.Contract(JSON.parse(governanceABI), governanceAddress);
+  const connector = getConnector() as any;
+  const provider = new Web3(connector);
+  return new provider.eth.Contract(JSON.parse(governanceABI), governanceAddress);
 };
 
 export const getCHNBalance = () => {
@@ -48,7 +51,9 @@ export const stakingToken = () => {
     enviroment === 'prod'
       ? process.env.REACT_APP_STAKE_TESTNET_ADDRESS
       : process.env.REACT_APP_STAKE_MAINNET_ADDRESS;
-  return new web3.eth.Contract(JSON.parse(stakeABI), stakeAddress);
+  const connector = getConnector() as any;
+  const provider = new Web3(connector);
+  return new provider.eth.Contract(JSON.parse(stakeABI), stakeAddress);
 };
 
 export const ethAddressPage = () => {

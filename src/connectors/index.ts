@@ -1,4 +1,4 @@
-import { genProvider } from './walletconnectConnector';
+import { walletconnect } from './walletconnectConnector';
 import { walletLinkConnector } from './walletlinkConnector';
 
 interface IConnector {
@@ -10,6 +10,12 @@ interface IConnector {
 
 export const CONNECTORS: IConnector = {
   METAMASK: window.ethereum,
-  WALLET_CONNECT: genProvider,
+  WALLET_CONNECT: walletconnect,
   COINBASE: walletLinkConnector
+};
+
+export const getConnector = async () => {
+  const walletName = localStorage.getItem('walletName');
+  if (!walletName) throw Error('No provider');
+  return CONNECTORS[walletName];
 };
