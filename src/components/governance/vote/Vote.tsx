@@ -64,7 +64,7 @@ const Vote: React.FC<Props> = (props) => {
         createProposal = true;
       }
       setOpenLoading(false);
-      if (checkCHNamount >= 0) {
+      if (checkCHNamount < 0) {
         dispatch(
           openSnackbar({
             message: `You can't create proposal. Your voting power should be ${format(
