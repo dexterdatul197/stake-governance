@@ -183,10 +183,11 @@ const CreateProposal: React.FC = () => {
       const maxOperation = await voteContract.proposalMaxOperations();
       setMaxOperation(maxOperation);
     } catch (err) {
-      const message = 'call revert exception';
-      if (String(err).includes(message)) {
-        window.location.reload();
-      }
+      console.log('getMaxOperation', err);
+      // const message = 'call revert exception';
+      // if (String(err).includes(message)) {
+      //   window.location.reload();
+      // }
     }
   };
 

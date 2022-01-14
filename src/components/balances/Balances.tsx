@@ -108,7 +108,7 @@ const Balances: React.FC = () => {
         setWalletValue(parseFloat(formatToken).toFixed(4).toString());
       }
     } catch (error) {
-      console.log(error);
+      console.log('getValueBalance', error);
     }
   }, [wallet, walletValue]);
 
