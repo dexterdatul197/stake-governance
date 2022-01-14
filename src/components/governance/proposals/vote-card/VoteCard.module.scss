@@ -42,6 +42,9 @@
             .vote-card-content-vote {
                 color: var(--color-text-white-black);
             }
+            .vote-card-content-address {
+                cursor: pointer;
+            }
         }
         .vote-card-content-none {
             padding: 16px 0px 16px 0px;
