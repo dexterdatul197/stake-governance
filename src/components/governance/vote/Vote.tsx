@@ -31,21 +31,20 @@ const Vote: React.FC<Props> = (props) => {
       setOpenLoading(true);
       const connectedAddress = currentAddress(wallet);
       // // check amount strike in wallet > proposalThreshold()
-      const proposalThreshold = await governance().methods.proposalThreshold().call();
+      const contract = await governance();
+      const proposalThreshold = await contract.proposalThreshold();
       const checkCHNamount = new BigNumber(votingWeight).comparedTo(
         new BigNumber(proposalThreshold).div(1e18)
       );
       // check user dont have any proposal with status active or pending
-      const voteContract = governance();
-      const lastestProposalId = await voteContract.methods
-        .latestProposalIds(connectedAddress)
-        .call();
+      const voteContract = await governance();
+      const lastestProposalId = await voteContract.methods.latestProposalIds(connectedAddress);
       //TODO:need remove comment to cancel lastestProposalId
-      // const cancelLastestProposal = await voteContract.methods.cancel(lastestProposalId).send({from: connectedAddress});
+      // const cancelLastestProposal = await voteContract.cancel(lastestProposalId).send({from: connectedAddress});
       // console.log('CANCEL PROPOSAL: ', cancelLastestProposal);
 
       if (lastestProposalId !== '0') {
-        const state = await voteContract.methods.state(lastestProposalId).call();
+        const state = await voteContract.state(lastestProposalId);
         if (state === '0' || state === '1') {
           setOpenLoading(false);
           createProposal = false;

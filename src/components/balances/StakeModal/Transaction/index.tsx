@@ -54,14 +54,12 @@ const Transaction = (props: Props) => {
   const price = new BigNumber(value.default).multipliedBy(walletValue).dividedBy(100);
   const formatAmount = new BigNumber(amount).dividedBy(100);
 
-  console.log(formatAmount);
-
-  const handleConfirmTransaction = () => {
+  const handleConfirmTransaction = async () => {
     setProgress(true);
+    const contract = await stakingToken();
     if (value.default === 100) {
-      stakingToken()
-        .methods.stake(0, web3.utils.toWei(String(formatAmount), 'ether'))
-        .send({ from: currentAddress(wallet) })
+      contract
+        .stake(0, web3.utils.toWei(String(formatAmount), 'ether'))
         .then((res: any) => {
           if (res.status === true) {
             setDone(true);
@@ -90,9 +88,9 @@ const Transaction = (props: Props) => {
           handleCloseTransaction();
         });
     } else {
-      stakingToken()
-        .methods.stake(0, web3.utils.toWei(String(price), 'ether'))
-        .send({ from: currentAddress(wallet) })
+      contract
+        .stake(0, web3.utils.toWei(String(price), 'ether'))
+
         .then((res: any) => {
           if (res.status === true) {
             setDone(true);
@@ -123,17 +121,18 @@ const Transaction = (props: Props) => {
     }
   };
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     setProgress(true);
+    const contract = await getCHNBalance();
 
-    getCHNBalance()
-      .methods.allowance(currentAddress(wallet), process.env.REACT_APP_STAKE_TESTNET_ADDRESS)
-      .call()
+    contract
+      .allowance(currentAddress(wallet), process.env.REACT_APP_STAKE_TESTNET_ADDRESS)
+
       .then((res: any) => {
         if (res === '0') {
-          getCHNBalance()
-            .methods.approve(process.env.REACT_APP_STAKE_TESTNET_ADDRESS, MAX_INT)
-            .send({ from: currentAddress(wallet) })
+          contract.methods
+            .approve(process.env.REACT_APP_STAKE_TESTNET_ADDRESS, MAX_INT)
+
             .then((res: any) => {
               console.log('res approve: ', res);
               if (res.status === true) {
@@ -143,6 +142,8 @@ const Transaction = (props: Props) => {
                     variant: SnackbarVariant.SUCCESS
                   })
                 );
+                console.log(1111);
+
                 handleConfirmTransaction();
               } else {
                 dispatch(
@@ -162,6 +163,7 @@ const Transaction = (props: Props) => {
               variant: SnackbarVariant.SUCCESS
             })
           );
+          console.log(2222);
           handleConfirmTransaction();
         }
       })
@@ -197,8 +199,7 @@ const Transaction = (props: Props) => {
           <Button
             onClick={handleCloseModalTrans}
             className={cx('icon_left')}
-            disabled={progress === true}
-          >
+            disabled={progress === true}>
             <CloseIcon />
           </Button>
         </Box>
@@ -231,8 +232,7 @@ const Transaction = (props: Props) => {
         <Button
           disabled={done || progress}
           onClick={handleConfirm}
-          className={cx('dialog-actions__transaction__confirm')}
-        >
+          className={cx('dialog-actions__transaction__confirm')}>
           Confirm
         </Button>
       </DialogActions>

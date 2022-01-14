@@ -33,63 +33,63 @@ const IsLoading = (props: Props) => {
   const formatAmount = new BigNumber(amount / 100).multipliedBy('1e18');
   const dispatch = useAppDispatch();
 
-  const handleConfirmStake = () => {
-    stakingToken()
-      .methods.stake(0, formatAmount)
-      .send({ from: currentAddress(wallet) })
-      .then((res: any) => {
-        if (res.status === true) {
-          setDone(true);
-          handleUpdateSmartContract();
-          setTimeout(() => {
-            handleCloseModal();
-            handleBackBegin();
-          }, 3000);
-        } else {
-          dispatch(
-            openSnackbar({
-              message: 'Staking failed',
-              variant: SnackbarVariant.ERROR
-            })
-          );
-        }
-      });
+  const handleConfirmStake = async () => {
+    const contract = await stakingToken();
+    contract.stake(0, formatAmount).then((res: any) => {
+      if (res.status === true) {
+        setDone(true);
+        handleUpdateSmartContract();
+        setTimeout(() => {
+          handleCloseModal();
+          handleBackBegin();
+        }, 3000);
+      } else {
+        dispatch(
+          openSnackbar({
+            message: 'Staking failed',
+            variant: SnackbarVariant.ERROR
+          })
+        );
+      }
+    });
   };
 
   useEffect(() => {
-    getCHNBalance()
-      .methods.allowance(currentAddress(wallet), process.env.REACT_APP_STAKE_TESTNET_ADDRESS)
-      .call()
-      .then((res: any) => {
-        if (res === '0') {
-          getCHNBalance()
-            .methods.approve(process.env.REACT_APP_STAKE_TESTNET_ADDRESS, MAX_INT)
-            .send({ from: currentAddress(wallet) })
-            .then((res: any) => {
-              console.log('res approve: ', res);
-              if (res.status === true) {
-                dispatch(
-                  openSnackbar({
-                    message: 'Approve successful, please click confirm button',
-                    variant: SnackbarVariant.SUCCESS
-                  })
-                );
-                setApprove(true);
-              } else {
-                dispatch(
-                  openSnackbar({
-                    message: 'Approve faled',
-                    variant: SnackbarVariant.ERROR
-                  })
-                );
-              }
-            })
-            .catch((e: any) => console.log(e));
-        } else {
-          handleConfirmStake();
-        }
-      })
-      .catch((e: any) => console.log(e));
+    const getBalanceCHN = async () => {
+      const contract = await getCHNBalance();
+      contract
+        .allowance(currentAddress(wallet), process.env.REACT_APP_STAKE_TESTNET_ADDRESS)
+        .then((res: any) => {
+          if (res === '0') {
+            contract
+              .approve(process.env.REACT_APP_STAKE_TESTNET_ADDRESS, MAX_INT)
+              .then((res: any) => {
+                console.log('res approve: ', res);
+                if (res.status === true) {
+                  dispatch(
+                    openSnackbar({
+                      message: 'Approve successful, please click confirm button',
+                      variant: SnackbarVariant.SUCCESS
+                    })
+                  );
+                  setApprove(true);
+                } else {
+                  dispatch(
+                    openSnackbar({
+                      message: 'Approve faled',
+                      variant: SnackbarVariant.ERROR
+                    })
+                  );
+                }
+              })
+              .catch((e: any) => console.log(e));
+          } else {
+            handleConfirmStake();
+          }
+        })
+        .catch((e: any) => console.log(e));
+    };
+    getBalanceCHN();
   }, []);
 
   useEffect(() => {
@@ -131,8 +131,7 @@ const IsLoading = (props: Props) => {
                   );
                 }
               }}
-              className={cx('confirm')}
-            >
+              className={cx('confirm')}>
               confirmation
             </Button>
           </React.Fragment>
