@@ -32,7 +32,6 @@ const paginationStyle = makeStyles(() => ({
 const Proposals: React.FC = () => {
   const dispatch = useDispatch();
   const paginationClasses = paginationStyle();
-
   const currentAccount = useAppSelector((state) => state.wallet);
   const proposals = useAppSelector((state) => state.proposals.proposals);
   const [rowPerPage, setRowPerPage] = useState(5);

@@ -131,7 +131,7 @@ const HistoryDetail = (props: Props) => {
 
   return (
     <Box className={cx('history-content')}>
-      <span className={cx('history-content__title')}>Proposal History</span>
+      <span className={cx('history-content__title')}>Proposal </span>
       {isMobile ? (
         <TableMobile
           BorderLinearProgress={BorderLinearProgress}
