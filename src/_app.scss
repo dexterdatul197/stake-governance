@@ -26,6 +26,7 @@ body {
   --pagination-color: rgba(78, 78, 78, 0.6);
   --pagination-action-color: rgba(156, 155, 155, 0.38);
   --color-text-white-blue: #107def;
+  --color-text-black-blue: rgba(0, 0, 0, 0.6);
   --color-dialog-title: #4e4b66;
   --color-primary: #1a88c9;
   --footer-background-color: #fff;
@@ -100,6 +101,7 @@ body {
   --pagination-color: rgba(255, 255, 255, 0.6);
   --pagination-action-color: rgba(255, 255, 255, 0.38);
   --color-text-white-blue: #fff;
+  --color-text-black-blue: #107def;
   --color-dialog-title: #4e4b66;
   --color-primary: #1a88c9;
   --footer-background-color: #1b1c1f;
@@ -228,7 +230,12 @@ body {
   margin: 0px !important;
   background: var(--background-stake-modal) !important;
 }
-
+.css-1pe4mpk-MuiButtonBase-root-MuiIconButton-root {
+  color: var(--color-text-black-blue) !important;
+}
+.css-1e6y48t-MuiButtonBase-root-MuiButton-root.Mui-disabled {
+  color: var(--color-text-head-vote) !important;
+}
 .loading-rotate {
   -webkit-animation: spin 1s linear infinite;
   -moz-animation: spin 1s linear infinite;

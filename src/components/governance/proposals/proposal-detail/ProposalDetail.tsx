@@ -12,7 +12,8 @@ import {
   ethAddressPage,
   getCHNBalance,
   governance,
-  methods, stakingToken
+  methods,
+  stakingToken
 } from '../../../../helpers/ContractService';
 import { ProposalDetailForm, VoteFormData } from '../../../../interfaces/SFormData';
 import BackArrow from '../../../back-arrow/BackArrow';

@@ -45,12 +45,14 @@
   }
   .rank {
       margin-bottom: 20px;
+      font-size: 1.3em;
   }
   .view-leader-board {
+      background-color: #107DEF;
       padding: 10px 0;
       border-radius: 15px;
       border: solid 1px var(--btn-hover-blue-green);
-      color: var(--btn-hover-blue-green);
+      color: white;
       width: 50%;
       margin: 0 auto;
       cursor: pointer;
