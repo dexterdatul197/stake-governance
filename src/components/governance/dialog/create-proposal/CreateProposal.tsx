@@ -24,6 +24,7 @@ interface TextBinding {
   html: any;
   text: string;
 }
+
 const cx = classNames.bind(styles);
 const mdParser = new MarkdownIt();
 const CreateProposal: React.FC = () => {
@@ -35,9 +36,11 @@ const CreateProposal: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [title, setTitle] = useState('');
+  const [triggerAlert, setTriggerAlert] = useState(false);
   const provider = useAppSelector((state) => state.wallet.provider);
   const [formData, setFormData] = useState<SFormData[]>([
     {
+      isRemove: false,
       targetAddress: '',
       value: [],
       signature: '',
@@ -50,6 +53,7 @@ const CreateProposal: React.FC = () => {
     dispatch(setOpenCreateProposalDialog(false));
     setFormData([
       {
+        isRemove: false,
         targetAddress: '',
         value: [],
         signature: '',
@@ -59,16 +63,37 @@ const CreateProposal: React.FC = () => {
     setDescription('');
   };
   const handleClickConfirm = async () => {
+    // ================= check required input form =================
+
+    setErrorMsg('');
+    setTriggerAlert((prev) => !prev);
+    let isFulfilledInput = true;
+    if (title.trim().length === 0) {
+      isFulfilledInput = false;
+    }
+
+    // check form data (action input forms)
+    for (const data of formData) {
+      if (data.targetAddress.trim().length === 0 || data.signature.trim().length === 0) {
+        isFulfilledInput = false;
+        break;
+      }
+    }
+
+    if (description.trim().length === 0) {
+      setErrorMsg('Description is required');
+      isFulfilledInput = false;
+    }
+
+    if (!isFulfilledInput) return;
+
+    // =============== end check input form ==================
+
     const targetAddresses = [];
     const values = [];
     const signatures = [];
     const callDatas = [];
-    if (description.trim().length === 0) {
-      setErrorMsg('Description is required');
-      return;
-    } else {
-      setErrorMsg('');
-    }
+
     try {
       for (let i = 0; i < formData.length; i += 1) {
         const callDataValues = [];
@@ -79,7 +104,7 @@ const CreateProposal: React.FC = () => {
         callDataTypes = getArgs(formData[i]['signature']);
         for (let j = 0; j < formData[i].callData.length; j += 1) {
           if (callDataTypes[j].toLowerCase() === 'bool') {
-            callDataValues.push(formData[i].callData[j].toLowerCase() === 'true' ? true : false);
+            callDataValues.push(formData[i].callData[j].toLowerCase() === 'true');
           } else {
             callDataValues.push(formData[i].callData[j]);
           }
@@ -166,6 +191,9 @@ const CreateProposal: React.FC = () => {
   };
 
   const childUpdateFormData = (newFormData: SFormData[]) => {
+    console.log({
+      newFormData
+    });
     setFormData([...JSON.parse(JSON.stringify(newFormData))]);
   };
 
@@ -179,6 +207,7 @@ const CreateProposal: React.FC = () => {
     }
   }, [currentAccount.ethereumAddress]);
 
+  let collapseIndex = -1;
   return (
     <Dialog
       open={openDialog}
@@ -227,7 +256,12 @@ const CreateProposal: React.FC = () => {
             <div className={cx('sub-title-text')}>Proposal Description</div>
             <div className={cx('box-title')}>Title</div>
             <div className={cx('div-input')}>
-              <StakeInputBase onChange={handleChangeTitle} />
+              <StakeInputBase
+                onChange={handleChangeTitle}
+                validate={true}
+                name={'Title'}
+                triggerAlert={triggerAlert}
+              />
             </div>
             <div className={cx('box-title')}>Details</div>
             <div className={cx('div-input')}>
@@ -247,17 +281,22 @@ const CreateProposal: React.FC = () => {
             <div className={cx('sub-title-text', 'sub-title-action')}>Actions</div>
             <div className={cx(`card-style`, `${theme === 'dark' ? 'card-style-border' : ''}`)}>
               {formData.map((f, index) => {
-                return (
-                  <div key={index}>
-                    <CollapseItem
-                      index={index}
-                      formData={formData}
-                      maxOperation={maxOperation}
-                      fCallData={f.callData}
-                      setFormData={childUpdateFormData}
-                    />
-                  </div>
-                );
+                if (!f.isRemove) {
+                  collapseIndex += 1;
+                  return (
+                    <div key={index}>
+                      <CollapseItem
+                        collapseIndex={collapseIndex}
+                        index={index}
+                        formData={formData}
+                        maxOperation={maxOperation}
+                        fCallData={f.callData}
+                        setFormData={childUpdateFormData}
+                        triggerAlert={triggerAlert}
+                      />
+                    </div>
+                  );
+                }
               })}
             </div>
           </div>

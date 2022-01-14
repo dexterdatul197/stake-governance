@@ -1,33 +1,40 @@
 /* eslint-disable array-callback-return */
 import { Collapse } from '@material-ui/core';
 import classNames from 'classnames/bind';
-import React, { useState } from 'react';
-import editIcon from '../../../../assets/icon/edit_icon.png';
+import React, { useEffect, useState } from 'react';
+import removeIcon from '../../../../assets/icon/trash.svg';
 import { getArgs } from '../../../../helpers/common';
 import { SFormData } from '../../../../interfaces/SFormData';
 import StakeInputBase from '../../../base/input/StakeInputBase';
 import styles from './Collapse.module.scss';
 interface Props {
+  collapseIndex?: number;
   index?: number;
   maxOperation?: number;
   fCallData?: any[];
   formData?: SFormData[];
   setFormData?: (v: any) => void;
+  triggerAlert?: boolean;
 }
 const cx = classNames.bind(styles);
 
 const CollapseItem: React.FC<Props> = ({
+  collapseIndex = 0,
   index = 0,
   maxOperation = 0,
   fCallData = [],
   formData = [],
-  setFormData = () => {}
+  setFormData = () => {},
+  triggerAlert = false
 }) => {
+  const [triggerCount, setTriggerCount] = useState(0);
+
   const [openCollapse, setOpenCollapse] = useState(false);
   const [activeKey, setActiveKey] = useState(0);
   const handleAdd = (type: string, index: number) => {
     if (type === 'next') {
       formData.splice(index + 1, 0, {
+        isRemove: false,
         targetAddress: '',
         value: [],
         signature: '',
@@ -35,6 +42,7 @@ const CollapseItem: React.FC<Props> = ({
       });
     } else {
       formData.splice(index, 0, {
+        isRemove: false,
         targetAddress: '',
         value: [],
         signature: '',
@@ -45,7 +53,7 @@ const CollapseItem: React.FC<Props> = ({
     setActiveKey(type === 'next' ? index + 1 : index);
   };
   const handleRemove = (index: number) => {
-    if (index !== 0) formData = formData.filter((_f, idx) => idx < index);
+    if (index !== 0) formData[index].isRemove = true;
     setFormData(formData);
   };
   const handleKeyUpCommon = (type: string, idx: number, subIdx: any, v: any) => {
@@ -78,31 +86,40 @@ const CollapseItem: React.FC<Props> = ({
   const handleKeyUpSignature = (e: any) => {
     handleParseFunc(e.target.value);
   };
-  
+
+  useEffect((): any => {
+    setTriggerCount(triggerCount + 1);
+    if (triggerCount > 0) {
+      setOpenCollapse(true);
+    }
+  }, [triggerAlert]);
+  console.log(index);
   return (
     <div className={cx('collapse-item-style')}>
       <div className={cx('action-style')}>
         <div className={cx('action-text')} onClick={() => setOpenCollapse(!openCollapse)}>
-          Action {index}
+          Action {collapseIndex}
         </div>
-        <img src={editIcon} alt="edit_icon" onClick={() => handleRemove(index)} />
+        <img src={removeIcon} alt="edit_icon" onClick={() => handleRemove(index)} />
       </div>
       <Collapse key={activeKey} timeout="auto" in={openCollapse}>
         <div key={activeKey} className={cx('div-input')}>
-          <div className={cx('border-style')}></div>
+          <div className={cx('border-style')} />
           <StakeInputBase
             validate={true}
             name="Address"
             value={formData[index].targetAddress}
             placeholder="Address"
             onKeyUp={handleKeyupAddress}
+            triggerAlert={triggerAlert}
           />
           <StakeInputBase
             validate={true}
-            placeholder="aasumeOwnship(address,string,unit256)"
+            placeholder="assumeOwnership(address,string,uint256)"
             name="Signature"
             value={formData[index].signature}
             onKeyUp={handleKeyUpSignature}
+            triggerAlert={triggerAlert}
           />
           {fCallData.map((c: any, cIndex: number) => {
             return (
@@ -113,6 +130,7 @@ const CollapseItem: React.FC<Props> = ({
                 value={formData[index].value.length > 0 ? formData[index].value[cIndex] : ''}
                 name="CallData"
                 onKeyUp={(e) => handleKeyUpCallData(e, cIndex)}
+                triggerAlert={triggerAlert}
               />
             );
           })}

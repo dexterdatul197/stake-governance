@@ -1,3 +1,4 @@
+import { BigNumber } from '@0x/utils';
 import {
   Box,
   Paper,
@@ -10,36 +11,42 @@ import {
 } from '@material-ui/core';
 import classNames from 'classnames/bind';
 import React, { useCallback, useEffect, useState } from 'react';
-import BackArrow from '../../back-arrow/BackArrow';
-import styles from './LeaderBoard.module.scss';
-import { checkNotEmptyArr, format } from '../../../helpers/common';
-import LeaderBoardMobile from '../leaderboardMobile';
-import useMobile from '../../../hooks/useMobile';
-import { getDataLeaderBoard } from '../../../apis/apis';
-import { BigNumber } from '@0x/utils';
 import { useHistory } from 'react-router-dom';
+import { getDataLeaderBoard } from '../../../apis/apis';
+import { checkNotEmptyArr, format } from '../../../helpers/common';
+import useMobile from '../../../hooks/useMobile';
+import BackArrow from '../../back-arrow/BackArrow';
+import LeaderBoardMobile from '../leaderboardMobile';
+import styles from './LeaderBoard.module.scss';
 const cx = classNames.bind(styles);
 
 const LeaderBoard: React.FC = () => {
   const isMobile = useMobile(820);
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(12);
+  const [limit, setLimit] = useState(100);
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
   const history = useHistory();
 
   useEffect(() => {
     const getdataLeaderBoard = async () => {
+      setLoading(true);
+      setTimeout(() => {
+        setLoading(false);
+      }, 2000);
       const dataLeaderBoard = await getDataLeaderBoard(page, limit);
       setData(dataLeaderBoard.data);
     };
     getdataLeaderBoard();
   }, []);
 
+  console.log(data);
 
   const renderData = useCallback((content, parentData) => {
     return checkNotEmptyArr(content)
       ? content.map((item: any, index: any) => {
-          const { id, address, chn, vote_weight, proposals_voted } = item;
+          const { id, address, voteWeight, proposalsVoted, chnStake } = item;
+          const formatChnStake = new BigNumber(chnStake).div('1e18').toFixed(4).toString();
           return (
             <React.Fragment key={id}>
               <TableCell className={cx('table-row__table-cell')}>
@@ -47,13 +54,13 @@ const LeaderBoard: React.FC = () => {
               </TableCell>
               <TableCell className={cx('table-row__table-cell')}>{address}</TableCell>
               <TableCell align="right" className={cx('table-row__table-cell')}>
-                {format(new BigNumber(chn).div(1e18).toFixed(4).toString())}
+                {format(formatChnStake)}
               </TableCell>
               <TableCell align="right" className={cx('table-row__table-cell')}>
-                {Number(new BigNumber(vote_weight).multipliedBy(100))} %
+                {Number(new BigNumber(voteWeight).multipliedBy(100))} %
               </TableCell>
               <TableCell align="right" className={cx('table-row__table-cell')}>
-                {proposals_voted}
+                {proposalsVoted}
               </TableCell>
             </React.Fragment>
           );
@@ -91,18 +98,20 @@ const LeaderBoard: React.FC = () => {
                   {checkNotEmptyArr(data)
                     ? data
                         .sort((a: any, b: any) =>
-                          Number(parseFloat(a.vote_weight) < parseFloat(b.vote_weight)) ? 1 : -1
+                          new BigNumber(b.chnStake).minus(new BigNumber(a.chnStake)).toNumber()
                         )
+                        .filter((item: any) => {
+                          return item.chnStake !== 0;
+                        })
                         .map((item, index) => {
-                          const { id, address, votes, vote_weight, proposals_voted } = item;
+                          const { id, address, voteWeight, proposalsVoted, chnStake } = item;
                           const content = [
                             {
                               id: id,
-                              rank: index,
                               address: address,
-                              chn: votes,
-                              vote_weight: vote_weight,
-                              proposals_voted: proposals_voted
+                              chnStake: chnStake,
+                              voteWeight: voteWeight,
+                              proposalsVoted: proposalsVoted
                             }
                           ];
                           return (

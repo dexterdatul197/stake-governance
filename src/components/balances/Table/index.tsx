@@ -36,7 +36,7 @@ const TableComponent = () => {
   const transactionData = useAppSelector((state) => state.transactions.transactions);
   const wallet = useAppSelector((state) => state.wallet);
 
-  console.log(transactionData.metadata.totalItem)
+  console.log(transactionData.metadata.totalItem);
 
   const [filter, setFilter] = useState({
     page: 1,

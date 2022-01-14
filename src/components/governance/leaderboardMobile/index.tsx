@@ -2,7 +2,7 @@ import { Box, Paper } from '@material-ui/core';
 import React, { useCallback, useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
 import styles from './styles.module.scss';
-import { checkNotEmptyArr } from '../../../helpers/common';
+import { checkNotEmptyArr, format } from '../../../helpers/common';
 import { getDataLeaderBoard } from '../../../apis/apis';
 import { BigNumber } from '@0x/utils';
 import { useHistory } from 'react-router-dom';
@@ -24,35 +24,43 @@ const TableMobile = (props: any) => {
   }, []);
 
   const renderData = useCallback(
-    (content) =>
+    (content, parentData) =>
       checkNotEmptyArr(content)
-        ? content.map((item: any, index: any) => {
-            const { id, address, vote_weight, proposals_voted } = item;
-            return (
-              <Box
-                key={index}
-                onClick={() =>
-                  history.push(`/governance/leaderboard/leaderboard-detail/${address}`)
-                }>
-                <Box className={cx('txHash')}>
-                  <span>{index}</span>
-                  <span>{address.substr(0, 19)}...</span>
+        ? content
+            .sort((a: any, b: any) =>
+              new BigNumber(b.chnStake).minus(new BigNumber(a.chnStake)).toNumber()
+            )
+            .filter((item: any) => {
+              return item.chnStake !== 0;
+            })
+            .map((item: any, index: any) => {
+              const { id, address, voteWeight, proposalsVoted, chnStake } = item;
+              const formatChnStake = new BigNumber(chnStake).div('1e18');
+              return (
+                <Box
+                  key={index}
+                  onClick={() =>
+                    history.push(`/governance/leaderboard/leaderboard-detail/${address}`)
+                  }>
+                  <Box className={cx('txHash')}>
+                    <span>{parentData + index + 1}</span>
+                    <span>{address.substr(0, 19)}...</span>
+                  </Box>
+                  <Box className={cx('chn')}>
+                    <span>CHN</span>
+                    <span> {format(Number(formatChnStake))}</span>
+                  </Box>
+                  <Box className={cx('vote-weight')}>
+                    <span>Vote Weight</span>
+                    <span>{Number(new BigNumber(voteWeight).multipliedBy(100))} %</span>
+                  </Box>
+                  <Box className={cx('proposal')}>
+                    <span>Proposals Vote</span>
+                    <span>{proposalsVoted}</span>
+                  </Box>
                 </Box>
-                <Box className={cx('chn')}>
-                  <span>CHN</span>
-                  <span>{vote_weight}</span>
-                </Box>
-                <Box className={cx('vote-weight')}>
-                  <span>Vote Weight</span>
-                  <span>{Number(new BigNumber(vote_weight).multipliedBy(100))} %</span>
-                </Box>
-                <Box className={cx('proposal')}>
-                  <span>Proposals Vote</span>
-                  <span>{proposals_voted}</span>
-                </Box>
-              </Box>
-            );
-          })
+              );
+            })
         : null,
     []
   );
@@ -68,20 +76,20 @@ const TableMobile = (props: any) => {
                   Number(parseFloat(a.vote_weight) < parseFloat(b.vote_weight)) ? 1 : -1
                 )
                 .map((item, index) => {
-                  const { id, address, vote_weight, proposals_voted } = item;
+                  const { id, address, voteWeight, proposalsVoted, chnStake } = item;
                   const content = [
                     {
                       id: id,
                       rank: index,
                       address: address,
-                      chn: vote_weight,
-                      vote_weight: vote_weight,
-                      proposals_voted: proposals_voted
+                      chnStake: chnStake,
+                      voteWeight: voteWeight,
+                      proposalsVoted: proposalsVoted
                     }
                   ];
                   return (
                     <Box key={index} className={cx('children-content__main')}>
-                      {renderData(content)}
+                      {renderData(content, index)}
                     </Box>
                   );
                 })

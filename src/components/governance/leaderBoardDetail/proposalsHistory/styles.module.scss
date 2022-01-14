@@ -12,7 +12,7 @@
   &__title {
     font-size: 18px;
     font-weight: 600;
-    color: var( --text-table);
+    color: var(--text-table);
     padding-bottom: 29px;
     display: block;
     @media screen and (max-width: 768px) {
@@ -35,7 +35,7 @@
       .title {
         font-size: 20px;
         font-weight: 600;
-        color: var( --text-table);
+        color: var(--text-table);
         padding-bottom: 8px;
         display: block;
       }
@@ -44,26 +44,51 @@
           font-size: 14px;
           font-weight: 500;
           padding-right: 39px;
-          color:var(--color-text-detail)
+          color: var(--color-text-detail);
         }
         span:nth-child(2) {
           font-size: 14px;
           font-weight: 500;
           padding-right: 56px;
-          color:var(--color-text-detail)
+          color: var(--color-text-detail);
         }
         .Passed {
           font-size: 16px;
           font-weight: 600;
           color: #3ee046;
         }
-        .Defeated {
+        .Failed {
           color: #d63031;
           font-size: 16px;
           font-weight: 600;
         }
         .Active {
           color: #0984e3;
+          font-size: 16px;
+          font-weight: 600;
+        }
+        .Queue {
+          color: #ffba33;
+          font-size: 16px;
+          font-weight: 600;
+        }
+        .Expired {
+          color: #fdcb6e;
+          font-size: 16px;
+          font-weight: 600;
+        }
+        .Executed {
+          color: #2d3436;
+          font-size: 16px;
+          font-weight: 600;
+        }
+        .Cancelled {
+          color: #ff7675;
+          font-size: 16px;
+          font-weight: 600;
+        }
+        .Pending {
+          color: #107DEF;
           font-size: 16px;
           font-weight: 600;
         }
@@ -89,10 +114,10 @@
       text-transform: capitalize;
       font-size: 16px;
       font-weight: 500;
-      color: var( --text-table);
+      color: var(--text-table);
     }
   }
-  .table-pagination{
-    color: var(--text-table)
+  .table-pagination {
+    color: var(--text-table);
   }
 }

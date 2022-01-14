@@ -49,12 +49,14 @@ const Proposal: React.FC<Props> = (props) => {
     getIshasVoted();
   }, [getIshasVoted]);
   return (
-    <div className={cx('proposal-item')}>
-      <div className={cx('row-content-left')} onClick={() => redirectToProposalDetail(proposal.id)}>
+    <div className={cx('proposal-item')} onClick={() => redirectToProposalDetail(proposal.id)}>
+      <div className={cx('row-content-left')}>
         <div className={cx('proposal-title')}>{proposal.title}</div>
         <div className={cx('proposal-id-time')}>
           <div className={cx('proposal-id')}>{proposal.id}</div>
-          <div>{moment(proposal.created_at).format('MMMM Do, YYYY')}</div>
+          <div className={cx('proposal-time')}>
+            {moment(proposal.created_at).format('MMMM Do, YYYY')}
+          </div>
           <div
             className={cx(
               `proposal-status-${getStatus(proposal.state).toLowerCase()}`,

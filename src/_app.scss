@@ -1,6 +1,6 @@
 body {
   background-color: var(--main-background-color);
-  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   margin: 0;
   display: flex;
   flex-direction: column;
@@ -26,6 +26,7 @@ body {
   --pagination-color: rgba(78, 78, 78, 0.6);
   --pagination-action-color: rgba(156, 155, 155, 0.38);
   --color-text-white-blue: #107def;
+  --color-text-black-blue: rgba(0, 0, 0, 0.6);
   --color-dialog-title: #4e4b66;
   --color-primary: #1a88c9;
   --footer-background-color: #fff;
@@ -40,7 +41,6 @@ body {
   --color-address-contract: rgba(0, 0, 0, 0.6);
   --color-line: #e0e0e0;
   --color-text-head-vote: rgba(0, 28, 78, 0.38);
-
 
   --connect-button: #107def;
   --background-connect-button: rgba(16, 125, 239, 0.1);
@@ -57,10 +57,10 @@ body {
   --text-color-transaction: rgba(0, 28, 78, 0.87);
   --color-text-history: rgba(0, 28, 78, 0.87);
 
-   //Leaderboard
-   --background-table: #FFFFFF;
-   --text-table: rgba(0, 28, 78, 0.87);
-   --hover-table: #F5F7FA;
+  //Leaderboard
+  --background-table: #ffffff;
+  --text-table: rgba(0, 28, 78, 0.87);
+  --hover-table: #f5f7fa;
 
   //balance
   --bg-txt-type: #eaf4fb;
@@ -84,7 +84,7 @@ body {
   //proposal dialog
   --bg-head-mdeditor: #f5f5f5;
 }
-[data-theme='dark'] {
+[data-theme="dark"] {
   --btn-header-border-color: #72bf65;
   --header-bar-color: #1b1c1f;
   --main-background-color: #121316;
@@ -100,6 +100,7 @@ body {
   --pagination-color: rgba(255, 255, 255, 0.6);
   --pagination-action-color: rgba(255, 255, 255, 0.38);
   --color-text-white-blue: #fff;
+  --color-text-black-blue: #107def;
   --color-dialog-title: #4e4b66;
   --color-primary: #1a88c9;
   --footer-background-color: #1b1c1f;
@@ -228,7 +229,12 @@ body {
   margin: 0px !important;
   background: var(--background-stake-modal) !important;
 }
-
+.css-1pe4mpk-MuiButtonBase-root-MuiIconButton-root {
+  color: var(--color-text-black-blue) !important;
+}
+.css-1e6y48t-MuiButtonBase-root-MuiButton-root.Mui-disabled {
+  color: var(--color-text-head-vote) !important;
+}
 .loading-rotate {
   -webkit-animation: spin 1s linear infinite;
   -moz-animation: spin 1s linear infinite;
@@ -252,9 +258,13 @@ body {
   }
 }
 .rc-md-editor {
+  background-color: #107def;
+  border: 1px solid #107def;
   .rc-md-navigation {
     border-radius: 15px 15px 0px 0px !important;
     background-color: var(--bg-head-mdeditor) !important;
+    background-color: #107def;
+    border-color: #107def;
   }
   .editor-container {
     border-radius: 0px 0px 15px 15px !important;

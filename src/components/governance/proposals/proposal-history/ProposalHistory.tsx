@@ -13,7 +13,7 @@ const cx = classNames.bind(styles);
 const ProposalHistory: React.FC<Props> = ({ proposalInfo }) => {
   return (
     <div className={cx('proposal-history')}>
-      <div className={cx('history-title')}>Proposal History</div>
+      <div className={cx('history-title')}>Proposal </div>
       <div className={cx('history-content')}>
         <Step
           title="Created"
@@ -22,7 +22,7 @@ const ProposalHistory: React.FC<Props> = ({ proposalInfo }) => {
               ? moment(proposalInfo.createdTimestamp * 1000).format('LLL')
               : ''
           }
-          unCheck={proposalInfo?.createdTimestamp ? false : true}
+          unCheck={proposalInfo?.createdAt ? false : true}
         />
         <Step
           title="Active"
@@ -47,13 +47,17 @@ const ProposalHistory: React.FC<Props> = ({ proposalInfo }) => {
           unCheck={proposalInfo?.endTimestamp ? false : true}
         />
         <Step
-          title={`${proposalInfo?.state === 'Queued' ? 'Queued' : 'Queue'}`}
+          title={`${
+            proposalInfo?.state === 'Queued' || proposalInfo?.state === 'Executed'
+              ? 'Queued'
+              : 'Queue'
+          }`}
           description={
             proposalInfo?.queuedTimestamp
               ? moment(proposalInfo.queuedTimestamp * 1000).format('LLL')
               : ''
           }
-          unCheck={proposalInfo?.queuedTimestamp ? false : true}
+          unCheck={proposalInfo?.queuedTimestamp || proposalInfo?.state === 'Queued' ? false : true}
         />
         <Step
           title={
@@ -66,7 +70,9 @@ const ProposalHistory: React.FC<Props> = ({ proposalInfo }) => {
               ? moment(proposalInfo.executedTimestamp * 1000).format('LLL')
               : ''
           }
-          unCheck={proposalInfo?.executedTimestamp ? false : true}
+          unCheck={
+            proposalInfo?.executedTimestamp || proposalInfo?.state === 'Executed' ? false : true
+          }
         />
       </div>
     </div>

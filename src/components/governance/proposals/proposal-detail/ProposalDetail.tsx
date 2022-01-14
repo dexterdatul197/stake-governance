@@ -1,5 +1,5 @@
 import classNames from 'classnames/bind';
-import { BigNumber } from 'ethers';
+import { BigNumber as BigNumber0x } from '@0x/utils';
 import { message, Tooltip } from 'antd';
 import moment from 'moment';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -7,12 +7,13 @@ import { useAppSelector } from 'src/store/hooks';
 import Web3 from 'web3';
 import { getProposalDetail, getVotes } from '../../../../apis/apis';
 import AddressArrowSVG from '../../../../assets/icon/AddressArrowSVG';
-import { getStatus } from '../../../../helpers/common';
+import { currentAddress, getStatus } from '../../../../helpers/common';
 import {
   ethAddressPage,
   getCHNBalance,
   governance,
-  methods
+  methods,
+  stakingToken
 } from '../../../../helpers/ContractService';
 import { ProposalDetailForm, VoteFormData } from '../../../../interfaces/SFormData';
 import BackArrow from '../../../back-arrow/BackArrow';
@@ -21,6 +22,9 @@ import VoteCard from '../vote-card/VoteCard';
 import styles from './ProposalDetail.module.scss';
 import Button from '@material-ui/core/Button';
 import Icon from '@ant-design/icons/lib/components/Icon';
+import { isConnected } from '../../../../helpers/connectWallet';
+import { setVotingWeight } from '../../redux/Governance';
+import { useDispatch } from 'react-redux';
 const cx = classNames.bind(styles);
 interface Props {
   proposalId: number;
@@ -90,9 +94,26 @@ const ProposalDetail: React.FC<Props> = (props) => {
   const [excuteEta, setExcuteEta] = useState('');
   const [limitUpVote, setLimitUpVote] = useState(4);
   const [limitDownVote, setLimitDownVote] = useState(4);
-  const votingWeight = useAppSelector((state) => state.governance.voteingWeight);
-
+  const dispatch = useDispatch();
   const wallet = useAppSelector((state) => state.wallet);
+
+  const getBalanceOf = async () => {
+    if (isConnected(wallet)) {
+      const connectedAddress = currentAddress(wallet);
+      const chnAmount = await stakingToken().methods.userInfo(0, connectedAddress).call();
+      const formatValueStake = new BigNumber0x(chnAmount.amount).div(1e18);
+      dispatch(setVotingWeight(formatValueStake.toFixed(4).toString()));
+      setIsLoading(false);
+    } else {
+      setIsLoading(true);
+    }
+  };
+
+  useEffect(() => {
+    getBalanceOf();
+  }, [isConnected(wallet)]);
+
+  const votingWeight = useAppSelector((state) => state.governance.voteingWeight);
 
   const callbackViewAllUpVote = (childData: number) => {
     setLimitUpVote(childData);
@@ -108,7 +129,7 @@ const ProposalDetail: React.FC<Props> = (props) => {
       });
       setProposerVotingWeight(+votingWeight);
     }
-  }, [wallet.ethereumAddress, proposalDetail]);
+  }, [wallet.ethereumAddress, proposalDetail, votingWeight]);
 
   useEffect(() => {
     if (wallet.ethereumAddress) {
@@ -221,10 +242,13 @@ const ProposalDetail: React.FC<Props> = (props) => {
       <div className={cx('title', 'text-black-white')}>{proposalDetail.title}</div>
       <div className={cx('proposal-block')}>
         <div className={cx('block-left')}>
-          <div
-            className={cx('proposer-id', 'pd-td-10')}
-            onClick={() => goToEthereumAddress(proposalDetail.proposer)}>
-            {proposalDetail.proposer} <AddressArrowSVG />
+          <div className={cx('proposer-id', 'pd-td-10')}>
+            <div>{proposalDetail.proposer}</div>
+            <div
+              className={cx('proposer-id-icon')}
+              onClick={() => goToEthereumAddress(proposalDetail.proposer)}>
+              <AddressArrowSVG />
+            </div>
           </div>
           <div className={cx('proposer-status')}>
             <div className={cx('proposer-status-left')}>
@@ -279,7 +303,7 @@ const ProposalDetail: React.FC<Props> = (props) => {
                   {status === 'pending' || status === 'failure' ? 'Queue' : 'Queued'}
                 </Button>
               )}
-              {proposalDetail.state === 'Queued' && (
+              {proposalDetail.state === 'Queued' && !proposalDetail.executedTimestamp && (
                 <Button
                   className={cx('execute-btn')}
                   disabled={isLoading || status === 'success' || !isPossibleExcuted}
@@ -307,7 +331,7 @@ const ProposalDetail: React.FC<Props> = (props) => {
       </div>
       <div className={cx('description')}>
         <div className={cx('text-black-white')}>Description</div>
-        <p className={cx('description-value')}>{proposalDetail.description}</p>
+        <div className={cx('description-value')}>{proposalDetail.description}</div>
       </div>
     </div>
   );

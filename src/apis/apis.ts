@@ -50,6 +50,8 @@ export const getDataLeaderBoardId = async (id: string) => {
 };
 
 export const getDataLeaderBoardDetail = async (address: any, page: number, limit: number) => {
-  const res = await axiosInstance(options).get(`/voter/history/${address}?page=${page}&limit=${limit}`);
+  const res = await axiosInstance(options).get(
+    `/voter/history/${address}?page=${page}&limit=${limit}`
+  );
   return res.data;
 };
