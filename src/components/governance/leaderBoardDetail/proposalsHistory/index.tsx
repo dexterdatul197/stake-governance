@@ -75,25 +75,36 @@ const HistoryDetail = (props: Props) => {
       limit: rowPerPage
     });
   };
-  console.log(totalItem);
 
   const convertState = (state: any) => {
     switch (state) {
       case 'Successded':
         return 'Passed';
       case 'Defeated':
-        return 'Defeated';
+        return 'Failed';
       case 'Active':
         return 'Active';
+      case 'Canceled':
+        return 'Canceled';
+      case 'Pending':
+        return 'Pending';
+      case 'Queued':
+        return 'Queued';
+      case 'Expired':
+        return 'Expired';
+      case 'Executed':
+        return 'Executed';
       default:
         break;
     }
   };
 
+  console.log(dataDetail);
+
   const renderData = useCallback((content, parentData) => {
     return checkNotEmptyArr(content)
       ? content.map((item: any, index: any) => {
-          const { description, forVotes, againstVotes, createdAt, state, support, id } = item;
+          const { title, forVotes, againstVotes, createdAt, state, support, id } = item;
           const total = new BigNumber(parseInt(forVotes)).plus(
             new BigNumber(parseInt(againstVotes))
           );
@@ -106,7 +117,7 @@ const HistoryDetail = (props: Props) => {
           return (
             <React.Fragment key={id}>
               <Box className={cx('history-content__main__column_1')}>
-                <span className={cx('title')}>{description}</span>
+                <span className={cx('title')}>{title ? title.split('\n')[0] : ''}</span>
                 <Box className={cx('text')}>
                   <span>{id}</span>
                   <span> {moment(createdAt).format('MMMM Do, YYYY')}</span>
@@ -131,7 +142,7 @@ const HistoryDetail = (props: Props) => {
 
   return (
     <Box className={cx('history-content')}>
-      <span className={cx('history-content__title')}>Proposal </span>
+      <span className={cx('history-content__title')}>Proposal History </span>
       {isMobile ? (
         <TableMobile
           BorderLinearProgress={BorderLinearProgress}
@@ -144,13 +155,13 @@ const HistoryDetail = (props: Props) => {
       ) : checkNotEmptyArr(dataDetail) ? (
         dataDetail.map((item: any, index: any) => {
           const { proposal, voter } = item;
-          const { description, createdAt, state, forVotes, againstVotes, id } = proposal;
+          const { title, createdAt, state, forVotes, againstVotes, id } = proposal;
           const { support } = voter;
 
           const content = [
             {
               id: id,
-              description: description,
+              title: title,
               createdAt: createdAt,
               state: state,
               forVotes: forVotes,

@@ -23,7 +23,7 @@ const cx = classNames.bind(styles);
 const LeaderBoard: React.FC = () => {
   const isMobile = useMobile(820);
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(12);
+  const [limit, setLimit] = useState(100);
   const [data, setData] = useState([]);
   const history = useHistory();
 
@@ -34,8 +34,6 @@ const LeaderBoard: React.FC = () => {
     };
     getdataLeaderBoard();
   }, []);
-
-  console.log(data);
 
   const renderData = useCallback((content, parentData) => {
     return checkNotEmptyArr(content)
@@ -115,8 +113,7 @@ const LeaderBoard: React.FC = () => {
                                 )
                               }
                               className={cx('table-row')}
-                              key={index}
-                            >
+                              key={index}>
                               {renderData(content, index)}
                             </TableRow>
                           );
