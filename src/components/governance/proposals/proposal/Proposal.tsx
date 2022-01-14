@@ -27,9 +27,8 @@ const Proposal: React.FC<Props> = (props) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const getIshasVoted = async () => {
     if (isConnected(wallet)) {
-      const receipt = await governance()
-        .methods.getReceipt(proposal.id, currentAddress(wallet))
-        .call();
+      const contract = await governance();
+      const receipt = contract.getReceipt(proposal.id, currentAddress(wallet));
       setVoteStatus(receipt.hasVoted ? 'voted' : 'novoted');
     }
   };
@@ -37,9 +36,8 @@ const Proposal: React.FC<Props> = (props) => {
   const handleVote = async (support: string) => {
     setIsLoading(true);
     setVoteType(support);
-    await governance()
-      .methods.castVote(props.proposal.id, support === 'like')
-      .send({ from: currentAddress(wallet) });
+    const contract = await governance();
+    contract.methods.castVote(props.proposal.id, support === 'like');
     setIsLoading(false);
   };
 
@@ -63,8 +61,7 @@ const Proposal: React.FC<Props> = (props) => {
             className={cx(
               `proposal-status-${getStatus(proposal.state).toLowerCase()}`,
               'proposal-status'
-            )}
-          >
+            )}>
             {getStatus(proposal.state)}
           </div>
         </div>
@@ -74,16 +71,14 @@ const Proposal: React.FC<Props> = (props) => {
           {voteStatus && voteStatus === 'novoted' && proposal.state !== 'Active' && (
             <div
               className={cx('vote-status-text')}
-              onClick={() => redirectToProposalDetail(proposal.id)}
-            >
+              onClick={() => redirectToProposalDetail(proposal.id)}>
               NO VOTE
             </div>
           )}
           {voteStatus && voteStatus === 'voted' && (
             <div
               className={cx('vote-status-text')}
-              onClick={() => redirectToProposalDetail(proposal.id)}
-            >
+              onClick={() => redirectToProposalDetail(proposal.id)}>
               VOTED
             </div>
           )}
@@ -97,8 +92,7 @@ const Proposal: React.FC<Props> = (props) => {
                   (proposal && proposal.state !== 'Active') ||
                   isLoading
                 }
-                onClick={() => handleVote('like')}
-              >
+                onClick={() => handleVote('like')}>
                 {isLoading && voteType === 'like' && <Icon type="loading" />} Up Vote
               </Button>
               <Button
@@ -109,8 +103,7 @@ const Proposal: React.FC<Props> = (props) => {
                   (proposal && proposal.state !== 'Active') ||
                   isLoading
                 }
-                onClick={() => handleVote('dislike')}
-              >
+                onClick={() => handleVote('dislike')}>
                 {isLoading && voteType === 'dislike' && <Icon type="loading" />} Down Vote
               </Button>
             </div>

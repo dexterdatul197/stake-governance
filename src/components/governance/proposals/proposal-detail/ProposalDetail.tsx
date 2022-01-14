@@ -123,8 +123,8 @@ const ProposalDetail: React.FC<Props> = (props) => {
   };
   const updateBalance = useCallback(async () => {
     if (wallet.ethereumAddress && proposalDetail.id) {
-      const voteContract = governance();
-      await methods.call(voteContract.methods.proposalThreshold, []).then((res: any) => {
+      const voteContract = await governance();
+      await methods.call(voteContract.proposalThreshold, []).then((res: any) => {
         setProposalThreshold(+Web3.utils.fromWei(res, 'ether'));
       });
       setProposerVotingWeight(+votingWeight);
@@ -136,9 +136,9 @@ const ProposalDetail: React.FC<Props> = (props) => {
       updateBalance();
     }
   }, [wallet.ethereumAddress, updateBalance, votingWeight]);
-  const getIsPossibleExcuted = () => {
-    const voteContract = governance();
-    methods.call(voteContract.methods.proposals, [proposalDetail.id]).then((res: any) => {
+  const getIsPossibleExcuted = async () => {
+    const voteContract = await governance();
+    methods.call(voteContract.proposals, [proposalDetail.id]).then((res: any) => {
       setIsPossibleExcuted(res && res.eta <= Date.now() / 1000);
       setExcuteEta(moment(res.eta * 1000).format('LLLL'));
     });
@@ -149,12 +149,12 @@ const ProposalDetail: React.FC<Props> = (props) => {
     }
   }, [proposalDetail]);
 
-  const handleUpdateProposal = (statusType: string) => {
-    const appContract = governance();
+  const handleUpdateProposal = async (statusType: string) => {
+    const appContract = await governance();
     if (statusType === 'Queue') {
       setIsLoading(true);
       methods
-        .send(appContract.methods.queue, [proposalDetail.id], wallet.ethereumAddress)
+        .send(appContract.queue, [proposalDetail.id], wallet.ethereumAddress)
         .then(() => {
           setIsLoading(false);
           setStatus('success');
@@ -167,7 +167,7 @@ const ProposalDetail: React.FC<Props> = (props) => {
     } else if (statusType === 'Execute') {
       setIsLoading(true);
       methods
-        .send(appContract.methods.execute, [proposalDetail.id], wallet.ethereumAddress)
+        .send(appContract.execute, [proposalDetail.id], wallet.ethereumAddress)
         .then((res) => {
           setIsLoading(false);
           setStatus('success');
@@ -180,7 +180,7 @@ const ProposalDetail: React.FC<Props> = (props) => {
     } else if (statusType === 'Cancel') {
       setIsCancelLoading(true);
       methods
-        .send(appContract.methods.cancel, [proposalDetail.id], wallet.ethereumAddress)
+        .send(appContract.cancel, [proposalDetail.id], wallet.ethereumAddress)
         .then(() => {
           setIsCancelLoading(false);
           setCancelStatus('success');
@@ -246,8 +246,7 @@ const ProposalDetail: React.FC<Props> = (props) => {
             <div>{proposalDetail.proposer}</div>
             <div
               className={cx('proposer-id-icon')}
-              onClick={() => goToEthereumAddress(proposalDetail.proposer)}
-            >
+              onClick={() => goToEthereumAddress(proposalDetail.proposer)}>
               <AddressArrowSVG />
             </div>
           </div>
@@ -262,8 +261,7 @@ const ProposalDetail: React.FC<Props> = (props) => {
               className={cx(
                 `proposal-status-${getStatus(proposalDetail.state).toLowerCase()}`,
                 'proposal-status'
-              )}
-            >
+              )}>
               {getStatus(proposalDetail.state)}
             </div>
           </div>
@@ -292,8 +290,7 @@ const ProposalDetail: React.FC<Props> = (props) => {
                   proposerVotingWeight >= proposalThreshold ||
                   cancelStatus === 'success'
                 }
-                onClick={() => handleUpdateProposal('Cancel')}
-              >
+                onClick={() => handleUpdateProposal('Cancel')}>
                 {isCancelLoading && <Icon type="loading" />}{' '}
                 {cancelStatus === 'pending' || cancelStatus === 'failure' ? 'Cancel' : 'Cancelled'}
               </Button>
@@ -301,8 +298,7 @@ const ProposalDetail: React.FC<Props> = (props) => {
                 <Button
                   className={cx('queud-btn')}
                   disabled={isLoading || status === 'success'}
-                  onClick={() => handleUpdateProposal('Queue')}
-                >
+                  onClick={() => handleUpdateProposal('Queue')}>
                   {isLoading && <Icon type="loading" />}{' '}
                   {status === 'pending' || status === 'failure' ? 'Queue' : 'Queued'}
                 </Button>
@@ -311,8 +307,7 @@ const ProposalDetail: React.FC<Props> = (props) => {
                 <Button
                   className={cx('execute-btn')}
                   disabled={isLoading || status === 'success' || !isPossibleExcuted}
-                  onClick={() => handleUpdateProposal('Execute')}
-                >
+                  onClick={() => handleUpdateProposal('Execute')}>
                   {isLoading && <Icon type="loading" />}{' '}
                   {status === 'pending' || status === 'failure' ? 'Execute' : 'Executed'}
                 </Button>

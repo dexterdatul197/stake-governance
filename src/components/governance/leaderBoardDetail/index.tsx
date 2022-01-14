@@ -28,8 +28,10 @@ const Detail = (props: Props) => {
 
   useEffect(() => {
     const getBalance = async () => {
-      const CHN = await getCHNBalance().methods.balanceOf(address).call();
-      const getValueStake = await stakingToken().methods.userInfo(0, address).call();
+      const contractBalance = await getCHNBalance();
+      const contractStaking = await stakingToken();
+      const CHN = await contractBalance.balanceOf(address);
+      const getValueStake = await contractStaking.userInfo(0, address);
       const formatCHN = new BigNumber(CHN).div('1e18').div(10);
       const formatStake = new BigNumber(getValueStake.amount).div('1e18');
       setCHN(format(formatCHN.toFixed(4).toString()));

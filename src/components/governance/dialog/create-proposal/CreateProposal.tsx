@@ -122,14 +122,18 @@ const CreateProposal: React.FC = () => {
       return;
     }
     setIsLoading(true);
-    const governanceContract = governance();
+    const governanceContract = await governance();
     try {
-      const responseCreate = await governanceContract.methods
-        .propose(targetAddresses, values, signatures, callDatas, description)
-        .send({ from: currentAddress(currentAccount) });
+      const responseCreate = await governanceContract.propose(
+        targetAddresses,
+        values,
+        signatures,
+        callDatas,
+        description
+      );
       if (responseCreate) {
         const proposalId = Number(responseCreate.events.ProposalCreated.returnValues.id);
-        const proposalState = await governanceContract.methods.state(proposalId).call();
+        const proposalState = await governanceContract.state(proposalId);
         // call API create proposal in DB
         const options = {
           baseUrl: process.env.REACT_APP_BACKEND
@@ -171,9 +175,16 @@ const CreateProposal: React.FC = () => {
     }
   };
   const getMaxOperation = async () => {
-    const voteContract = governance();
-    const maxOperation = await voteContract.methods.proposalMaxOperations().call();
-    setMaxOperation(maxOperation);
+    try {
+      const voteContract = await governance();
+      const maxOperation = await voteContract.proposalMaxOperations();
+      setMaxOperation(maxOperation);
+    } catch (err) {
+      const message = 'call revert exception';
+      if (String(err).includes(message)) {
+        window.location.reload();
+      }
+    }
   };
 
   const handleEditorChange = (text: TextBinding) => {
@@ -192,14 +203,11 @@ const CreateProposal: React.FC = () => {
   };
 
   useEffect(() => {
-    handleCloseConnectDialog();
-  }, [wallet.ethereumAddress]);
-
-  useEffect(() => {
-    if (isConnected(currentAccount)) {
+    if (currentAccount.ethereumAddress) {
       getMaxOperation();
     }
-  }, [currentAccount]);
+  }, [currentAccount.ethereumAddress]);
+
   let collapseIndex = -1;
   return (
     <Dialog
@@ -214,16 +222,14 @@ const CreateProposal: React.FC = () => {
           padding: '25px',
           borderRadius: '20px'
         }
-      }}
-    >
+      }}>
       {/* header: title + btn close */}
       <Box
         display={'flex'}
         justifyContent={'space-between'}
         sx={{
           marginBottom: '20px'
-        }}
-      >
+        }}>
         <Typography component={'div'} className={cx('title')}>
           <Box>
             <div className={cx('text-title')}>Create Proposal</div>
@@ -233,8 +239,7 @@ const CreateProposal: React.FC = () => {
           <IconButton
             onClick={handleCloseConnectDialog}
             size={'small'}
-            className={cx('close-button')}
-          >
+            className={cx('close-button')}>
             <CloseIcon />
           </IconButton>
         </Typography>
@@ -303,8 +308,7 @@ const CreateProposal: React.FC = () => {
         sx={{
           margin: '10px 0',
           paddingRight: '10px'
-        }}
-      >
+        }}>
         <div className={cx('wrap-btn')}>
           {/* <div className={cx('btn-confirm')} onClick={handleClickConfirm}>
             Confirm
@@ -312,8 +316,7 @@ const CreateProposal: React.FC = () => {
           <Button
             className={cx('btn-create')}
             // disabled={isLoading || formData.length > maxOperation || description.trim().length === 0}
-            onClick={handleClickConfirm}
-          >
+            onClick={handleClickConfirm}>
             {isLoading && (
               <div>
                 <CircularProgress size={20} color="inherit" />

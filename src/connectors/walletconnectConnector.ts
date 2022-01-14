@@ -1,11 +1,7 @@
-import WalletConnectProvider from '@walletconnect/web3-provider';
+import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 
-export const genProvider = () => {
-  return new WalletConnectProvider({
-    rpc: {
-      4: 'https://rinkeby.infura.io/v3/6f446ee5f1b5485b8a2d3fa2708957c1'
-    },
-    infuraId: '6f446ee5f1b5485b8a2d3fa2708957c1',
-    pollingInterval: 3000
-  });
-};
+export const walletconnect = new WalletConnectConnector({
+  supportedChainIds: [1, 4, 3, 5, 42],
+  infuraId: '6f446ee5f1b5485b8a2d3fa2708957c1',
+  bridge: 'https://uniswap.bridge.walletconnect.org'
+});

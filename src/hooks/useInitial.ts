@@ -28,37 +28,27 @@ export const useInitial = () => {
     }, 3000);
   };
 
-  // useEffect(() => {
-  //   const infoConnectWallet = localStorage.getItem('walletconnect');
-  //   const addressCoinbaseWallet = localStorage.getItem(KEY_ADDRESS_COINBASE);
+  useEffect(() => {
+    const infoConnectWallet = localStorage.getItem('walletconnect');
+    const addressCoinbaseWallet = localStorage.getItem(KEY_ADDRESS_COINBASE);
 
-  //   // wallet-connect
-  //   if (wallet.walletName === WALLET_NAMES.WALLET_CONNECT && infoConnectWallet) {
-  //     const { chainId, connected, accounts } = JSON.parse(infoConnectWallet);
-  //     if (connected) {
-  //       dispatch(setEthereumAddress(accounts[0]));
-  //     } else {
-  //       localStorage.removeItem('walletconnect');
-  //     }
-  //   }
+    // wallet-connect
+    if (wallet.walletName === WALLET_NAMES.WALLET_CONNECT && infoConnectWallet) {
+      const { chainId, connected, accounts } = JSON.parse(infoConnectWallet);
+      if (connected) {
+        dispatch(setEthereumAddress(accounts[0]));
+      } else {
+        localStorage.removeItem('walletconnect');
+      }
+    }
 
-  //   // wallet-link coinbase
-  //   if (wallet.walletName === WALLET_NAMES.COINBASE && addressCoinbaseWallet) {
-  //     checkConnectionWalletLinkCoinbase();
-  //     dispatch(setEthereumAddress(addressCoinbaseWallet as string));
-  //   }
-  // }, [wallet.walletName]);
-
-  // useEffect(() => {
-  //   if (!provider) return;
-  //   provider.on('connect', (e: any) => console.log('connect', e));
-  //   provider.on('disconnect', (e: any) => console.log('disconnect', e));
-  //   provider.on('accountsChanged', (e: any) => console.log('accountsChanged', e));
-  //   provider.on('chainChanged', (e: any) => console.log('chainChanged', e));
-  //   return () => {
-  //     console.log('clean up');
-  //   };
-  // }, [wallet.walletName]);
+    // wallet-link coinbase
+    if (wallet.walletName === WALLET_NAMES.COINBASE && addressCoinbaseWallet) {
+      checkConnectionWalletLinkCoinbase();
+      console.log('checkConnectionWalletLinkCoinbase', addressCoinbaseWallet as string);
+      dispatch(setEthereumAddress(addressCoinbaseWallet as string));
+    }
+  }, [wallet.walletName]);
 
   return undefined;
 };
