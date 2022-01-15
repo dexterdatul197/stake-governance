@@ -1,6 +1,7 @@
 import classNames from 'classnames/bind';
 import React, { useEffect, useState } from 'react';
 import styles from './StakeInputBase.module.scss';
+import { useAppSelector } from '../../../store/hooks';
 
 const cx = classNames.bind(styles);
 
@@ -42,6 +43,8 @@ const StakeInputBase: React.FC<Props> = ({
   const [triggerCount, setTriggerCount] = useState(0);
   const [messageErr, setMessageErr] = useState('');
   const [inputValue, setInputValue] = useState(value);
+  const wallet = useAppSelector((state) => state.wallet);
+
   const handleOnChange = (event: any) => {
     setMessageErr('');
     setInputValue(event.target.value);
@@ -62,6 +65,10 @@ const StakeInputBase: React.FC<Props> = ({
       handleBlur();
     }
   }, [triggerAlert]);
+
+  useEffect(() => {
+    setInputValue('');
+  }, [wallet])
 
   return (
     <div className={cx('wrap-input-base')}>
