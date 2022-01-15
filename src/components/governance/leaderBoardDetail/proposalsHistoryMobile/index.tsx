@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import styles from './styles.module.scss';
 import classNames from 'classnames/bind';
 import { BigNumber } from '@0x/utils';
-
+import { useHistory } from 'react-router-dom';
 interface Props {
   BorderLinearProgress?: any;
   BorderLinearProgressDefeate?: any;
@@ -23,6 +23,7 @@ const MoBile = (props: Props) => {
     moment,
     convertState
   } = props;
+  const history = useHistory();
   const renderData = useCallback((content) => {
     return checkNotEmptyArr(content)
       ? content.map((item: any, index: any) => {
@@ -79,7 +80,11 @@ const MoBile = (props: Props) => {
                 support: support
               }
             ];
-            return <React.Fragment key={index}>{renderData(content)}</React.Fragment>;
+            return (
+              <Box key={index} onClick={() => history.push(history.push(`/proposal/${id}`))}>
+                {renderData(content)}
+              </Box>
+            );
           })
         : null}
     </React.Fragment>
