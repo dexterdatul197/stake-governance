@@ -186,7 +186,6 @@ const CreateProposal: React.FC = () => {
     try {
       const voteContract = await governance();
       const maxOperation = await voteContract.proposalMaxOperations();
-      console.log('maxOperation', maxOperation.toString());
       setMaxOperation(maxOperation.toString());
     } catch (err) {
       console.log('getMaxOperation', err);

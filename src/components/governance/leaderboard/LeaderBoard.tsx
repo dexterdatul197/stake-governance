@@ -40,8 +40,6 @@ const LeaderBoard: React.FC = () => {
     getdataLeaderBoard();
   }, []);
 
-  console.log(data);
-
   const renderData = useCallback((content, parentData) => {
     return checkNotEmptyArr(content)
       ? content.map((item: any, index: any) => {
