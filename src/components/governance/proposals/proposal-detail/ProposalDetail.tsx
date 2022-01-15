@@ -8,6 +8,7 @@ import Web3 from 'web3';
 import { getProposalDetail, getVotes } from '../../../../apis/apis';
 import AddressArrowSVG from '../../../../assets/icon/AddressArrowSVG';
 import { currentAddress, getStatus } from '../../../../helpers/common';
+import ReactMarkdown from 'react-markdown'
 import {
   ethAddressPage,
   getCHNBalance,
@@ -154,39 +155,39 @@ const ProposalDetail: React.FC<Props> = (props) => {
   const handleUpdateProposal = async (statusType: string) => {
     const appContract = await governance();
     if (statusType === 'Queue') {
-        try {
-          setIsLoading(true);
-          const queueRes = await appContract.queue([proposalDetail.id]);
-          await queueRes.wait();
-          setIsLoading(false);
-          setStatus('success');
-          message.success(`Proposal list will update within a few seconds`);
-        } catch (error) {
-          setIsLoading(false);
-          setStatus('failure');
-        }
+      try {
+        setIsLoading(true);
+        const queueRes = await appContract.queue([proposalDetail.id]);
+        await queueRes.wait();
+        setIsLoading(false);
+        setStatus('success');
+        message.success(`Proposal list will update within a few seconds`);
+      } catch (error) {
+        setIsLoading(false);
+        setStatus('failure');
+      }
     } else if (statusType === 'Execute') {
-        try {
-          setIsLoading(true);
-          const excute = await appContract.execute([proposalDetail.id]);
-          await excute.wait();
-          setIsLoading(false);
-          setStatus('success');
-          message.success(`Proposal list will update within a few seconds`);
-        } catch (error) {
-          setIsLoading(false);
-          setStatus('failure');
-        }
+      try {
+        setIsLoading(true);
+        const excute = await appContract.execute([proposalDetail.id]);
+        await excute.wait();
+        setIsLoading(false);
+        setStatus('success');
+        message.success(`Proposal list will update within a few seconds`);
+      } catch (error) {
+        setIsLoading(false);
+        setStatus('failure');
+      }
     } else if (statusType === 'Cancel') {
       try {
         setIsCancelLoading(true);
         const cancelResponse = await appContract.cancel([proposalDetail.id]);
         await cancelResponse.wait();
         setIsCancelLoading(false);
-          setCancelStatus('success');
-          message.success(
-            `Current proposal is cancelled successfully. Proposal list will update within a few seconds`
-          );
+        setCancelStatus('success');
+        message.success(
+          `Current proposal is cancelled successfully. Proposal list will update within a few seconds`
+        );
       } catch (error) {
         setIsCancelLoading(false);
         setCancelStatus('failure');
@@ -234,6 +235,13 @@ const ProposalDetail: React.FC<Props> = (props) => {
   useEffect(() => {
     getProposal();
   }, [limitUpVote, limitDownVote, status]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      getProposal();
+    }, 3000);
+  }, [status]);
+
   return (
     <div className={cx('proposal-detail')}>
       <BackArrow title="Detail" />
@@ -244,7 +252,8 @@ const ProposalDetail: React.FC<Props> = (props) => {
             <div>{proposalDetail.proposer}</div>
             <div
               className={cx('proposer-id-icon')}
-              onClick={() => goToEthereumAddress(proposalDetail.proposer)}>
+              onClick={() => goToEthereumAddress(proposalDetail.proposer)}
+            >
               <AddressArrowSVG />
             </div>
           </div>
@@ -259,7 +268,8 @@ const ProposalDetail: React.FC<Props> = (props) => {
               className={cx(
                 `proposal-status-${getStatus(proposalDetail.state).toLowerCase()}`,
                 'proposal-status'
-              )}>
+              )}
+            >
               {getStatus(proposalDetail.state)}
             </div>
           </div>
@@ -288,7 +298,8 @@ const ProposalDetail: React.FC<Props> = (props) => {
                   proposerVotingWeight >= proposalThreshold ||
                   cancelStatus === 'success'
                 }
-                onClick={() => handleUpdateProposal('Cancel')}>
+                onClick={() => handleUpdateProposal('Cancel')}
+              >
                 {isCancelLoading && <Icon type="loading" />}{' '}
                 {cancelStatus === 'pending' || cancelStatus === 'failure' ? 'Cancel' : 'Cancelled'}
               </Button>
@@ -296,7 +307,8 @@ const ProposalDetail: React.FC<Props> = (props) => {
                 <Button
                   className={cx('queud-btn')}
                   disabled={isLoading || status === 'success'}
-                  onClick={() => handleUpdateProposal('Queue')}>
+                  onClick={() => handleUpdateProposal('Queue')}
+                >
                   {isLoading && <Icon type="loading" />}{' '}
                   {status === 'pending' || status === 'failure' ? 'Queue' : 'Queued'}
                 </Button>
@@ -305,7 +317,8 @@ const ProposalDetail: React.FC<Props> = (props) => {
                 <Button
                   className={cx('execute-btn')}
                   disabled={isLoading || status === 'success' || !isPossibleExcuted}
-                  onClick={() => handleUpdateProposal('Execute')}>
+                  onClick={() => handleUpdateProposal('Execute')}
+                >
                   {isLoading && <Icon type="loading" />}{' '}
                   {status === 'pending' || status === 'failure' ? 'Execute' : 'Executed'}
                 </Button>
@@ -329,7 +342,7 @@ const ProposalDetail: React.FC<Props> = (props) => {
       </div>
       <div className={cx('description')}>
         <div className={cx('text-black-white')}>Description</div>
-        <div className={cx('description-value')}>{proposalDetail.description}</div>
+        <div className={cx('description-value')}><ReactMarkdown>{proposalDetail.description}</ReactMarkdown></div>
       </div>
     </div>
   );
