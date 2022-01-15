@@ -62,7 +62,7 @@ const Transaction = (props: Props) => {
       contract
         .stake(0, web3.utils.toWei(String(formatAmount), 'ether'))
         .then(async (res: any) => {
-          console.log(res)
+          console.log(res);
           await res.wait();
           handleUpdateSmartContract();
           setDone(true);
@@ -110,9 +110,11 @@ const Transaction = (props: Props) => {
   const handleConfirm = async () => {
     setProgress(true);
     const contract = await getCHNBalance();
-    const handleConfirm = await contract.allowance(currentAddress(wallet), process.env.REACT_APP_STAKE_TESTNET_ADDRESS);
-    console.log(handleConfirm._hex.toString())
-    if (handleConfirm._hex === '0x') {
+    const handleConfirm = await contract.allowance(
+      currentAddress(wallet),
+      process.env.REACT_APP_STAKE_TESTNET_ADDRESS
+    );
+    if (handleConfirm._hex === '0x00') {
       await contract.approve(process.env.REACT_APP_STAKE_TESTNET_ADDRESS, MAX_INT);
       dispatch(
         openSnackbar({
@@ -159,8 +161,7 @@ const Transaction = (props: Props) => {
           <Button
             onClick={handleCloseModalTrans}
             className={cx('icon_left')}
-            disabled={progress === true}
-          >
+            disabled={progress === true}>
             <CloseIcon />
           </Button>
         </Box>
@@ -193,8 +194,7 @@ const Transaction = (props: Props) => {
         <Button
           disabled={done || progress}
           onClick={handleConfirm}
-          className={cx('dialog-actions__transaction__confirm')}
-        >
+          className={cx('dialog-actions__transaction__confirm')}>
           Confirm
         </Button>
       </DialogActions>
