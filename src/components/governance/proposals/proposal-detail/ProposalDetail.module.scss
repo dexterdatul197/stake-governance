@@ -29,6 +29,7 @@
         .description-value {
             color: var(--color-text-white-black);
             margin: 10px 0px 10px 0px;
+            text-align: justify;
         }
     }
     .text-black-white {
@@ -41,7 +42,6 @@
             color: var(--color-text);
             display: flex;
             flex-direction: row;
-            justify-content: space-between;
             width: 40%;
             .proposer-status-left {
                 display: flex;
@@ -67,6 +67,7 @@
     }
     .proposal-status {
         color: #277ee6;
+        margin-left: auto;
     }
     .proposal-status-failed {
         color: #7c7878;

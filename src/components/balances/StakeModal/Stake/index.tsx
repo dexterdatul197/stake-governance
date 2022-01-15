@@ -28,8 +28,6 @@ interface Props {
 
 const Stake = (props: Props) => {
   const { cx, walletValue, handleNext, value, setValue, handleCloseModal } = props;
-  const aa = new BigNumber(value.default).times(walletValue).toString();
-  console.log('POPUP AAAAA>>>>>>>>>>>>>>>>>>: ', new BigNumber(value.default).toString());
 
   const [isActivePercent1, setIsActivePercent1] = useState(false);
   const [isActivePercent2, setIsActivePercent2] = useState(false);

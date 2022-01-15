@@ -21,7 +21,7 @@ const get_ellipsis_mid = (str: string) => {
 };
 
 const formatCardNumber = (num: string) => {
-  return format(Web3.utils.fromWei(num));
+  return format((+Web3.utils.fromWei(num)).toFixed(4));
 };
 
 const VoteCard: React.FC<Props> = ({ voting, parrentCallback }) => {

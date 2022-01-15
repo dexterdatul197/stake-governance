@@ -34,7 +34,8 @@ const TableMobile = (props: any) => {
                 key={id}
                 onClick={() =>
                   history.push(`/governance/leaderboard/leaderboard-detail/${address}`)
-                }>
+                }
+              >
                 <Box className={cx('txHash')}>
                   <span>{parentData + index + 1}</span>
                   <span>{address.substr(0, 19)}...</span>
@@ -69,7 +70,7 @@ const TableMobile = (props: any) => {
                   new BigNumber(b.chnStake).minus(new BigNumber(a.chnStake)).toNumber()
                 )
                 .filter((item: any) => {
-                  return Number(item.chnStake) !== 0;
+                  return item.chnStake !== '0';
                 })
                 .map((item, index) => {
                   const { id, address, voteWeight, proposalsVoted, chnStake } = item;

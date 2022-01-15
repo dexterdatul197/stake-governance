@@ -27,9 +27,8 @@ const Proposal: React.FC<Props> = (props) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const getIshasVoted = async () => {
     if (isConnected(wallet)) {
-      const receipt = await governance()
-        .methods.getReceipt(proposal.id, currentAddress(wallet))
-        .call();
+      const contract = await governance();
+      const receipt = await contract.getReceipt(proposal.id, currentAddress(wallet));
       setVoteStatus(receipt.hasVoted ? 'voted' : 'novoted');
     }
   };
@@ -37,9 +36,9 @@ const Proposal: React.FC<Props> = (props) => {
   const handleVote = async (support: string) => {
     setIsLoading(true);
     setVoteType(support);
-    await governance()
-      .methods.castVote(props.proposal.id, support === 'like')
-      .send({ from: currentAddress(wallet) });
+    const contract = await governance();
+    const res = await contract.castVote(props.proposal.id, support === 'like');
+    await res.wait();
     setIsLoading(false);
   };
 

@@ -8,6 +8,7 @@ import Web3 from 'web3';
 import { getProposalDetail, getVotes } from '../../../../apis/apis';
 import AddressArrowSVG from '../../../../assets/icon/AddressArrowSVG';
 import { currentAddress, getStatus } from '../../../../helpers/common';
+import ReactMarkdown from 'react-markdown'
 import {
   ethAddressPage,
   getCHNBalance,
@@ -25,6 +26,7 @@ import Icon from '@ant-design/icons/lib/components/Icon';
 import { isConnected } from '../../../../helpers/connectWallet';
 import { setVotingWeight } from '../../redux/Governance';
 import { useDispatch } from 'react-redux';
+import { ethers } from 'ethers';
 const cx = classNames.bind(styles);
 interface Props {
   proposalId: number;
@@ -100,9 +102,11 @@ const ProposalDetail: React.FC<Props> = (props) => {
   const getBalanceOf = async () => {
     if (isConnected(wallet)) {
       const connectedAddress = currentAddress(wallet);
-      const chnAmount = await stakingToken().methods.userInfo(0, connectedAddress).call();
-      const formatValueStake = new BigNumber0x(chnAmount.amount).div(1e18);
-      dispatch(setVotingWeight(formatValueStake.toFixed(4).toString()));
+      const contract = await stakingToken();
+      const chnAmount = await contract.userInfo(0, connectedAddress);
+      const formatValueStake = ethers.utils.formatEther(chnAmount.amount);
+
+      dispatch(setVotingWeight(parseFloat(formatValueStake).toFixed(4).toString()));
       setIsLoading(false);
     } else {
       setIsLoading(true);
@@ -123,10 +127,9 @@ const ProposalDetail: React.FC<Props> = (props) => {
   };
   const updateBalance = useCallback(async () => {
     if (wallet.ethereumAddress && proposalDetail.id) {
-      const voteContract = governance();
-      await methods.call(voteContract.methods.proposalThreshold, []).then((res: any) => {
-        setProposalThreshold(+Web3.utils.fromWei(res, 'ether'));
-      });
+      const voteContract = await governance();
+      const proposalThresH = await voteContract.proposalThreshold();
+      setProposalThreshold(+Web3.utils.fromWei(proposalThresH.toString(), 'ether'));
       setProposerVotingWeight(+votingWeight);
     }
   }, [wallet.ethereumAddress, proposalDetail, votingWeight]);
@@ -136,12 +139,12 @@ const ProposalDetail: React.FC<Props> = (props) => {
       updateBalance();
     }
   }, [wallet.ethereumAddress, updateBalance, votingWeight]);
-  const getIsPossibleExcuted = () => {
-    const voteContract = governance();
-    methods.call(voteContract.methods.proposals, [proposalDetail.id]).then((res: any) => {
-      setIsPossibleExcuted(res && res.eta <= Date.now() / 1000);
-      setExcuteEta(moment(res.eta * 1000).format('LLLL'));
-    });
+  const getIsPossibleExcuted = async () => {
+    const voteContract = await governance();
+    const voteCon = await voteContract.proposals([proposalDetail.id]);
+    console.log('VOTE CON:>>> ', voteCon);
+    setIsPossibleExcuted(voteCon && voteCon.eta.toNumber() <= Date.now() / 1000);
+    setExcuteEta(moment(voteCon.eta.toNumber() * 1000).format('LLLL'));
   };
   useEffect(() => {
     if (proposalDetail.id) {
@@ -149,49 +152,46 @@ const ProposalDetail: React.FC<Props> = (props) => {
     }
   }, [proposalDetail]);
 
-  const handleUpdateProposal = (statusType: string) => {
-    const appContract = governance();
+  const handleUpdateProposal = async (statusType: string) => {
+    const appContract = await governance();
     if (statusType === 'Queue') {
-      setIsLoading(true);
-      methods
-        .send(appContract.methods.queue, [proposalDetail.id], wallet.ethereumAddress)
-        .then(() => {
-          setIsLoading(false);
-          setStatus('success');
-          message.success(`Proposal list will update within a few seconds`);
-        })
-        .catch(() => {
-          setIsLoading(false);
-          setStatus('failure');
-        });
+      try {
+        setIsLoading(true);
+        const queueRes = await appContract.queue([proposalDetail.id]);
+        await queueRes.wait();
+        setIsLoading(false);
+        setStatus('success');
+        message.success(`Proposal list will update within a few seconds`);
+      } catch (error) {
+        setIsLoading(false);
+        setStatus('failure');
+      }
     } else if (statusType === 'Execute') {
-      setIsLoading(true);
-      methods
-        .send(appContract.methods.execute, [proposalDetail.id], wallet.ethereumAddress)
-        .then((res) => {
-          setIsLoading(false);
-          setStatus('success');
-          message.success(`Proposal list will update within a few seconds`);
-        })
-        .catch((err) => {
-          setIsLoading(false);
-          setStatus('failure');
-        });
+      try {
+        setIsLoading(true);
+        const excute = await appContract.execute([proposalDetail.id]);
+        await excute.wait();
+        setIsLoading(false);
+        setStatus('success');
+        message.success(`Proposal list will update within a few seconds`);
+      } catch (error) {
+        setIsLoading(false);
+        setStatus('failure');
+      }
     } else if (statusType === 'Cancel') {
-      setIsCancelLoading(true);
-      methods
-        .send(appContract.methods.cancel, [proposalDetail.id], wallet.ethereumAddress)
-        .then(() => {
-          setIsCancelLoading(false);
-          setCancelStatus('success');
-          message.success(
-            `Current proposal is cancelled successfully. Proposal list will update within a few seconds`
-          );
-        })
-        .catch(() => {
-          setIsCancelLoading(false);
-          setCancelStatus('failure');
-        });
+      try {
+        setIsCancelLoading(true);
+        const cancelResponse = await appContract.cancel([proposalDetail.id]);
+        await cancelResponse.wait();
+        setIsCancelLoading(false);
+        setCancelStatus('success');
+        message.success(
+          `Current proposal is cancelled successfully. Proposal list will update within a few seconds`
+        );
+      } catch (error) {
+        setIsCancelLoading(false);
+        setCancelStatus('failure');
+      }
     }
   };
 
@@ -234,7 +234,13 @@ const ProposalDetail: React.FC<Props> = (props) => {
 
   useEffect(() => {
     getProposal();
-  }, [limitUpVote, limitDownVote]);
+  }, [limitUpVote, limitDownVote, status]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      getProposal();
+    }, 3000);
+  }, [status]);
 
   return (
     <div className={cx('proposal-detail')}>
@@ -336,7 +342,7 @@ const ProposalDetail: React.FC<Props> = (props) => {
       </div>
       <div className={cx('description')}>
         <div className={cx('text-black-white')}>Description</div>
-        <div className={cx('description-value')}>{proposalDetail.description}</div>
+        <div className={cx('description-value')}><ReactMarkdown>{proposalDetail.description}</ReactMarkdown></div>
       </div>
     </div>
   );

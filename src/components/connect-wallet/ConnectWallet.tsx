@@ -11,12 +11,7 @@ import { isConnected } from '../../helpers/connectWallet';
 import useOnClickOutside from '../../helpers/useClickOutside';
 import { useAppSelector } from '../../store/hooks';
 import styles from './ConnectWallet.module.scss';
-import {
-  setOpenConnectDialog,
-  setEthereumAddress,
-  setWalletName,
-  setProvider
-} from './redux/wallet';
+import { setOpenConnectDialog, setEthereumAddress, setWalletName } from './redux/wallet';
 import { ReactComponent as ConectWalletIcon } from '../../assets/icon/wallet.svg';
 import useIsMobile from '../../hooks/useMobile';
 
@@ -54,7 +49,6 @@ const ConnectWallet: React.FC = () => {
     localStorage.setItem('theme', currentTheme);
     dispatch(setEthereumAddress(''));
     dispatch(setWalletName(''));
-    dispatch(setProvider(''));
     history.push('/');
   };
 

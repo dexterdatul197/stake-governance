@@ -1,3 +1,4 @@
+import { BigNumber } from '@0x/utils';
 import { WalletData } from './../interfaces/WalletData';
 const commaNumber = require('comma-number');
 const ethers = require('ethers');
@@ -31,6 +32,17 @@ export const currentAddress = (wallet: WalletData) => {
 };
 
 export const format = commaNumber.bindWith(',', '.');
+
+export const currencyFormatter = (labelValue: any) => {
+  // Nine Zeroes for Billions
+  return Math.abs(Number(labelValue)) >= 1.0e9
+    ? `${format(new BigNumber(`${Math.abs(Number(labelValue)) / 1.0e9}`).dp(2, 1))}B`
+    : // Six Zeroes for Millions
+    Math.abs(Number(labelValue)) >= 1.0e6
+    ? `${format(new BigNumber(`${Math.abs(Number(labelValue)) / 1.0e6}`).dp(2, 1))}M`
+    : // Three Zeroes for Thousands
+      Number(labelValue.toFixed(4));
+};
 
 export const getStatus = (state: string) => {
   if (state === 'Executed') {

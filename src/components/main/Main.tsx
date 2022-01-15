@@ -9,7 +9,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import Web3 from 'web3';
 import { getTVLData } from '../../apis/apis';
-import { convertOHCL, dateBeforeMonth, format } from '../../helpers/common';
+import { convertOHCL, currencyFormatter, dateBeforeMonth, format } from '../../helpers/common';
 import { TVLDataRes } from '../../interfaces/SFormData';
 import { useAppSelector } from '../../store/hooks';
 import AreaChart from '../chart/AreaChart';
@@ -104,6 +104,8 @@ const Main: React.FC = () => {
     getCurrencies();
   }, [getCurrencies]);
 
+  console.log(totalSupply)
+
   return (
     <div className={cx('text-head')}>
       {wallet.openConnectDialog ? (
@@ -111,7 +113,9 @@ const Main: React.FC = () => {
       ) : (
         <>
           <div className={cx('text-head-child')}>
-            <div className={cx('price')}>{totalSupply}</div>
+            <div className={cx('price')}>
+              {`$${currencyFormatter(Number(totalSupply.replaceAll(',', '')))}`}
+            </div>
             <Autocomplete
               classes={classes}
               options={currencies}
@@ -124,8 +128,7 @@ const Main: React.FC = () => {
                   height="10"
                   viewBox="0 0 23 14"
                   fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
+                  xmlns="http://www.w3.org/2000/svg">
                   <path
                     d="M1.22803 1.58691L11.3367 11.6956L21.4454 1.58691"
                     stroke="#107DEF"
