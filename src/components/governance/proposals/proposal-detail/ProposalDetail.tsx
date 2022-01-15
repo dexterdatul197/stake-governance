@@ -142,7 +142,6 @@ const ProposalDetail: React.FC<Props> = (props) => {
   const getIsPossibleExcuted = async () => {
     const voteContract = await governance();
     const voteCon = await voteContract.proposals([proposalDetail.id]);
-    console.log('VOTE CON:>>> ', voteCon);
     setIsPossibleExcuted(voteCon && voteCon.eta.toNumber() <= Date.now() / 1000);
     setExcuteEta(moment(voteCon.eta.toNumber() * 1000).format('LLLL'));
   };

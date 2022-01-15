@@ -175,12 +175,15 @@ const CreateProposal: React.FC = () => {
         );
         dispatch(getProposalList({ page: 1, limit: 5 }));
       }
-    } catch (error) {
-      console.log('error create propalsal', error);
-      dispatch(
-        openSnackbar({ message: 'Creating proposal is failed!', variant: SnackbarVariant.ERROR })
-      );
+    } catch (error: any) {
+      if (error.code === 4001) {
+        dispatch(
+          openSnackbar({ message: 'User denied transaction!', variant: SnackbarVariant.ERROR })
+        );
+      }
       setIsLoading(false);
+    } finally {
+      handleCloseConnectDialog();
     }
   };
   const getMaxOperation = async () => {

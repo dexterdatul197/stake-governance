@@ -102,7 +102,6 @@ const ConnectWalletPage: React.FC = () => {
         },
         false
       ).then(() => {
-        console.log('activated');
         handleCloseConnectDialog();
         dispatch(setWalletName(WALLET_NAMES.WALLET_CONNECT));
       });

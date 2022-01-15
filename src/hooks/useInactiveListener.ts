@@ -10,7 +10,6 @@ export function useInactiveListener(suppress = false): void {
 
   useEffect(() => {
     if (error) {
-      console.log('useInactiveListener', error instanceof UnsupportedChainIdError, error);
       if (error instanceof UnsupportedChainIdError) {
         dispatch(
           openSnackbar({
