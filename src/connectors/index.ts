@@ -24,13 +24,11 @@ export const createInstanceContract = async (address: string, abi: string) => {
 
   if (walletName === 'METAMASK') {
     const web3Provider = new ethers.providers.Web3Provider(window.ethereum, 'any');
-    console.log('web3Provider', web3Provider);
     const signer = web3Provider.getSigner();
     return new ethers.Contract(address, abi, signer);
   }
   const provider = await CONNECTORS[walletName].getProvider();
   const web3Provider = await new providers.Web3Provider(provider);
-  console.log('web3Provider', web3Provider);
   const signer = web3Provider.getSigner();
 
   return new ethers.Contract(address, abi, signer);

@@ -35,7 +35,8 @@ const IsLoading = (props: Props) => {
 
   const handleConfirmStake = async () => {
     const contract = await stakingToken();
-    contract.stake(0, formatAmount).then((res: any) => {
+    contract.stake(0, formatAmount).then(async (res: any) => {
+      await res.wait();
       if (res.status === true) {
         setDone(true);
         handleUpdateSmartContract();
@@ -59,12 +60,13 @@ const IsLoading = (props: Props) => {
       const contract = await getCHNBalance();
       contract
         .allowance(currentAddress(wallet), process.env.REACT_APP_STAKE_TESTNET_ADDRESS)
-        .then((res: any) => {
-          if (res === '0') {
+        .then(async (res: any) => {
+          await res.wait();
+          if (res.toString() === '0') {
             contract
               .approve(process.env.REACT_APP_STAKE_TESTNET_ADDRESS, MAX_INT)
-              .then((res: any) => {
-                console.log('res approve: ', res);
+              .then(async (res: any) => {
+                await res.wait();
                 if (res.status === true) {
                   dispatch(
                     openSnackbar({

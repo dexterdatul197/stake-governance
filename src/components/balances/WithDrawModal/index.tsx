@@ -112,7 +112,8 @@ const WithDraw = (props: Props) => {
       console.log(contract.status);
       // withdraw max
       if (new BigNumber(stake).eq(value.stake)) {
-        await contract.withdraw(0, value.stake);
+        const res = (await contract.withdraw(0, value.stake)) as any;
+        await res.wait();
         setDone(false);
         dispatch(
           openSnackbar({
@@ -125,7 +126,8 @@ const WithDraw = (props: Props) => {
         // custom withdraw
       } else if (stake !== 0) {
         const priceDefault = web3.utils.toWei(String(value.defaultValue), 'ether');
-        await contract.withdraw(0, priceDefault);
+        const res = await contract.withdraw(0, priceDefault);
+        await res.wait();
         setDone(false);
         dispatch(
           openSnackbar({
@@ -136,8 +138,11 @@ const WithDraw = (props: Props) => {
         handleUpdateSmartContract();
       } else if (value.earn > 0) {
         handleCloseModalRefresh();
-        await contract.withdraw(0, web3.utils.toWei(String(value.earn), 'ether'));
-
+        const res = (await contract.withdraw(
+          0,
+          web3.utils.toWei(String(value.earn), 'ether')
+        )) as any;
+        await res.wait();
         setDone(false);
         dispatch(
           openSnackbar({

@@ -134,16 +134,8 @@ const CreateProposal: React.FC = () => {
         callDatas,
         description
       );
-      console.log('params create proposal ', {
-        targetAddresses,
-        values,
-        signatures,
-        callDatas,
-        description
-      });
 
-      console.log('responseCreate', responseCreate);
-      return;
+      await responseCreate.wait();
 
       if (responseCreate) {
         const proposalId = Number(responseCreate.events.ProposalCreated.returnValues.id);
@@ -182,6 +174,7 @@ const CreateProposal: React.FC = () => {
         dispatch(getProposalList({ page: 1, limit: 5 }));
       }
     } catch (error) {
+      console.log('error create propalsal', error);
       dispatch(
         openSnackbar({ message: 'Creating proposal is failed!', variant: SnackbarVariant.ERROR })
       );

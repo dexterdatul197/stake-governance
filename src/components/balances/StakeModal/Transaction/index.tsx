@@ -60,7 +60,8 @@ const Transaction = (props: Props) => {
     if (value.default === 100) {
       contract
         .stake(0, web3.utils.toWei(String(formatAmount), 'ether'))
-        .then((res: any) => {
+        .then(async (res: any) => {
+          await res.wait();
           handleUpdateSmartContract();
           setDone(true);
           setProgress(false);
@@ -82,7 +83,8 @@ const Transaction = (props: Props) => {
     } else {
       contract
         .stake(0, web3.utils.toWei(String(price), 'ether'))
-        .then((res: any) => {
+        .then(async (res: any) => {
+          await res.wait();
           console.log('res stake: ', res);
           handleUpdateSmartContract();
           setDone(true);
@@ -109,12 +111,8 @@ const Transaction = (props: Props) => {
 
     contract
       .allowance(currentAddress(wallet), process.env.REACT_APP_STAKE_TESTNET_ADDRESS)
-      .then((res: any) => {
-        console.log(
-          'allowance params',
-          currentAddress(wallet),
-          process.env.REACT_APP_STAKE_TESTNET_ADDRESS
-        );
+      .then(async (res: any) => {
+        await res.wait();
         if (res._hex === '0x00') {
           contract
             .approve(process.env.REACT_APP_STAKE_TESTNET_ADDRESS, MAX_INT)
