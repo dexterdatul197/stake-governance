@@ -26,6 +26,8 @@ const Vote: React.FC<Props> = (props) => {
   const votingWeight = useAppSelector((state) => state.governance.voteingWeight);
   const [openLoading, setOpenLoading] = useState(false);
   const [rank, setRank] = useState('0');
+  console.log('HANDLE CHANGE ADDRESS: ', wallet);
+  
   const handleOpenCreateForm = async () => {
     if (isConnected(wallet)) {
       let createProposal = true;
@@ -43,9 +45,6 @@ const Vote: React.FC<Props> = (props) => {
       const voteContract = await governance();
       const lastestProposalIdRes = await voteContract.latestProposalIds(connectedAddress);
       const lastestProposalId = lastestProposalIdRes.toString();
-      //TODO:need remove comment to cancel lastestProposalId
-      // const cancelLastestProposal = await voteContract.cancel(lastestProposalId).send({from: connectedAddress});
-      // console.log('CANCEL PROPOSAL: ', cancelLastestProposal);
 
       console.log('lastestProposalId', lastestProposalId);
 

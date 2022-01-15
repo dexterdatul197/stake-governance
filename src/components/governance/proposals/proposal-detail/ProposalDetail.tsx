@@ -127,9 +127,8 @@ const ProposalDetail: React.FC<Props> = (props) => {
   const updateBalance = useCallback(async () => {
     if (wallet.ethereumAddress && proposalDetail.id) {
       const voteContract = await governance();
-      await methods.call(voteContract.proposalThreshold, []).then((res: any) => {
-        setProposalThreshold(+Web3.utils.fromWei(res, 'ether'));
-      });
+      const proposalThresH = await voteContract.proposalThreshold();
+      setProposalThreshold(+Web3.utils.fromWei(proposalThresH.toString(), 'ether'));
       setProposerVotingWeight(+votingWeight);
     }
   }, [wallet.ethereumAddress, proposalDetail, votingWeight]);
@@ -141,10 +140,10 @@ const ProposalDetail: React.FC<Props> = (props) => {
   }, [wallet.ethereumAddress, updateBalance, votingWeight]);
   const getIsPossibleExcuted = async () => {
     const voteContract = await governance();
-    methods.call(voteContract.proposals, [proposalDetail.id]).then((res: any) => {
-      setIsPossibleExcuted(res && res.eta <= Date.now() / 1000);
-      setExcuteEta(moment(res.eta * 1000).format('LLLL'));
-    });
+    const voteCon = await voteContract.proposals([proposalDetail.id]);
+    console.log('VOTE CON:>>> ', voteCon);
+    setIsPossibleExcuted(voteCon && voteCon.eta.toNumber() <= Date.now() / 1000);
+    setExcuteEta(moment(voteCon.eta.toNumber() * 1000).format('LLLL'));
   };
   useEffect(() => {
     if (proposalDetail.id) {
@@ -155,46 +154,43 @@ const ProposalDetail: React.FC<Props> = (props) => {
   const handleUpdateProposal = async (statusType: string) => {
     const appContract = await governance();
     if (statusType === 'Queue') {
-      setIsLoading(true);
-      methods
-        .send(appContract.queue, [proposalDetail.id], wallet.ethereumAddress)
-        .then(() => {
+        try {
+          setIsLoading(true);
+          const queueRes = await appContract.queue([proposalDetail.id]);
+          await queueRes.wait();
           setIsLoading(false);
           setStatus('success');
           message.success(`Proposal list will update within a few seconds`);
-        })
-        .catch(() => {
+        } catch (error) {
           setIsLoading(false);
           setStatus('failure');
-        });
+        }
     } else if (statusType === 'Execute') {
-      setIsLoading(true);
-      methods
-        .send(appContract.execute, [proposalDetail.id], wallet.ethereumAddress)
-        .then((res) => {
+        try {
+          setIsLoading(true);
+          const excute = await appContract.execute([proposalDetail.id]);
+          await excute.wait();
           setIsLoading(false);
           setStatus('success');
           message.success(`Proposal list will update within a few seconds`);
-        })
-        .catch((err) => {
+        } catch (error) {
           setIsLoading(false);
           setStatus('failure');
-        });
+        }
     } else if (statusType === 'Cancel') {
-      setIsCancelLoading(true);
-      methods
-        .send(appContract.cancel, [proposalDetail.id], wallet.ethereumAddress)
-        .then(() => {
-          setIsCancelLoading(false);
+      try {
+        setIsCancelLoading(true);
+        const cancelResponse = await appContract.cancel([proposalDetail.id]);
+        await cancelResponse.wait();
+        setIsCancelLoading(false);
           setCancelStatus('success');
           message.success(
             `Current proposal is cancelled successfully. Proposal list will update within a few seconds`
           );
-        })
-        .catch(() => {
-          setIsCancelLoading(false);
-          setCancelStatus('failure');
-        });
+      } catch (error) {
+        setIsCancelLoading(false);
+        setCancelStatus('failure');
+      }
     }
   };
 

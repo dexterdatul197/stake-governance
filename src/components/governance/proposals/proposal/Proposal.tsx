@@ -28,7 +28,7 @@ const Proposal: React.FC<Props> = (props) => {
   const getIshasVoted = async () => {
     if (isConnected(wallet)) {
       const contract = await governance();
-      const receipt = contract.getReceipt(proposal.id, currentAddress(wallet));
+      const receipt = await contract.getReceipt(proposal.id, currentAddress(wallet));
       setVoteStatus(receipt.hasVoted ? 'voted' : 'novoted');
     }
   };
@@ -37,7 +37,7 @@ const Proposal: React.FC<Props> = (props) => {
     setIsLoading(true);
     setVoteType(support);
     const contract = await governance();
-    const res = contract.castVote(props.proposal.id, support === 'like');
+    const res = await contract.castVote(props.proposal.id, support === 'like');
     await res.wait();
     setIsLoading(false);
   };
