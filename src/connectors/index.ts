@@ -1,3 +1,4 @@
+import { injectedConnector } from './injectedConnector';
 import { providers, ethers } from 'ethers';
 import { walletconnect } from './walletconnectConnector';
 import { walletLinkConnector } from './walletlinkConnector';
@@ -10,7 +11,7 @@ interface IConnector {
 }
 
 export const CONNECTORS: IConnector = {
-  METAMASK: window.ethereum,
+  METAMASK: injectedConnector,
   WALLET_CONNECT: walletconnect,
   COINBASE: walletLinkConnector
 };
