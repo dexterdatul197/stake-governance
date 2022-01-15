@@ -1,3 +1,4 @@
+import { BigNumber } from '@0x/utils';
 import { Button, CircularProgress, Dialog, IconButton, Typography } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import { Box } from '@material-ui/system';
@@ -134,11 +135,11 @@ const CreateProposal: React.FC = () => {
         callDatas,
         description
       );
-
-      await responseCreate.wait();
-
-      if (responseCreate) {
-        const proposalId = Number(responseCreate.events.ProposalCreated.returnValues.id);
+      const res = await responseCreate.wait();
+      
+      if (res) {
+        const response = res.events[0].args;
+        const proposalId = Number(response.id.toString());
         const proposalState = await governanceContract.state(proposalId);
         // call API create proposal in DB
         const options = {
@@ -153,10 +154,10 @@ const CreateProposal: React.FC = () => {
           callDatas: callDatas,
           targets: targetAddresses,
           proposer: currentAddress(currentAccount),
-          startBlock: Number(responseCreate.events.ProposalCreated.returnValues.startBlock),
-          endBlock: Number(responseCreate.events.ProposalCreated.returnValues.endBlock),
-          createdBlock: responseCreate.blockNumber,
-          createdTxHash: responseCreate.transactionHash,
+          startBlock: Number(response.startBlock.toString()),
+          endBlock: Number(response.endBlock.toString()),
+          createdBlock: res.blockNumber,
+          createdTxHash: res.transactionHash,
           state: proposalState
         };
         await axiosInstance(options)
@@ -185,7 +186,6 @@ const CreateProposal: React.FC = () => {
     try {
       const voteContract = await governance();
       const maxOperation = await voteContract.proposalMaxOperations();
-      console.log('maxOperation', maxOperation.toString());
       setMaxOperation(maxOperation.toString());
     } catch (err) {
       console.log('getMaxOperation', err);
@@ -201,9 +201,6 @@ const CreateProposal: React.FC = () => {
   };
 
   const childUpdateFormData = (newFormData: SFormData[]) => {
-    console.log({
-      newFormData
-    });
     setFormData([...JSON.parse(JSON.stringify(newFormData))]);
   };
 

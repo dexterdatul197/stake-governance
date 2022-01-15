@@ -43,9 +43,6 @@ const Vote: React.FC<Props> = (props) => {
       const voteContract = await governance();
       const lastestProposalIdRes = await voteContract.latestProposalIds(connectedAddress);
       const lastestProposalId = lastestProposalIdRes.toString();
-      //TODO:need remove comment to cancel lastestProposalId
-      // const cancelLastestProposal = await voteContract.cancel(lastestProposalId).send({from: connectedAddress});
-      // console.log('CANCEL PROPOSAL: ', cancelLastestProposal);
 
       console.log('lastestProposalId', lastestProposalId);
 

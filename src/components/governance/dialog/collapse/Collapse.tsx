@@ -93,7 +93,6 @@ const CollapseItem: React.FC<Props> = ({
       setOpenCollapse(true);
     }
   }, [triggerAlert]);
-  console.log(index);
   return (
     <div className={cx('collapse-item-style')}>
       <div className={cx('action-style')}>
