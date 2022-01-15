@@ -41,7 +41,7 @@ export const currencyFormatter = (labelValue: any) => {
     Math.abs(Number(labelValue)) >= 1.0e6
     ? `${format(new BigNumber(`${Math.abs(Number(labelValue)) / 1.0e6}`).dp(2, 1))}M`
     : // Three Zeroes for Thousands
-      Number(labelValue.toFixed(4));
+     format(labelValue.toFixed(4));
 };
 
 export const getStatus = (state: string) => {
