@@ -18,7 +18,7 @@ export function useEagerConnect(): boolean {
     injectedConnector.isAuthorized().then((isAuthorized: boolean) => {
       const connector = CONNECTORS[walletName as string];
       if (ethereumAddress && connector) {
-        activate(connector, undefined, true)
+        activate(injectedConnector, undefined, true)
           .then(() => console.log('activated', walletName))
           .catch(() => {
             setTried(true);

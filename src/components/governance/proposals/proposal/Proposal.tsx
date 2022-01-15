@@ -62,7 +62,8 @@ const Proposal: React.FC<Props> = (props) => {
             className={cx(
               `proposal-status-${getStatus(proposal.state).toLowerCase()}`,
               'proposal-status'
-            )}>
+            )}
+          >
             {getStatus(proposal.state)}
           </div>
         </div>
@@ -72,14 +73,16 @@ const Proposal: React.FC<Props> = (props) => {
           {voteStatus && voteStatus === 'novoted' && proposal.state !== 'Active' && (
             <div
               className={cx('vote-status-text')}
-              onClick={() => redirectToProposalDetail(proposal.id)}>
+              onClick={() => redirectToProposalDetail(proposal.id)}
+            >
               NO VOTE
             </div>
           )}
           {voteStatus && voteStatus === 'voted' && (
             <div
               className={cx('vote-status-text')}
-              onClick={() => redirectToProposalDetail(proposal.id)}>
+              onClick={() => redirectToProposalDetail(proposal.id)}
+            >
               VOTED
             </div>
           )}
@@ -93,7 +96,8 @@ const Proposal: React.FC<Props> = (props) => {
                   (proposal && proposal.state !== 'Active') ||
                   isLoading
                 }
-                onClick={() => handleVote('like')}>
+                onClick={() => handleVote('like')}
+              >
                 {isLoading && voteType === 'like' && <Icon type="loading" />} Up Vote
               </Button>
               <Button
@@ -104,7 +108,8 @@ const Proposal: React.FC<Props> = (props) => {
                   (proposal && proposal.state !== 'Active') ||
                   isLoading
                 }
-                onClick={() => handleVote('dislike')}>
+                onClick={() => handleVote('dislike')}
+              >
                 {isLoading && voteType === 'dislike' && <Icon type="loading" />} Down Vote
               </Button>
             </div>
