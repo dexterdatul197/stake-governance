@@ -122,7 +122,8 @@ const LeaderBoard: React.FC = () => {
                                 )
                               }
                               className={cx('table-row')}
-                              key={index}>
+                              key={index}
+                            >
                               {renderData(content, index)}
                             </TableRow>
                           );

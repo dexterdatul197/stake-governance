@@ -75,9 +75,11 @@ const CreateProposal: React.FC = () => {
 
     // check form data (action input forms)
     for (const data of formData) {
-      if (data.targetAddress.trim().length === 0 || data.signature.trim().length === 0) {
-        isFulfilledInput = false;
-        break;
+      if (data.isRemove !== true) {
+        if (data.targetAddress.trim().length === 0 || data.signature.trim().length === 0) {
+          isFulfilledInput = false;
+          break;
+        }
       }
     }
 
@@ -97,20 +99,22 @@ const CreateProposal: React.FC = () => {
 
     try {
       for (let i = 0; i < formData.length; i += 1) {
-        const callDataValues = [];
-        let callDataTypes = [];
-        targetAddresses.push(formData[i]['targetAddress']);
-        values.push(0); // Web3.utils.toWei(formValues[`value${i}`], 'ether')
-        signatures.push(formData[i]['signature']);
-        callDataTypes = getArgs(formData[i]['signature']);
-        for (let j = 0; j < formData[i].callData.length; j += 1) {
-          if (callDataTypes[j].toLowerCase() === 'bool') {
-            callDataValues.push(formData[i].callData[j].toLowerCase() === 'true');
-          } else {
-            callDataValues.push(formData[i].callData[j]);
+        if (formData[i].isRemove !== true) {
+          const callDataValues = [];
+          let callDataTypes = [];
+          targetAddresses.push(formData[i]['targetAddress']);
+          values.push(0); // Web3.utils.toWei(formValues[`value${i}`], 'ether')
+          signatures.push(formData[i]['signature']);
+          callDataTypes = getArgs(formData[i]['signature']);
+          for (let j = 0; j < formData[i].callData.length; j += 1) {
+            if (callDataTypes[j].toLowerCase() === 'bool') {
+              callDataValues.push(formData[i].callData[j].toLowerCase() === 'true');
+            } else {
+              callDataValues.push(formData[i].callData[j]);
+            }
           }
+          callDatas.push(encodeParameters(callDataTypes, callDataValues));
         }
-        callDatas.push(encodeParameters(callDataTypes, callDataValues));
       }
     } catch (error) {
       dispatch(
