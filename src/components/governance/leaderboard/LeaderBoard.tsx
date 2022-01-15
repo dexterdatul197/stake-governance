@@ -40,8 +40,6 @@ const LeaderBoard: React.FC = () => {
     getdataLeaderBoard();
   }, []);
 
-  console.log(data);
-
   const renderData = useCallback((content, parentData) => {
     return checkNotEmptyArr(content)
       ? content
@@ -49,12 +47,12 @@ const LeaderBoard: React.FC = () => {
             return item.chnStake !== '0';
           })
           .map((item: any, index: any) => {
-            const { id, address, voteWeight, proposalsVoted, chnStake } = item;
+            const { id, rank, address, voteWeight, proposalsVoted, chnStake } = item;
             const formatChnStake = new BigNumber(chnStake).div('1e18').toFixed(4).toString();
             return (
               <React.Fragment key={index}>
                 <TableCell className={cx('table-row__table-cell')}>
-                  {parentData + index + 1}
+                  {rank}
                 </TableCell>
                 <TableCell className={cx('table-row__table-cell')}>{address}</TableCell>
                 <TableCell align="right" className={cx('table-row__table-cell')}>
@@ -102,20 +100,21 @@ const LeaderBoard: React.FC = () => {
                   {checkNotEmptyArr(data)
                     ? data
                         .sort((a: any, b: any) =>
-                          new BigNumber(b.chnStake).minus(new BigNumber(a.chnStake)).toNumber()
+                          new BigNumber(a.rank).minus(new BigNumber(b.rank)).toNumber()
                         )
                         .filter((item: any) => {
                           return item.chnStake !== '0';
                         })
                         .map((item, index) => {
-                          const { id, address, voteWeight, proposalsVoted, chnStake } = item;
+                          const { id, rank, address, voteWeight, proposalsVoted, chnStake } = item;
                           const content = [
                             {
                               id: id,
                               address: address,
                               chnStake: chnStake,
                               voteWeight: voteWeight,
-                              proposalsVoted: proposalsVoted
+                              proposalsVoted: proposalsVoted,
+                              rank: rank
                             }
                           ];
                           return (
