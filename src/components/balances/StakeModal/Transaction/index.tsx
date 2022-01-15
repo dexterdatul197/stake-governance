@@ -170,7 +170,8 @@ const Transaction = (props: Props) => {
           <Button
             onClick={handleCloseModalTrans}
             className={cx('icon_left')}
-            disabled={progress === true}>
+            disabled={progress === true}
+          >
             <CloseIcon />
           </Button>
         </Box>
@@ -203,7 +204,8 @@ const Transaction = (props: Props) => {
         <Button
           disabled={done || progress}
           onClick={handleConfirm}
-          className={cx('dialog-actions__transaction__confirm')}>
+          className={cx('dialog-actions__transaction__confirm')}
+        >
           Confirm
         </Button>
       </DialogActions>
