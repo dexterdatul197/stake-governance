@@ -63,8 +63,7 @@ const Header: React.FC = () => {
           onClick={testRouter}
           className={cx('link-style', {
             'link-style-border': '/stake' === pathName
-          })}
-        >
+          })}>
           Stake
         </Link>
         <Link
@@ -72,8 +71,7 @@ const Header: React.FC = () => {
           onClick={setGovernaneStyle}
           className={cx('link-style', {
             'link-style-border-right': '/governance' === pathName
-          })}
-        >
+          })}>
           Governance
         </Link>
       </div>
@@ -91,8 +89,7 @@ const Header: React.FC = () => {
               <div className={cx('footer-theme')}>
                 <span
                   className={cx('footer-theme__item', theme === THEME_MODE.LIGHT ? 'active' : '')}
-                  onClick={onSwitchTheme}
-                >
+                  onClick={onSwitchTheme}>
                   <img
                     className={cx('icon-theme')}
                     src={theme === THEME_MODE.LIGHT ? lightIcon : light_whiteIcon}
@@ -102,8 +99,7 @@ const Header: React.FC = () => {
                 </span>
                 <span
                   className={cx('footer-theme__item', theme === THEME_MODE.DARK ? 'active' : '')}
-                  onClick={onSwitchTheme}
-                >
+                  onClick={onSwitchTheme}>
                   <img
                     className={cx('icon-theme')}
                     src={theme === THEME_MODE.DARK ? dark_whiteIcon : darkIcon}

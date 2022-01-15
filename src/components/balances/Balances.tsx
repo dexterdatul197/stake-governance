@@ -1,3 +1,4 @@
+import Web3 from 'web3';
 import { Box, Button } from '@material-ui/core';
 import { BigNumber } from '@0x/utils';
 import classNames from 'classnames/bind';
@@ -14,6 +15,8 @@ import CardComponent from './TableOnMobile';
 import ModalWithDraw from './WithDrawModal';
 import ConnectWalletPage from '../connect-wallet-page/ConnectWalletPage';
 import { setVotingWeight } from '../governance/redux/Governance';
+import { useWeb3React } from '@web3-react/core';
+import { ethers } from 'ethers';
 
 const commaNumber = require('comma-number');
 const format = commaNumber.bindWith(',', '.');
@@ -67,6 +70,8 @@ const Balances: React.FC = () => {
   });
   const isMobile = useIsMobile(768);
 
+  const { account, connector } = useWeb3React();
+
   const { isActive, isActiveWithDraw, isOpenStake, isOpenWithdraw } = state;
   const currencies = useAppSelector((state: any) => state.currency.currenciesList);
   const wallet = useAppSelector((state: any) => state.wallet);
@@ -100,39 +105,41 @@ const Balances: React.FC = () => {
     try {
       if (isConnected(wallet)) {
         const connectedAddress = currentAddress(wallet);
-        const tokenBalance = await getCHNBalance().methods.balanceOf(connectedAddress).call();
-        const formatToken = new BigNumber(tokenBalance).dividedBy('1e18');
+        const contract = await getCHNBalance();
+        const tokenBalance = await contract.balanceOf(connectedAddress);
+        const formatToken = ethers.utils.formatEther(tokenBalance);
         setChntoken(tokenBalance);
-        setWalletValue(formatToken.toFixed(4).toString());
+        setWalletValue(parseFloat(formatToken).toFixed(4).toString());
       }
     } catch (error) {
-      console.log(error);
+      console.log('getValueBalance', error);
     }
-  }, [wallet, walletValue]);
+  }, [wallet, walletValue, connector]);
 
   const getTotalStakeInPool = useCallback(async () => {
     try {
       const connectedAddress = currentAddress(wallet);
-      const getValueStake = await stakingToken().methods.userInfo(0, connectedAddress).call();
-      const getValueEarned = await stakingToken().methods.pendingReward(0, connectedAddress).call();
-      const formatValueStake = new BigNumber(getValueStake.amount).div(1e18);
-      const formatValueEarned = new BigNumber(getValueEarned).div(1e18);
+      const contract = await stakingToken();
+      const getValueStake = await contract.userInfo(0, connectedAddress);
+      const getValueEarned = await contract.pendingReward(0, connectedAddress);
+
+      const formatValueStake = ethers.utils.formatEther(getValueStake.amount);
+      const formatValueEarned = ethers.utils.formatEther(getValueEarned);
       dispatch(setVotingWeight(formatValueStake));
-      setStake(format(formatValueStake.toFixed(4).toString()));
-      setEarn(format(formatValueEarned.toFixed(4).toString()));
-      // handleUpdateSmartContract();
+      setStake(format(parseFloat(formatValueStake).toFixed(4).toString()));
+      setEarn(format(parseFloat(formatValueEarned).toFixed(4).toString()));
     } catch (error) {
-      console.log(error);
+      console.log('getTotalStakeInPool', error);
     }
   }, [wallet, earn, stake]);
 
   useEffect(() => {
     getValueBalance();
-  }, [getValueBalance, updateSmartContract]);
+  }, [getValueBalance, updateSmartContract, connector]);
 
   useEffect(() => {
     getTotalStakeInPool();
-  }, [getTotalStakeInPool, updateSmartContract]);
+  }, [getTotalStakeInPool, updateSmartContract, connector]);
 
   return (
     <>
@@ -166,8 +173,7 @@ const Balances: React.FC = () => {
                 className={cx('switcher_stake', {
                   'button-active': isActive,
                   'button-deactive': !isActive
-                })}
-              >
+                })}>
                 Stake
               </Button>
               <Button
@@ -175,8 +181,7 @@ const Balances: React.FC = () => {
                 className={cx('switcher_withdraw', {
                   'button-active': isActiveWithDraw,
                   'button-deactive': !isActiveWithDraw
-                })}
-              >
+                })}>
                 WithDraw
               </Button>
             </Box>

@@ -99,8 +99,6 @@ const HistoryDetail = (props: Props) => {
     }
   };
 
-  console.log(dataDetail);
-
   const renderData = useCallback((content, parentData) => {
     return checkNotEmptyArr(content)
       ? content.map((item: any, index: any) => {

@@ -28,10 +28,12 @@ const Detail = (props: Props) => {
 
   useEffect(() => {
     const getBalance = async () => {
-      const CHN = await getCHNBalance().methods.balanceOf(address).call();
-      const getValueStake = await stakingToken().methods.userInfo(0, address).call();
-      const formatCHN = new BigNumber(CHN).div('1e18').div(10);
-      const formatStake = new BigNumber(getValueStake.amount).div('1e18');
+      const contractBalance = await getCHNBalance();
+      const contractStaking = await stakingToken();
+      const CHN = await contractBalance.balanceOf(address);
+      const getValueStake = await contractStaking.userInfo(0, address);
+      const formatCHN = new BigNumber(CHN.toString()).div('1e18').div(10);
+      const formatStake = new BigNumber(getValueStake.amount.toString()).div('1e18');
       setCHN(format(formatCHN.toFixed(4).toString()));
       setBalance(format(formatStake.toFixed(4).toString()));
     };
@@ -64,7 +66,7 @@ const Detail = (props: Props) => {
               </Box>
               <Box className={cx('holding__balance__right')}>
                 <Box className={cx('content-left')}>
-                  <span>CHN</span>
+                  <span>CHN Stake</span>
                   <span>{balance}</span>
                 </Box>
               </Box>

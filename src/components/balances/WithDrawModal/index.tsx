@@ -52,8 +52,7 @@ const BootstrapDialogTitle = (props: any) => {
             right: 8,
             top: 8,
             color: (theme) => theme.palette.grey[500]
-          }}
-        >
+          }}>
           <CloseIcon />
         </IconButton>
       ) : null}
@@ -83,17 +82,14 @@ const WithDraw = (props: Props) => {
 
   const getValueStake = async () => {
     const connectedAddress = currentAddress(wallet);
-    const stakeValue = await stakingToken().methods.userInfo(0, connectedAddress).call();
-    const earnValues = await stakingToken().methods.pendingReward(0, connectedAddress).call();
-    const formatStake =
-      Math.floor(
-        Number(
-          String(new BigNumber(stakeValue.amount).dividedBy('1e18')).match(/^\d+(?:\.\d{0,5})?/)
-        ) * 10000
-      ) / 10000;
+    const contract = await stakingToken();
+    const stakeValue = await contract.userInfo(0, connectedAddress);
+    const earnValues = await contract.pendingReward(0, connectedAddress);
+    const formatStake = web3.utils.fromWei(String(stakeValue.amount), 'ether');
+
     setValue({
       ...value,
-      defaultValue: formatStake,
+      defaultValue: Number(parseFloat(formatStake).toFixed(4)),
       stake: stakeValue.amount,
       earn: earnValues
     });
@@ -112,12 +108,12 @@ const WithDraw = (props: Props) => {
       setTimeout(() => {
         setProgress(false);
       }, 1000);
-
+      const contract = await stakingToken();
+      console.log(contract.status);
       // withdraw max
       if (new BigNumber(stake).eq(value.stake)) {
-        await stakingToken()
-          .methods.withdraw(0, value.stake)
-          .send({ from: currentAddress(wallet) });
+        const res = (await contract.withdraw(0, value.stake)) as any;
+        await res.wait();
         setDone(false);
         dispatch(
           openSnackbar({
@@ -130,9 +126,8 @@ const WithDraw = (props: Props) => {
         // custom withdraw
       } else if (stake !== 0) {
         const priceDefault = web3.utils.toWei(String(value.defaultValue), 'ether');
-        await stakingToken()
-          .methods.withdraw(0, priceDefault)
-          .send({ from: currentAddress(wallet) });
+        const res = await contract.withdraw(0, priceDefault);
+        await res.wait();
         setDone(false);
         dispatch(
           openSnackbar({
@@ -143,10 +138,11 @@ const WithDraw = (props: Props) => {
         handleUpdateSmartContract();
       } else if (value.earn > 0) {
         handleCloseModalRefresh();
-        await stakingToken()
-          .methods.withdraw(0, web3.utils.toWei(String(value.earn), 'ether'))
-          .send({ from: currentAddress(wallet) });
-
+        const res = (await contract.withdraw(
+          0,
+          web3.utils.toWei(String(value.earn), 'ether')
+        )) as any;
+        await res.wait();
         setDone(false);
         dispatch(
           openSnackbar({
@@ -163,12 +159,16 @@ const WithDraw = (props: Props) => {
           })
         );
       }
+      handleUpdateSmartContract();
     } catch (error) {
       console.log(error);
       handleCloseModalRefresh();
       setProgress(false);
     } finally {
       setDone(false);
+      setProgress(false);
+      handleCloseModalRefresh();
+      handleUpdateSmartContract();
     }
   };
 
@@ -202,14 +202,12 @@ const WithDraw = (props: Props) => {
         handleCloseModalRefresh();
       }}
       maxWidth="md"
-      disableEscapeKeyDown
-    >
+      disableEscapeKeyDown>
       <BootstrapDialogTitle
         id="customized-dialog-title"
         onClose={() => {
           handleCloseModalRefresh();
-        }}
-      >
+        }}>
         Withdraw
       </BootstrapDialogTitle>
       <DialogContent className={cx('dialog-content')}>
@@ -254,8 +252,7 @@ const WithDraw = (props: Props) => {
             done === true
           }
           onClick={handleWithdraw}
-          className={cx('button-action')}
-        >
+          className={cx('button-action')}>
           {done ? (
             <img
               src={loadingSvg}

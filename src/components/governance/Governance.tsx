@@ -1,6 +1,7 @@
 import { BigNumber } from '@0x/utils';
 import { CircularProgress } from '@material-ui/core';
 import classNames from 'classnames/bind';
+import { ethers } from 'ethers';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { currentAddress, format } from '../../helpers/common';
@@ -24,9 +25,11 @@ const Governance: React.FC = () => {
   const getBalanceOf = async () => {
     if (isConnected(wallet)) {
       const connectedAddress = currentAddress(wallet);
-      const chnAmount = await stakingToken().methods.userInfo(0, connectedAddress).call();
-      const formatValueStake = new BigNumber(chnAmount.amount).div(1e18);
-      dispatch(setVotingWeight(formatValueStake.toFixed(4).toString()));
+      const contract = await stakingToken();
+      const chnAmount = await contract.userInfo(0, connectedAddress);
+      const formatValueStake = ethers.utils.formatEther(chnAmount.amount);
+
+      dispatch(setVotingWeight(parseFloat(formatValueStake).toFixed(4).toString()));
       setIsLoading(false);
     } else {
       setIsLoading(true);

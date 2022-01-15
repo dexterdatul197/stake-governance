@@ -1,6 +1,7 @@
 import { BigNumber } from '@0x/utils';
 import { Button, CircularProgress } from '@material-ui/core';
 import classNames from 'classnames/bind';
+import { ethers } from 'ethers';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -31,21 +32,24 @@ const Vote: React.FC<Props> = (props) => {
       setOpenLoading(true);
       const connectedAddress = currentAddress(wallet);
       // // check amount strike in wallet > proposalThreshold()
-      const proposalThreshold = await governance().methods.proposalThreshold().call();
-      const checkCHNamount = new BigNumber(votingWeight).comparedTo(
-        new BigNumber(proposalThreshold).div(1e18)
-      );
+      const contract = await governance();
+      const proposalThresholdRes = await contract.proposalThreshold();
+      const proposalThreshold = ethers.utils.formatEther(proposalThresholdRes);
+      console.log('proposalThreshold', proposalThreshold);
+      console.log('votingWeight', votingWeight);
+      const checkCHNamount = new BigNumber(votingWeight).comparedTo(proposalThreshold);
+      console.log('checkCHNamount', checkCHNamount);
       // check user dont have any proposal with status active or pending
-      const voteContract = governance();
-      const lastestProposalId = await voteContract.methods
-        .latestProposalIds(connectedAddress)
-        .call();
-      //TODO:need remove comment to cancel lastestProposalId
-      // const cancelLastestProposal = await voteContract.methods.cancel(lastestProposalId).send({from: connectedAddress});
-      // console.log('CANCEL PROPOSAL: ', cancelLastestProposal);
+      const voteContract = await governance();
+      const lastestProposalIdRes = await voteContract.latestProposalIds(connectedAddress);
+      const lastestProposalId = lastestProposalIdRes.toString();
+
+      console.log('lastestProposalId', lastestProposalId);
 
       if (lastestProposalId !== '0') {
-        const state = await voteContract.methods.state(lastestProposalId).call();
+        const stateRes = await voteContract.state(lastestProposalId);
+        const state = stateRes.toString();
+        console.log('state', state);
         if (state === '0' || state === '1') {
           setOpenLoading(false);
           createProposal = false;
@@ -76,6 +80,7 @@ const Vote: React.FC<Props> = (props) => {
         createProposal = false;
         return;
       }
+      console.log('createProposal', createProposal);
       if (createProposal) {
         dispatch(setOpenCreateProposalDialog(true));
       }
