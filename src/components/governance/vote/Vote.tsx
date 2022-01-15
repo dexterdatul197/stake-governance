@@ -98,7 +98,7 @@ const Vote: React.FC<Props> = (props) => {
   };
   useEffect(() => {
     getRankApi();
-  }, [wallet.ethereumAddress]);
+  }, [wallet.ethereumAddress, getRankApi]);
   return (
     <div className={cx('governance-vote')}>
       <div className={cx('vote-title')}>Vote Weight</div>

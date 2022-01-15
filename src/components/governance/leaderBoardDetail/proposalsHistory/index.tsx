@@ -10,6 +10,7 @@ import { checkNotEmptyArr } from 'src/helpers/common';
 import styles from './styles.module.scss';
 import TableMobile from '../proposalsHistoryMobile';
 import useMobile from '../../../../hooks/useMobile';
+import { useHistory } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
@@ -54,6 +55,7 @@ const HistoryDetail = (props: Props) => {
     limit: 5
   });
   const isMobile = useMobile(820);
+  const history = useHistory();
 
   useEffect(() => {
     const getDataDetail = async () => {
@@ -117,7 +119,7 @@ const HistoryDetail = (props: Props) => {
           return (
             <React.Fragment key={id}>
               <Box className={cx('history-content__main__column_1')}>
-                <span className={cx('title')}>{title ? title.split('\n')[0] : ''}</span>
+                <span className={cx('title')}>{title}</span>
                 <Box className={cx('text')}>
                   <span>{id}</span>
                   <span> {moment(createdAt).format('MMMM Do, YYYY')}</span>
@@ -161,7 +163,7 @@ const HistoryDetail = (props: Props) => {
           const content = [
             {
               id: id,
-              title: title,
+              title: title.split('\n')[0],
               createdAt: createdAt,
               state: state,
               forVotes: forVotes,
@@ -170,7 +172,10 @@ const HistoryDetail = (props: Props) => {
             }
           ];
           return (
-            <Box className={cx('history-content__main')} key={id}>
+            <Box
+              onClick={() => history.push(history.push(`/proposal/${id}`))}
+              className={cx('history-content__main')}
+              key={id}>
               {renderData(content, index)}
             </Box>
           );

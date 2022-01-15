@@ -18,18 +18,19 @@ const Governance: React.FC = () => {
   const dispatch = useDispatch();
   const wallet = useAppSelector((state) => state.wallet);
   console.log('REDUX CHANGE: ', wallet.ethereumAddress);
-  
+
   const [isLoading, setIsLoading] = useState(false);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const getBalanceOf = async () => {
+    // setIsLoading(true);
     if (isConnected(wallet)) {
       const connectedAddress = currentAddress(wallet);
       const chnAmount = await stakingToken().methods.userInfo(0, connectedAddress).call();
       const formatValueStake = new BigNumber(chnAmount.amount).div(1e18);
       dispatch(setVotingWeight(formatValueStake.toFixed(4).toString()));
-      setIsLoading(false);
-    } else {
-      setIsLoading(true);
+      setTimeout(() => {
+        setIsLoading(true);
+      }, 1000);
     }
   };
   useEffect(() => {
@@ -41,7 +42,7 @@ const Governance: React.FC = () => {
         <ConnectWalletPage />
       ) : (
         <div className={cx('governance')}>
-          {isLoading ? (
+          {!isLoading ? (
             <div className={cx('loading-page')}>
               <CircularProgress
                 size={50}
