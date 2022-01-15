@@ -1,3 +1,4 @@
+import { BigNumber } from '@0x/utils';
 import { Button, CircularProgress, Dialog, IconButton, Typography } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import { Box } from '@material-ui/system';
@@ -38,7 +39,6 @@ const CreateProposal: React.FC = () => {
   const [title, setTitle] = useState('');
   const [triggerAlert, setTriggerAlert] = useState(false);
   const wallet = useAppSelector((state) => state.wallet);
-  const provider = useAppSelector((state) => state.wallet.provider);
   const [formData, setFormData] = useState<SFormData[]>([
     {
       isRemove: false,
@@ -75,9 +75,11 @@ const CreateProposal: React.FC = () => {
 
     // check form data (action input forms)
     for (const data of formData) {
-      if (data.targetAddress.trim().length === 0 || data.signature.trim().length === 0) {
-        isFulfilledInput = false;
-        break;
+      if (data.isRemove !== true) {
+        if (data.targetAddress.trim().length === 0 || data.signature.trim().length === 0) {
+          isFulfilledInput = false;
+          break;
+        }
       }
     }
 
@@ -97,20 +99,22 @@ const CreateProposal: React.FC = () => {
 
     try {
       for (let i = 0; i < formData.length; i += 1) {
-        const callDataValues = [];
-        let callDataTypes = [];
-        targetAddresses.push(formData[i]['targetAddress']);
-        values.push(0); // Web3.utils.toWei(formValues[`value${i}`], 'ether')
-        signatures.push(formData[i]['signature']);
-        callDataTypes = getArgs(formData[i]['signature']);
-        for (let j = 0; j < formData[i].callData.length; j += 1) {
-          if (callDataTypes[j].toLowerCase() === 'bool') {
-            callDataValues.push(formData[i].callData[j].toLowerCase() === 'true');
-          } else {
-            callDataValues.push(formData[i].callData[j]);
+        if (formData[i].isRemove !== true) {
+          const callDataValues = [];
+          let callDataTypes = [];
+          targetAddresses.push(formData[i]['targetAddress']);
+          values.push(0); // Web3.utils.toWei(formValues[`value${i}`], 'ether')
+          signatures.push(formData[i]['signature']);
+          callDataTypes = getArgs(formData[i]['signature']);
+          for (let j = 0; j < formData[i].callData.length; j += 1) {
+            if (callDataTypes[j].toLowerCase() === 'bool') {
+              callDataValues.push(formData[i].callData[j].toLowerCase() === 'true');
+            } else {
+              callDataValues.push(formData[i].callData[j]);
+            }
           }
+          callDatas.push(encodeParameters(callDataTypes, callDataValues));
         }
-        callDatas.push(encodeParameters(callDataTypes, callDataValues));
       }
     } catch (error) {
       dispatch(
@@ -122,14 +126,21 @@ const CreateProposal: React.FC = () => {
       return;
     }
     setIsLoading(true);
-    const governanceContract = governance();
+    const governanceContract = await governance();
     try {
-      const responseCreate = await governanceContract.methods
-        .propose(targetAddresses, values, signatures, callDatas, description)
-        .send({ from: currentAddress(currentAccount) });
-      if (responseCreate) {
-        const proposalId = Number(responseCreate.events.ProposalCreated.returnValues.id);
-        const proposalState = await governanceContract.methods.state(proposalId).call();
+      const responseCreate = await governanceContract.propose(
+        targetAddresses,
+        values,
+        signatures,
+        callDatas,
+        description
+      );
+      const res = await responseCreate.wait();
+      
+      if (res) {
+        const response = res.events[0].args;
+        const proposalId = Number(response.id.toString());
+        const proposalState = await governanceContract.state(proposalId);
         // call API create proposal in DB
         const options = {
           baseUrl: process.env.REACT_APP_BACKEND
@@ -143,10 +154,10 @@ const CreateProposal: React.FC = () => {
           callDatas: callDatas,
           targets: targetAddresses,
           proposer: currentAddress(currentAccount),
-          startBlock: Number(responseCreate.events.ProposalCreated.returnValues.startBlock),
-          endBlock: Number(responseCreate.events.ProposalCreated.returnValues.endBlock),
-          createdBlock: responseCreate.blockNumber,
-          createdTxHash: responseCreate.transactionHash,
+          startBlock: Number(response.startBlock.toString()),
+          endBlock: Number(response.endBlock.toString()),
+          createdBlock: res.blockNumber,
+          createdTxHash: res.transactionHash,
           state: proposalState
         };
         await axiosInstance(options)
@@ -164,6 +175,7 @@ const CreateProposal: React.FC = () => {
         dispatch(getProposalList({ page: 1, limit: 5 }));
       }
     } catch (error) {
+      console.log('error create propalsal', error);
       dispatch(
         openSnackbar({ message: 'Creating proposal is failed!', variant: SnackbarVariant.ERROR })
       );
@@ -171,9 +183,17 @@ const CreateProposal: React.FC = () => {
     }
   };
   const getMaxOperation = async () => {
-    const voteContract = governance();
-    const maxOperation = await voteContract.methods.proposalMaxOperations().call();
-    setMaxOperation(maxOperation);
+    try {
+      const voteContract = await governance();
+      const maxOperation = await voteContract.proposalMaxOperations();
+      setMaxOperation(maxOperation.toString());
+    } catch (err) {
+      console.log('getMaxOperation', err);
+      const message = 'call revert exception';
+      if (String(err).includes(message)) {
+        window.location.reload();
+      }
+    }
   };
 
   const handleEditorChange = (text: TextBinding) => {
@@ -181,9 +201,6 @@ const CreateProposal: React.FC = () => {
   };
 
   const childUpdateFormData = (newFormData: SFormData[]) => {
-    console.log({
-      newFormData
-    });
     setFormData([...JSON.parse(JSON.stringify(newFormData))]);
   };
 
@@ -192,14 +209,11 @@ const CreateProposal: React.FC = () => {
   };
 
   useEffect(() => {
-    handleCloseConnectDialog();
-  }, [wallet.ethereumAddress]);
-
-  useEffect(() => {
-    if (isConnected(currentAccount)) {
+    if (currentAccount.ethereumAddress) {
       getMaxOperation();
     }
-  }, [currentAccount]);
+  }, [currentAccount.ethereumAddress]);
+
   let collapseIndex = -1;
   return (
     <Dialog
@@ -214,16 +228,14 @@ const CreateProposal: React.FC = () => {
           padding: '25px',
           borderRadius: '20px'
         }
-      }}
-    >
+      }}>
       {/* header: title + btn close */}
       <Box
         display={'flex'}
         justifyContent={'space-between'}
         sx={{
           marginBottom: '20px'
-        }}
-      >
+        }}>
         <Typography component={'div'} className={cx('title')}>
           <Box>
             <div className={cx('text-title')}>Create Proposal</div>
@@ -233,8 +245,7 @@ const CreateProposal: React.FC = () => {
           <IconButton
             onClick={handleCloseConnectDialog}
             size={'small'}
-            className={cx('close-button')}
-          >
+            className={cx('close-button')}>
             <CloseIcon />
           </IconButton>
         </Typography>
@@ -303,8 +314,7 @@ const CreateProposal: React.FC = () => {
         sx={{
           margin: '10px 0',
           paddingRight: '10px'
-        }}
-      >
+        }}>
         <div className={cx('wrap-btn')}>
           {/* <div className={cx('btn-confirm')} onClick={handleClickConfirm}>
             Confirm
@@ -312,8 +322,7 @@ const CreateProposal: React.FC = () => {
           <Button
             className={cx('btn-create')}
             // disabled={isLoading || formData.length > maxOperation || description.trim().length === 0}
-            onClick={handleClickConfirm}
-          >
+            onClick={handleClickConfirm}>
             {isLoading && (
               <div>
                 <CircularProgress size={20} color="inherit" />

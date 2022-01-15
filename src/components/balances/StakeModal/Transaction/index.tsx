@@ -54,34 +54,26 @@ const Transaction = (props: Props) => {
   const price = new BigNumber(value.default).multipliedBy(walletValue).dividedBy(100);
   const formatAmount = new BigNumber(amount).dividedBy(100);
 
-  console.log(formatAmount);
-
-  const handleConfirmTransaction = () => {
+  const handleConfirmTransaction = async () => {
     setProgress(true);
+    const contract = await stakingToken();
     if (value.default === 100) {
-      stakingToken()
-        .methods.stake(0, web3.utils.toWei(String(formatAmount), 'ether'))
-        .send({ from: currentAddress(wallet) })
-        .then((res: any) => {
-          if (res.status === true) {
-            setDone(true);
-            setProgress(false);
-            dispatch(
-              openSnackbar({
-                message: 'Staking success',
-                variant: SnackbarVariant.SUCCESS
-              })
-            );
-            handleUpdateSmartContract();
-          } else {
-            dispatch(
-              openSnackbar({
-                message: 'Staking failed',
-                variant: SnackbarVariant.ERROR
-              })
-            );
-            handleCloseTransaction();
-          }
+      contract
+        .stake(0, web3.utils.toWei(String(formatAmount), 'ether'))
+        .then(async (res: any) => {
+          console.log(res)
+          await res.wait();
+          handleUpdateSmartContract();
+          setDone(true);
+          setProgress(false);
+
+          dispatch(
+            openSnackbar({
+              message: 'Staking success',
+              variant: SnackbarVariant.SUCCESS
+            })
+          );
+          handleUpdateSmartContract();
         })
         .catch((e: any) => {
           console.log(e);
@@ -90,29 +82,20 @@ const Transaction = (props: Props) => {
           handleCloseTransaction();
         });
     } else {
-      stakingToken()
-        .methods.stake(0, web3.utils.toWei(String(price), 'ether'))
-        .send({ from: currentAddress(wallet) })
-        .then((res: any) => {
-          if (res.status === true) {
-            setDone(true);
-            setProgress(false);
-            dispatch(
-              openSnackbar({
-                message: 'Staking success',
-                variant: SnackbarVariant.SUCCESS
-              })
-            );
-            handleUpdateSmartContract();
-          } else {
-            dispatch(
-              openSnackbar({
-                message: 'Staking failed',
-                variant: SnackbarVariant.ERROR
-              })
-            );
-            handleCloseTransaction();
-          }
+      contract
+        .stake(0, web3.utils.toWei(String(price), 'ether'))
+        .then(async (res: any) => {
+          await res.wait();
+          console.log('res stake: ', res);
+          handleUpdateSmartContract();
+          setDone(true);
+          setProgress(false);
+          dispatch(
+            openSnackbar({
+              message: 'Staking success',
+              variant: SnackbarVariant.SUCCESS
+            })
+          );
         })
         .catch((e: any) => {
           console.log(e);
@@ -123,35 +106,26 @@ const Transaction = (props: Props) => {
     }
   };
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     setProgress(true);
+    const contract = await getCHNBalance();
 
-    getCHNBalance()
-      .methods.allowance(currentAddress(wallet), process.env.REACT_APP_STAKE_TESTNET_ADDRESS)
-      .call()
-      .then((res: any) => {
-        if (res === '0') {
-          getCHNBalance()
-            .methods.approve(process.env.REACT_APP_STAKE_TESTNET_ADDRESS, MAX_INT)
-            .send({ from: currentAddress(wallet) })
+    contract
+      .allowance(currentAddress(wallet), process.env.REACT_APP_STAKE_TESTNET_ADDRESS)
+      .then(async (res: any) => {
+        await res.wait();
+        if (res._hex === '0x00') {
+          contract
+            .approve(process.env.REACT_APP_STAKE_TESTNET_ADDRESS, MAX_INT)
             .then((res: any) => {
               console.log('res approve: ', res);
-              if (res.status === true) {
-                dispatch(
-                  openSnackbar({
-                    message: 'Approve successful',
-                    variant: SnackbarVariant.SUCCESS
-                  })
-                );
-                handleConfirmTransaction();
-              } else {
-                dispatch(
-                  openSnackbar({
-                    message: 'Approve faled',
-                    variant: SnackbarVariant.ERROR
-                  })
-                );
-              }
+              dispatch(
+                openSnackbar({
+                  message: 'Approve successful',
+                  variant: SnackbarVariant.SUCCESS
+                })
+              );
+              handleConfirmTransaction();
             })
             .catch((e: any) => console.log(e));
         } else {
@@ -197,8 +171,7 @@ const Transaction = (props: Props) => {
           <Button
             onClick={handleCloseModalTrans}
             className={cx('icon_left')}
-            disabled={progress === true}
-          >
+            disabled={progress === true}>
             <CloseIcon />
           </Button>
         </Box>
@@ -231,8 +204,7 @@ const Transaction = (props: Props) => {
         <Button
           disabled={done || progress}
           onClick={handleConfirm}
-          className={cx('dialog-actions__transaction__confirm')}
-        >
+          className={cx('dialog-actions__transaction__confirm')}>
           Confirm
         </Button>
       </DialogActions>

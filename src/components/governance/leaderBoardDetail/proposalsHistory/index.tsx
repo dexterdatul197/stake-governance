@@ -101,8 +101,6 @@ const HistoryDetail = (props: Props) => {
     }
   };
 
-  console.log(dataDetail);
-
   const renderData = useCallback((content, parentData) => {
     return checkNotEmptyArr(content)
       ? content.map((item: any, index: any) => {
@@ -163,7 +161,7 @@ const HistoryDetail = (props: Props) => {
           const content = [
             {
               id: id,
-              title: title.split('\n')[0],
+              title: title?.split('\n')[0],
               createdAt: createdAt,
               state: state,
               forVotes: forVotes,

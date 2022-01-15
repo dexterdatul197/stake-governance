@@ -37,16 +37,9 @@ export const walletSlice = createSlice({
         ...state,
         walletName: action.payload
       };
-    },
-    setProvider: (state, action) => {
-      return {
-        ...state,
-        provider: action.payload
-      };
     }
   }
 });
-export const { setOpenConnectDialog, setEthereumAddress, setWalletName, setProvider } =
-  walletSlice.actions;
+export const { setOpenConnectDialog, setEthereumAddress, setWalletName } = walletSlice.actions;
 const { reducer: walletReducer } = walletSlice;
 export default walletReducer;

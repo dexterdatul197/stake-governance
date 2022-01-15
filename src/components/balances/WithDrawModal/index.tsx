@@ -82,10 +82,11 @@ const WithDraw = (props: Props) => {
 
   const getValueStake = async () => {
     const connectedAddress = currentAddress(wallet);
-    const stakeValue = await stakingToken().methods.userInfo(0, connectedAddress).call();
-
-    const earnValues = await stakingToken().methods.pendingReward(0, connectedAddress).call();
+    const contract = await stakingToken();
+    const stakeValue = await contract.userInfo(0, connectedAddress);
+    const earnValues = await contract.pendingReward(0, connectedAddress);
     const formatStake = web3.utils.fromWei(String(stakeValue.amount), 'ether');
+
     setValue({
       ...value,
       defaultValue: Number(parseFloat(formatStake).toFixed(4)),
@@ -107,12 +108,12 @@ const WithDraw = (props: Props) => {
       setTimeout(() => {
         setProgress(false);
       }, 1000);
-      console.log(Number(new BigNumber(stake.replaceAll(',', '')).eq(value.defaultValue)))
+      const contract = await stakingToken();
+      console.log(contract.status);
       // withdraw max
       if (Number(new BigNumber(stake.replaceAll(',', '')).eq(value.defaultValue))) {
-        await stakingToken()
-          .methods.withdraw(0, value.stake)
-          .send({ from: currentAddress(wallet) });
+        const res = (await contract.withdraw(0, value.stake)) as any;
+        await res.wait();
         setDone(false);
         dispatch(
           openSnackbar({
@@ -125,9 +126,8 @@ const WithDraw = (props: Props) => {
         // custom withdraw
       } else if (stake !== 0) {
         const priceDefault = web3.utils.toWei(String(value.defaultValue), 'ether');
-        await stakingToken()
-          .methods.withdraw(0, priceDefault)
-          .send({ from: currentAddress(wallet) });
+        const res = await contract.withdraw(0, priceDefault);
+        await res.wait();
         setDone(false);
         dispatch(
           openSnackbar({
@@ -138,10 +138,11 @@ const WithDraw = (props: Props) => {
         handleUpdateSmartContract();
       } else if (value.earn > 0) {
         handleCloseModalRefresh();
-        await stakingToken()
-          .methods.withdraw(0, web3.utils.toWei(String(value.earn), 'ether'))
-          .send({ from: currentAddress(wallet) });
-
+        const res = (await contract.withdraw(
+          0,
+          web3.utils.toWei(String(value.earn), 'ether')
+        )) as any;
+        await res.wait();
         setDone(false);
         dispatch(
           openSnackbar({
@@ -158,12 +159,16 @@ const WithDraw = (props: Props) => {
           })
         );
       }
+      handleUpdateSmartContract();
     } catch (error) {
       console.log(error);
       handleCloseModalRefresh();
       setProgress(false);
     } finally {
       setDone(false);
+      setProgress(false);
+      handleCloseModalRefresh();
+      handleUpdateSmartContract();
     }
   };
 

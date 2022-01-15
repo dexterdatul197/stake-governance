@@ -1,5 +1,7 @@
 import Web3 from 'web3';
 import { useWeb3React } from '@web3-react/core';
+import { UserRejectedRequestError as WCRejected } from '@web3-react/walletconnect-connector';
+
 import { useHistory } from 'react-router-dom';
 import { Button } from '@material-ui/core';
 import { isMobile } from 'react-device-detect';
@@ -9,12 +11,11 @@ import { Box } from '@mui/system';
 import classnames from 'classnames/bind';
 import React, { useState, useCallback } from 'react';
 import { MISSING_EXTENSION_ERROR } from '../../constant/uninstallExtentionException';
-import { openSnackbar, SnackbarVariant } from '../../store/snackbar';
+import { openSnackbar, SnackbarVariant, closeSnackbar } from '../../store/snackbar';
 import {
   setEthereumAddress,
   setOpenConnectDialog,
   setWalletName,
-  setProvider,
   WALLET_NAMES
 } from '../connect-wallet/redux/wallet';
 import { useAppDispatch, useAppSelector } from './../../store/hooks';
@@ -27,7 +28,7 @@ import wallet_connect from '../../assets/icon/wallet_connect.svg';
 import { injectedConnector } from '../../connectors/injectedConnector';
 import { switchNetwork } from '../../connectors/switchNetwork';
 import { walletLinkConnector } from '../../connectors/walletlinkConnector';
-import { genProvider } from '../../connectors/walletconnectConnector';
+import { walletconnect } from '../../connectors/walletconnectConnector';
 import { CONNECTORS } from '../../connectors';
 import bannerImg from '../../assets/imgs/bg-connect.png';
 const cx = classnames.bind(styles);
@@ -61,7 +62,6 @@ const ConnectWalletPage: React.FC = () => {
     try {
       activate(injectedConnector).then(() => {
         dispatch(setWalletName(WALLET_NAMES.METAMASK));
-        dispatch(setProvider(CONNECTORS.METAMASK));
       });
       switchNetwork(process.env.REACT_APP_CHAIN_ID || '');
     } catch (e: any) {
@@ -80,34 +80,32 @@ const ConnectWalletPage: React.FC = () => {
   // Connect Wallet connect
   const handleConnectWalletConnect = async () => {
     try {
-      const provider = genProvider();
-      const addresses = (await provider.enable()) || [];
-      provider.on('connect', (e: any) => console.log('connect', e));
-      provider.on('disconnect', (code: number, error: string) => {
-        console.log('disconnect', code, error);
-        dispatch(setWalletName(''));
-        dispatch(setEthereumAddress(''));
-        dispatch(setProvider(undefined));
+      if (walletconnect && walletconnect.walletConnectProvider) {
+        walletconnect.walletConnectProvider = undefined;
+      }
+      activate(
+        walletconnect,
+        (err) => {
+          if (err instanceof WCRejected) {
+            handleCloseConnectDialog();
+            dispatch(
+              openSnackbar({
+                message: 'You declined the action in your wallet.',
+                variant: SnackbarVariant.ERROR
+              })
+            );
+            dispatch(setWalletName(''));
+            setTimeout(() => {
+              dispatch(closeSnackbar());
+            }, 3000);
+          }
+        },
+        false
+      ).then(() => {
+        console.log('activated');
+        handleCloseConnectDialog();
+        dispatch(setWalletName(WALLET_NAMES.WALLET_CONNECT));
       });
-      provider.on('accountsChanged', (accounts: string[]) => {
-        console.log('accountsChanged', accounts);
-        dispatch(setEthereumAddress(accounts[0]));
-      });
-      provider.on('chainChanged', (chainId: number) => {
-        console.log('chainChanged ID', chainId);
-        if (String(chainId) !== process.env.REACT_APP_CHAIN_ID) {
-          dispatch(
-            openSnackbar({
-              message: 'No support this chain',
-              variant: SnackbarVariant.ERROR
-            })
-          );
-        }
-      });
-      dispatch(setWalletName(WALLET_NAMES.WALLET_CONNECT));
-      dispatch(setEthereumAddress(addresses[0]));
-      dispatch(setProvider(provider));
-      handleCloseConnectDialog();
     } catch (error: any) {
       console.log('handleConnectWalletConnect', error);
     }

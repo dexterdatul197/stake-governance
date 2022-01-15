@@ -1,25 +1,25 @@
+import { useAppSelector } from './../store/hooks';
 import { useEffect, useState } from 'react';
 import { useWeb3React } from '@web3-react/core';
+import { CONNECTORS } from '../connectors/index';
 import { injectedConnector } from '../connectors/injectedConnector';
-import { useAppDispatch } from '../store/hooks';
-import { setEthereumAddress } from '../components/connect-wallet/redux/wallet';
 
 export function useEagerConnect(): boolean {
-  const { activate, active, error, account } = useWeb3React();
+  const { activate, active } = useWeb3React();
 
-  const dispatch = useAppDispatch();
+  const { ethereumAddress, walletName } = useAppSelector((state) => ({
+    ethereumAddress: state.wallet.ethereumAddress,
+    walletName: state.wallet.walletName
+  }));
 
   const [tried, setTried] = useState<boolean>(false);
 
   useEffect(() => {
     injectedConnector.isAuthorized().then((isAuthorized: boolean) => {
-      if (!localStorage.getItem('ethereumAddress')) return;
-      if (isAuthorized) {
-        activate(injectedConnector, undefined, true)
-          .then(() => {
-            dispatch(setEthereumAddress(account));
-            localStorage.setItem('ethereumAddress', account as string);
-          })
+      const connector = CONNECTORS[walletName as string];
+      if (ethereumAddress && connector) {
+        activate(connector, undefined, true)
+          .then(() => console.log('activated', walletName))
           .catch(() => {
             setTried(true);
           });
@@ -27,14 +27,14 @@ export function useEagerConnect(): boolean {
         setTried(true);
       }
     });
-  }, []);
+  }, [ethereumAddress]);
 
   // wait until we get confirmation of a connection to flip the flag
   useEffect(() => {
-    if (active) {
+    if (active && tried) {
       setTried(true);
     }
-  }, [active]);
+  }, [active, tried]);
 
   return tried;
 }
