@@ -62,6 +62,7 @@ const CreateProposal: React.FC = () => {
       }
     ]);
     setDescription('');
+    setErrorMsg('');
   };
   const handleClickConfirm = async () => {
     // ================= check required input form =================
