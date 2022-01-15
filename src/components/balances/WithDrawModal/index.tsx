@@ -52,8 +52,7 @@ const BootstrapDialogTitle = (props: any) => {
             right: 8,
             top: 8,
             color: (theme) => theme.palette.grey[500]
-          }}
-        >
+          }}>
           <CloseIcon />
         </IconButton>
       ) : null}
@@ -84,17 +83,12 @@ const WithDraw = (props: Props) => {
   const getValueStake = async () => {
     const connectedAddress = currentAddress(wallet);
     const stakeValue = await stakingToken().methods.userInfo(0, connectedAddress).call();
-    
+
     const earnValues = await stakingToken().methods.pendingReward(0, connectedAddress).call();
-    const formatStake =
-      Math.floor(
-        Number(
-          String(new BigNumber(stakeValue.amount).dividedBy('1e18')).match(/^\d+(?:\.\d{0,5})?/)
-        ) * 10000
-      ) / 10000;
+    const formatStake = web3.utils.fromWei(String(stakeValue.amount), 'ether');
     setValue({
       ...value,
-      defaultValue: formatStake,
+      defaultValue: Number(parseFloat(formatStake).toFixed(4)),
       stake: stakeValue.amount,
       earn: earnValues
     });
@@ -113,9 +107,9 @@ const WithDraw = (props: Props) => {
       setTimeout(() => {
         setProgress(false);
       }, 1000);
-
+      console.log(Number(new BigNumber(stake.replaceAll(',', '')).eq(value.defaultValue)))
       // withdraw max
-      if (new BigNumber(stake).eq(value.stake)) {
+      if (Number(new BigNumber(stake.replaceAll(',', '')).eq(value.defaultValue))) {
         await stakingToken()
           .methods.withdraw(0, value.stake)
           .send({ from: currentAddress(wallet) });
@@ -203,14 +197,12 @@ const WithDraw = (props: Props) => {
         handleCloseModalRefresh();
       }}
       maxWidth="md"
-      disableEscapeKeyDown
-    >
+      disableEscapeKeyDown>
       <BootstrapDialogTitle
         id="customized-dialog-title"
         onClose={() => {
           handleCloseModalRefresh();
-        }}
-      >
+        }}>
         Withdraw
       </BootstrapDialogTitle>
       <DialogContent className={cx('dialog-content')}>
@@ -255,8 +247,7 @@ const WithDraw = (props: Props) => {
             done === true
           }
           onClick={handleWithdraw}
-          className={cx('button-action')}
-        >
+          className={cx('button-action')}>
           {done ? (
             <img
               src={loadingSvg}
