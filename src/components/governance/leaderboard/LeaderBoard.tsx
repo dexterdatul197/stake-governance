@@ -48,7 +48,7 @@ const LeaderBoard: React.FC = () => {
           const { id, address, voteWeight, proposalsVoted, chnStake } = item;
           const formatChnStake = new BigNumber(chnStake).div('1e18').toFixed(4).toString();
           return (
-            <React.Fragment key={id}>
+            <React.Fragment key={index}>
               <TableCell className={cx('table-row__table-cell')}>
                 {parentData + index + 1}
               </TableCell>
@@ -101,7 +101,7 @@ const LeaderBoard: React.FC = () => {
                           new BigNumber(b.chnStake).minus(new BigNumber(a.chnStake)).toNumber()
                         )
                         .filter((item: any) => {
-                          return Number(item.chnStake) !== 0;
+                          return item.chnStake !== '0';
                         })
                         .map((item, index) => {
                           const { id, address, voteWeight, proposalsVoted, chnStake } = item;

@@ -84,6 +84,7 @@ const WithDraw = (props: Props) => {
   const getValueStake = async () => {
     const connectedAddress = currentAddress(wallet);
     const stakeValue = await stakingToken().methods.userInfo(0, connectedAddress).call();
+    
     const earnValues = await stakingToken().methods.pendingReward(0, connectedAddress).call();
     const formatStake =
       Math.floor(
