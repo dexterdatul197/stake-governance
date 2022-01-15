@@ -15,6 +15,7 @@ import CardComponent from './TableOnMobile';
 import ModalWithDraw from './WithDrawModal';
 import ConnectWalletPage from '../connect-wallet-page/ConnectWalletPage';
 import { setVotingWeight } from '../governance/redux/Governance';
+import { useWeb3React } from '@web3-react/core';
 
 const commaNumber = require('comma-number');
 const format = commaNumber.bindWith(',', '.');
@@ -68,6 +69,8 @@ const Balances: React.FC = () => {
   });
   const isMobile = useIsMobile(768);
 
+  const { account, connector } = useWeb3React();
+
   const { isActive, isActiveWithDraw, isOpenStake, isOpenWithdraw } = state;
   const currencies = useAppSelector((state: any) => state.currency.currenciesList);
   const wallet = useAppSelector((state: any) => state.wallet);
@@ -99,7 +102,7 @@ const Balances: React.FC = () => {
 
   const getValueBalance = useCallback(async () => {
     try {
-      if (isConnected(wallet)) {
+      if (isConnected(wallet) && connector) {
         const connectedAddress = currentAddress(wallet);
         const contract = await getCHNBalance();
         const tokenBalance = await contract.balanceOf(connectedAddress);
@@ -110,7 +113,7 @@ const Balances: React.FC = () => {
     } catch (error) {
       console.log('getValueBalance', error);
     }
-  }, [wallet, walletValue]);
+  }, [wallet, walletValue, connector]);
 
   const getTotalStakeInPool = useCallback(async () => {
     try {
@@ -124,7 +127,6 @@ const Balances: React.FC = () => {
       dispatch(setVotingWeight(formatValueStake));
       setStake(format(parseFloat(formatValueStake).toFixed(4).toString()));
       setEarn(format(parseFloat(formatValueEarned).toFixed(4).toString()));
-     console.log("hihihihihihihihhihi")
     } catch (error) {
       console.log(error);
     }

@@ -16,11 +16,14 @@ export function useEagerConnect(): boolean {
 
   useEffect(() => {
     injectedConnector.isAuthorized().then((isAuthorized: boolean) => {
-      if (ethereumAddress) {
-        const connector = CONNECTORS[walletName as string];
-        activate(connector, undefined, true).catch(() => {
-          setTried(true);
-        });
+      const connector = CONNECTORS[walletName as string];
+      console.log('eager', ethereumAddress, connector);
+      if (ethereumAddress && connector) {
+        activate(connector, undefined, true)
+          .then(() => console.log('activated', walletName))
+          .catch(() => {
+            setTried(true);
+          });
       } else {
         setTried(true);
       }
