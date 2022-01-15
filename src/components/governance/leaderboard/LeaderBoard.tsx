@@ -99,6 +99,7 @@ const LeaderBoard: React.FC = () => {
                           new BigNumber(b.chnStake).minus(new BigNumber(a.chnStake)).toNumber()
                         )
                         .filter((item: any) => {
+                          console.log(item.chnStake !== '0');
                           return item.chnStake !== '0';
                         })
                         .map((item, index) => {
@@ -120,8 +121,7 @@ const LeaderBoard: React.FC = () => {
                                 )
                               }
                               className={cx('table-row')}
-                              key={index}
-                            >
+                              key={index}>
                               {renderData(content, index)}
                             </TableRow>
                           );

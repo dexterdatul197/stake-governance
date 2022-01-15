@@ -123,8 +123,8 @@ const Balances: React.FC = () => {
       const getValueStake = await contract.userInfo(0, connectedAddress);
       const getValueEarned = await contract.pendingReward(0, connectedAddress);
 
-      const formatValueStake = ethers.utils.formatEther(getValueStake.amount)
-      const formatValueEarned = ethers.utils.formatEther(getValueEarned)
+      const formatValueStake = ethers.utils.formatEther(getValueStake.amount);
+      const formatValueEarned = ethers.utils.formatEther(getValueEarned);
       dispatch(setVotingWeight(formatValueStake));
       setStake(parseFloat(formatValueStake));
       setEarn(parseFloat(formatValueEarned));
@@ -157,7 +157,9 @@ const Balances: React.FC = () => {
               </Box>
               <Box className={cx('wallet')}>
                 <span className={cx('wallet__title')}>Wallet:</span>
-                <span className={cx('wallet__value')}>{currencyFormatter(Number(walletValue))}</span>
+                <span className={cx('wallet__value')}>
+                  {currencyFormatter(Number(walletValue))}
+                </span>
                 <span className={cx('wallet__token')}>CHN</span>
               </Box>
               <Box className={cx('earn')}>
@@ -173,8 +175,7 @@ const Balances: React.FC = () => {
                 className={cx('switcher_stake', {
                   'button-active': isActive,
                   'button-deactive': !isActive
-                })}
-              >
+                })}>
                 Stake
               </Button>
               <Button
@@ -182,8 +183,7 @@ const Balances: React.FC = () => {
                 className={cx('switcher_withdraw', {
                   'button-active': isActiveWithDraw,
                   'button-deactive': !isActiveWithDraw
-                })}
-              >
+                })}>
                 WithDraw
               </Button>
             </Box>

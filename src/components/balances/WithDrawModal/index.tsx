@@ -16,7 +16,7 @@ import { useCallback, useEffect, useState } from 'react';
 import loadingSvg from 'src/assets/icon/loading.svg';
 import Web3 from 'web3';
 import CHN_icon from '../../../assets/icon/CHN.svg';
-import { currentAddress } from '../../../helpers/common';
+import { currencyFormatter, currentAddress } from '../../../helpers/common';
 import { stakingToken } from '../../../helpers/ContractService';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { openSnackbar, SnackbarVariant } from '../../../store/snackbar';
@@ -112,7 +112,7 @@ const WithDraw = (props: Props) => {
       const contract = await stakingToken();
       console.log(contract.status);
       // withdraw max
-      if (Number(new BigNumber(stake.replaceAll(',', '')).eq(value.defaultValue))) {
+      if (Number(new BigNumber(currencyFormatter(stake)).eq(value.defaultValue))) {
         const res = (await contract.withdraw(0, value.stake)) as any;
         await res.wait();
         setDone(false);
