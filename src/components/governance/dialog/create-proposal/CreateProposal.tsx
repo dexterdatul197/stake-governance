@@ -214,6 +214,11 @@ const CreateProposal: React.FC = () => {
     }
   }, [currentAccount.ethereumAddress]);
 
+  useEffect(() => {
+    setDescription('');
+    setTitle('');
+  }, [wallet])
+
   let collapseIndex = -1;
   return (
     <Dialog
