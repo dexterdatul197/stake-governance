@@ -117,7 +117,7 @@ const HistoryDetail = (props: Props) => {
           return (
             <React.Fragment key={id}>
               <Box className={cx('history-content__main__column_1')}>
-                <span className={cx('title')}>{title.split(' \n')}</span>
+                <span className={cx('title')}>{`${title?.substr(0, 52)}...`}</span>
                 <Box className={cx('text')}>
                   <span>{id}</span>
                   <span> {moment(createdAt).format('MMMM Do, YYYY')}</span>
@@ -161,7 +161,7 @@ const HistoryDetail = (props: Props) => {
           const content = [
             {
               id: id,
-              title: title?.split('\n')[0],
+              title: title,
               createdAt: createdAt,
               state: state,
               forVotes: forVotes,
