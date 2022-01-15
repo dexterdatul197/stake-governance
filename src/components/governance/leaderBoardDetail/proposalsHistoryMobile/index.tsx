@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import styles from './styles.module.scss';
 import classNames from 'classnames/bind';
 import { BigNumber } from '@0x/utils';
-
+import { useHistory } from 'react-router-dom';
 interface Props {
   BorderLinearProgress?: any;
   BorderLinearProgressDefeate?: any;
@@ -23,10 +23,11 @@ const MoBile = (props: Props) => {
     moment,
     convertState
   } = props;
+  const history = useHistory();
   const renderData = useCallback((content) => {
     return checkNotEmptyArr(content)
       ? content.map((item: any, index: any) => {
-          const { description, forVotes, againstVotes, createdAt, state, support, id } = item;
+          const { title, forVotes, againstVotes, createdAt, state, support, id } = item;
           const total = new BigNumber(parseInt(forVotes)).plus(
             new BigNumber(parseInt(againstVotes))
           );
@@ -37,7 +38,7 @@ const MoBile = (props: Props) => {
             .toString(10);
           return (
             <Box className={cx('mobile-content')} key={index}>
-              <span className={cx('description')}>{description}</span>
+              <span className={cx('description')}>{title ? title.substr(52) : ''}...</span>
               <Box className={cx('children-content')}>
                 <Box className={cx('date-complete')}>
                   <span className={cx('date')}>
@@ -66,12 +67,12 @@ const MoBile = (props: Props) => {
       {checkNotEmptyArr(dataDetail)
         ? dataDetail.map((item: any, index: any) => {
             const { proposal, voter } = item;
-            const { description, createdAt, state, forVotes, againstVotes, id } = proposal;
+            const { title, createdAt, state, forVotes, againstVotes, id } = proposal;
             const { support } = voter;
             const content = [
               {
                 id: id,
-                description: description,
+                title: title,
                 createdAt: createdAt,
                 state: state,
                 forVotes: forVotes,
@@ -79,7 +80,11 @@ const MoBile = (props: Props) => {
                 support: support
               }
             ];
-            return <React.Fragment key={index}>{renderData(content)}</React.Fragment>;
+            return (
+              <Box key={index} onClick={() => history.push(history.push(`/proposal/${id}`))}>
+                {renderData(content)}
+              </Box>
+            );
           })
         : null}
     </React.Fragment>
