@@ -9,6 +9,7 @@ import {
   TableHead,
   TableRow
 } from '@material-ui/core';
+import { CircularProgress } from '@mui/material';
 import classNames from 'classnames/bind';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
@@ -130,7 +131,15 @@ const LeaderBoard: React.FC = () => {
                             </TableRow>
                           );
                         })
-                    : null}
+                    : <CircularProgress
+                        size={50}
+                        color="primary"
+                        sx={{
+                          position: 'absolute',
+                          top: '50%',
+                          left: '50%'
+                        }}
+                      />}
                 </TableBody>
               </Table>
             </TableContainer>

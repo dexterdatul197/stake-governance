@@ -62,7 +62,6 @@ const Transaction = (props: Props) => {
       contract
         .stake(0, web3.utils.toWei(String(formatAmount), 'ether'))
         .then(async (res: any) => {
-          console.log(res);
           await res.wait();
           handleUpdateSmartContract();
           setDone(true);
@@ -87,7 +86,6 @@ const Transaction = (props: Props) => {
         .stake(0, web3.utils.toWei(String(price), 'ether'))
         .then(async (res: any) => {
           await res.wait();
-          console.log('res stake: ', res);
           handleUpdateSmartContract();
           setDone(true);
           setProgress(false);

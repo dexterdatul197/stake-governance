@@ -57,7 +57,6 @@ const CardComponent: FC = () => {
       if (transactionData.metadata.totalItem === transactionData.data.length) {
         setHasMore(false);
       }
-      console.log(transactionData);
     }
   }, [transactionData.data.length]);
   return (

@@ -44,7 +44,6 @@ export const useInitial = () => {
     // wallet-link coinbase
     if (wallet.walletName === WALLET_NAMES.COINBASE && addressCoinbaseWallet) {
       checkConnectionWalletLinkCoinbase();
-      console.log('checkConnectionWalletLinkCoinbase', addressCoinbaseWallet as string);
       dispatch(setEthereumAddress(addressCoinbaseWallet as string));
     }
   }, [wallet.walletName]);

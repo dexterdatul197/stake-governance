@@ -18,7 +18,6 @@ const cx = classNames.bind(styles);
 const Governance: React.FC = () => {
   const dispatch = useDispatch();
   const wallet = useAppSelector((state) => state.wallet);
-  console.log('REDUX CHANGE: ', wallet.ethereumAddress);
 
   const [isLoading, setIsLoading] = useState(true);
   // eslint-disable-next-line react-hooks/exhaustive-deps
