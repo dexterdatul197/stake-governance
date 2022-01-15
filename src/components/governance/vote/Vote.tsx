@@ -24,6 +24,7 @@ const Vote: React.FC<Props> = (props) => {
   const history = useHistory();
   const wallet = useAppSelector((state) => state.wallet);
   const votingWeight = useAppSelector((state) => state.governance.voteingWeight);
+  console.log(votingWeight)
   const [openLoading, setOpenLoading] = useState(false);
   const [rank, setRank] = useState('0');
   const handleOpenCreateForm = async () => {
@@ -103,7 +104,7 @@ const Vote: React.FC<Props> = (props) => {
   };
   useEffect(() => {
     getRankApi();
-  }, [wallet.ethereumAddress]);
+  }, [wallet.ethereumAddress, getRankApi]);
   return (
     <div className={cx('governance-vote')}>
       <div className={cx('vote-title')}>Vote Weight</div>

@@ -3,7 +3,7 @@ import { Box, Button } from '@material-ui/core';
 import { BigNumber } from '@0x/utils';
 import classNames from 'classnames/bind';
 import React, { useCallback, useEffect, useReducer, useState } from 'react';
-import { currentAddress } from '../../helpers/common';
+import { currencyFormatter, currentAddress } from '../../helpers/common';
 import { isConnected } from '../../helpers/connectWallet';
 import { getCHNBalance, stakingToken } from '../../helpers/ContractService';
 import useIsMobile from '../../hooks/useMobile';
@@ -76,7 +76,7 @@ const Balances: React.FC = () => {
   const currencies = useAppSelector((state: any) => state.currency.currenciesList);
   const wallet = useAppSelector((state: any) => state.wallet);
   const [stake, setStake] = useState(0);
-  const [walletValue, setWalletValue] = useState('0');
+  const [walletValue, setWalletValue] = useState(0);
   const [earn, setEarn] = useState(0);
   const [updateSmartContract, setUpdateSmartContract] = useState(false);
   const [chnToken, setChntoken] = useState(0);
@@ -109,7 +109,7 @@ const Balances: React.FC = () => {
         const tokenBalance = await contract.balanceOf(connectedAddress);
         const formatToken = ethers.utils.formatEther(tokenBalance);
         setChntoken(tokenBalance);
-        setWalletValue(parseFloat(formatToken).toFixed(4).toString());
+        setWalletValue(parseFloat(formatToken));
       }
     } catch (error) {
       console.log('getValueBalance', error);
@@ -123,11 +123,11 @@ const Balances: React.FC = () => {
       const getValueStake = await contract.userInfo(0, connectedAddress);
       const getValueEarned = await contract.pendingReward(0, connectedAddress);
 
-      const formatValueStake = ethers.utils.formatEther(getValueStake.amount);
-      const formatValueEarned = ethers.utils.formatEther(getValueEarned);
+      const formatValueStake = ethers.utils.formatEther(getValueStake.amount)
+      const formatValueEarned = ethers.utils.formatEther(getValueEarned)
       dispatch(setVotingWeight(formatValueStake));
-      setStake(format(parseFloat(formatValueStake).toFixed(4).toString()));
-      setEarn(format(parseFloat(formatValueEarned).toFixed(4).toString()));
+      setStake(parseFloat(formatValueStake));
+      setEarn(parseFloat(formatValueEarned));
     } catch (error) {
       console.log('getTotalStakeInPool', error);
     }
@@ -152,17 +152,17 @@ const Balances: React.FC = () => {
             <Box className={cx('balance-row')}>
               <Box className={cx('stake')}>
                 <span className={cx('stake__title')}>Stake:</span>
-                <span className={cx('stake__value')}>{stake}</span>
+                <span className={cx('stake__value')}>{currencyFormatter(Number(stake))}</span>
                 <span className={cx('stake__token')}>CHN</span>
               </Box>
               <Box className={cx('wallet')}>
                 <span className={cx('wallet__title')}>Wallet:</span>
-                <span className={cx('wallet__value')}>{format(walletValue)}</span>
+                <span className={cx('wallet__value')}>{currencyFormatter(Number(walletValue))}</span>
                 <span className={cx('wallet__token')}>CHN</span>
               </Box>
               <Box className={cx('earn')}>
                 <span className={cx('earn__title')}>Earned:</span>
-                <span className={cx('earn__value')}>{earn}</span>
+                <span className={cx('earn__value')}>{currencyFormatter(Number(earn))}</span>
                 <span className={cx('earn__token')}>CHN</span>
               </Box>
             </Box>
