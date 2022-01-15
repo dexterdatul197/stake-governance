@@ -45,7 +45,7 @@ const TableMobile = (props: any) => {
                 </Box>
                 <Box className={cx('vote-weight')}>
                   <span>Vote Weight</span>
-                  <span>{Number(new BigNumber(voteWeight).multipliedBy(100))} %</span>
+                  <span>{new BigNumber(voteWeight).multipliedBy(100).toFixed(4).toString()} %</span>
                 </Box>
                 <Box className={cx('proposal')}>
                   <span>Proposals Vote</span>
@@ -69,7 +69,7 @@ const TableMobile = (props: any) => {
                   new BigNumber(b.chnStake).minus(new BigNumber(a.chnStake)).toNumber()
                 )
                 .filter((item: any) => {
-                  return item.chnStake !== 0;
+                  return Number(item.chnStake) !== 0;
                 })
                 .map((item, index) => {
                   const { id, address, voteWeight, proposalsVoted, chnStake } = item;

@@ -57,7 +57,7 @@ const LeaderBoard: React.FC = () => {
                 {format(formatChnStake)}
               </TableCell>
               <TableCell align="right" className={cx('table-row__table-cell')}>
-                {Number(new BigNumber(voteWeight).multipliedBy(100))} %
+                {new BigNumber(voteWeight).multipliedBy(100).toFixed(4).toString()} %
               </TableCell>
               <TableCell align="right" className={cx('table-row__table-cell')}>
                 {proposalsVoted}
@@ -101,7 +101,7 @@ const LeaderBoard: React.FC = () => {
                           new BigNumber(b.chnStake).minus(new BigNumber(a.chnStake)).toNumber()
                         )
                         .filter((item: any) => {
-                          return item.chnStake !== 0;
+                          return Number(item.chnStake) !== 0;
                         })
                         .map((item, index) => {
                           const { id, address, voteWeight, proposalsVoted, chnStake } = item;
