@@ -112,7 +112,7 @@ const WithDraw = (props: Props) => {
       const contract = await stakingToken();
       console.log(contract.status);
       // withdraw max
-      if (Number(new BigNumber(currencyFormatter(stake)).eq(value.defaultValue))) {
+      if (new BigNumber(stake.toFixed(4).toString()).eq(value.defaultValue.toString())) {
         const res = (await contract.withdraw(0, value.stake)) as any;
         await res.wait();
         setDone(false);
