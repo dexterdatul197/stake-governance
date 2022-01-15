@@ -62,6 +62,7 @@ const Transaction = (props: Props) => {
       contract
         .stake(0, web3.utils.toWei(String(formatAmount), 'ether'))
         .then(async (res: any) => {
+          console.log(res)
           await res.wait();
           handleUpdateSmartContract();
           setDone(true);
@@ -110,6 +111,7 @@ const Transaction = (props: Props) => {
     setProgress(true);
     const contract = await getCHNBalance();
     const handleConfirm = await contract.allowance(currentAddress(wallet), process.env.REACT_APP_STAKE_TESTNET_ADDRESS);
+    console.log(handleConfirm._hex.toString())
     if (handleConfirm._hex === '0x') {
       await contract.approve(process.env.REACT_APP_STAKE_TESTNET_ADDRESS, MAX_INT);
       dispatch(

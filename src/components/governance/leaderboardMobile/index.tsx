@@ -70,7 +70,7 @@ const TableMobile = (props: any) => {
                   new BigNumber(b.chnStake).minus(new BigNumber(a.chnStake)).toNumber()
                 )
                 .filter((item: any) => {
-                  return Number(item.chnStake) !== 0;
+                  return item.chnStake !== '0';
                 })
                 .map((item, index) => {
                   const { id, address, voteWeight, proposalsVoted, chnStake } = item;
