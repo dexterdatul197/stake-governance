@@ -134,6 +134,17 @@ const CreateProposal: React.FC = () => {
         callDatas,
         description
       );
+      console.log('params create proposal ', {
+        targetAddresses,
+        values,
+        signatures,
+        callDatas,
+        description
+      });
+
+      console.log('responseCreate', responseCreate);
+      return;
+
       if (responseCreate) {
         const proposalId = Number(responseCreate.events.ProposalCreated.returnValues.id);
         const proposalState = await governanceContract.state(proposalId);
@@ -181,7 +192,8 @@ const CreateProposal: React.FC = () => {
     try {
       const voteContract = await governance();
       const maxOperation = await voteContract.proposalMaxOperations();
-      setMaxOperation(maxOperation);
+      console.log('maxOperation', maxOperation.toString());
+      setMaxOperation(maxOperation.toString());
     } catch (err) {
       console.log('getMaxOperation', err);
       const message = 'call revert exception';

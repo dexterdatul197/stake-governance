@@ -16,6 +16,7 @@ import ModalWithDraw from './WithDrawModal';
 import ConnectWalletPage from '../connect-wallet-page/ConnectWalletPage';
 import { setVotingWeight } from '../governance/redux/Governance';
 import { useWeb3React } from '@web3-react/core';
+import { ethers } from 'ethers';
 
 const commaNumber = require('comma-number');
 const format = commaNumber.bindWith(',', '.');
@@ -102,11 +103,11 @@ const Balances: React.FC = () => {
 
   const getValueBalance = useCallback(async () => {
     try {
-      if (isConnected(wallet) && connector) {
+      if (isConnected(wallet)) {
         const connectedAddress = currentAddress(wallet);
         const contract = await getCHNBalance();
         const tokenBalance = await contract.balanceOf(connectedAddress);
-        const formatToken = Web3.utils.fromWei(String(tokenBalance));
+        const formatToken = ethers.utils.formatEther(tokenBalance);
         setChntoken(tokenBalance);
         setWalletValue(parseFloat(formatToken).toFixed(4).toString());
       }
@@ -121,24 +122,24 @@ const Balances: React.FC = () => {
       const contract = await stakingToken();
       const getValueStake = await contract.userInfo(0, connectedAddress);
       const getValueEarned = await contract.pendingReward(0, connectedAddress);
-      const formatValueStake = Web3.utils.fromWei(String(getValueStake.amount));
-      const formatValueEarned = Web3.utils.fromWei(String(getValueEarned));
 
+      const formatValueStake = ethers.utils.formatEther(getValueStake.amount);
+      const formatValueEarned = ethers.utils.formatEther(getValueEarned);
       dispatch(setVotingWeight(formatValueStake));
       setStake(format(parseFloat(formatValueStake).toFixed(4).toString()));
       setEarn(format(parseFloat(formatValueEarned).toFixed(4).toString()));
     } catch (error) {
-      console.log(error);
+      console.log('getTotalStakeInPool', error);
     }
   }, [wallet, earn, stake]);
 
   useEffect(() => {
     getValueBalance();
-  }, [getValueBalance, updateSmartContract]);
+  }, [getValueBalance, updateSmartContract, connector]);
 
   useEffect(() => {
     getTotalStakeInPool();
-  }, [getTotalStakeInPool, updateSmartContract]);
+  }, [getTotalStakeInPool, updateSmartContract, connector]);
 
   return (
     <>

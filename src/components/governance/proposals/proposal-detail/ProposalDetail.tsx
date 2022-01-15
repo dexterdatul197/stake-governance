@@ -25,6 +25,7 @@ import Icon from '@ant-design/icons/lib/components/Icon';
 import { isConnected } from '../../../../helpers/connectWallet';
 import { setVotingWeight } from '../../redux/Governance';
 import { useDispatch } from 'react-redux';
+import { ethers } from 'ethers';
 const cx = classNames.bind(styles);
 interface Props {
   proposalId: number;
@@ -102,8 +103,9 @@ const ProposalDetail: React.FC<Props> = (props) => {
       const connectedAddress = currentAddress(wallet);
       const contract = await stakingToken();
       const chnAmount = await contract.userInfo(0, connectedAddress);
-      const formatValueStake = new BigNumber0x(chnAmount.amount).div(1e18);
-      dispatch(setVotingWeight(formatValueStake.toFixed(4).toString()));
+      const formatValueStake = ethers.utils.formatEther(chnAmount.amount);
+
+      dispatch(setVotingWeight(parseFloat(formatValueStake).toFixed(4).toString()));
       setIsLoading(false);
     } else {
       setIsLoading(true);

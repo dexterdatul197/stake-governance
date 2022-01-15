@@ -23,13 +23,15 @@ export const createInstanceContract = async (address: string, abi: string) => {
   if (!walletName) throw Error('No provider');
 
   if (walletName === 'METAMASK') {
-    const provider = new ethers.providers.Web3Provider(window.ethereum, 'any');
-    const signer = provider.getSigner();
+    const web3Provider = new ethers.providers.Web3Provider(window.ethereum, 'any');
+    console.log('web3Provider', web3Provider);
+    const signer = web3Provider.getSigner();
     return new ethers.Contract(address, abi, signer);
   }
-  const connector = await CONNECTORS[walletName].getProvider();
-  const provider = await new providers.Web3Provider(connector);
-  const signer = provider.getSigner();
+  const provider = await CONNECTORS[walletName].getProvider();
+  const web3Provider = await new providers.Web3Provider(provider);
+  console.log('web3Provider', web3Provider);
+  const signer = web3Provider.getSigner();
 
   return new ethers.Contract(address, abi, signer);
 };

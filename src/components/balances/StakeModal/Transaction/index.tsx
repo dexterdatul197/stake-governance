@@ -110,7 +110,11 @@ const Transaction = (props: Props) => {
     contract
       .allowance(currentAddress(wallet), process.env.REACT_APP_STAKE_TESTNET_ADDRESS)
       .then((res: any) => {
-        console.log('res: ', res._hex);
+        console.log(
+          'allowance params',
+          currentAddress(wallet),
+          process.env.REACT_APP_STAKE_TESTNET_ADDRESS
+        );
         if (res._hex === '0x00') {
           contract
             .approve(process.env.REACT_APP_STAKE_TESTNET_ADDRESS, MAX_INT)
