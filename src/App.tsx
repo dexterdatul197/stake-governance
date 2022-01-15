@@ -44,7 +44,7 @@ const App: React.FC = () => {
 
   const triedEager = useEagerConnect();
 
-  useInactiveListener(!triedEager || !!activatingConnector);
+  useInactiveListener(!triedEager);
   useInitial();
 
   return (

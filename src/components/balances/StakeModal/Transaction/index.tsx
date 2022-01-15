@@ -18,6 +18,7 @@ import { openSnackbar, SnackbarVariant } from '../../../../store/snackbar';
 import { ReactComponent as DoneIcon } from '../../../../assets/icon/Done-icon.svg';
 import { setTimeout } from 'timers';
 import Web3 from 'web3';
+import { ContractFactory } from 'ethers';
 
 interface Props {
   cx?: any;
@@ -108,43 +109,29 @@ const Transaction = (props: Props) => {
   const handleConfirm = async () => {
     setProgress(true);
     const contract = await getCHNBalance();
-
-    contract
-      .allowance(currentAddress(wallet), process.env.REACT_APP_STAKE_TESTNET_ADDRESS)
-      .then(async (res: any) => {
-        await res.wait();
-        if (res._hex === '0x00') {
-          contract
-            .approve(process.env.REACT_APP_STAKE_TESTNET_ADDRESS, MAX_INT)
-            .then((res: any) => {
-              console.log('res approve: ', res);
-              dispatch(
-                openSnackbar({
-                  message: 'Approve successful',
-                  variant: SnackbarVariant.SUCCESS
-                })
-              );
-              handleConfirmTransaction();
-            })
-            .catch((e: any) => console.log(e));
-        } else {
-          setProgress(false);
-          dispatch(
-            openSnackbar({
-              message: 'Please wait a moment',
-              variant: SnackbarVariant.SUCCESS
-            })
-          );
-          handleConfirmTransaction();
-        }
-      })
-      .catch((e: any) => console.log(e));
+    const handleConfirm = await contract.allowance(currentAddress(wallet), process.env.REACT_APP_STAKE_TESTNET_ADDRESS);
+    if (handleConfirm._hex === '0x') {
+      await contract.approve(process.env.REACT_APP_STAKE_TESTNET_ADDRESS, MAX_INT);
+      dispatch(
+        openSnackbar({
+          message: 'Approve successful',
+          variant: SnackbarVariant.SUCCESS
+        })
+      );
+      handleConfirmTransaction();
+    } else {
+      setProgress(false);
+      dispatch(
+        openSnackbar({
+          message: 'Please wait a moment',
+          variant: SnackbarVariant.SUCCESS
+        })
+      );
+      handleConfirmTransaction();
+    }
   };
 
   const handleCloseTransaction = () => {
-    // setTimeout(() => {
-    //   handleBack();
-    // }, 400);
     setTimeout(() => {
       handleCloseModal();
       setTimeout(() => {
