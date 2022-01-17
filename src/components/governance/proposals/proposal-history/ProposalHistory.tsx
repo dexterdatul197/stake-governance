@@ -18,8 +18,8 @@ const ProposalHistory: React.FC<Props> = ({ proposalInfo }) => {
         <Step
           title="Created"
           description={
-            proposalInfo?.createdTimestamp
-              ? moment(proposalInfo.createdTimestamp * 1000).format('LLL')
+            proposalInfo?.created_timestamp
+              ? moment(proposalInfo.created_timestamp * 1000).format('LLL')
               : ''
           }
           unCheck={proposalInfo?.createdAt ? false : true}
@@ -53,11 +53,11 @@ const ProposalHistory: React.FC<Props> = ({ proposalInfo }) => {
               : 'Queue'
           }`}
           description={
-            proposalInfo?.queuedTimestamp
-              ? moment(proposalInfo.queuedTimestamp * 1000).format('LLL')
+            proposalInfo?.queued_timestamp
+              ? moment(proposalInfo.queued_timestamp * 1000).format('LLL')
               : ''
           }
-          unCheck={proposalInfo?.queuedTimestamp || proposalInfo?.state === 'Queued' ? false : true}
+          unCheck={proposalInfo?.queued_timestamp || proposalInfo?.state === 'Queued' ? false : true}
         />
         <Step
           title={
@@ -66,12 +66,12 @@ const ProposalHistory: React.FC<Props> = ({ proposalInfo }) => {
               : `${proposalInfo?.state === 'Executed' ? 'Executed' : 'Execute'}`
           }
           description={
-            proposalInfo?.executedTimestamp
-              ? moment(proposalInfo.executedTimestamp * 1000).format('LLL')
+            proposalInfo?.executed_timestamp
+              ? moment(proposalInfo.executed_timestamp * 1000).format('LLL')
               : ''
           }
           unCheck={
-            proposalInfo?.executedTimestamp || proposalInfo?.state === 'Executed' ? false : true
+            proposalInfo?.executed_timestamp || proposalInfo?.state === 'Executed' ? false : true
           }
         />
       </div>
