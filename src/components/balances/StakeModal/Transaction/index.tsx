@@ -106,30 +106,36 @@ const Transaction = (props: Props) => {
   };
 
   const handleConfirm = async () => {
-    setProgress(true);
-    const contract = await getCHNBalance();
-    const handleConfirm = await contract.allowance(
-      currentAddress(wallet),
-      process.env.REACT_APP_STAKE_TESTNET_ADDRESS
-    );
-    if (handleConfirm._hex === '0x00') {
-      await contract.approve(process.env.REACT_APP_STAKE_TESTNET_ADDRESS, MAX_INT);
-      dispatch(
-        openSnackbar({
-          message: 'Approve successful',
-          variant: SnackbarVariant.SUCCESS
-        })
+    try {
+      setProgress(true);
+      const contract = await getCHNBalance();
+      const handleConfirm = await contract.allowance(
+        currentAddress(wallet),
+        process.env.REACT_APP_STAKE_TESTNET_ADDRESS
       );
-      handleConfirmTransaction();
-    } else {
+      if (handleConfirm._hex === '0x00') {
+        await contract.approve(process.env.REACT_APP_STAKE_TESTNET_ADDRESS, MAX_INT);
+        dispatch(
+          openSnackbar({
+            message: 'Approve successful',
+            variant: SnackbarVariant.SUCCESS
+          })
+        );
+        handleConfirmTransaction();
+      } else {
+        setProgress(false);
+        dispatch(
+          openSnackbar({
+            message: 'Please wait a moment',
+            variant: SnackbarVariant.SUCCESS
+          })
+        );
+        handleConfirmTransaction();
+      }
+    } catch (err) {
       setProgress(false);
-      dispatch(
-        openSnackbar({
-          message: 'Please wait a moment',
-          variant: SnackbarVariant.SUCCESS
-        })
-      );
-      handleConfirmTransaction();
+      handleCloseModal();
+      console.log('confirm transaction', err);
     }
   };
 
