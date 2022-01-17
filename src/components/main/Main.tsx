@@ -71,7 +71,7 @@ const Main: React.FC = () => {
   }, [dispatch]);
 
   const handleOnChangeSelectCurrency = (event: any, value: any) => {
-    dispatch(setSelectedCurrency(value.toLowerCase() || 'usd'));
+    dispatch(setSelectedCurrency(value ? value.toLowerCase() : 'usd'));
   };
 
   // eslint-disable-next-line react-hooks/exhaustive-deps

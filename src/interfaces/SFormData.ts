@@ -83,7 +83,7 @@ export interface ProposalDetailForm {
   canceled: boolean;
   createdAt: string;
   createdBlock: number;
-  createdTimestamp: number;
+  created_timestamp: number;
   createdTxHash: string;
   description: string;
   endBlock: number;
@@ -92,7 +92,7 @@ export interface ProposalDetailForm {
   eta: number;
   executed: boolean;
   executedBlock: number;
-  executedTimestamp: number;
+  executed_timestamp: number;
   executedTxHash: string;
   forVotes: string;
   id: number;
@@ -100,7 +100,7 @@ export interface ProposalDetailForm {
   proposalId: number;
   proposer: string;
   queuedBlock: number;
-  queuedTimestamp: number;
+  queued_timestamp: number;
   queuedTxHash: string;
   signatures: string[];
   startBlock: number;
