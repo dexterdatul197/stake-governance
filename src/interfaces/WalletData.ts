@@ -3,5 +3,4 @@ export interface WalletData {
   ethereumAddress: string;
   openConnectDialog: boolean;
   walletName: string;
-  provider: any;
 }

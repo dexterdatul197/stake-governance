@@ -14,8 +14,7 @@ const initialState: WalletData = {
   openConnectDialog: false,
   bsc: '',
   ethereumAddress: Web3.utils.isAddress(ethereumAddress) ? ethereumAddress : '',
-  walletName: localStorage.getItem('walletName') || '',
-  provider: undefined
+  walletName: localStorage.getItem('walletName') || ''
 };
 export const walletSlice = createSlice({
   name: 'wallet',
