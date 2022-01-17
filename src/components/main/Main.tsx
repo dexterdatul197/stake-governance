@@ -114,7 +114,7 @@ const Main: React.FC = () => {
         <>
           <div className={cx('text-head-child')}>
             <div className={cx('price')}>
-              {`$${currencyFormatter(Number(totalSupply.replaceAll(',', '')))}`}
+              {`${currencyFormatter(Number(totalSupply.replaceAll(',', '')))}`}
             </div>
             <Autocomplete
               classes={classes}
