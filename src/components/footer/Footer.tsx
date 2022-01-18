@@ -46,7 +46,7 @@ const Footer: React.FC = () => {
     getLatestBlock();
     setInterval(async () => {
       getLatestBlock();
-    }, 15000);
+    }, 60000);
   }, []);
 
   return (

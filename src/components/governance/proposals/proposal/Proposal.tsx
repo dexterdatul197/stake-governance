@@ -38,8 +38,10 @@ const Proposal: React.FC<Props> = (props) => {
     setVoteType(support);
     const contract = await governance();
     const res = await contract.castVote(props.proposal.id, support === 'like');
-    await res.wait();
-    setIsLoading(false);
+    const voting = await res.wait();
+    if (voting.blockHash) {
+      setIsLoading(false);
+    }
   };
 
   const redirectToProposalDetail = (proposalId: number) => {
