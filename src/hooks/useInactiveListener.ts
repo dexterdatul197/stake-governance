@@ -4,8 +4,9 @@ import { useWeb3React, UnsupportedChainIdError } from '@web3-react/core';
 import { useEffect } from 'react';
 import { openSnackbar, SnackbarVariant, closeSnackbar } from '../store/snackbar';
 import { setEthereumAddress, setWalletName } from 'src/components/connect-wallet/redux/wallet';
+import { removeManyItemsInLS } from 'src/helpers/common';
 
-const COINBASE_ADDRESS_KEY = '-walletlink:https://www.walletlink.org:Addresses';
+export const COINBASE_ADDRESS_KEY = '-walletlink:https://www.walletlink.org:Addresses';
 
 export function useInactiveListener(suppress = false): void {
   const { active, error, activate, library, account, connector } = useWeb3React();
@@ -34,17 +35,18 @@ export function useInactiveListener(suppress = false): void {
   }, [error]);
 
   const handleDisconnect = () => {
-    const currentTheme = localStorage.getItem('theme') as string;
+    console.log('disconnected');
     dispatch(setEthereumAddress(''));
     dispatch(setWalletName(''));
-    localStorage.clear();
-    localStorage.setItem('theme', currentTheme);
+    removeManyItemsInLS('walletconnect');
+    removeManyItemsInLS('walletlink'); // coinbase
   };
 
   useEffect(() => {
     if (active && walletName && address && connector) {
       connector.getProvider().then((provider: any) => {
         const handleChainChanged = (chainId: string) => {
+          console.log('listener chainId', chainId);
           // eat errors
           activate(connector, undefined, true).catch((err) => {
             console.error('Failed to activate after chain changed', err);

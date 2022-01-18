@@ -1,5 +1,5 @@
 import Web3 from 'web3';
-import { useWeb3React } from '@web3-react/core';
+import { useWeb3React, UnsupportedChainIdError } from '@web3-react/core';
 import { UserRejectedRequestError as WCRejected } from '@web3-react/walletconnect-connector';
 
 import { useHistory } from 'react-router-dom';
@@ -31,6 +31,7 @@ import { walletLinkConnector } from '../../connectors/walletlinkConnector';
 import { walletconnect } from '../../connectors/walletconnectConnector';
 import { CONNECTORS } from '../../connectors';
 import bannerImg from '../../assets/imgs/bg-connect.png';
+import { removeManyItemsInLS } from 'src/helpers/common';
 const cx = classnames.bind(styles);
 
 const ConnectWalletPage: React.FC = () => {
@@ -77,33 +78,44 @@ const ConnectWalletPage: React.FC = () => {
     handleCloseConnectDialog();
   };
 
+  const handleConnectError = (err: any) => {
+    console.log('login error: ', err, err instanceof UnsupportedChainIdError);
+    if (err instanceof WCRejected) {
+      handleCloseConnectDialog();
+      dispatch(
+        openSnackbar({
+          message: 'You declined the action in your wallet.',
+          variant: SnackbarVariant.ERROR
+        })
+      );
+      dispatch(setWalletName(''));
+      setTimeout(() => {
+        dispatch(closeSnackbar());
+      }, 3000);
+    } else if (err instanceof UnsupportedChainIdError) {
+      removeManyItemsInLS('walletconnect');
+      removeManyItemsInLS('walletlink');
+      dispatch(
+        openSnackbar({
+          message: 'Please select the correct network.',
+          variant: SnackbarVariant.ERROR
+        })
+      );
+      setTimeout(() => {
+        dispatch(closeSnackbar());
+      }, 5000);
+    }
+  };
+
   // Connect Wallet connect
   const handleConnectWalletConnect = async () => {
     try {
       if (walletconnect && walletconnect.walletConnectProvider) {
         walletconnect.walletConnectProvider = undefined;
       }
-      activate(
-        walletconnect,
-        (err) => {
-          if (err instanceof WCRejected) {
-            handleCloseConnectDialog();
-            dispatch(
-              openSnackbar({
-                message: 'You declined the action in your wallet.',
-                variant: SnackbarVariant.ERROR
-              })
-            );
-            dispatch(setWalletName(''));
-            setTimeout(() => {
-              dispatch(closeSnackbar());
-            }, 3000);
-          }
-        },
-        false
-      ).then(() => {
-        handleCloseConnectDialog();
+      activate(walletconnect, handleConnectError, false).then(() => {
         dispatch(setWalletName(WALLET_NAMES.WALLET_CONNECT));
+        handleCloseConnectDialog();
       });
     } catch (error: any) {
       console.log('handleConnectWalletConnect', error);
@@ -113,7 +125,7 @@ const ConnectWalletPage: React.FC = () => {
   // Connect Coinbase
   const handleConnectCoinBase = () => {
     try {
-      activate(walletLinkConnector)
+      activate(walletLinkConnector, handleConnectError, false)
         .then(() => {
           dispatch(setWalletName(WALLET_NAMES.COINBASE));
         })
