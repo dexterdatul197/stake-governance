@@ -32,7 +32,7 @@ const Detail = (props: Props) => {
       const contractStaking = await stakingToken();
       const CHN = await contractBalance.balanceOf(address);
       const getValueStake = await contractStaking.userInfo(0, address);
-      const formatCHN = new BigNumber(CHN.toString()).div('1e18').div(10);
+      const formatCHN = new BigNumber(CHN.toString()).div('1e18');
       const formatStake = new BigNumber(getValueStake.amount.toString()).div('1e18');
       setCHN(format(formatCHN.toFixed(4).toString()));
       setBalance(format(formatStake.toFixed(4).toString()));

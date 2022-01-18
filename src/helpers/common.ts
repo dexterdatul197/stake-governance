@@ -41,7 +41,7 @@ export const currencyFormatter = (labelValue: any) => {
     Math.abs(Number(labelValue)) >= 1.0e6
     ? `${format(new BigNumber(`${Math.abs(Number(labelValue)) / 1.0e6}`).dp(2, 1))}M`
     : // Three Zeroes for Thousands
-     format(labelValue.toFixed(4));
+      format(labelValue.toFixed(4));
 };
 
 export const getStatus = (state: string) => {
@@ -88,4 +88,12 @@ export const convertOHCL = (data: any[]) => {
 
 export const checkNotEmptyArr = (array: any[]) => {
   return Array.isArray(array) && array.length > 0;
+};
+
+export const removeManyItemsInLS = (key: string) => {
+  Object.keys(localStorage).forEach((name) => {
+    if (name.includes(key)) {
+      localStorage.removeItem(name);
+    }
+  });
 };

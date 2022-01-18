@@ -56,7 +56,7 @@ const ProposalDetail: React.FC<Props> = (props) => {
     canceled: false,
     createdAt: '',
     createdBlock: 0,
-    createdTimestamp: 0,
+    created_timestamp: 0,
     createdTxHash: '',
     description: '',
     endBlock: 0,
@@ -65,7 +65,7 @@ const ProposalDetail: React.FC<Props> = (props) => {
     eta: 0,
     executed: false,
     executedBlock: 0,
-    executedTimestamp: 0,
+    executed_timestamp: 0,
     executedTxHash: '',
     forVotes: '',
     id: 0,
@@ -73,7 +73,7 @@ const ProposalDetail: React.FC<Props> = (props) => {
     proposalId: 0,
     proposer: '',
     queuedBlock: 0,
-    queuedTimestamp: 0,
+    queued_timestamp: 0,
     queuedTxHash: '',
     signatures: [],
     startBlock: 0,
@@ -160,7 +160,7 @@ const ProposalDetail: React.FC<Props> = (props) => {
         await queueRes.wait();
         setIsLoading(false);
         setStatus('success');
-        message.success(`Proposal list will update within a few seconds`);
+        // message.success(`Proposal list will update within a few seconds`);
       } catch (error) {
         setIsLoading(false);
         setStatus('failure');
@@ -172,7 +172,7 @@ const ProposalDetail: React.FC<Props> = (props) => {
         await excute.wait();
         setIsLoading(false);
         setStatus('success');
-        message.success(`Proposal list will update within a few seconds`);
+        // message.success(`Proposal list will update within a few seconds`);
       } catch (error) {
         setIsLoading(false);
         setStatus('failure');
@@ -184,9 +184,9 @@ const ProposalDetail: React.FC<Props> = (props) => {
         await cancelResponse.wait();
         setIsCancelLoading(false);
         setCancelStatus('success');
-        message.success(
-          `Current proposal is cancelled successfully. Proposal list will update within a few seconds`
-        );
+        // message.success(
+        //   `Current proposal is cancelled successfully. Proposal list will update within a few seconds`
+        // );
       } catch (error) {
         setIsCancelLoading(false);
         setCancelStatus('failure');
@@ -312,7 +312,7 @@ const ProposalDetail: React.FC<Props> = (props) => {
                   {status === 'pending' || status === 'failure' ? 'Queue' : 'Queued'}
                 </Button>
               )}
-              {proposalDetail.state === 'Queued' && !proposalDetail.executedTimestamp && (
+              {proposalDetail.state === 'Queued' && !proposalDetail.executed_timestamp && (
                 <Button
                   className={cx('execute-btn')}
                   disabled={isLoading || status === 'success' || !isPossibleExcuted}

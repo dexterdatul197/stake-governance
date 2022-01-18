@@ -193,10 +193,6 @@ const CreateProposal: React.FC = () => {
       setMaxOperation(maxOperation.toString());
     } catch (err) {
       console.log('getMaxOperation', err);
-      const message = 'call revert exception';
-      if (String(err).includes(message)) {
-        window.location.reload();
-      }
     }
   };
 
@@ -221,7 +217,7 @@ const CreateProposal: React.FC = () => {
   useEffect(() => {
     setDescription('');
     setTitle('');
-  }, [wallet])
+  }, [wallet]);
 
   let collapseIndex = -1;
   return (
@@ -237,16 +233,14 @@ const CreateProposal: React.FC = () => {
           padding: '25px',
           borderRadius: '20px'
         }
-      }}
-    >
+      }}>
       {/* header: title + btn close */}
       <Box
         display={'flex'}
         justifyContent={'space-between'}
         sx={{
           marginBottom: '20px'
-        }}
-      >
+        }}>
         <Typography component={'div'} className={cx('title')}>
           <Box>
             <div className={cx('text-title')}>Create Proposal</div>
@@ -256,8 +250,7 @@ const CreateProposal: React.FC = () => {
           <IconButton
             onClick={handleCloseConnectDialog}
             size={'small'}
-            className={cx('close-button')}
-          >
+            className={cx('close-button')}>
             <CloseIcon />
           </IconButton>
         </Typography>
@@ -326,8 +319,7 @@ const CreateProposal: React.FC = () => {
         sx={{
           margin: '10px 0',
           paddingRight: '10px'
-        }}
-      >
+        }}>
         <div className={cx('wrap-btn')}>
           {/* <div className={cx('btn-confirm')} onClick={handleClickConfirm}>
             Confirm
@@ -335,8 +327,7 @@ const CreateProposal: React.FC = () => {
           <Button
             className={cx('btn-create')}
             // disabled={isLoading || formData.length > maxOperation || description.trim().length === 0}
-            onClick={handleClickConfirm}
-          >
+            onClick={handleClickConfirm}>
             {isLoading && (
               <div>
                 <CircularProgress size={20} color="inherit" />
