@@ -8,7 +8,8 @@ import { currentAddress, getStatus } from '../../../../helpers/common';
 import { isConnected } from '../../../../helpers/connectWallet';
 import { governance } from '../../../../helpers/ContractService';
 import { ProposalFormData } from '../../../../interfaces/SFormData';
-import { useAppSelector } from '../../../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
+import { openSnackbar, SnackbarVariant } from '../../../../store/snackbar';
 import styles from './Proposal.module.scss';
 
 interface Props {
@@ -23,6 +24,7 @@ const Proposal: React.FC<Props> = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [voteType, setVoteType] = useState('like');
   const votingWeight = useAppSelector((state) => state.governance.voteingWeight);
+  const dispatch = useAppDispatch();
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const getIshasVoted = async () => {
@@ -36,12 +38,16 @@ const Proposal: React.FC<Props> = (props) => {
   const handleVote = async (support: string) => {
     setIsLoading(true);
     setVoteType(support);
-    const contract = await governance();
-    const res = await contract.castVote(props.proposal.id, support === 'like');
-    const voting = await res.wait();
-    if (voting.blockHash) {
-      setIsLoading(false);
+    try {
+      const contract = await governance();
+      const res = await contract.castVote(props.proposal.id, support === 'like');
+      const voting = await res.wait();
+    } catch (error: any) {
+      if (error.code === 4001) {
+        dispatch(openSnackbar({message:'User denied transaction signature', variant: SnackbarVariant.ERROR}));
+      }
     }
+    setIsLoading(false);
   };
 
   const redirectToProposalDetail = (proposalId: number) => {
