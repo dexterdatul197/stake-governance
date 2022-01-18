@@ -113,15 +113,14 @@ const Transaction = (props: Props) => {
         currentAddress(wallet),
         process.env.REACT_APP_STAKE_TESTNET_ADDRESS
       );
-      if (handleConfirm._hex === '0x00') {
-        await contract.approve(process.env.REACT_APP_STAKE_TESTNET_ADDRESS, MAX_INT);
-        dispatch(
-          openSnackbar({
-            message: 'Approve successful',
-            variant: SnackbarVariant.SUCCESS
-          })
-        );
-        handleConfirmTransaction();
+      console.log(handleConfirm._hex.toString() === '0x00');
+      if (handleConfirm._hex.toString() === '0x00') {
+        await contract
+          .approve(process.env.REACT_APP_STAKE_TESTNET_ADDRESS, MAX_INT)
+          .then(async (res: any) => {
+            await res.wait();
+            handleConfirmTransaction();
+          });
       } else {
         setProgress(false);
         dispatch(
@@ -132,10 +131,10 @@ const Transaction = (props: Props) => {
         );
         handleConfirmTransaction();
       }
-    } catch (err) {
-      setProgress(false);
-      handleCloseModal();
-      console.log('confirm transaction', err);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      handleCloseTransaction();
     }
   };
 

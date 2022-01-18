@@ -9,7 +9,7 @@ import {
   TableHead,
   TableRow
 } from '@material-ui/core';
-import { CircularProgress } from '@mui/material';
+import Skeleton from '@mui/material/Skeleton';
 import classNames from 'classnames/bind';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
@@ -52,9 +52,7 @@ const LeaderBoard: React.FC = () => {
             const formatChnStake = new BigNumber(chnStake).div('1e18').toFixed(4).toString();
             return (
               <React.Fragment key={index}>
-                <TableCell className={cx('table-row__table-cell')}>
-                  {rank}
-                </TableCell>
+                <TableCell className={cx('table-row__table-cell')}>{rank}</TableCell>
                 <TableCell className={cx('table-row__table-cell')}>{address}</TableCell>
                 <TableCell align="right" className={cx('table-row__table-cell')}>
                   {format(formatChnStake)}
@@ -98,48 +96,56 @@ const LeaderBoard: React.FC = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody className={cx('table-body')}>
-                  {checkNotEmptyArr(data)
-                    ? data
-                        .sort((a: any, b: any) =>
-                          new BigNumber(a.rank).minus(new BigNumber(b.rank)).toNumber()
-                        )
-                        .filter((item: any) => {
-                          return item.chnStake !== '0';
-                        })
-                        .map((item, index) => {
-                          const { id, rank, address, voteWeight, proposalsVoted, chnStake } = item;
-                          const content = [
-                            {
-                              id: id,
-                              address: address,
-                              chnStake: chnStake,
-                              voteWeight: voteWeight,
-                              proposalsVoted: proposalsVoted,
-                              rank: rank
+                  {checkNotEmptyArr(data) ? (
+                    data
+                      .sort((a: any, b: any) =>
+                        new BigNumber(a.rank).minus(new BigNumber(b.rank)).toNumber()
+                      )
+                      .filter((item: any) => {
+                        return item.chnStake !== '0';
+                      })
+                      .map((item, index) => {
+                        const { id, rank, address, voteWeight, proposalsVoted, chnStake } = item;
+                        const content = [
+                          {
+                            id: id,
+                            address: address,
+                            chnStake: chnStake,
+                            voteWeight: voteWeight,
+                            proposalsVoted: proposalsVoted,
+                            rank: rank
+                          }
+                        ];
+                        return (
+                          <TableRow
+                            onClick={() =>
+                              history.push(`/governance/leaderboard/leaderboard-detail/${address}`)
                             }
-                          ];
-                          return (
-                            <TableRow
-                              onClick={() =>
-                                history.push(
-                                  `/governance/leaderboard/leaderboard-detail/${address}`
-                                )
-                              }
-                              className={cx('table-row')}
-                              key={index}>
-                              {renderData(content, index)}
-                            </TableRow>
-                          );
-                        })
-                    : <CircularProgress
-                        size={50}
-                        color="primary"
-                        sx={{
-                          position: 'absolute',
-                          top: '50%',
-                          left: '50%'
-                        }}
-                      />}
+                            className={cx('table-row')}
+                            key={index}>
+                            {renderData(content, index)}
+                          </TableRow>
+                        );
+                      })
+                  ) : (
+                    <TableRow>
+                      <TableCell style={{ borderBottom: '0px solid transparent' }}>
+                        <Skeleton animation="wave" height={0} />
+                      </TableCell>
+                      <TableCell style={{ borderBottom: '0px solid transparent' }}>
+                        <Skeleton animation="wave" height={0} />
+                      </TableCell>
+                      <TableCell style={{ borderBottom: '0px solid transparent' }}>
+                        <Skeleton animation="wave" height={0} />
+                      </TableCell>
+                      <TableCell style={{ borderBottom: '0px solid transparent' }}>
+                        <Skeleton animation="wave" height={0} />
+                      </TableCell>
+                      <TableCell style={{ borderBottom: '0px solid transparent' }}>
+                        <Skeleton animation="wave" height={0} />
+                      </TableCell>
+                    </TableRow>
+                  )}
                 </TableBody>
               </Table>
             </TableContainer>
