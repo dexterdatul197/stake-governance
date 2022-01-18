@@ -193,10 +193,6 @@ const CreateProposal: React.FC = () => {
       setMaxOperation(maxOperation.toString());
     } catch (err) {
       console.log('getMaxOperation', err);
-      const message = 'call revert exception';
-      if (String(err).includes(message)) {
-        // window.location.reload();
-      }
     }
   };
 

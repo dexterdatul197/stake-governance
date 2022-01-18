@@ -6,6 +6,7 @@ import {
   setWalletName,
   WALLET_NAMES
 } from '../components/connect-wallet/redux/wallet';
+import { removeManyItemsInLS } from 'src/helpers/common';
 
 const KEY_ADDRESS_COINBASE = '-walletlink:https://www.walletlink.org:Addresses';
 
@@ -20,7 +21,7 @@ export const useInitial = () => {
       const addressCoinbaseWallet = localStorage.getItem(KEY_ADDRESS_COINBASE);
       if (!addressCoinbaseWallet) {
         clearInterval(timer);
-        localStorage.clear();
+        removeManyItemsInLS('walletlink'); // coinbase
         dispatch(setEthereumAddress(''));
         dispatch(setWalletName(''));
       }
@@ -33,7 +34,7 @@ export const useInitial = () => {
 
     // wallet-connect
     if (wallet.walletName === WALLET_NAMES.WALLET_CONNECT && infoConnectWallet) {
-      const { chainId, connected, accounts } = JSON.parse(infoConnectWallet);
+      const { connected, accounts } = JSON.parse(infoConnectWallet);
       if (connected) {
         dispatch(setEthereumAddress(accounts[0]));
       } else {

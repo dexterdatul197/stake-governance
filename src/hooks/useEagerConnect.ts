@@ -17,7 +17,8 @@ export function useEagerConnect(): boolean {
   useEffect(() => {
     injectedConnector.isAuthorized().then((isAuthorized: boolean) => {
       const connector = CONNECTORS[walletName as string];
-      if (ethereumAddress && connector) {
+      console.log('activate connector', !!connector);
+      if (connector) {
         activate(connector, undefined, true)
           .then(() => console.log('activated', walletName))
           .catch(() => {
@@ -27,7 +28,7 @@ export function useEagerConnect(): boolean {
         setTried(true);
       }
     });
-  }, [ethereumAddress]);
+  }, [ethereumAddress, walletName]);
 
   // wait until we get confirmation of a connection to flip the flag
   useEffect(() => {

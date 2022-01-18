@@ -14,6 +14,7 @@ import styles from './ConnectWallet.module.scss';
 import { setOpenConnectDialog, setEthereumAddress, setWalletName } from './redux/wallet';
 import { ReactComponent as ConectWalletIcon } from '../../assets/icon/wallet.svg';
 import useIsMobile from '../../hooks/useMobile';
+import { removeManyItemsInLS } from 'src/helpers/common';
 
 const cx = classnames.bind(styles);
 
@@ -42,14 +43,14 @@ const ConnectWallet: React.FC = () => {
     handleCloseDropdown();
   }, [wallet]);
 
-  const handleLogout = () => {
-    deactivate();
-    const currentTheme = localStorage.getItem('theme') as string;
-    localStorage.clear();
-    localStorage.setItem('theme', currentTheme);
+  const handleLogout = async () => {
+    await deactivate();
+    removeManyItemsInLS('walletconnect');
+    removeManyItemsInLS('walletlink'); // coinbase
     dispatch(setEthereumAddress(''));
     dispatch(setWalletName(''));
     history.push('/');
+    window.location.reload();
   };
 
   return (
