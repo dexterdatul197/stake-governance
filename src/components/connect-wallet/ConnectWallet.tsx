@@ -53,6 +53,7 @@ const ConnectWallet: React.FC = () => {
     dispatch(setEthereumAddress(''));
     dispatch(setWalletName(''));
     history.push('/');
+    localStorage.clear();
     setOpenDropdown(false);
     window.location.reload();
   };
