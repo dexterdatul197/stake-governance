@@ -133,8 +133,6 @@ const Transaction = (props: Props) => {
       }
     } catch (error) {
       console.log(error);
-    } finally {
-      handleCloseTransaction();
     }
   };
 
