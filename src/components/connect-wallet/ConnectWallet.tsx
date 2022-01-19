@@ -29,18 +29,21 @@ const ConnectWallet: React.FC = () => {
   const wallet = useAppSelector((state) => state.wallet);
   const ref = useRef<any>();
   const [openDropdown, setOpenDropdown] = useState(false);
-  const getShortAddress = (address: string) => {
-    return address.slice(0, 2) + '...' + address.slice(-4);
-  };
+  const [address, setAddress] = useState('');
   const handleOpenDropdown = () => {
     setOpenDropdown(true);
   };
   const handleCloseDropdown = () => {
+    console.log('HANDLE CLICK OUTSITE');
+    
     setOpenDropdown(false);
   };
   useOnClickOutside(ref, handleCloseDropdown);
+
   useEffect(() => {
     handleCloseDropdown();
+    const address = wallet.ethereumAddress.slice(0, 4) + '...' + wallet.ethereumAddress.slice(-4);
+    setAddress(address);
   }, [wallet]);
 
   const handleLogout = async () => {
@@ -50,15 +53,21 @@ const ConnectWallet: React.FC = () => {
     dispatch(setEthereumAddress(''));
     dispatch(setWalletName(''));
     history.push('/');
+    setOpenDropdown(false);
     window.location.reload();
   };
 
   return (
     <>
       {wallet.ethereumAddress ? (
-        <div className={cx('button-logout', 'center-items')} onClick={handleLogout}>
-          <span className={cx('button__text')}>Log Out</span>
-        </div>
+        <>
+          <div className={cx('button-logout', 'center-items')} onClick={handleOpenDropdown}>
+            <span className={cx('button__text')}>{address.toLowerCase()}</span>
+          </div>
+          <div onClick={handleLogout} className={cx('btn-logout', `${openDropdown ? 'show-btn' : ''}`)} ref={ref}>
+            <span className={cx('button__text')}>Logout</span>
+          </div>
+        </>
       ) : (
         <div className={cx('button')} onClick={handleOpenConnectWalletDialog}>
           <ConectWalletIcon stroke="var(--text-color-stake)" />{' '}
