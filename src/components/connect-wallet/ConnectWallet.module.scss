@@ -19,7 +19,7 @@ $color: #107def;
       opacity: 0.8;
     }
   }
-  .button-logout {
+  .button-logout, .btn-logout {
     background-color: var(--main-background-color);
     padding: 10px 17px;
     width: 175px;
@@ -71,6 +71,16 @@ $color: #107def;
   .close {
     display: none;
   }
+  .btn-logout {
+    background-color: var(--btn-background-connect-color);
+    color: #fff;
+    margin-top: 5px;
+    position: absolute;
+    visibility: hidden;
+  }
+  .show-btn {
+    visibility: inherit;
+  }
   @media screen and (max-width: 576px) {
     .button {
       background: var(--mb-bg-btn-wallet);
@@ -95,6 +105,12 @@ $color: #107def;
         margin-left: 8px;
         color: var(--text-color);
       }
+    }
+    .btn-logout {
+      bottom: 60px;
+    }
+    .button__text {
+      color: #fff;
     }
   }
   @media screen and (max-width: 768px) {
