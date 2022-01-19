@@ -110,7 +110,7 @@ const WithDraw = (props: Props) => {
         setProgress(false);
       }, 1000);
       const contract = await stakingToken();
-      console.log(contract.status);
+      console.log(new BigNumber(stake.toFixed(4).toString()).eq(value.defaultValue.toString()));
       // withdraw max
       if (new BigNumber(stake.toFixed(4).toString()).eq(value.defaultValue.toString())) {
         const res = (await contract.withdraw(0, value.stake)) as any;
@@ -125,7 +125,7 @@ const WithDraw = (props: Props) => {
         handleUpdateSmartContract();
 
         // custom withdraw
-      } else if (stake !== 0) {
+      } else if (value.defaultValue !== 0) {
         const priceDefault = web3.utils.toWei(String(value.defaultValue), 'ether');
         const res = await contract.withdraw(0, priceDefault);
         await res.wait();
