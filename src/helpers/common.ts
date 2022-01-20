@@ -97,3 +97,8 @@ export const removeManyItemsInLS = (key: string) => {
     }
   });
 };
+
+export const stringToArr = (param: string) => {
+  const sub = param.substring(param.indexOf('(')+1, param.indexOf(')'));
+  return sub.split(',').map(item => item.trim());
+}

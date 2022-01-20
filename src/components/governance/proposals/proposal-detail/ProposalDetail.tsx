@@ -198,6 +198,8 @@ const ProposalDetail: React.FC<Props> = (props) => {
 
   const getProposal = async () => {
     const proposalDetail = await getProposalDetail(props.match.params.proposalId);
+    console.log('PROPOSAL DETAIL', proposalDetail);
+    
     const forVotes = await getVotes(props.match.params.proposalId, true, limitUpVote);
     const againstVotes = await getVotes(props.match.params.proposalId, false, limitDownVote);
     const total =

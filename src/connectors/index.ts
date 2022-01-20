@@ -25,7 +25,6 @@ export const createInstanceContract = async (address: string, abi: string) => {
   const provider = await CONNECTORS[walletName].getProvider();
   const web3Provider = await new providers.Web3Provider(provider);
   const signer = web3Provider.getSigner();
-  console.log('has signer: ', !!signer);
 
   return new ethers.Contract(address, abi, signer);
 };
