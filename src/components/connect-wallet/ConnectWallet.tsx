@@ -30,6 +30,11 @@ const ConnectWallet: React.FC = () => {
     setOpenDropdown(true);
   };
   const handleCloseDropdown = () => {
+<<<<<<< HEAD
+    console.log('HANDLE CLICK OUTSITE');
+    
+=======
+>>>>>>> 40dd21c77b13fcfcefff9549d2e6c2c0553cf690
     setOpenDropdown(false);
   };
   useOnClickOutside(ref, handleCloseDropdown);
@@ -59,10 +64,14 @@ const ConnectWallet: React.FC = () => {
           <div className={cx('button-logout', 'center-items', `${address ? 'btn-address-style' : ''}`)} onClick={handleOpenDropdown}>
             <span className={cx('button__text')}>{address.toLowerCase()}</span>
           </div>
+<<<<<<< HEAD
+          <div onClick={handleLogout} className={cx('btn-logout', `${openDropdown ? 'show-btn' : ''}`)} ref={ref}>
+=======
           <div
             onClick={handleLogout}
             className={cx('btn-logout', `${openDropdown ? 'show-btn' : ''}`, `${address ? 'btn-address-style' : ''}`)}
             ref={ref}>
+>>>>>>> 40dd21c77b13fcfcefff9549d2e6c2c0553cf690
             <span className={cx('button__text')}>Logout</span>
           </div>
         </>

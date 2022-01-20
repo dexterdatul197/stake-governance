@@ -120,6 +120,10 @@ const Transaction = (props: Props) => {
           .then(async (res: any) => {
             await res.wait();
             handleConfirmTransaction();
+          })
+          .catch((e: any) => console.log(e))
+          .finally(() => {
+            handleCloseTransaction();
           });
       } else {
         setProgress(false);
