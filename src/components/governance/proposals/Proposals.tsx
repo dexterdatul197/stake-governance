@@ -1,12 +1,9 @@
-import { BigNumber } from '@0x/utils';
 import { TablePagination } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import classNames from 'classnames/bind';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { getProposalList } from '../../../apis/apis';
-import { currentAddress } from '../../../helpers/common';
-import { getCHNBalance } from '../../../helpers/ContractService';
 import { Filter } from '../../../interfaces/SFormData';
 import { useAppSelector } from '../../../store/hooks';
 import Proposal from './proposal/Proposal';

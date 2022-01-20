@@ -15,6 +15,7 @@ interface Props {
   formData?: SFormData[];
   setFormData?: (v: any) => void;
   triggerAlert?: boolean;
+  errorFromChild?: (v: boolean) => void;
 }
 const cx = classNames.bind(styles);
 
@@ -25,7 +26,8 @@ const CollapseItem: React.FC<Props> = ({
   fCallData = [],
   formData = [],
   setFormData = () => {},
-  triggerAlert = false
+  triggerAlert = false,
+  errorFromChild = () => {}
 }) => {
   const [triggerCount, setTriggerCount] = useState(0);
 
@@ -111,6 +113,8 @@ const CollapseItem: React.FC<Props> = ({
             placeholder="Address"
             onKeyUp={handleKeyupAddress}
             triggerAlert={triggerAlert}
+            regexValidate='^[a-zA-Z0-9_.-]*$'
+            errorFromChild={errorFromChild}
           />
           <StakeInputBase
             validate={true}

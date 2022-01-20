@@ -47,7 +47,7 @@ const ConnectWallet: React.FC = () => {
     dispatch(setEthereumAddress(''));
     dispatch(setWalletName(''));
     history.push('/');
-    localStorage.removeItem('ethereumAddress');
+    window.localStorage.removeItem('ethereumAddress');
     setOpenDropdown(false);
     window.location.reload();
   };

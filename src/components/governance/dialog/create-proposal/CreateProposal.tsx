@@ -39,6 +39,7 @@ const CreateProposal: React.FC = () => {
   const [title, setTitle] = useState('');
   const [triggerAlert, setTriggerAlert] = useState(false);
   const wallet = useAppSelector((state) => state.wallet);
+  const [errorFromChild, setErrorFromChild] = useState(false);
   const [formData, setFormData] = useState<SFormData[]>([
     {
       isRemove: false,
@@ -64,6 +65,9 @@ const CreateProposal: React.FC = () => {
     setDescription('');
     setErrorMsg('');
   };
+  const handleErrorFromChild = (param: boolean) => {
+    setErrorFromChild(param);
+  }
   const handleClickConfirm = async () => {
     // ================= check required input form =================
 
@@ -90,6 +94,7 @@ const CreateProposal: React.FC = () => {
     }
 
     if (!isFulfilledInput) return;
+    if (errorFromChild) return;
 
     // =============== end check input form ==================
 
@@ -273,6 +278,8 @@ const CreateProposal: React.FC = () => {
                 validate={true}
                 name={'Title'}
                 triggerAlert={triggerAlert}
+                regexValidate='^[a-zA-Z0-9_.-\s]*$'
+                errorFromChild={handleErrorFromChild}
               />
             </div>
             <div className={cx('box-title')}>Details</div>
@@ -305,6 +312,7 @@ const CreateProposal: React.FC = () => {
                         fCallData={f.callData}
                         setFormData={childUpdateFormData}
                         triggerAlert={triggerAlert}
+                        errorFromChild={handleErrorFromChild}
                       />
                     </div>
                   );
