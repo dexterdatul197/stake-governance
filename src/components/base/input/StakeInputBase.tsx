@@ -43,7 +43,8 @@ const StakeInputBase: React.FC<Props> = ({
   const [triggerCount, setTriggerCount] = useState(0);
   const [messageErr, setMessageErr] = useState('');
   const [inputValue, setInputValue] = useState(value);
-  const wallet = useAppSelector((state) => state.wallet);
+  const wallet = useAppSelector((state) => state.wallet.ethereumAddress);
+  let count = 0;
 
   const handleOnChange = (event: any) => {
     setMessageErr('');
@@ -67,7 +68,10 @@ const StakeInputBase: React.FC<Props> = ({
   }, [triggerAlert]);
 
   useEffect(() => {
-    setInputValue('');
+    if (count > 0) {
+      setInputValue('');
+    }
+    count++;
   }, [wallet])
 
   return (
