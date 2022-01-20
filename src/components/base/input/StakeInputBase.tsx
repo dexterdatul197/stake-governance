@@ -2,6 +2,8 @@ import classNames from 'classnames/bind';
 import React, { useEffect, useState } from 'react';
 import styles from './StakeInputBase.module.scss';
 import { useAppSelector } from '../../../store/hooks';
+import { stringToArr } from '../../../helpers/common';
+import { ACTION_PARAM, VALIDATE_ONLY_NUMBER_ALPHABETS } from '../../../constant/constants';
 
 const cx = classNames.bind(styles);
 
@@ -27,6 +29,9 @@ interface Props {
   onChange?: (v: any) => void;
   onKeyUp?: (e: any) => void;
   triggerAlert?: boolean;
+  regexValidate?: string;
+  errorFromChild?: (v: boolean) => void;
+  validateParamCallData?: {k: any, v: any};
 }
 
 const StakeInputBase: React.FC<Props> = ({
@@ -38,7 +43,10 @@ const StakeInputBase: React.FC<Props> = ({
   onChange = () => {},
   onKeyUp = () => {},
   value = '',
-  triggerAlert = false
+  triggerAlert = false,
+  regexValidate = '',
+  errorFromChild = () => {},
+  validateParamCallData = null
 }) => {
   const [triggerCount, setTriggerCount] = useState(0);
   const [messageErr, setMessageErr] = useState('');
@@ -48,6 +56,53 @@ const StakeInputBase: React.FC<Props> = ({
 
   const handleOnChange = (event: any) => {
     setMessageErr('');
+    if (regexValidate.length > 0) {
+      const regex = new RegExp(regexValidate);
+      if (!regex.test(event.target.value)) {
+        setMessageErr('Only number and alphabets!');
+        errorFromChild(true);
+      } else {
+        errorFromChild(false);
+      }
+    }
+    if (validateParamCallData) {
+      const index = validateParamCallData.k;
+      const obj = validateParamCallData.v;
+      const signatureArr = stringToArr(obj.signature);
+      const paramAtIndex = signatureArr[index];
+      switch (paramAtIndex) {
+        case ACTION_PARAM.ADDRESS:
+          const regex = new RegExp(VALIDATE_ONLY_NUMBER_ALPHABETS);
+          if (!regex.test(event.target.value)) {
+            setMessageErr('Invalid address!');
+            errorFromChild(true);
+          } else {
+            setMessageErr('');
+            errorFromChild(false);
+          }
+          break;
+        case ACTION_PARAM.BOOL:
+          if (event.target.value !== 'true' && event.target.value !== 'false') {
+            setMessageErr('Not match type bool!');
+            errorFromChild(true);
+          } else {
+            setMessageErr('');
+            errorFromChild(false);
+          }
+          break;
+        case ACTION_PARAM.UINT256:
+          if (isNaN(Number(event.target.value))) {
+            setMessageErr('Not match type uint256!');
+            errorFromChild(true);
+          } else {
+            setMessageErr('');
+            errorFromChild(false);
+          }
+          break;
+        default:
+          break;
+      }
+    }
     setInputValue(event.target.value);
     onChange(event.target.value);
   };

@@ -3,6 +3,7 @@ import { Collapse } from '@material-ui/core';
 import classNames from 'classnames/bind';
 import React, { useEffect, useState } from 'react';
 import removeIcon from '../../../../assets/icon/trash.svg';
+import { VALIDATE_ONLY_NUMBER_ALPHABETS } from '../../../../constant/constants';
 import { getArgs } from '../../../../helpers/common';
 import { SFormData } from '../../../../interfaces/SFormData';
 import StakeInputBase from '../../../base/input/StakeInputBase';
@@ -15,6 +16,7 @@ interface Props {
   formData?: SFormData[];
   setFormData?: (v: any) => void;
   triggerAlert?: boolean;
+  errorFromChild?: (v: boolean) => void;
 }
 const cx = classNames.bind(styles);
 
@@ -25,7 +27,8 @@ const CollapseItem: React.FC<Props> = ({
   fCallData = [],
   formData = [],
   setFormData = () => {},
-  triggerAlert = false
+  triggerAlert = false,
+  errorFromChild = () => {}
 }) => {
   const [triggerCount, setTriggerCount] = useState(0);
 
@@ -111,6 +114,8 @@ const CollapseItem: React.FC<Props> = ({
             placeholder="Address"
             onKeyUp={handleKeyupAddress}
             triggerAlert={triggerAlert}
+            regexValidate={VALIDATE_ONLY_NUMBER_ALPHABETS}
+            errorFromChild={errorFromChild}
           />
           <StakeInputBase
             validate={true}
@@ -130,10 +135,12 @@ const CollapseItem: React.FC<Props> = ({
                 name="CallData"
                 onKeyUp={(e) => handleKeyUpCallData(e, cIndex)}
                 triggerAlert={triggerAlert}
+                validateParamCallData={{k: cIndex, v: formData[index]}}
+                errorFromChild={errorFromChild}
               />
             );
           })}
-          {formData.length < +maxOperation && (
+          {formData.length <= +maxOperation && (
             <div>
               {/* {index !== 0 && (
                 <div className={cx('btn-add')}>

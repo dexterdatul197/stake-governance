@@ -193,14 +193,15 @@ const ProposalDetail: React.FC<Props> = (props) => {
         setCancelStatus('failure');
       }
     }
+    getProposal();
   };
 
   const getProposal = async () => {
     const proposalDetail = await getProposalDetail(props.match.params.proposalId);
+    console.log('PROPOSAL DETAIL', proposalDetail);
+    
     const forVotes = await getVotes(props.match.params.proposalId, true, limitUpVote);
     const againstVotes = await getVotes(props.match.params.proposalId, false, limitDownVote);
-    console.log('PROPOSAL DETAIL');
-    
     const total =
       Number(forVotes.metadata.sumVotes || '0') + Number(againstVotes.metadata.sumVotes || '0');
 
