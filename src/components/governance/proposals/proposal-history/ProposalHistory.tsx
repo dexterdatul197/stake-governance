@@ -68,10 +68,10 @@ const ProposalHistory: React.FC<Props> = ({ proposalInfo }) => {
           description={
             proposalInfo?.executed_timestamp
               ? moment(proposalInfo.executed_timestamp * 1000).format('LLL')
-              : ''
+              : (proposalInfo?.expired_timestamp ? moment(proposalInfo.expired_timestamp * 1000).format('LLL') : '')
           }
           unCheck={
-            proposalInfo?.executed_timestamp || proposalInfo?.state === 'Executed' ? false : true
+            proposalInfo?.executed_timestamp || proposalInfo?.state === 'Executed' || proposalInfo?.state === 'Expired' ? false : true
           }
         />
       </div>

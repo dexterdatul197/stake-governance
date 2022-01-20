@@ -1,20 +1,16 @@
+import { useWeb3React } from '@web3-react/core';
 import classnames from 'classnames/bind';
 import React, { useEffect, useRef, useState } from 'react';
-import { useWeb3React } from '@web3-react/core';
-import { useHistory } from 'react-router-dom';
-import Web3 from 'web3';
 import { useDispatch } from 'react-redux';
-import AddContainedSVG from '../../assets/icon/AddContainedSVG';
-import ArrowDown from '../../assets/icon/ArrowDown';
-import BscSVG from '../../assets/icon/BscSVG';
-import { isConnected } from '../../helpers/connectWallet';
+import { useHistory } from 'react-router-dom';
+import { removeManyItemsInLS } from 'src/helpers/common';
+import Web3 from 'web3';
+import { ReactComponent as ConectWalletIcon } from '../../assets/icon/wallet.svg';
 import useOnClickOutside from '../../helpers/useClickOutside';
+import useIsMobile from '../../hooks/useMobile';
 import { useAppSelector } from '../../store/hooks';
 import styles from './ConnectWallet.module.scss';
-import { setOpenConnectDialog, setEthereumAddress, setWalletName } from './redux/wallet';
-import { ReactComponent as ConectWalletIcon } from '../../assets/icon/wallet.svg';
-import useIsMobile from '../../hooks/useMobile';
-import { removeManyItemsInLS } from 'src/helpers/common';
+import { setEthereumAddress, setOpenConnectDialog, setWalletName } from './redux/wallet';
 
 const cx = classnames.bind(styles);
 
@@ -34,8 +30,11 @@ const ConnectWallet: React.FC = () => {
     setOpenDropdown(true);
   };
   const handleCloseDropdown = () => {
+<<<<<<< HEAD
     console.log('HANDLE CLICK OUTSITE');
     
+=======
+>>>>>>> 40dd21c77b13fcfcefff9549d2e6c2c0553cf690
     setOpenDropdown(false);
   };
   useOnClickOutside(ref, handleCloseDropdown);
@@ -62,10 +61,17 @@ const ConnectWallet: React.FC = () => {
     <>
       {wallet.ethereumAddress ? (
         <>
-          <div className={cx('button-logout', 'center-items')} onClick={handleOpenDropdown}>
+          <div className={cx('button-logout', 'center-items', `${address ? 'btn-address-style' : ''}`)} onClick={handleOpenDropdown}>
             <span className={cx('button__text')}>{address.toLowerCase()}</span>
           </div>
+<<<<<<< HEAD
           <div onClick={handleLogout} className={cx('btn-logout', `${openDropdown ? 'show-btn' : ''}`)} ref={ref}>
+=======
+          <div
+            onClick={handleLogout}
+            className={cx('btn-logout', `${openDropdown ? 'show-btn' : ''}`, `${address ? 'btn-address-style' : ''}`)}
+            ref={ref}>
+>>>>>>> 40dd21c77b13fcfcefff9549d2e6c2c0553cf690
             <span className={cx('button__text')}>Logout</span>
           </div>
         </>

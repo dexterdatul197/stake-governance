@@ -66,6 +66,7 @@ const ProposalDetail: React.FC<Props> = (props) => {
     executed: false,
     executedBlock: 0,
     executed_timestamp: 0,
+    expired_timestamp: 0,
     executedTxHash: '',
     forVotes: '',
     id: 0,
@@ -198,9 +199,8 @@ const ProposalDetail: React.FC<Props> = (props) => {
     const proposalDetail = await getProposalDetail(props.match.params.proposalId);
     const forVotes = await getVotes(props.match.params.proposalId, true, limitUpVote);
     const againstVotes = await getVotes(props.match.params.proposalId, false, limitDownVote);
-    console.log('PROPOSAL DETAIL: ', proposalDetail);
+    console.log('PROPOSAL DETAIL');
     
-
     const total =
       Number(forVotes.metadata.sumVotes || '0') + Number(againstVotes.metadata.sumVotes || '0');
 
@@ -236,12 +236,6 @@ const ProposalDetail: React.FC<Props> = (props) => {
   useEffect(() => {
     getProposal();
   }, [limitUpVote, limitDownVote, status]);
-
-  useEffect(() => {
-    setTimeout(() => {
-      getProposal();
-    }, 3000);
-  }, [status]);
 
   return (
     <div className={cx('proposal-detail')}>

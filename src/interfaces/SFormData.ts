@@ -93,6 +93,7 @@ export interface ProposalDetailForm {
   executed: boolean;
   executedBlock: number;
   executed_timestamp: number;
+  expired_timestamp: number;
   executedTxHash: string;
   forVotes: string;
   id: number;

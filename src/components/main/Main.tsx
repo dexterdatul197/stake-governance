@@ -104,8 +104,6 @@ const Main: React.FC = () => {
     getCurrencies();
   }, [getCurrencies]);
 
-  console.log(totalSupply)
-
   return (
     <div className={cx('text-head')}>
       {wallet.openConnectDialog ? (
