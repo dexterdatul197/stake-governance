@@ -59,7 +59,7 @@ const StakeInputBase: React.FC<Props> = ({
     if (regexValidate.length > 0) {
       const regex = new RegExp(regexValidate);
       if (!regex.test(event.target.value)) {
-        setMessageErr('Invalid ethereum address!');
+        setMessageErr('Only number and alphabets!');
         errorFromChild(true);
       } else {
         errorFromChild(false);

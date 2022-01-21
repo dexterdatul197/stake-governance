@@ -41,6 +41,7 @@
   }
   .btn-add {
     padding: 10px;
+    text-align: center;
   }
   .btn-text {
     padding: 10px 5px;
@@ -52,14 +53,15 @@
     margin: 0 auto;
     cursor: pointer;
   }
-  .btn-disable {
+  .btn-text:hover {
     padding: 10px 5px;
-    background: var(--button-deactive-balance);
+    background: var(--color-text-active);
     width: 50%;
     text-align: center;
     color: #fff;
     border-radius: 20px;
     margin: 0 auto;
+    cursor: pointer;
   }
 }
 @media screen and (max-width: 576px) {
