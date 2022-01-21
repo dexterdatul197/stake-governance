@@ -3,7 +3,7 @@ import { Collapse } from '@material-ui/core';
 import classNames from 'classnames/bind';
 import React, { useEffect, useState } from 'react';
 import removeIcon from '../../../../assets/icon/trash.svg';
-import { VALIDATE_ONLY_NUMBER_ALPHABETS } from '../../../../constant/constants';
+import { VALIDATE_ETH_ADDRESS, VALIDATE_ONLY_NUMBER_ALPHABETS } from '../../../../constant/constants';
 import { getArgs } from '../../../../helpers/common';
 import { SFormData } from '../../../../interfaces/SFormData';
 import StakeInputBase from '../../../base/input/StakeInputBase';
@@ -31,7 +31,7 @@ const CollapseItem: React.FC<Props> = ({
   errorFromChild = () => {}
 }) => {
   const [triggerCount, setTriggerCount] = useState(0);
-
+  const [disableAddNext, setDisableAddNext] = useState(true);
   const [openCollapse, setOpenCollapse] = useState(false);
   const [activeKey, setActiveKey] = useState(0);
   const handleAdd = (type: string, index: number) => {
@@ -90,6 +90,13 @@ const CollapseItem: React.FC<Props> = ({
     handleParseFunc(e.target.value);
   };
 
+  const handleErrorFromChild = (param: boolean) => {
+    errorFromChild(param);
+    if (formData[index].signature.length > 0 && formData[index].targetAddress.length) {
+      setDisableAddNext(param);
+    }
+  }
+
   useEffect((): any => {
     setTriggerCount(triggerCount + 1);
     if (triggerCount > 0) {
@@ -114,8 +121,8 @@ const CollapseItem: React.FC<Props> = ({
             placeholder="Address"
             onKeyUp={handleKeyupAddress}
             triggerAlert={triggerAlert}
-            regexValidate={VALIDATE_ONLY_NUMBER_ALPHABETS}
-            errorFromChild={errorFromChild}
+            regexValidate={VALIDATE_ETH_ADDRESS}
+            errorFromChild={handleErrorFromChild}
           />
           <StakeInputBase
             validate={true}
@@ -136,7 +143,7 @@ const CollapseItem: React.FC<Props> = ({
                 onKeyUp={(e) => handleKeyUpCallData(e, cIndex)}
                 triggerAlert={triggerAlert}
                 validateParamCallData={{k: cIndex, v: formData[index]}}
-                errorFromChild={errorFromChild}
+                errorFromChild={handleErrorFromChild}
               />
             );
           })}
@@ -153,7 +160,7 @@ const CollapseItem: React.FC<Props> = ({
                 </div>
               )} */}
               <div className={cx('btn-add')}>
-                <div className={cx('btn-text')} onClick={() => handleAdd('next', index)}>
+                <div className={cx(`${disableAddNext ? 'btn-disable' : 'btn-text'}`)} onClick={() => handleAdd('next', index)}>
                   Add to next
                 </div>
               </div>

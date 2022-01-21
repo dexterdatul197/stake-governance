@@ -94,7 +94,6 @@ const CreateProposal: React.FC = () => {
     }
 
     if (!isFulfilledInput) return;
-    console.log('ERROR FROM CHILD: ', errorFromChild);
     
     if (errorFromChild) return;
 
