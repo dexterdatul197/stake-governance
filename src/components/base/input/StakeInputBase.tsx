@@ -90,6 +90,15 @@ const StakeInputBase: React.FC<Props> = ({
             errorFromChild(false);
           }
           break;
+        case ACTION_PARAM.STRING:
+          if (event.target.value.length === 0) {
+            setMessageErr('Field cannot empty!');
+            errorFromChild(true);
+          } else {
+            setMessageErr('');
+            errorFromChild(false);
+          }
+          break;
         case ACTION_PARAM.UINT256:
           if (isNaN(Number(event.target.value))) {
             setMessageErr('Not match type uint256!');
