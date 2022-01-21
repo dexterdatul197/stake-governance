@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import styles from './StakeInputBase.module.scss';
 import { useAppSelector } from '../../../store/hooks';
 import { stringToArr } from '../../../helpers/common';
-import { ACTION_PARAM, VALIDATE_ONLY_NUMBER_ALPHABETS } from '../../../constant/constants';
+import { ACTION_PARAM, VALIDATE_ETH_ADDRESS, VALIDATE_ONLY_NUMBER_ALPHABETS } from '../../../constant/constants';
 
 const cx = classNames.bind(styles);
 
@@ -59,7 +59,7 @@ const StakeInputBase: React.FC<Props> = ({
     if (regexValidate.length > 0) {
       const regex = new RegExp(regexValidate);
       if (!regex.test(event.target.value)) {
-        setMessageErr('Only number and alphabets!');
+        setMessageErr('Invalid ethereum address!');
         errorFromChild(true);
       } else {
         errorFromChild(false);
@@ -72,7 +72,7 @@ const StakeInputBase: React.FC<Props> = ({
       const paramAtIndex = signatureArr[index];
       switch (paramAtIndex) {
         case ACTION_PARAM.ADDRESS:
-          const regex = new RegExp(VALIDATE_ONLY_NUMBER_ALPHABETS);
+          const regex = new RegExp(VALIDATE_ETH_ADDRESS);
           if (!regex.test(event.target.value)) {
             setMessageErr('Invalid address!');
             errorFromChild(true);

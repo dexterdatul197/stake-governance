@@ -96,6 +96,7 @@ export enum ACTION_PARAM {
 }
 
 export const VALIDATE_ONLY_NUMBER_ALPHABETS = '^[a-zA-Z0-9_.-]*$';
+export const VALIDATE_ETH_ADDRESS = '^0x[a-fA-F0-9]{40}$';
 
 // TESTNET
 export const GOVERNENCE_RINKEBY_ABI =

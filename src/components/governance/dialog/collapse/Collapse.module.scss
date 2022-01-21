@@ -44,13 +44,22 @@
   }
   .btn-text {
     padding: 10px 5px;
-    background: #107def;
+    background: var(--color-text-active);
     width: 50%;
     text-align: center;
     color: #fff;
     border-radius: 20px;
     margin: 0 auto;
     cursor: pointer;
+  }
+  .btn-disable {
+    padding: 10px 5px;
+    background: var(--button-deactive-balance);
+    width: 50%;
+    text-align: center;
+    color: #fff;
+    border-radius: 20px;
+    margin: 0 auto;
   }
 }
 @media screen and (max-width: 576px) {
@@ -77,25 +86,25 @@
       opacity: 0.3;
     }
     ::placeholder {
-      color: #107def;
+      color: var(--color-text-active);
       opacity: 1; /* Firefox */
     }
 
     :-ms-input-placeholder {
       /* Internet Explorer 10-11 */
-      color: #107def;
+      color: var(--color-text-active);
     }
 
     ::-ms-input-placeholder {
       /* Microsoft Edge */
-      color: #107def;
+      color: var(--color-text-active);
     }
     .btn-add {
       padding: 10px;
     }
     .btn-text {
       padding: 10px 5px;
-      background: #107def;
+      background: var(--color-text-active);
       font-size: 14px;
       width: 75%;
       text-align: center;
