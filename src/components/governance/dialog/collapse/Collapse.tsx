@@ -1,10 +1,10 @@
 /* eslint-disable array-callback-return */
-import { Collapse } from '@material-ui/core';
+import { Button, Collapse } from '@material-ui/core';
 import classNames from 'classnames/bind';
 import React, { useEffect, useState } from 'react';
 import removeIcon from '../../../../assets/icon/trash.svg';
 import { VALIDATE_ETH_ADDRESS, VALIDATE_ONLY_NUMBER_ALPHABETS } from '../../../../constant/constants';
-import { getArgs } from '../../../../helpers/common';
+import { getArgs, stringToArr } from '../../../../helpers/common';
 import { SFormData } from '../../../../interfaces/SFormData';
 import StakeInputBase from '../../../base/input/StakeInputBase';
 import styles from './Collapse.module.scss';
@@ -92,7 +92,10 @@ const CollapseItem: React.FC<Props> = ({
 
   const handleErrorFromChild = (param: boolean) => {
     errorFromChild(param);
-    if (formData[index].signature.length > 0 && formData[index].targetAddress.length) {
+    const signatureArr = stringToArr(formData[index].signature);
+    const valueArr = formData[index].value;
+    console.log('FORM DATA: ', signatureArr);
+    if (formData[index].signature.length > 0 && formData[index].targetAddress.length && valueArr.length === signatureArr.length) {
       setDisableAddNext(param);
     }
   }
@@ -160,9 +163,13 @@ const CollapseItem: React.FC<Props> = ({
                 </div>
               )} */}
               <div className={cx('btn-add')}>
-                <div className={cx(`${disableAddNext ? 'btn-disable' : 'btn-text'}`)} onClick={() => {disableAddNext ? null : handleAdd('next', index)}}>
+                <Button 
+                  className={cx(`btn-text`)} 
+                  onClick={() => handleAdd('next', index)}
+                  disabled={disableAddNext}
+                >
                   Add to next
-                </div>
+                </Button>
               </div>
             </div>
           )}
