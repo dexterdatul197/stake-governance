@@ -29,7 +29,7 @@ interface Props {
   onChange?: (v: any) => void;
   onKeyUp?: (e: any) => void;
   triggerAlert?: boolean;
-  regexValidate?: string;
+  regexValidate?: {regexRole: string, message: string};
   errorFromChild?: (v: boolean) => void;
   validateParamCallData?: {k: any, v: any};
 }
@@ -44,7 +44,7 @@ const StakeInputBase: React.FC<Props> = ({
   onKeyUp = () => {},
   value = '',
   triggerAlert = false,
-  regexValidate = '',
+  regexValidate = null,
   errorFromChild = () => {},
   validateParamCallData = null
 }) => {
@@ -56,10 +56,10 @@ const StakeInputBase: React.FC<Props> = ({
 
   const handleOnChange = (event: any) => {
     setMessageErr('');
-    if (regexValidate.length > 0) {
-      const regex = new RegExp(regexValidate);
+    if (regexValidate) {
+      const regex = new RegExp(regexValidate.regexRole);
       if (!regex.test(event.target.value)) {
-        setMessageErr('Only number and alphabets!');
+        setMessageErr(regexValidate.message);
         errorFromChild(true);
       } else {
         errorFromChild(false);
