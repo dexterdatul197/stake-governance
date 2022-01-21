@@ -160,7 +160,7 @@ const CollapseItem: React.FC<Props> = ({
                 </div>
               )} */}
               <div className={cx('btn-add')}>
-                <div className={cx(`${disableAddNext ? 'btn-disable' : 'btn-text'}`)} onClick={() => handleAdd('next', index)}>
+                <div className={cx(`${disableAddNext ? 'btn-disable' : 'btn-text'}`)} onClick={() => {disableAddNext ? null : handleAdd('next', index)}}>
                   Add to next
                 </div>
               </div>
