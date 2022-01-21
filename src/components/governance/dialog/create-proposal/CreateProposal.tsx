@@ -10,6 +10,7 @@ import 'react-markdown-editor-lite/lib/index.css';
 import { useDispatch } from 'react-redux';
 import { getProposalList } from '../../../../apis/apis';
 import axiosInstance from '../../../../config/config';
+import { VALIDATE_ONLY_NUMBER_ALPHABETS } from '../../../../constant/constants';
 import { currentAddress, encodeParameters, getArgs } from '../../../../helpers/common';
 import { isConnected } from '../../../../helpers/connectWallet';
 import { governance } from '../../../../helpers/ContractService';
@@ -279,7 +280,7 @@ const CreateProposal: React.FC = () => {
                 validate={true}
                 name={'Title'}
                 triggerAlert={triggerAlert}
-                regexValidate='^[a-zA-Z0-9_.-\s]*$'
+                regexValidate={{regexRole: VALIDATE_ONLY_NUMBER_ALPHABETS, message: 'Only number and alphabets!'}}
                 errorFromChild={handleErrorFromChild}
               />
             </div>

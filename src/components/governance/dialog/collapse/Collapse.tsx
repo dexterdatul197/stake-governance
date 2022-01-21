@@ -94,7 +94,6 @@ const CollapseItem: React.FC<Props> = ({
     errorFromChild(param);
     const signatureArr = stringToArr(formData[index].signature);
     const valueArr = formData[index].value;
-    console.log('FORM DATA: ', signatureArr);
     if (formData[index].signature.length > 0 && formData[index].targetAddress.length && valueArr.length === signatureArr.length) {
       setDisableAddNext(param);
     }
@@ -124,7 +123,7 @@ const CollapseItem: React.FC<Props> = ({
             placeholder="Address"
             onKeyUp={handleKeyupAddress}
             triggerAlert={triggerAlert}
-            regexValidate={VALIDATE_ETH_ADDRESS}
+            regexValidate={{regexRole: VALIDATE_ETH_ADDRESS, message: 'Invalid ethereum address!'}}
             errorFromChild={handleErrorFromChild}
           />
           <StakeInputBase
