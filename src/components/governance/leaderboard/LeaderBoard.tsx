@@ -58,7 +58,7 @@ const LeaderBoard: React.FC = () => {
                   {format(formatChnStake)}
                 </TableCell>
                 <TableCell align="right" className={cx('table-row__table-cell')}>
-                  {new BigNumber(voteWeight).multipliedBy(100).toFixed(4).toString()} %
+                  {voteWeight} %
                 </TableCell>
                 <TableCell align="right" className={cx('table-row__table-cell')}>
                   {proposalsVoted}

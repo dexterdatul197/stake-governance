@@ -116,7 +116,7 @@ const AreaChart: React.FC<Props> = (props) => {
   };
 
   useEffect(() => {
-    eventBus.on(SocketEvent.tvlDataUpdate, async (data: any) => {});
+    // eventBus.on(SocketEvent.tvlDataUpdate, async (data: any) => {});
     chainPriceDataForChart(props.ohclData, props.tvlData);
   }, [props.ohclData, props.tvlData]);
 

@@ -1,4 +1,5 @@
 export enum SocketEvent {
   transactionUpdated = 'transactionUpdated',
-  tvlDataUpdate = 'tvlDataUpdated'
+  tvlDataUpdate = 'tvlDataUpdated',
+  updateProposal='updateProposal'
 }
