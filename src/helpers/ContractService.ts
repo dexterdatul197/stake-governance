@@ -8,6 +8,7 @@ import {
 import {
   CHN_TOKEN_MAINNET_ABI,
   CHN_TOKEN_RINKEBY_ABI,
+  CLAIM_ABI,
   GOVERNENCE_MAINNET_ABI,
   GOVERNENCE_RINKEBY_ABI,
   STAKING_RINKEBY_ABI
@@ -59,6 +60,11 @@ export const ethAddressPage = () => {
     ? process.env.REACT_APP_ETHEREUM_MAIN_ADDRESS
     : process.env.REACT_APP_ETHEREUM_TESTNET_ADDRESS;
 };
+
+export const claimContract = async () => {
+  const claimAddress = process.env.REACT_APP_CLAIM_ADDRESS;
+  return await createInstanceContract(claimAddress as string, JSON.parse(CLAIM_ABI));
+}
 
 const call = (method: any, params: any) => {
   return new Promise((resolve, reject) => {

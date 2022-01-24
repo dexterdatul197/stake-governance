@@ -27,6 +27,9 @@ import { isConnected } from '../../../../helpers/connectWallet';
 import { setVotingWeight } from '../../redux/Governance';
 import { useDispatch } from 'react-redux';
 import { ethers } from 'ethers';
+import eventBus from '../../../../event/event-bus';
+import { SocketEvent } from '../../../../socket/SocketEvent';
+import { sleep } from '../../../../helpers/sleep';
 const cx = classNames.bind(styles);
 interface Props {
   proposalId: number;
@@ -198,7 +201,6 @@ const ProposalDetail: React.FC<Props> = (props) => {
 
   const getProposal = async () => {
     const proposalDetail = await getProposalDetail(props.match.params.proposalId);
-    console.log('PROPOSAL DETAIL', proposalDetail);
     
     const forVotes = await getVotes(props.match.params.proposalId, true, limitUpVote);
     const againstVotes = await getVotes(props.match.params.proposalId, false, limitDownVote);
@@ -237,6 +239,14 @@ const ProposalDetail: React.FC<Props> = (props) => {
   useEffect(() => {
     getProposal();
   }, [limitUpVote, limitDownVote, status]);
+
+  useEffect(() => {
+    eventBus.on(SocketEvent.updateProposal, async (data: any) => {
+      console.log('PROPOSAL DETAIL SOCKET: ', data);
+      
+      await sleep(1000);
+    });
+  }, []);
 
   return (
     <div className={cx('proposal-detail')}>

@@ -4,7 +4,10 @@ import classNames from 'classnames/bind';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { getProposalList } from '../../../apis/apis';
+import eventBus from '../../../event/event-bus';
+import { sleep } from '../../../helpers/sleep';
 import { Filter } from '../../../interfaces/SFormData';
+import { SocketEvent } from '../../../socket/SocketEvent';
 import { useAppSelector } from '../../../store/hooks';
 import Proposal from './proposal/Proposal';
 import styles from './Proposals.module.scss';
@@ -49,6 +52,12 @@ const Proposals: React.FC = () => {
   useEffect(() => {
     dispatch(getProposalList(conditionFilter));
   }, [conditionFilter.limit, conditionFilter.page, currentAccount, dispatch]);
+
+  useEffect(() => {
+    eventBus.on(SocketEvent.updateProposal, async (data: any) => {
+      await sleep(1000);
+    });
+  }, []);
 
   return (
     <div className={cx('governance-proposal')}>

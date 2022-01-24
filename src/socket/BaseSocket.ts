@@ -25,11 +25,18 @@ export class BaseSocket {
     });
     this.listenTransactionEvent();
     this.listenTVLDataEvent();
+    this.listenProposalState();
   }
 
   listenTransactionEvent(): void {
     this.socket.on('staking_history', (data: any) => {
       eventBus.dispatch(SocketEvent.transactionUpdated, data);
+    });
+  }
+
+  listenProposalState(): void {
+    this.socket.on('proposal_state', (data: any) => {
+      eventBus.dispatch(SocketEvent.updateProposal, data);
     });
   }
 

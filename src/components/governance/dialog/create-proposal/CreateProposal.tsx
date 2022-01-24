@@ -10,7 +10,7 @@ import 'react-markdown-editor-lite/lib/index.css';
 import { useDispatch } from 'react-redux';
 import { getProposalList } from '../../../../apis/apis';
 import axiosInstance from '../../../../config/config';
-import { VALIDATE_ONLY_NUMBER_ALPHABETS } from '../../../../constant/constants';
+import { VALIDATE_ONLY_NUMBER_ALPHABETS, VALIDATE_ONLY_NUMBER_ALPHABETS_AND_SPACE } from '../../../../constant/constants';
 import { currentAddress, encodeParameters, getArgs } from '../../../../helpers/common';
 import { isConnected } from '../../../../helpers/connectWallet';
 import { governance } from '../../../../helpers/ContractService';
@@ -205,6 +205,11 @@ const CreateProposal: React.FC = () => {
 
   const handleEditorChange = (text: TextBinding) => {
     setDescription(text.text);
+    if (text.text) {
+      setErrorMsg('');
+    } else {
+      setErrorMsg('Description is required');
+    }
   };
 
   const childUpdateFormData = (newFormData: SFormData[]) => {
@@ -214,6 +219,14 @@ const CreateProposal: React.FC = () => {
   const handleChangeTitle = (value: string) => {
     setTitle(value);
   };
+
+  const handleBlurChange = (value: React.FocusEvent<HTMLTextAreaElement>) => {
+    if (value.target.value) {
+      setErrorMsg('');
+    } else {
+      setErrorMsg('Description is required');
+    }
+  }
 
   useEffect(() => {
     if (currentAccount.ethereumAddress) {
@@ -280,7 +293,7 @@ const CreateProposal: React.FC = () => {
                 validate={true}
                 name={'Title'}
                 triggerAlert={triggerAlert}
-                regexValidate={{regexRole: VALIDATE_ONLY_NUMBER_ALPHABETS, message: 'Only number and alphabets!'}}
+                regexValidate={{regexRole: VALIDATE_ONLY_NUMBER_ALPHABETS_AND_SPACE, message: 'Only number and alphabets!'}}
                 errorFromChild={handleErrorFromChild}
               />
             </div>
@@ -294,6 +307,7 @@ const CreateProposal: React.FC = () => {
                 }}
                 renderHTML={(text) => mdParser.render(text)}
                 onChange={handleEditorChange}
+                onBlur={handleBlurChange}
               />
               {errorMsg && <p className={cx('details-error-message')}>{errorMsg}</p>}
             </div>

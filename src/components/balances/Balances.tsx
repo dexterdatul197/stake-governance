@@ -1,22 +1,22 @@
-import Web3 from 'web3';
 import { Box, Button } from '@material-ui/core';
-import { BigNumber } from '@0x/utils';
+import { useWeb3React } from '@web3-react/core';
 import classNames from 'classnames/bind';
+import { ethers } from 'ethers';
 import React, { useCallback, useEffect, useReducer, useState } from 'react';
 import { currencyFormatter, currentAddress } from '../../helpers/common';
 import { isConnected } from '../../helpers/connectWallet';
-import { getCHNBalance, stakingToken } from '../../helpers/ContractService';
+import { claimContract, getCHNBalance, stakingToken } from '../../helpers/ContractService';
 import useIsMobile from '../../hooks/useMobile';
 import { useAppSelector } from '../../store/hooks';
+import { openSnackbar, SnackbarVariant } from '../../store/snackbar';
+import ConnectWalletPage from '../connect-wallet-page/ConnectWalletPage';
+import { setVotingWeight } from '../governance/redux/Governance';
 import styles from './Balances.module.scss';
 import Modal from './StakeModal';
 import TableComponent from './Table';
 import CardComponent from './TableOnMobile';
 import ModalWithDraw from './WithDrawModal';
-import ConnectWalletPage from '../connect-wallet-page/ConnectWalletPage';
-import { setVotingWeight } from '../governance/redux/Governance';
-import { useWeb3React } from '@web3-react/core';
-import { ethers } from 'ethers';
+import loadingSvg from 'src/assets/icon/loading.svg';
 
 const commaNumber = require('comma-number');
 const format = commaNumber.bindWith(',', '.');
@@ -80,6 +80,7 @@ const Balances: React.FC = () => {
   const [earn, setEarn] = useState(0);
   const [updateSmartContract, setUpdateSmartContract] = useState(false);
   const [chnToken, setChntoken] = useState(0);
+  const [claimLoading, setClaimLoading] = useState(false);
 
   const handleActiveClass = () => {
     dispatch({ type: 'OPEN_STAKE' });
@@ -99,6 +100,26 @@ const Balances: React.FC = () => {
 
   const handleUpdateSmartContract = () => {
     setUpdateSmartContract((prevState) => !prevState);
+  };
+
+  const handleClaim = async () => {
+    setClaimLoading(true);
+    const contract = await claimContract();
+    contract.claimReward(0).then(async (res: any) => {
+      await res.wait();
+      const connectedAddress = currentAddress(wallet);
+      const contract = await stakingToken();
+      const getValueEarned = await contract.pendingReward(0, connectedAddress);
+      const formatValueEarned = ethers.utils.formatEther(getValueEarned);
+      setEarn(parseFloat(formatValueEarned));
+      setClaimLoading(false);
+      dispatch(
+        openSnackbar({
+          message: 'Claim success',
+          variant: SnackbarVariant.SUCCESS
+        })
+      );
+    });
   };
 
   const getValueBalance = useCallback(async () => {
@@ -185,6 +206,20 @@ const Balances: React.FC = () => {
                   'button-deactive': !isActiveWithDraw
                 })}>
                 WithDraw
+              </Button>
+            </Box>
+            <Box className={cx('btn-claim')}>
+              <Button className={cx('switcher_claim')} onClick={handleClaim}>
+                {claimLoading ? (
+                  <img
+                    src={loadingSvg}
+                    className={cx('loading-rotate')}
+                    style={{ width: 18, margin: 0 }}
+                    alt=""
+                  />
+                ) : (
+                  'Claim'
+                )}
               </Button>
             </Box>
           </Box>

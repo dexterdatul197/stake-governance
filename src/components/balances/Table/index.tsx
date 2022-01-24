@@ -51,7 +51,7 @@ const TableComponent = () => {
   }, [wallet.ethereumAddress]);
 
   useEffect(() => {
-    eventBus.on(SocketEvent.transactionUpdated, async () => {
+    eventBus.on(SocketEvent.transactionUpdated, async (data: any) => {
       await sleep(1000);
       if (page === 0) {
         dispatch(getTransactionHistory(filter));
@@ -82,6 +82,8 @@ const TableComponent = () => {
         return 'Stake';
       case 1:
         return 'Withdraw';
+      case 2:
+        return 'Claim';
       default:
         return 'Stake';
     }
@@ -92,6 +94,42 @@ const TableComponent = () => {
       return str.substr(0, 5) + '...' + str.substr(str.length - 5, str.length);
     }
     return str;
+  };
+
+  const getReward = (row: any) => {
+    if (row.type === 2) {
+      return (
+        <>
+          <span>{Number(ethers.utils.formatEther(row.reward || '0')).toFixed(4)}</span>
+          <span className={cx('txt-usd')}>
+            {' $' +
+              new BigNumber(ethers.utils.formatEther(row.reward || '0'))
+                .multipliedBy(row.price)
+                .toFixed(2)}
+          </span>
+        </>
+      );
+    } else {
+      return '--';
+    }
+  };
+
+  const getAmount = (row: any) => {
+    if (row.type !== 2) {
+      return (
+        <>
+          <span>{Number(ethers.utils.formatEther(row.amount)).toFixed(4)}</span>
+          <span className={cx('txt-usd')}>
+            {' $' +
+              new BigNumber(ethers.utils.formatEther(row.amount))
+                .multipliedBy(row.price)
+                .toFixed(2)}
+          </span>
+        </>
+      );
+    } else {
+      return '--';
+    }
   };
 
   return (
@@ -105,8 +143,7 @@ const TableComponent = () => {
                 align={'left'}
                 padding={headCell.disablePadding ? 'none' : 'normal'}
                 sortDirection={orderBy === headCell.id ? order : false}
-                className={cx('table-head__cell')}
-              >
+                className={cx('table-head__cell')}>
                 {headCell.label}
               </TableCell>
             ))}
@@ -122,8 +159,7 @@ const TableComponent = () => {
                   id={labelId}
                   // scope="row"
                   align={'left'}
-                  className={cx('table-body__cell')}
-                >
+                  className={cx('table-body__cell')}>
                   {row.id}
                 </TableCell>
                 <TableCell align={'left'} className={cx('table-body__cell')}>
@@ -143,29 +179,11 @@ const TableComponent = () => {
                   <div className={cx('txt-type')}>{getTypeTxt(row.type)}</div>
                 </TableCell>
                 <TableCell align={'left'} className={cx('table-body__cell')}>
-                  <span>{Number(ethers.utils.formatEther(row.amount)).toFixed(4)}</span>
-                  <span className={cx('txt-usd')}>
-                    {' $' +
-                      new BigNumber(ethers.utils.formatEther(row.amount))
-                        .multipliedBy(row.price)
-                        .toFixed(2)}
-                  </span>
+                  {getAmount(row)}
                   {/* {parseFloat(ethers.utils.formatEther((row.amount || '0') as string)).toFixed(4)} */}
                 </TableCell>
                 <TableCell align={'left'} className={cx('table-body__cell')}>
-                  {row.type === 1 ? (
-                    <>
-                      <span>{Number(ethers.utils.formatEther(row.reward || '0')).toFixed(4)}</span>
-                      <span className={cx('txt-usd')}>
-                        {' $' +
-                          new BigNumber(ethers.utils.formatEther(row.reward || '0'))
-                            .multipliedBy(row.price)
-                            .toFixed(2)}
-                      </span>
-                    </>
-                  ) : (
-                    '--'
-                  )}
+                  {getReward(row)}
                 </TableCell>
                 <TableCell align={'left'} className={cx('table-body__cell')}>
                   {moment(row.updated_at).format(FORMAT_DATE)}
