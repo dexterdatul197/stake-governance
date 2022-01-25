@@ -139,6 +139,7 @@ const HistoryDetail = (props: Props) => {
         })
       : null;
   }, []);
+  
 
   return (
     <Box className={cx('history-content')}>
@@ -171,7 +172,7 @@ const HistoryDetail = (props: Props) => {
           ];
           return (
             <Box
-              onClick={() => history.push(history.push(`/proposal/${id}`))}
+              // onClick={() => history.push(history.push(`/proposal/${id}`))}
               className={cx('history-content__main')}
               key={id}>
               {renderData(content, index)}

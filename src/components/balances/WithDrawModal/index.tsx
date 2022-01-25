@@ -52,8 +52,7 @@ const BootstrapDialogTitle = (props: any) => {
             right: 8,
             top: 8,
             color: (theme) => theme.palette.grey[500]
-          }}
-        >
+          }}>
           <CloseIcon />
         </IconButton>
       ) : null}
@@ -110,9 +109,10 @@ const WithDraw = (props: Props) => {
         setProgress(false);
       }, 1000);
       const contract = await stakingToken();
-      console.log(new BigNumber(value.stake.toFixed(4).toString()).eq(value.defaultValue.toString()));
+      console.log(new BigNumber(stake.toFixed(4).toString()).eq(value.defaultValue.toString()));
+
       // withdraw max
-      if (new BigNumber(value.stake.toFixed(4).toString()).eq(value.defaultValue.toString())) {
+      if (new BigNumber(stake.toFixed(4).toString()).eq(value.defaultValue.toString())) {
         const res = (await contract.withdraw(0, value.stake)) as any;
         await res.wait();
         setDone(false);
@@ -125,7 +125,7 @@ const WithDraw = (props: Props) => {
         handleUpdateSmartContract();
 
         // custom withdraw
-      } else if (value.defaultValue !== 0) {
+      } else if (stake !== 0) {
         const priceDefault = web3.utils.toWei(String(value.defaultValue), 'ether');
         const res = await contract.withdraw(0, priceDefault);
         await res.wait();
@@ -137,7 +137,22 @@ const WithDraw = (props: Props) => {
           })
         );
         handleUpdateSmartContract();
-      }else {
+      } else if (value.earn > 0) {
+        handleCloseModalRefresh();
+        const res = (await contract.withdraw(
+          0,
+          web3.utils.toWei(String(value.earn), 'ether')
+        )) as any;
+        await res.wait();
+        setDone(false);
+        dispatch(
+          openSnackbar({
+            message: 'Withdraw Success',
+            variant: SnackbarVariant.SUCCESS
+          })
+        );
+        handleUpdateSmartContract();
+      } else {
         dispatch(
           openSnackbar({
             message: 'Withdraw Failed',
@@ -188,14 +203,12 @@ const WithDraw = (props: Props) => {
         handleCloseModalRefresh();
       }}
       maxWidth="md"
-      disableEscapeKeyDown
-    >
+      disableEscapeKeyDown>
       <BootstrapDialogTitle
         id="customized-dialog-title"
         onClose={() => {
           handleCloseModalRefresh();
-        }}
-      >
+        }}>
         Withdraw
       </BootstrapDialogTitle>
       <DialogContent className={cx('dialog-content')}>
@@ -212,7 +225,7 @@ const WithDraw = (props: Props) => {
             </Box>
           </Box>
           <Box className={cx('main-right')}>
-            <Typography className={cx('main-right__price')}>{earnValue ? earnValue.toFixed(4) : 0}</Typography>
+            <Typography className={cx('main-right__price')}>{earnValue ? earnValue : 0}</Typography>
             <Input
               className={cx('main-right__quantity')}
               disableUnderline
@@ -224,7 +237,7 @@ const WithDraw = (props: Props) => {
             <span onClick={getValueStake} className={cx('text-all')}>
               Max
             </span>
-            {value.defaultValue > Number(stake) && (
+            {value.defaultValue > Number(new BigNumber(stake).toFixed(4)) && (
               <div style={{ color: 'red' }}>Insufficient CHN balance</div>
             )}
             {!value.isValid && <div style={{ color: 'red' }}>Entered Number is invalid</div>}
@@ -235,13 +248,12 @@ const WithDraw = (props: Props) => {
         <Button
           disabled={
             !value.isValid ||
-            value.defaultValue > Number(stake) ||
+            value.defaultValue > Number(new BigNumber(stake).toFixed(4)) ||
             value.defaultValue === 0 ||
             done === true
           }
           onClick={handleWithdraw}
-          className={cx('button-action')}
-        >
+          className={cx('button-action')}>
           {done ? (
             <img
               src={loadingSvg}
