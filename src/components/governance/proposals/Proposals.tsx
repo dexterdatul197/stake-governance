@@ -98,7 +98,7 @@ const Proposals: React.FC = () => {
         rowsPerPage={rowPerPage}
         page={currentPage}
         onPageChange={handleChangePage}
-        classes={!isMobile ? paginationClasses : mobilePaginationClasses}
+        classes={isMobile || proposals.data.length !== 0 ? mobilePaginationClasses : paginationClasses}
       />
     </div>
   );
