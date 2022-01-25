@@ -210,7 +210,9 @@ const WithDraw = (props: Props) => {
             </Box>
           </Box>
           <Box className={cx('main-right')}>
-            <Typography className={cx('main-right__price')}>{earnValue ? earnValue.toFixed(4) : 0}</Typography>
+            <Typography className={cx('main-right__price')}>
+              {earnValue ? earnValue.toFixed(4) : 0}
+            </Typography>
             <Input
               className={cx('main-right__quantity')}
               disableUnderline
@@ -235,6 +237,7 @@ const WithDraw = (props: Props) => {
             !value.isValid ||
             value.defaultValue > Number(new BigNumber(stake).toFixed(4)) ||
             value.defaultValue === 0 ||
+            value.defaultValue.toString() === '0' ||
             done === true
           }
           onClick={handleWithdraw}
