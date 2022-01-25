@@ -110,9 +110,9 @@ const WithDraw = (props: Props) => {
         setProgress(false);
       }, 1000);
       const contract = await stakingToken();
-      console.log(new BigNumber(stake.toFixed(4).toString()).eq(value.defaultValue.toString()));
+      console.log(new BigNumber(value.stake.toFixed(4).toString()).eq(value.defaultValue.toString()));
       // withdraw max
-      if (new BigNumber(stake.toFixed(4).toString()).eq(value.defaultValue.toString())) {
+      if (new BigNumber(value.stake.toFixed(4).toString()).eq(value.defaultValue.toString())) {
         const res = (await contract.withdraw(0, value.stake)) as any;
         await res.wait();
         setDone(false);
@@ -137,22 +137,7 @@ const WithDraw = (props: Props) => {
           })
         );
         handleUpdateSmartContract();
-      } else if (value.earn > 0) {
-        handleCloseModalRefresh();
-        const res = (await contract.withdraw(
-          0,
-          web3.utils.toWei(String(value.earn), 'ether')
-        )) as any;
-        await res.wait();
-        setDone(false);
-        dispatch(
-          openSnackbar({
-            message: 'Withdraw Success',
-            variant: SnackbarVariant.SUCCESS
-          })
-        );
-        handleUpdateSmartContract();
-      } else {
+      }else {
         dispatch(
           openSnackbar({
             message: 'Withdraw Failed',
