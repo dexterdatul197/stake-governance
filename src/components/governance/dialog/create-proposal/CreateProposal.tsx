@@ -350,7 +350,7 @@ const CreateProposal: React.FC = () => {
           </div> */}
           <Button
             className={cx('btn-create')}
-            // disabled={isLoading || formData.length > maxOperation || description.trim().length === 0}
+            disabled={isLoading || formData.length > maxOperation || description.trim().length === 0}
             onClick={handleClickConfirm}>
             {isLoading && (
               <div>
