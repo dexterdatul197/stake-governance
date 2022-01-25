@@ -52,7 +52,7 @@ const Detail = (props: Props) => {
           <span>{`${address.substr(0, 4)}...${address.substr(address.length - 4, 4)}`}</span>
           <Box className={cx('address')}>
             <span onClick={() => goToEthereumAddress(address)}>{address}</span>
-            <AddressIcon style={{ cursor: 'pointer' }} />
+            <AddressIcon style={{ cursor: 'pointer' }} onClick={() => goToEthereumAddress(address)} />
           </Box>
         </Box>
 

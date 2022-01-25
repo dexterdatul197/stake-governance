@@ -148,11 +148,14 @@ const Balances: React.FC = () => {
       const getValueStake = await contract.userInfo(0, connectedAddress);
       const getValueEarned = await contract.pendingReward(0, connectedAddress);
 
-      const formatValueStake = ethers.utils.formatEther(getValueStake.amount);
-      const formatValueEarned = ethers.utils.formatEther(getValueEarned);
+      const formatValueStake = parseFloat(ethers.utils.formatEther(getValueStake.amount));
+      const formatValueEarned = parseFloat(ethers.utils.formatEther(getValueEarned));
+
+      console.log('TOTAL STAKE IN POOL: ', formatValueEarned, formatValueStake);
+      
       dispatch(setVotingWeight(formatValueStake));
-      setStake(parseFloat(formatValueStake));
-      setEarn(parseFloat(formatValueEarned));
+      setStake(formatValueStake);
+      setEarn(formatValueEarned);
     } catch (error) {
       console.log('getTotalStakeInPool', error);
     }
@@ -196,6 +199,7 @@ const Balances: React.FC = () => {
 
             <Box className={`${cx('switcher')}`}>
               <Button
+                disabled={walletValue === 0.0}
                 onClick={handleActiveClass}
                 className={cx('switcher_stake', {
                   'button-active': isActive,
@@ -204,6 +208,7 @@ const Balances: React.FC = () => {
                 Stake
               </Button>
               <Button
+                disabled={stake === 0.0}
                 onClick={handleActiveWithDraw}
                 className={cx('switcher_withdraw', {
                   'button-active': isActiveWithDraw,
@@ -213,7 +218,7 @@ const Balances: React.FC = () => {
               </Button>
             </Box>
             <Box className={cx('btn-claim')}>
-              <Button className={cx('switcher_claim')} onClick={handleClaim}>
+              <Button className={cx('switcher_claim')} onClick={handleClaim} disabled={claimLoading || earn === 0.0}>
                 {claimLoading ? (
                   <img
                     src={loadingSvg}

@@ -58,6 +58,11 @@ const CollapseItem: React.FC<Props> = ({
   const handleRemove = (index: number) => {
     if (index !== 0) formData[index].isRemove = true;
     setFormData(formData);
+    const signatureArr = stringToArr(formData[index].signature);
+    const valueArr = formData[index].value;
+    if (formData[index].signature.length > 0 && formData[index].targetAddress.length && valueArr.length === signatureArr.length) {
+      errorFromChild(false);
+    }
   };
   const handleKeyUpCommon = (type: string, idx: number, subIdx: any, v: any) => {
     if (type === 'targetAddress') {
