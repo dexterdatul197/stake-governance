@@ -7,7 +7,7 @@ import { currencyFormatter, currentAddress } from '../../helpers/common';
 import { isConnected } from '../../helpers/connectWallet';
 import { claimContract, getCHNBalance, stakingToken } from '../../helpers/ContractService';
 import useIsMobile from '../../hooks/useMobile';
-import { useAppSelector } from '../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { openSnackbar, SnackbarVariant } from '../../store/snackbar';
 import ConnectWalletPage from '../connect-wallet-page/ConnectWalletPage';
 import { setVotingWeight } from '../governance/redux/Governance';
@@ -17,6 +17,7 @@ import TableComponent from './Table';
 import CardComponent from './TableOnMobile';
 import ModalWithDraw from './WithDrawModal';
 import loadingSvg from 'src/assets/icon/loading.svg';
+import { useDispatch } from 'react-redux';
 
 const commaNumber = require('comma-number');
 const format = commaNumber.bindWith(',', '.');
@@ -62,6 +63,7 @@ const dataReducer = (state = initialState, action: any) => {
 };
 
 const Balances: React.FC = () => {
+  const dispatchSystem = useAppDispatch();
   const [state, dispatch] = useReducer(dataReducer, {
     isActive: false,
     isActiveWithDraw: false,
@@ -105,20 +107,22 @@ const Balances: React.FC = () => {
   const handleClaim = async () => {
     setClaimLoading(true);
     const contract = await claimContract();
-    contract.claimReward(0).then(async (res: any) => {
+    contract.claimReward(0)
+    .then(async (res: any) => {
       await res.wait();
       const connectedAddress = currentAddress(wallet);
       const contract = await stakingToken();
       const getValueEarned = await contract.pendingReward(0, connectedAddress);
       const formatValueEarned = ethers.utils.formatEther(getValueEarned);
       setEarn(parseFloat(formatValueEarned));
+      dispatchSystem(openSnackbar({message: 'Claim success!', variant: SnackbarVariant.SUCCESS}));
       setClaimLoading(false);
-      dispatch(
-        openSnackbar({
-          message: 'Claim success',
-          variant: SnackbarVariant.SUCCESS
-        })
-      );
+    })
+    .catch((error: any) => {
+      if (error.code === 4001) {
+        dispatchSystem(openSnackbar({message: 'User denied transaction signature!', variant: SnackbarVariant.ERROR}));
+      }
+      setClaimLoading(false);
     });
   };
 
