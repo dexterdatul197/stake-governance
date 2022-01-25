@@ -137,21 +137,6 @@ const WithDraw = (props: Props) => {
           })
         );
         handleUpdateSmartContract();
-      } else if (value.earn > 0) {
-        handleCloseModalRefresh();
-        const res = (await contract.withdraw(
-          0,
-          web3.utils.toWei(String(value.earn), 'ether')
-        )) as any;
-        await res.wait();
-        setDone(false);
-        dispatch(
-          openSnackbar({
-            message: 'Withdraw Success',
-            variant: SnackbarVariant.SUCCESS
-          })
-        );
-        handleUpdateSmartContract();
       } else {
         dispatch(
           openSnackbar({
