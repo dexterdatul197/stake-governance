@@ -236,7 +236,7 @@ const WithDraw = (props: Props) => {
           disabled={
             !value.isValid ||
             value.defaultValue > Number(stake) ||
-            (value.defaultValue === 0) ||
+            (value.defaultValue === '') ||
             done === true
           }
           onClick={handleWithdraw}
