@@ -210,7 +210,7 @@ const WithDraw = (props: Props) => {
             </Box>
           </Box>
           <Box className={cx('main-right')}>
-            <Typography className={cx('main-right__price')}>{earnValue ? earnValue : 0}</Typography>
+            <Typography className={cx('main-right__price')}>{earnValue ? earnValue.toFixed(4) : 0}</Typography>
             <Input
               className={cx('main-right__quantity')}
               disableUnderline
