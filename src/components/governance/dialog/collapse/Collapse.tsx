@@ -34,6 +34,7 @@ const CollapseItem: React.FC<Props> = ({
   const [disableAddNext, setDisableAddNext] = useState(true);
   const [openCollapse, setOpenCollapse] = useState(false);
   const [activeKey, setActiveKey] = useState(0);
+  const [isLatIndex, setIslatIndex] = useState(false);
   const handleAdd = (type: string, index: number) => {
     if (type === 'next') {
       formData.splice(index + 1, 0, {
@@ -41,7 +42,8 @@ const CollapseItem: React.FC<Props> = ({
         targetAddress: '',
         value: [],
         signature: '',
-        callData: []
+        callData: [],
+        hasError: false
       });
     } else {
       formData.splice(index, 0, {
@@ -49,20 +51,16 @@ const CollapseItem: React.FC<Props> = ({
         targetAddress: '',
         value: [],
         signature: '',
-        callData: []
+        callData: [],
+        hasError: false
       });
     }
     setFormData(formData);
     setActiveKey(type === 'next' ? index + 1 : index);
   };
   const handleRemove = (index: number) => {
-    if (index !== 0) formData[index].isRemove = true;
+    if (index !== 0) formData.splice(index, 1);
     setFormData(formData);
-    const signatureArr = stringToArr(formData[index].signature);
-    const valueArr = formData[index].value;
-    if (formData[index].signature.length > 0 && formData[index].targetAddress.length && valueArr.length === signatureArr.length) {
-      errorFromChild(false);
-    }
   };
   const handleKeyUpCommon = (type: string, idx: number, subIdx: any, v: any) => {
     if (type === 'targetAddress') {
@@ -97,12 +95,20 @@ const CollapseItem: React.FC<Props> = ({
 
   const handleErrorFromChild = (param: boolean) => {
     errorFromChild(param);
+    formData[index].hasError = param;
     const signatureArr = stringToArr(formData[index].signature);
     const valueArr = formData[index].value;
     if (formData[index].signature.length > 0 && formData[index].targetAddress.length && valueArr.length === signatureArr.length) {
       setDisableAddNext(param);
     }
   }
+
+  useEffect(() => {
+    console.log('COLLAPSE ', index, formData.length);
+    if (index === (formData.length - 1)) {
+      setIslatIndex(true);
+    }
+  }, [formData]);
 
   useEffect((): any => {
     setTriggerCount(triggerCount + 1);
@@ -170,9 +176,9 @@ const CollapseItem: React.FC<Props> = ({
                 <Button 
                   className={cx(`btn-text`)} 
                   onClick={() => handleAdd('next', index)}
-                  disabled={disableAddNext}
+                  disabled={(disableAddNext && !isLatIndex)}
                 >
-                  Add to next
+                  Add to next {`${disableAddNext} & ${isLatIndex}`}
                 </Button>
               </div>
             </div>
