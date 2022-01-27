@@ -10,6 +10,8 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import store from './store/store';
 
+console.warn = () => {}
+
 function getLibrary(provider: any) {
   return new Web3(provider);
 }
