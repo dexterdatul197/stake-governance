@@ -1,6 +1,6 @@
 import { useWeb3React } from '@web3-react/core';
 import classnames from 'classnames/bind';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { removeManyItemsInLS } from 'src/helpers/common';
@@ -34,11 +34,15 @@ const ConnectWallet: React.FC = () => {
   };
   useOnClickOutside(ref, handleCloseDropdown);
 
-  useEffect(() => {
-    handleCloseDropdown();
+  const handleUpdateAddress = useCallback(() => {
     const address = wallet.ethereumAddress.slice(0, 4) + '...' + wallet.ethereumAddress.slice(-4);
     setAddress(address);
-  }, [wallet]);
+  }, [address,wallet]);
+
+  useEffect(() => {
+    handleCloseDropdown();
+    handleUpdateAddress();
+  }, [handleUpdateAddress]);
 
   const handleLogout = async () => {
     await deactivate();
@@ -49,7 +53,7 @@ const ConnectWallet: React.FC = () => {
     window.localStorage.removeItem('ethereumAddress');
     history.push('/');
     setOpenDropdown(false);
-    history.go(0)
+    window.location.reload()
   };
 
   return (
