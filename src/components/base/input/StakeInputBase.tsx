@@ -145,6 +145,10 @@ const StakeInputBase: React.FC<Props> = ({
     count++;
   }, [wallet])
 
+  useEffect(() => {
+    setInputValue(value);
+  }, [value]);
+
   return (
     <div className={cx('wrap-input-base')}>
       <input

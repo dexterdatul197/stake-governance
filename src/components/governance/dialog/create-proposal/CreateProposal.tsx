@@ -215,7 +215,7 @@ const CreateProposal: React.FC = () => {
   };
 
   const childUpdateFormData = (newFormData: SFormData[]) => {
-    setFormData([...JSON.parse(JSON.stringify(newFormData))]);
+    setFormData([...newFormData]);
   };
 
   const handleChangeTitle = (value: string) => {
@@ -247,7 +247,7 @@ const CreateProposal: React.FC = () => {
     setDescription('');
     setTitle('');
   }, [wallet]);
-
+  
   let collapseIndex = -1;
   return (
     <Dialog

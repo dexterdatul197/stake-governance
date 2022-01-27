@@ -31,10 +31,10 @@ const CollapseItem: React.FC<Props> = ({
   errorFromChild = () => {}
 }) => {
   const [triggerCount, setTriggerCount] = useState(0);
-  const [disableAddNext, setDisableAddNext] = useState(true);
+  const [childHasError, setChildHasError] = useState(true);
   const [openCollapse, setOpenCollapse] = useState(false);
   const [activeKey, setActiveKey] = useState(0);
-  const [isLatIndex, setIslatIndex] = useState(false);
+  const [disableAddToNext, setDisableAddToNext] = useState(false);
   const handleAdd = (type: string, index: number) => {
     if (type === 'next') {
       formData.splice(index + 1, 0, {
@@ -60,7 +60,7 @@ const CollapseItem: React.FC<Props> = ({
   };
   const handleRemove = (index: number) => {
     if (index !== 0) formData.splice(index, 1);
-    setFormData(formData);
+    setFormData([...formData]);
   };
   const handleKeyUpCommon = (type: string, idx: number, subIdx: any, v: any) => {
     if (type === 'targetAddress') {
@@ -99,14 +99,19 @@ const CollapseItem: React.FC<Props> = ({
     const signatureArr = stringToArr(formData[index].signature);
     const valueArr = formData[index].value;
     if (formData[index].signature.length > 0 && formData[index].targetAddress.length && valueArr.length === signatureArr.length) {
-      setDisableAddNext(param);
+      setChildHasError(param);
     }
   }
 
   useEffect(() => {
-    console.log('COLLAPSE ', index, formData.length);
     if (index === (formData.length - 1)) {
-      setIslatIndex(true);
+      if (childHasError) {
+        setDisableAddToNext(true);
+      } else {
+        setDisableAddToNext(false);
+      }
+    } else {
+      setDisableAddToNext(true);
     }
   }, [formData]);
 
@@ -176,9 +181,9 @@ const CollapseItem: React.FC<Props> = ({
                 <Button 
                   className={cx(`btn-text`)} 
                   onClick={() => handleAdd('next', index)}
-                  disabled={(disableAddNext && !isLatIndex)}
+                  disabled={disableAddToNext}
                 >
-                  Add to next {`${disableAddNext} & ${isLatIndex}`}
+                  Add to next
                 </Button>
               </div>
             </div>
