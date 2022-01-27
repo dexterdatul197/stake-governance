@@ -151,8 +151,6 @@ const Balances: React.FC = () => {
       const formatValueStake = parseFloat(ethers.utils.formatEther(getValueStake.amount));
       const formatValueEarned = parseFloat(ethers.utils.formatEther(getValueEarned));
 
-      console.log('TOTAL STAKE IN POOL: ', formatValueEarned, formatValueStake);
-      
       dispatch(setVotingWeight(formatValueStake));
       setStake(formatValueStake);
       setEarn(formatValueEarned);

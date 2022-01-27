@@ -4,6 +4,7 @@ export interface SFormData {
   value: any[];
   signature: string;
   callData: any[];
+  hasError: boolean;
 }
 
 export type Filter = {

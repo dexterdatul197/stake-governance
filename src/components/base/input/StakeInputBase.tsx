@@ -70,46 +70,50 @@ const StakeInputBase: React.FC<Props> = ({
       const obj = validateParamCallData.v;
       const signatureArr = stringToArr(obj.signature);
       const paramAtIndex = signatureArr[index];
-      switch (paramAtIndex) {
-        case ACTION_PARAM.ADDRESS:
-          const regex = new RegExp(VALIDATE_ETH_ADDRESS);
-          if (!regex.test(event.target.value)) {
-            setMessageErr('Invalid address!');
-            errorFromChild(true);
-          } else {
-            setMessageErr('');
-            errorFromChild(false);
-          }
-          break;
-        case ACTION_PARAM.BOOL:
-          if (event.target.value !== 'true' && event.target.value !== 'false') {
-            setMessageErr('Not match type bool!');
-            errorFromChild(true);
-          } else {
-            setMessageErr('');
-            errorFromChild(false);
-          }
-          break;
-        case ACTION_PARAM.STRING:
-          if (event.target.value.length === 0) {
-            setMessageErr('Field cannot empty!');
-            errorFromChild(true);
-          } else {
-            setMessageErr('');
-            errorFromChild(false);
-          }
-          break;
-        case ACTION_PARAM.UINT256:
-          if (isNaN(Number(event.target.value))) {
-            setMessageErr('Not match type uint256!');
-            errorFromChild(true);
-          } else {
-            setMessageErr('');
-            errorFromChild(false);
-          }
-          break;
-        default:
-          break;
+      if (event.target.value !== '') {
+        switch (paramAtIndex) {
+          case ACTION_PARAM.ADDRESS:
+            const regex = new RegExp(VALIDATE_ETH_ADDRESS);
+            if (!regex.test(event.target.value)) {
+              setMessageErr('Invalid address!');
+              errorFromChild(true);
+            } else {
+              setMessageErr('');
+              errorFromChild(false);
+            }
+            break;
+          case ACTION_PARAM.BOOL:
+            if (event.target.value !== 'true' && event.target.value !== 'false') {
+              setMessageErr('Not match type bool!');
+              errorFromChild(true);
+            } else {
+              setMessageErr('');
+              errorFromChild(false);
+            }
+            break;
+          case ACTION_PARAM.STRING:
+            if (event.target.value.length === 0) {
+              setMessageErr('Field cannot empty!');
+              errorFromChild(true);
+            } else {
+              setMessageErr('');
+              errorFromChild(false);
+            }
+            break;
+          case ACTION_PARAM.UINT256:
+            if (isNaN(Number(event.target.value))) {
+              setMessageErr('Not match type uint256!');
+              errorFromChild(true);
+            } else {
+              setMessageErr('');
+              errorFromChild(false);
+            }
+            break;
+          default:
+            break;
+        }
+      } else {
+        errorFromChild(true);
       }
     }
     setInputValue(event.target.value);
@@ -118,6 +122,9 @@ const StakeInputBase: React.FC<Props> = ({
   const handleBlur = () => {
     if (inputValue.length === 0) {
       setMessageErr(`${name} cannot empty!`);
+      errorFromChild(true);
+    } else {
+      setMessageErr(``);
     }
   };
   const handleKeyUp = (e: any) => {
@@ -137,6 +144,10 @@ const StakeInputBase: React.FC<Props> = ({
     }
     count++;
   }, [wallet])
+
+  useEffect(() => {
+    setInputValue(value);
+  }, [value]);
 
   return (
     <div className={cx('wrap-input-base')}>
