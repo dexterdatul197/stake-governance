@@ -82,7 +82,7 @@ const MoBile = (props: Props) => {
             ];
             return (
               <Box key={index} 
-              // onClick={() => history.push(history.push(`/proposal/${id}`))}
+              onClick={() => history.push(history.push(`/proposal/${id}`))}
               >
                 {renderData(content)}
               </Box>
