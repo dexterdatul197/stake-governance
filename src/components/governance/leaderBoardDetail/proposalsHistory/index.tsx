@@ -81,7 +81,7 @@ const HistoryDetail = (props: Props) => {
   const convertState = (state: any) => {
     switch (state) {
       case 'Successded':
-        return 'Passed';
+        return 'Successed';
       case 'Defeated':
         return 'Failed';
       case 'Active':
@@ -95,7 +95,7 @@ const HistoryDetail = (props: Props) => {
       case 'Expired':
         return 'Expired';
       case 'Executed':
-        return 'Executed';
+        return 'Passed';
       default:
         break;
     }
@@ -172,7 +172,7 @@ const HistoryDetail = (props: Props) => {
           ];
           return (
             <Box
-              onClick={() => history.push(history.push(`/proposal/${id}`))}
+              // onClick={() => history.push(history.push(`/proposal/${id}`))}
               className={cx('history-content__main')}
               key={id}>
               {renderData(content, index)}
