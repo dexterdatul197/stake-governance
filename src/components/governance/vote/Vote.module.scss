@@ -35,6 +35,14 @@
     background: #107DEF;
     border-radius: 15px;
     color: #fff;
+    text-transform: capitalize;
+    font-size: 18px;
+    width: 240px;
+    height: 65px;
+    @media screen and (max-width: 300px) {
+      width: 190px;
+      height: 44px;
+    }
   }
   .create-proposal:hover {
     background-color: #107DEF;
@@ -48,14 +56,20 @@
       font-size: 1.3em;
   }
   .view-leader-board {
-      background-color: #107DEF;
-      padding: 10px 0;
       border-radius: 15px;
       border: solid 1px var(--btn-hover-blue-green);
-      color: white;
-      width: 50%;
+      color: #107DEF;
       margin: 0 auto;
       cursor: pointer;
+      font-size: 18px;
+      width: 240px;
+      height: 65px;
+      line-height: 65px;
+      @media screen and (max-width: 300px) {
+        width: 190px;
+        height: 44px;
+        line-height: 44px;
+      }
   }
   .stake_value {
     margin-right: 10px;

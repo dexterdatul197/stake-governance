@@ -56,13 +56,14 @@ const StakeInputBase: React.FC<Props> = ({
 
   const handleOnChange = (event: any) => {
     setMessageErr('');
+    let errorField = true;
     if (regexValidate) {
       const regex = new RegExp(regexValidate.regexRole);
       if (!regex.test(event.target.value)) {
         setMessageErr(regexValidate.message);
-        errorFromChild(true);
+        errorField = true;
       } else {
-        errorFromChild(false);
+        errorField = false;
       }
     }
     if (validateParamCallData) {
@@ -76,46 +77,47 @@ const StakeInputBase: React.FC<Props> = ({
             const regex = new RegExp(VALIDATE_ETH_ADDRESS);
             if (!regex.test(event.target.value)) {
               setMessageErr('Invalid address!');
-              errorFromChild(true);
+              errorField = true;
             } else {
               setMessageErr('');
-              errorFromChild(false);
+              errorField = false;
             }
             break;
           case ACTION_PARAM.BOOL:
             if (event.target.value !== 'true' && event.target.value !== 'false') {
               setMessageErr('Not match type bool!');
-              errorFromChild(true);
+              errorField = true;
             } else {
               setMessageErr('');
-              errorFromChild(false);
+              errorField = false;
             }
             break;
           case ACTION_PARAM.STRING:
             if (event.target.value.length === 0) {
               setMessageErr('Field cannot empty!');
-              errorFromChild(true);
+              errorField = true;
             } else {
               setMessageErr('');
-              errorFromChild(false);
+              errorField = false;
             }
             break;
           case ACTION_PARAM.UINT256:
             if (isNaN(Number(event.target.value))) {
               setMessageErr('Not match type uint256!');
-              errorFromChild(true);
+              errorField = true;
             } else {
               setMessageErr('');
-              errorFromChild(false);
+              errorField = false;
             }
             break;
           default:
             break;
         }
       } else {
-        errorFromChild(true);
+        errorField = true;
       }
     }
+    errorFromChild(errorField);
     setInputValue(event.target.value);
     onChange(event.target.value);
   };
@@ -125,6 +127,7 @@ const StakeInputBase: React.FC<Props> = ({
       errorFromChild(true);
     } else {
       setMessageErr(``);
+      errorFromChild(false);
     }
   };
   const handleKeyUp = (e: any) => {

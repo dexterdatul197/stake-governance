@@ -42,8 +42,7 @@ const CollapseItem: React.FC<Props> = ({
         targetAddress: '',
         value: [],
         signature: '',
-        callData: [],
-        hasError: false
+        callData: []
       });
     } else {
       formData.splice(index, 0, {
@@ -51,8 +50,7 @@ const CollapseItem: React.FC<Props> = ({
         targetAddress: '',
         value: [],
         signature: '',
-        callData: [],
-        hasError: false
+        callData: []
       });
     }
     setFormData(formData);
@@ -94,8 +92,6 @@ const CollapseItem: React.FC<Props> = ({
   };
 
   const handleErrorFromChild = (param: boolean) => {
-    errorFromChild(param);
-    formData[index].hasError = param;
     const signatureArr = stringToArr(formData[index].signature);
     const valueArr = formData[index].value;
     if (formData[index].signature.length > 0 && formData[index].targetAddress.length && valueArr.length === signatureArr.length) {
@@ -107,11 +103,14 @@ const CollapseItem: React.FC<Props> = ({
     if (index === (formData.length - 1)) {
       if (childHasError) {
         setDisableAddToNext(true);
+        errorFromChild(true);
       } else {
         setDisableAddToNext(false);
+        errorFromChild(false);
       }
     } else {
       setDisableAddToNext(true);
+      errorFromChild(true);
     }
   }, [formData]);
 

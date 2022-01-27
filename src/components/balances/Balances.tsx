@@ -3,6 +3,7 @@ import { useWeb3React } from '@web3-react/core';
 import classNames from 'classnames/bind';
 import { ethers } from 'ethers';
 import React, { useCallback, useEffect, useReducer, useState } from 'react';
+import loadingSvg from 'src/assets/icon/loading.svg';
 import { currencyFormatter, currentAddress } from '../../helpers/common';
 import { isConnected } from '../../helpers/connectWallet';
 import { claimContract, getCHNBalance, stakingToken } from '../../helpers/ContractService';
@@ -16,8 +17,6 @@ import Modal from './StakeModal';
 import TableComponent from './Table';
 import CardComponent from './TableOnMobile';
 import ModalWithDraw from './WithDrawModal';
-import loadingSvg from 'src/assets/icon/loading.svg';
-import { useDispatch } from 'react-redux';
 
 const commaNumber = require('comma-number');
 const format = commaNumber.bindWith(',', '.');

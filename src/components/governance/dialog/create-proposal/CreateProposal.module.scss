@@ -35,18 +35,6 @@
       text-transform: none;
     }
   }
-  // .btn-confirm {
-  //   width: 50%;
-  //   padding: 15px;
-  //   border: none;
-  //   border-radius: 10px;
-  //   background: #8196BB;
-  //   color: #fff;
-  //   font-size: 18px;
-  //   cursor: pointer;
-  //   margin: 0 auto;
-  //   text-align: center;
-  // }
   .btn-create {
     padding: 10px 50px;
     border-radius: 10px;
@@ -54,6 +42,12 @@
     color: #fff;
     border: none;
     width: 455px;
+    height: 63px;
+    font-size: 18px;
+    @media screen and (max-width: 300px) {
+      width: 170px;
+      height: 44px;
+    }
   }
   .btn-create:hover {
     background-color: #107def;
