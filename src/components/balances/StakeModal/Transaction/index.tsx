@@ -63,7 +63,7 @@ const Transaction = (props: Props) => {
         .stake(0, web3.utils.toWei(String(formatAmount), 'ether'))
         .then(async (res: any) => {
           await res.wait();
-          handleCloseTransaction();
+          handleCloseModal();
           handleUpdateSmartContract();
           setDone(true);
           setProgress(false);
@@ -87,7 +87,7 @@ const Transaction = (props: Props) => {
         .stake(0, web3.utils.toWei(String(price), 'ether'))
         .then(async (res: any) => {
           await res.wait();
-          handleCloseTransaction();
+          handleCloseModal();
           handleUpdateSmartContract();
           setDone(true);
           setProgress(false);
