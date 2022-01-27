@@ -78,9 +78,9 @@ const Transaction = (props: Props) => {
         .catch((e: any) => {
           console.log(e);
         })
-        .finally(() => {
-          handleCloseTransaction();
-        });
+        // .finally(() => {
+        //   handleCloseTransaction();
+        // });
     } else {
       contract
         .stake(0, web3.utils.toWei(String(price), 'ether'))
@@ -99,9 +99,9 @@ const Transaction = (props: Props) => {
         .catch((e: any) => {
           console.log(e);
         })
-        .finally(() => {
-          handleCloseTransaction();
-        });
+        // .finally(() => {
+        //   handleCloseTransaction();
+        // });
     }
   };
 
