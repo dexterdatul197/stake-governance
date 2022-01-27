@@ -227,7 +227,7 @@ const WithDraw = (props: Props) => {
             {value.defaultValue > Number(new BigNumber(stake).toFixed(4)) && (
               <div style={{ color: 'red' }}>Insufficient CHN balance</div>
             )}
-            {!value.isValid && <div style={{ color: 'red' }}>Entered Number is invalid</div>}
+            {!value.isValid  && <div style={{ color: 'red' }}>Entered Number is invalid</div>}
           </Box>
         </Box>
       </DialogContent>
@@ -237,7 +237,8 @@ const WithDraw = (props: Props) => {
             !value.isValid ||
             value.defaultValue > Number(new BigNumber(stake).toFixed(4)) ||
             value.defaultValue === 0 ||
-            value.defaultValue.toString() === '0' ||
+            value.defaultValue.toString() < '1' ||
+            value.defaultValue.toString() === '' ||
             done === true
           }
           onClick={handleWithdraw}
