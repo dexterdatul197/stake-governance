@@ -11,7 +11,7 @@ import { useDispatch } from 'react-redux';
 import { getProposalList } from '../../../../apis/apis';
 import axiosInstance from '../../../../config/config';
 import { VALIDATE_ONLY_NUMBER_ALPHABETS, VALIDATE_ONLY_NUMBER_ALPHABETS_AND_SPACE } from '../../../../constant/constants';
-import { currentAddress, encodeParameters, getArgs } from '../../../../helpers/common';
+import { currentAddress, encodeParameters, getArgs, stringToArr } from '../../../../helpers/common';
 import { isConnected } from '../../../../helpers/connectWallet';
 import { governance } from '../../../../helpers/ContractService';
 import { SFormData } from '../../../../interfaces/SFormData';
@@ -40,14 +40,15 @@ const CreateProposal: React.FC = () => {
   const [title, setTitle] = useState('');
   const [triggerAlert, setTriggerAlert] = useState(false);
   const wallet = useAppSelector((state) => state.wallet);
-  const [errorFromChild, setErrorFromChild] = useState(false);
+  const [errorFromChild, setErrorFromChild] = useState(true);
   const [formData, setFormData] = useState<SFormData[]>([
     {
       isRemove: false,
       targetAddress: '',
       value: [],
       signature: '',
-      callData: []
+      callData: [],
+      hasError: false
     }
   ]);
 
@@ -60,7 +61,8 @@ const CreateProposal: React.FC = () => {
         targetAddress: '',
         value: [],
         signature: '',
-        callData: []
+        callData: [],
+        hasError: false
       }
     ]);
     setDescription('');
@@ -213,7 +215,7 @@ const CreateProposal: React.FC = () => {
   };
 
   const childUpdateFormData = (newFormData: SFormData[]) => {
-    setFormData([...JSON.parse(JSON.stringify(newFormData))]);
+    setFormData([...newFormData]);
   };
 
   const handleChangeTitle = (value: string) => {
@@ -235,10 +237,17 @@ const CreateProposal: React.FC = () => {
   }, [currentAccount.ethereumAddress]);
 
   useEffect(() => {
+    const listErr = formData.filter(item => item.hasError === true);
+    if (listErr.length === 0) {
+      setErrorFromChild(false);
+    }
+  }, [formData]);
+
+  useEffect(() => {
     setDescription('');
     setTitle('');
   }, [wallet]);
-
+  
   let collapseIndex = -1;
   return (
     <Dialog
@@ -338,19 +347,15 @@ const CreateProposal: React.FC = () => {
           </div>
         </div>
       </Box>
-      {/* footer: btn confirm */}
       <Box
         sx={{
           margin: '10px 0',
           paddingRight: '10px'
         }}>
         <div className={cx('wrap-btn')}>
-          {/* <div className={cx('btn-confirm')} onClick={handleClickConfirm}>
-            Confirm
-          </div> */}
           <Button
             className={cx('btn-create')}
-            disabled={isLoading || formData.length > maxOperation || description.trim().length === 0}
+            disabled={isLoading || formData.length > maxOperation || description.trim().length === 0 || errorFromChild}
             onClick={handleClickConfirm}>
             {isLoading && (
               <div>
@@ -358,7 +363,7 @@ const CreateProposal: React.FC = () => {
                 <span className={cx('btn-create-inloading')}>Create Proposal</span>
               </div>
             )}
-            {!isLoading && 'Create Proposal'}
+            {!isLoading && 'CREATE PROPOSAL'}
           </Button>
         </div>
       </Box>

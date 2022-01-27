@@ -31,9 +31,10 @@ const CollapseItem: React.FC<Props> = ({
   errorFromChild = () => {}
 }) => {
   const [triggerCount, setTriggerCount] = useState(0);
-  const [disableAddNext, setDisableAddNext] = useState(true);
+  const [childHasError, setChildHasError] = useState(true);
   const [openCollapse, setOpenCollapse] = useState(false);
   const [activeKey, setActiveKey] = useState(0);
+  const [disableAddToNext, setDisableAddToNext] = useState(false);
   const handleAdd = (type: string, index: number) => {
     if (type === 'next') {
       formData.splice(index + 1, 0, {
@@ -41,7 +42,8 @@ const CollapseItem: React.FC<Props> = ({
         targetAddress: '',
         value: [],
         signature: '',
-        callData: []
+        callData: [],
+        hasError: false
       });
     } else {
       formData.splice(index, 0, {
@@ -49,20 +51,16 @@ const CollapseItem: React.FC<Props> = ({
         targetAddress: '',
         value: [],
         signature: '',
-        callData: []
+        callData: [],
+        hasError: false
       });
     }
     setFormData(formData);
     setActiveKey(type === 'next' ? index + 1 : index);
   };
   const handleRemove = (index: number) => {
-    if (index !== 0) formData[index].isRemove = true;
-    setFormData(formData);
-    const signatureArr = stringToArr(formData[index].signature);
-    const valueArr = formData[index].value;
-    if (formData[index].signature.length > 0 && formData[index].targetAddress.length && valueArr.length === signatureArr.length) {
-      errorFromChild(false);
-    }
+    if (index !== 0) formData.splice(index, 1);
+    setFormData([...formData]);
   };
   const handleKeyUpCommon = (type: string, idx: number, subIdx: any, v: any) => {
     if (type === 'targetAddress') {
@@ -97,12 +95,25 @@ const CollapseItem: React.FC<Props> = ({
 
   const handleErrorFromChild = (param: boolean) => {
     errorFromChild(param);
+    formData[index].hasError = param;
     const signatureArr = stringToArr(formData[index].signature);
     const valueArr = formData[index].value;
     if (formData[index].signature.length > 0 && formData[index].targetAddress.length && valueArr.length === signatureArr.length) {
-      setDisableAddNext(param);
+      setChildHasError(param);
     }
   }
+
+  useEffect(() => {
+    if (index === (formData.length - 1)) {
+      if (childHasError) {
+        setDisableAddToNext(true);
+      } else {
+        setDisableAddToNext(false);
+      }
+    } else {
+      setDisableAddToNext(true);
+    }
+  }, [formData]);
 
   useEffect((): any => {
     setTriggerCount(triggerCount + 1);
@@ -170,7 +181,7 @@ const CollapseItem: React.FC<Props> = ({
                 <Button 
                   className={cx(`btn-text`)} 
                   onClick={() => handleAdd('next', index)}
-                  disabled={disableAddNext}
+                  disabled={disableAddToNext}
                 >
                   Add to next
                 </Button>
