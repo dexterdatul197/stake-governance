@@ -46,22 +46,28 @@ const ConnectWallet: React.FC = () => {
     removeManyItemsInLS('walletlink'); // coinbase
     dispatch(setEthereumAddress(''));
     dispatch(setWalletName(''));
-    history.push('/');
     window.localStorage.removeItem('ethereumAddress');
+    history.push('/');
     setOpenDropdown(false);
-    window.location.reload();
+    history.go(0)
   };
 
   return (
     <>
       {wallet.ethereumAddress ? (
         <>
-          <div className={cx('button-logout', 'center-items', `${address ? 'btn-address-style' : ''}`)} onClick={handleOpenDropdown}>
+          <div
+            className={cx('button-logout', 'center-items', `${address ? 'btn-address-style' : ''}`)}
+            onClick={handleOpenDropdown}>
             <span className={cx('button__text')}>{address.toLowerCase()}</span>
           </div>
           <div
             onClick={handleLogout}
-            className={cx('btn-logout', `${openDropdown ? 'show-btn' : ''}`, `${address ? 'btn-address-style' : ''}`)}
+            className={cx(
+              'btn-logout',
+              `${openDropdown ? 'show-btn' : ''}`,
+              `${address ? 'btn-address-style' : ''}`
+            )}
             ref={ref}>
             <span className={cx('button__text')}>Logout</span>
           </div>
