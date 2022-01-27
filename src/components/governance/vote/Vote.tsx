@@ -13,6 +13,7 @@ import { useAppSelector } from '../../../store/hooks';
 import { openSnackbar, SnackbarVariant } from '../../../store/snackbar';
 import { setOpenCreateProposalDialog } from '../redux/Governance';
 import styles from './Vote.module.scss';
+import loadingSvg from 'src/assets/icon/loading.svg';
 
 const cx = classNames.bind(styles);
 interface Props {
@@ -108,10 +109,12 @@ const Vote: React.FC<Props> = (props) => {
       </div>
       <Button onClick={handleOpenCreateForm} className={cx('create-proposal')}>
         {openLoading && (
-          <div>
-            <CircularProgress size={20} color="inherit" />
-            <span>Create Proposal</span>
-          </div>
+          <img
+          src={loadingSvg}
+          className={cx('loading-rotate')}
+          style={{ width: 18, margin: 0 }}
+          alt=""
+        />
         )}
         {!openLoading && 'Create Proposal'}
       </Button>

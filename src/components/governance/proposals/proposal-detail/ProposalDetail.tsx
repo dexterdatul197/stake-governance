@@ -242,8 +242,6 @@ const ProposalDetail: React.FC<Props> = (props) => {
 
   useEffect(() => {
     eventBus.on(SocketEvent.updateProposal, async (data: any) => {
-      console.log('PROPOSAL DETAIL SOCKET: ', data);
-      
       await sleep(1000);
     });
   }, []);

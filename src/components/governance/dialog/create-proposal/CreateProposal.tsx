@@ -1,5 +1,4 @@
-import { BigNumber } from '@0x/utils';
-import { Button, CircularProgress, Dialog, IconButton, Typography } from '@material-ui/core';
+import { Button, Dialog, IconButton, Typography } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import { Box } from '@material-ui/system';
 import classNames from 'classnames/bind';
@@ -8,11 +7,11 @@ import { useEffect, useState } from 'react';
 import MdEditor from 'react-markdown-editor-lite';
 import 'react-markdown-editor-lite/lib/index.css';
 import { useDispatch } from 'react-redux';
+import loadingSvg from 'src/assets/icon/loading.svg';
 import { getProposalList } from '../../../../apis/apis';
 import axiosInstance from '../../../../config/config';
-import { VALIDATE_ONLY_NUMBER_ALPHABETS, VALIDATE_ONLY_NUMBER_ALPHABETS_AND_SPACE } from '../../../../constant/constants';
-import { currentAddress, encodeParameters, getArgs, stringToArr } from '../../../../helpers/common';
-import { isConnected } from '../../../../helpers/connectWallet';
+import { VALIDATE_ONLY_NUMBER_ALPHABETS_AND_SPACE } from '../../../../constant/constants';
+import { currentAddress, encodeParameters, getArgs } from '../../../../helpers/common';
 import { governance } from '../../../../helpers/ContractService';
 import { SFormData } from '../../../../interfaces/SFormData';
 import { useAppSelector } from '../../../../store/hooks';
@@ -47,8 +46,7 @@ const CreateProposal: React.FC = () => {
       targetAddress: '',
       value: [],
       signature: '',
-      callData: [],
-      hasError: false
+      callData: []
     }
   ]);
 
@@ -61,8 +59,7 @@ const CreateProposal: React.FC = () => {
         targetAddress: '',
         value: [],
         signature: '',
-        callData: [],
-        hasError: false
+        callData: []
       }
     ]);
     setDescription('');
@@ -237,13 +234,6 @@ const CreateProposal: React.FC = () => {
   }, [currentAccount.ethereumAddress]);
 
   useEffect(() => {
-    const listErr = formData.filter(item => item.hasError === true);
-    if (listErr.length === 0) {
-      setErrorFromChild(false);
-    }
-  }, [formData]);
-
-  useEffect(() => {
     setDescription('');
     setTitle('');
   }, [wallet]);
@@ -303,7 +293,7 @@ const CreateProposal: React.FC = () => {
                 name={'Title'}
                 triggerAlert={triggerAlert}
                 regexValidate={{regexRole: VALIDATE_ONLY_NUMBER_ALPHABETS_AND_SPACE, message: 'Only number and alphabets!'}}
-                errorFromChild={handleErrorFromChild}
+                // errorFromChild={handleErrorFromChild}
               />
             </div>
             <div className={cx('box-title')}>Details</div>
@@ -355,15 +345,17 @@ const CreateProposal: React.FC = () => {
         <div className={cx('wrap-btn')}>
           <Button
             className={cx('btn-create')}
-            disabled={isLoading || formData.length > maxOperation || description.trim().length === 0 || errorFromChild}
+            disabled={isLoading || title.trim().length === 0 || formData.length > maxOperation || description.trim().length === 0 || errorFromChild}
             onClick={handleClickConfirm}>
             {isLoading && (
-              <div>
-                <CircularProgress size={20} color="inherit" />
-                <span className={cx('btn-create-inloading')}>Create Proposal</span>
-              </div>
+              <img
+              src={loadingSvg}
+              className={cx('loading-rotate')}
+              style={{ width: 18, margin: 0 }}
+              alt=""
+            />
             )}
-            {!isLoading && 'CREATE PROPOSAL'}
+            {!isLoading && `Create Proposal`}
           </Button>
         </div>
       </Box>
