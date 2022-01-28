@@ -68,7 +68,7 @@ const CollapseItem: React.FC<Props> = ({
     } else if (type === 'calldata') {
       formData[idx].callData[subIdx] = v;
     }
-    setFormData(formData);
+    setFormData([...formData]);
   };
 
   const handleParseFunc = (signatureValue: string) => {
@@ -87,27 +87,25 @@ const CollapseItem: React.FC<Props> = ({
     handleKeyUpCommon('calldata', index, cIndex, e.target.value);
     handleKeyUpCommon('value', index, cIndex, e.target.value);
   };
+  const handleOnChangeCallData = (e: any, cIndex: number) => {
+    handleKeyUpCommon('value', index, cIndex, e.target.value);
+  }
   const handleKeyUpSignature = (e: any) => {
     handleParseFunc(e.target.value);
   };
 
   const handleErrorFromChild = (param: boolean) => {
     const signatureArr = stringToArr(formData[index].signature);
-    const valueArr = formData[index].value;
-    if (formData[index].signature.length > 0 && formData[index].targetAddress.length && valueArr.length === signatureArr.length) {
+    const valueArr = formData[index].value.length;
+    if (formData[index].signature.length > 0 && formData[index].targetAddress.length && valueArr === signatureArr.length) {
       setChildHasError(param);
     }
   }
-
+  
   useEffect(() => {
     if (index === (formData.length - 1)) {
-      if (childHasError) {
-        setDisableAddToNext(true);
-        errorFromChild(true);
-      } else {
-        setDisableAddToNext(false);
-        errorFromChild(false);
-      }
+      setDisableAddToNext(childHasError);
+      errorFromChild(childHasError);
     } else {
       setDisableAddToNext(true);
       errorFromChild(true);
@@ -161,6 +159,7 @@ const CollapseItem: React.FC<Props> = ({
                 triggerAlert={triggerAlert}
                 validateParamCallData={{k: cIndex, v: formData[index]}}
                 errorFromChild={handleErrorFromChild}
+                onChange={(e) => {handleOnChangeCallData(e, cIndex)}}
               />
             );
           })}

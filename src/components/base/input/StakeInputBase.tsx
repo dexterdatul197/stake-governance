@@ -117,9 +117,9 @@ const StakeInputBase: React.FC<Props> = ({
         errorField = true;
       }
     }
+    onChange(event);
     errorFromChild(errorField);
     setInputValue(event.target.value);
-    onChange(event.target.value);
   };
   const handleBlur = () => {
     if (inputValue.length === 0) {
