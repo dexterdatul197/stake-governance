@@ -297,11 +297,7 @@ const ProposalDetail: React.FC<Props> = (props) => {
             <div className={cx('update-proposal-status')}>
               <Button
                 className={cx('cancel-btn')}
-                disabled={
-                  isCancelLoading ||
-                  proposerVotingWeight >= proposalThreshold ||
-                  cancelStatus === 'success'
-                }
+                disabled={ isCancelLoading || cancelStatus === 'success' }
                 onClick={() => handleUpdateProposal('Cancel')}
               >
                 {isCancelLoading && <Icon type="loading" />}{' '}
@@ -334,7 +330,7 @@ const ProposalDetail: React.FC<Props> = (props) => {
               )}
             </div>
           )}
-        {proposalDetail.state !== 'Executed' &&
+        {/* {proposalDetail.state !== 'Executed' &&
           proposalDetail.state !== 'Defeated' &&
           proposalDetail.state !== 'Canceled' &&
           proposerVotingWeight >= proposalThreshold && (
@@ -342,7 +338,7 @@ const ProposalDetail: React.FC<Props> = (props) => {
               You can not cancel the proposal while the proposer voting weight meets proposal
               threshold
             </p>
-          )}
+          )} */}
       </div>
       <div className={cx('description')}>
         <div className={cx('text-black-white')}>Description</div>
