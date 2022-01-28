@@ -39,7 +39,6 @@ const ConnectWallet: React.FC = () => {
     setAddress(address);
   }, [address, wallet]);
 
-  console.log('deactive: ', deactivate);
   useEffect(() => {
     handleCloseDropdown();
     handleUpdateAddress();

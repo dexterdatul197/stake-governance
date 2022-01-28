@@ -215,8 +215,8 @@ const CreateProposal: React.FC = () => {
     setFormData([...newFormData]);
   };
 
-  const handleChangeTitle = (value: string) => {
-    setTitle(value);
+  const handleChangeTitle = (e: any) => {
+    setTitle(e.target.value);
   };
 
   const handleBlurChange = (value: React.FocusEvent<HTMLTextAreaElement>) => {

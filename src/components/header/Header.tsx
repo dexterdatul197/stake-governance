@@ -45,7 +45,6 @@ const Header: React.FC = () => {
   const wallet = useAppSelector((state) => state.wallet);
   useEffect(() => {
     if (account) {
-      console.log("account: ",account)
       dispatch(setEthereumAddress(account));
       localStorage.setItem('ethereumAddress', account as string);
     }
