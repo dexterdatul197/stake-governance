@@ -177,7 +177,7 @@ const Stake = (props: Props) => {
               Wallet Balance:{' '}
               {walletValue > 0 ? format(new BigNumber(walletValue).toFixed(4).toString()) : 0.0}
             </Typography>
-            <span className={cx('token')}>CHN</span>
+            <span className={cx('token')}>XCN</span>
           </Box>
           <Box className={cx('balance__stake-balance')}>
             <Typography className={cx('title')}>
@@ -190,7 +190,7 @@ const Stake = (props: Props) => {
                   .toString()
               )}
             </Typography>
-            <span className={cx('token')}>CHN</span>
+            <span className={cx('token')}>XCN</span>
           </Box>
         </Box>
       </DialogContent>

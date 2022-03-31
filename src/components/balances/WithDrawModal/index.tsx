@@ -206,7 +206,7 @@ const WithDraw = (props: Props) => {
             <img className={cx('main-left__icon')} src={CHN_icon} alt="CHN_icon" />
             <Box className={cx('main-left__text')}>
               <Typography className={cx('token-title')}>Token</Typography>
-              <Typography className={cx('token-text')}>CHN</Typography>
+              <Typography className={cx('token-text')}>XCN</Typography>
             </Box>
           </Box>
           <Box className={cx('main-right')}>
@@ -225,7 +225,7 @@ const WithDraw = (props: Props) => {
               Max
             </span>
             {value.defaultValue > Number(new BigNumber(stake).toFixed(4)) && (
-              <div style={{ color: 'red' }}>Insufficient CHN balance</div>
+              <div style={{ color: 'red' }}>Insufficient XCN balance</div>
             )}
             {!value.isValid  && <div style={{ color: 'red' }}>Entered Number is invalid</div>}
           </Box>

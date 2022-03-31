@@ -178,19 +178,19 @@ const Balances: React.FC = () => {
               <Box className={cx('stake')}>
                 <span className={cx('stake__title')}>Stake:</span>
                 <span className={cx('stake__value')}>{currencyFormatter(Number(stake))}</span>
-                <span className={cx('stake__token')}>CHN</span>
+                <span className={cx('stake__token')}>XCN</span>
               </Box>
               <Box className={cx('wallet')}>
                 <span className={cx('wallet__title')}>Wallet:</span>
                 <span className={cx('wallet__value')}>
                   {currencyFormatter(Number(walletValue))}
                 </span>
-                <span className={cx('wallet__token')}>CHN</span>
+                <span className={cx('wallet__token')}>XCN</span>
               </Box>
               <Box className={cx('earn')}>
                 <span className={cx('earn__title')}>Earned:</span>
                 <span className={cx('earn__value')}>{currencyFormatter(Number(earn))}</span>
-                <span className={cx('earn__token')}>CHN</span>
+                <span className={cx('earn__token')}>XCN</span>
               </Box>
             </Box>
 

@@ -41,7 +41,7 @@ const TableMobile = (props: any) => {
                   <span>{address.substr(0, 19)}...</span>
                 </Box>
                 <Box className={cx('chn')}>
-                  <span>CHN</span>
+                  <span>XCN</span>
                   <span> {format(Number(formatChnStake))}</span>
                 </Box>
                 <Box className={cx('vote-weight')}>

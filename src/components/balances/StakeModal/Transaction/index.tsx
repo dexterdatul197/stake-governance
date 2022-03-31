@@ -190,7 +190,7 @@ const Transaction = (props: Props) => {
                   )
                 )}
               </Typography>
-              <Typography className={cx('token-stake')}>CHN STAKE</Typography>
+              <Typography className={cx('token-stake')}>XCN STAKE</Typography>
             </React.Fragment>
           ) : (
             <DoneIcon style={{ margin: 'auto' }} />

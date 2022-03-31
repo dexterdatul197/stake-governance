@@ -85,7 +85,7 @@ const LeaderBoard: React.FC = () => {
                     <TableCell className={cx('table-row__table-cell')}>Rank</TableCell>
                     <TableCell className={cx('table-row__table-cell')}></TableCell>
                     <TableCell align="right" className={cx('table-row__table-cell')}>
-                      CHN Stake
+                      XCN Stake
                     </TableCell>
                     <TableCell align="right" className={cx('table-row__table-cell')}>
                       VoteWeight

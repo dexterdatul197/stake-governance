@@ -68,7 +68,7 @@ const Vote: React.FC<Props> = (props) => {
           openSnackbar({
             message: `You can't create proposal. Your voting power should be ${format(
               new BigNumber(proposalThreshold)
-            )} CHN at least`,
+            )} XCN at least`,
             variant: SnackbarVariant.ERROR
           })
         );
@@ -104,7 +104,7 @@ const Vote: React.FC<Props> = (props) => {
       <div className={cx('vote-content')}>
         <div className={cx('vote-value')}>
           <span className={cx('stake_value')}>{format(votingWeight)}</span>
-          <span className={cx('stake_token')}>CHN</span>
+          <span className={cx('stake_token')}>XCN</span>
         </div>
       </div>
       <Button onClick={handleOpenCreateForm} className={cx('create-proposal')}>
