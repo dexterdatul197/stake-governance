@@ -68,7 +68,7 @@ const Main: React.FC = () => {
     console.log(coinGeckoCurrencies);
     const res = coinGeckoCurrencies
       .filter((item) => {
-        return item === 'usd' || item === 'eur' || item === 'xcn';
+        return item === 'usd' || item === 'eur' || item === 'xcn' || item === 'chn';
       })
       .map((item) => {
         console.log(item);
