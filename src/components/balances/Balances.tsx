@@ -175,19 +175,14 @@ const Balances: React.FC = () => {
       try {
         const contract = await stakingToken();
         const connectedAddress = currentAddress(wallet);
-        const getTotalStakeAmount = await contract.userInfo(0, connectedAddress);
+        const getTotalStakeAmount = await contract.getStakingAmount(0, connectedAddress);
         const getRewardPerBlock = await contract.rewardPerBlock();
         const fomartNumber = ethers.utils.formatEther(getTotalStakeAmount);
         const formatReward = ethers.utils.formatEther(getRewardPerBlock);
-        const APY = new BigNumber(formatReward)
-          .multipliedBy(6400)
-          .multipliedBy(365)
-          .dividedBy(fomartNumber);
-
-        console.log(APY);
-        console.log(formatReward);
-        console.log(fomartNumber);
-        setApy(Number(APY));
+        const APY = new BigNumber(formatReward).multipliedBy(6400).multipliedBy(365);
+        const TotalApy = Number(fomartNumber) === 0 ? 0 : new BigNumber(APY).div(fomartNumber);
+        console.log(TotalApy)
+        setApy(Number(TotalApy));
       } catch (error) {
         console.log('error: ', error);
       }
@@ -202,8 +197,6 @@ const Balances: React.FC = () => {
   useEffect(() => {
     getTotalStakeInPool();
   }, [getTotalStakeInPool, updateSmartContract, connector]);
-
-  console.log('apy', apy);
 
   return (
     <>
