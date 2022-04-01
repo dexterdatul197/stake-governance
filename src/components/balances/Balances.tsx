@@ -175,7 +175,7 @@ const Balances: React.FC = () => {
       try {
         const contract = await stakingToken();
         const connectedAddress = currentAddress(wallet);
-        const getTotalStakeAmount = await contract.getStakingAmount(0, connectedAddress);
+        const getTotalStakeAmount = await contract.userInfo(0, connectedAddress);
         const getRewardPerBlock = await contract.rewardPerBlock();
         const fomartNumber = ethers.utils.formatEther(getTotalStakeAmount);
         const formatReward = ethers.utils.formatEther(getRewardPerBlock);
@@ -183,14 +183,17 @@ const Balances: React.FC = () => {
           .multipliedBy(6400)
           .multipliedBy(365)
           .dividedBy(fomartNumber);
+
         console.log(APY);
+        console.log(formatReward);
+        console.log(fomartNumber);
         setApy(Number(APY));
       } catch (error) {
         console.log('error: ', error);
       }
     };
     getContract();
-  }, [wallet]);
+  }, [wallet, apy]);
 
   useEffect(() => {
     getValueBalance();
@@ -199,6 +202,8 @@ const Balances: React.FC = () => {
   useEffect(() => {
     getTotalStakeInPool();
   }, [getTotalStakeInPool, updateSmartContract, connector]);
+
+  console.log('apy', apy);
 
   return (
     <>
@@ -228,7 +233,7 @@ const Balances: React.FC = () => {
               </Box>
               <Box className={cx('apy')}>
                 <span className={cx('apy__title')}>APY:</span>
-                <span className={cx('apy__value')}>{apy}%</span>
+                <span className={cx('apy__value')}>{apy ? apy : 0}%</span>
                 <span className={cx('apy__percent')}></span>
               </Box>
             </Box>
