@@ -20,7 +20,7 @@ const currentRPC =
     ? process.env.REACT_APP_MAINNET_RPC
     : process.env.REACT_APP_RINKEBY_RPC;
 const Footer: React.FC = () => {
-  const isMobile = useIsMobile(576);
+  const isMobile = useIsMobile(844);
   const dispatch = useDispatch();
   const theme = useAppSelector((state) => state.theme.themeMode);
   const [block, setBlock] = useState(0);

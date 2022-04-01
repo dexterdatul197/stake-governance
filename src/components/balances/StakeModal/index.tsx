@@ -20,7 +20,11 @@ interface Props {
 const Modal = memo((props: Props) => {
   const { openStake, handleCloseModal, walletValue, handleUpdateSmartContract, chnToken } = props;
   const [activeStep, setActiveStep] = useState(0);
-
+  const [balanceValue, setBalanceValue] = useState({
+    default: 0,
+    isValid: true
+  });
+  const [isPercent, setIsPercent] = useState(false);
   const [value, setValue] = useState({
     default: 0,
     value1: 25,
@@ -39,6 +43,10 @@ const Modal = memo((props: Props) => {
             setValue={setValue}
             value={value}
             handleCloseModal={handleCloseModal}
+            balanceValue={balanceValue}
+            setIsPercent={setIsPercent}
+            isPercent={isPercent}
+            setBalanceValue={setBalanceValue}
           />
         );
       case 1:
@@ -51,18 +59,10 @@ const Modal = memo((props: Props) => {
             handleCloseModal={handleCloseModal}
             handleUpdateSmartContract={handleUpdateSmartContract}
             chnToken={chnToken}
+            balanceValue={balanceValue}
+            isPercent={isPercent}
           />
         );
-      // case 2:
-      //   return (
-      //     <LoadingComponent
-      //       value={value}
-      //       walletValue={walletValue}
-      //       handleUpdateSmartContract={handleUpdateSmartContract}
-      //       handleCloseModal={handleCloseModal}
-      //       handleBackBegin={handleBackBegin}
-      //     />
-      //   );
     }
   };
 
@@ -73,6 +73,7 @@ const Modal = memo((props: Props) => {
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
     setValue({ ...value, default: 0 });
+    setBalanceValue({ ...balanceValue, default: 0 });
   };
 
   const handleBackBegin = () => {
@@ -91,8 +92,7 @@ const Modal = memo((props: Props) => {
           overflowY: 'unset',
           borderRadius: '20px'
         }
-      }}
-    >
+      }}>
       {renderStepContent(activeStep)}
     </Dialog>
   );

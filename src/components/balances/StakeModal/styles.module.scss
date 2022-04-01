@@ -67,7 +67,7 @@
         display: flex;
         align-items: center;
         align-content: center;
-        justify-content: flex-start;
+        justify-content: space-between;
         padding-bottom: 18px;
         .title {
           font-size: 16px;
@@ -92,7 +92,7 @@
         display: flex;
         align-items: center;
         align-content: center;
-        justify-content: flex-start;
+        justify-content:space-between;
         .title {
           font-size: 16px;
           font-weight: 600;
@@ -264,7 +264,7 @@
     }
   }
 }
-@media screen and (max-width: 576px) {
+@media screen and (max-width: 844px) {
   .dialog {
     //    padding: 29px 20px 26px 20px !important0;
 
@@ -334,12 +334,13 @@
           display: flex;
           align-items: center;
           align-content: center;
-          justify-content: flex-start;
+          justify-content: space-;
           padding-right: auto;
           .title {
             font-size: 14px;
             font-weight: 600;
             color: var(--color-text-white-black);
+            flex:1;
           }
           .autocomplete {
             input {
@@ -367,7 +368,7 @@
           display: flex;
           align-items: center;
           align-content: center;
-          justify-content: flex-start;
+          justify-content: space-between;
           .title {
             font-size: 14px;
             font-weight: 600;

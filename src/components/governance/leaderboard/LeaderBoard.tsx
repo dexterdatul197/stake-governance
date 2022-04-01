@@ -22,7 +22,7 @@ import styles from './LeaderBoard.module.scss';
 const cx = classNames.bind(styles);
 
 const LeaderBoard: React.FC = () => {
-  const isMobile = useMobile(820);
+  const isMobile = useMobile(844);
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(100);
   const [data, setData] = useState([]);

@@ -69,7 +69,7 @@ const Balances: React.FC = () => {
     isOpenStake: false,
     isOpenWithdraw: false
   });
-  const isMobile = useIsMobile(768);
+  const isMobile = useIsMobile(844);
 
   const { account, connector } = useWeb3React();
 

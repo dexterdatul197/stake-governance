@@ -66,7 +66,7 @@ const CardComponent: FC = () => {
           dataLength={transactionData.data.length} //This is important field to render the next data
           next={fetchData}
           hasMore={hasMore}
-          loader={<h4>Loading...</h4>}
+          loader={<h4 style={{ textAlign: 'center' }}>Loading...</h4>}
           endMessage={
             <p style={{ textAlign: 'center' }}>
               <b>Yay! You have seen it all</b>
@@ -81,8 +81,7 @@ const CardComponent: FC = () => {
           }
           releaseToRefreshContent={
             <h3 style={{ textAlign: 'center' }}>&#8593; Release to refresh</h3>
-          }
-        >
+          }>
           {transactionData.data.map((item: ITransaction, index: number) => (
             <Card transaction={item} key={item.id} />
           ))}

@@ -49,7 +49,7 @@ const Header: React.FC = () => {
       localStorage.setItem('ethereumAddress', account as string);
     }
   }, [account]);
-  const isMobile = useIsMobile(576);
+  const isMobile = useIsMobile(844);
   return (
     <div className={cx('header-parent')}>
       <div className={cx('logo')}>

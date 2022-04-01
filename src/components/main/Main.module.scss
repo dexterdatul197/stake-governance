@@ -27,4 +27,12 @@
   .securing-chain {
     color: var(--color-text-footer);
   }
+  .spinner {
+    position: absolute;
+    top: 50%;
+    left: 48%;
+    @media screen and (max-width: 844px) {
+      left: 44% !important;
+    }
+  }
 }

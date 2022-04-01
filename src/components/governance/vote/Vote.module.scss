@@ -8,10 +8,10 @@
     padding-bottom: 20px;
     height: fit-content;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-    @media screen and (max-width: 576px) {
+    @media screen and (max-width: 844px) {
       margin-bottom: 20px;
     }
-    @media screen and (min-width: 577px) {
+    @media screen and (min-width: 844px) {
       width: 30%;
     }
   }
@@ -39,7 +39,7 @@
     font-size: 18px;
     width: 240px;
     height: 65px;
-    @media screen and (max-width: 300px) {
+    @media screen and (max-width: 844px) {
       width: 190px;
       height: 44px;
     }
@@ -65,7 +65,7 @@
       width: 240px;
       height: 65px;
       line-height: 65px;
-      @media screen and (max-width: 300px) {
+      @media screen and (max-width: 844px) {
         width: 190px;
         height: 44px;
         line-height: 44px;

@@ -44,7 +44,7 @@
     width: 455px;
     height: 63px;
     font-size: 18px;
-    @media screen and (max-width: 300px) {
+    @media screen and (max-width: 844px) {
       width: 170px;
       height: 44px;
     }
@@ -95,7 +95,7 @@
   }
 }
 
-@media screen and (max-width: 576px) {
+@media screen and (max-width: 844px) {
   :root {
     .text-title {
       font-size: 1.2em;

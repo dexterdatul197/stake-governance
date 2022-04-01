@@ -28,6 +28,8 @@ interface Props {
   handleCloseModal: () => void;
   handleUpdateSmartContract: () => void;
   chnToken?: any;
+  balanceValue?: any;
+  isPercent: boolean;
 }
 
 const MAX_INT = '115792089237316195423570985008687907853269984665640564039457584007913129639935';
@@ -40,7 +42,9 @@ const Transaction = (props: Props) => {
     handleCloseModal,
     value,
     handleUpdateSmartContract,
-    chnToken
+    chnToken,
+    balanceValue,
+    isPercent
   } = props;
 
   const wallet = useAppSelector((state: any) => state.wallet);
@@ -58,52 +62,78 @@ const Transaction = (props: Props) => {
   const handleConfirmTransaction = async () => {
     setProgress(true);
     const contract = await stakingToken();
-    if (value.default === 100) {
-      contract
-        .stake(0, web3.utils.toWei(String(formatAmount), 'ether'))
-        .then(async (res: any) => {
-          await res.wait();
-          handleCloseModal();
-          handleUpdateSmartContract();
-          setDone(true);
-          setProgress(false);
+    if (isPercent) {
+      if (value.default === 100) {
+        contract
+          .stake(0, web3.utils.toWei(String(formatAmount), 'ether'))
+          .then(async (res: any) => {
+            await res.wait();
+            handleCloseModal();
+            handleUpdateSmartContract();
+            setDone(true);
+            setProgress(false);
 
-          dispatch(
-            openSnackbar({
-              message: 'Staking success',
-              variant: SnackbarVariant.SUCCESS
-            })
-          );
-          handleUpdateSmartContract();
-        })
-        .catch((e: any) => {
-          console.log(e);
-        })
-        .finally(() => {
-          handleCloseTransaction();
-        });
+            dispatch(
+              openSnackbar({
+                message: 'Staking success',
+                variant: SnackbarVariant.SUCCESS
+              })
+            );
+            handleUpdateSmartContract();
+          })
+          .catch((e: any) => {
+            console.log(e);
+          })
+          .finally(() => {
+            handleCloseTransaction();
+          });
+      } else {
+        contract
+          .stake(0, web3.utils.toWei(String(price), 'ether'))
+          .then(async (res: any) => {
+            await res.wait();
+            handleCloseModal();
+            handleUpdateSmartContract();
+            setDone(true);
+            setProgress(false);
+            dispatch(
+              openSnackbar({
+                message: 'Staking success',
+                variant: SnackbarVariant.SUCCESS
+              })
+            );
+          })
+          .catch((e: any) => {
+            console.log(e);
+          })
+          .finally(() => {
+            handleCloseTransaction();
+          });
+      }
     } else {
-      contract
-        .stake(0, web3.utils.toWei(String(price), 'ether'))
-        .then(async (res: any) => {
-          await res.wait();
-          handleCloseModal();
-          handleUpdateSmartContract();
-          setDone(true);
-          setProgress(false);
-          dispatch(
-            openSnackbar({
-              message: 'Staking success',
-              variant: SnackbarVariant.SUCCESS
-            })
-          );
-        })
-        .catch((e: any) => {
-          console.log(e);
-        })
-        .finally(() => {
-          handleCloseTransaction();
-        });
+      if (balanceValue.default) {
+        contract
+          .stake(0, web3.utils.toWei(String(balanceValue.default), 'ether'))
+          .then(async (res: any) => {
+            await res.wait();
+            handleCloseModal();
+            handleUpdateSmartContract();
+            setDone(true);
+            setProgress(false);
+            dispatch(
+              openSnackbar({
+                message: 'Staking success',
+                variant: SnackbarVariant.SUCCESS
+              })
+            );
+          })
+          .catch((e: any) => {
+            console.log(e);
+          })
+          .finally(() => {
+            handleCloseTransaction();
+          });
+      }
     }
   };
 
@@ -180,7 +210,7 @@ const Transaction = (props: Props) => {
               <Typography className={cx('token-quantity')}>
                 {progress ? (
                   <CircularProgress />
-                ) : (
+                ) : isPercent ? (
                   format(
                     new BigNumber(value.default)
                       .multipliedBy(new BigNumber(walletValue))
@@ -188,6 +218,10 @@ const Transaction = (props: Props) => {
                       .toFixed(4)
                       .toString()
                   )
+                ) : balanceValue.default ? (
+                  balanceValue.default
+                ) : (
+                  0
                 )}
               </Typography>
               <Typography className={cx('token-stake')}>XCN STAKE</Typography>

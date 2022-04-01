@@ -109,7 +109,6 @@ const WithDraw = (props: Props) => {
         setProgress(false);
       }, 1000);
       const contract = await stakingToken();
-      console.log(new BigNumber(stake.toFixed(4).toString()).eq(value.defaultValue.toString()));
 
       // withdraw max
       if (new BigNumber(stake.toFixed(4).toString()).eq(value.defaultValue.toString())) {
@@ -227,7 +226,7 @@ const WithDraw = (props: Props) => {
             {value.defaultValue > Number(new BigNumber(stake).toFixed(4)) && (
               <div style={{ color: 'red' }}>Insufficient XCN balance</div>
             )}
-            {!value.isValid  && <div style={{ color: 'red' }}>Entered Number is invalid</div>}
+            {!value.isValid && <div style={{ color: 'red' }}>Entered Number is invalid</div>}
           </Box>
         </Box>
       </DialogContent>

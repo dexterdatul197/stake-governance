@@ -15,7 +15,7 @@ import { setEthereumAddress, setOpenConnectDialog, setWalletName } from './redux
 const cx = classnames.bind(styles);
 
 const ConnectWallet: React.FC = () => {
-  const isMobile = useIsMobile(576);
+  const isMobile = useIsMobile(844);
   const { deactivate } = useWeb3React<Web3>();
   const history = useHistory();
   const dispatch = useDispatch();

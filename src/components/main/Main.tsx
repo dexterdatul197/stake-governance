@@ -142,14 +142,7 @@ const Main: React.FC = () => {
           {tvlData.length > 0 && ohclData.length > 0 ? (
             <AreaChart tvlData={tvlData} ohclData={ohclData} />
           ) : (
-            <CircularProgress
-              size={50}
-              color="primary"
-              sx={{
-                position: 'absolute',
-                top: '50%'
-              }}
-            />
+            <CircularProgress size={50} color="primary" className={cx('spinner')} />
           )}
         </>
       )}

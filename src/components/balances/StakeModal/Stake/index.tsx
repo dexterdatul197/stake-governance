@@ -13,7 +13,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useAppDispatch } from '../../../../store/hooks';
 import { openSnackbar, SnackbarVariant } from '../../../../store/snackbar';
-
+import { debounce } from 'lodash';
 const commaNumber = require('comma-number');
 const format = commaNumber.bindWith(',', '.');
 
@@ -23,11 +23,26 @@ interface Props {
   handleNext: () => void;
   value?: any;
   setValue: (value: any) => void;
-  handleCloseModal?: () => void;
+  handleCloseModal: () => void;
+  balanceValue: any;
+  setBalanceValue: (value: any) => void;
+  isPercent: boolean;
+  setIsPercent: any;
 }
 
 const Stake = (props: Props) => {
-  const { cx, walletValue, handleNext, value, setValue, handleCloseModal } = props;
+  const {
+    cx,
+    walletValue,
+    handleNext,
+    value,
+    setValue,
+    handleCloseModal,
+    setBalanceValue,
+    balanceValue,
+    isPercent,
+    setIsPercent
+  } = props;
 
   const [isActivePercent1, setIsActivePercent1] = useState(false);
   const [isActivePercent2, setIsActivePercent2] = useState(false);
@@ -39,8 +54,9 @@ const Stake = (props: Props) => {
       let _value = { ...value };
       _value = { ..._value, default: event.target.value };
       setValue(_value);
+      setIsPercent(true);
     },
-    [value]
+    [value, isPercent]
   );
 
   const valueText = (value: any) => {
@@ -52,8 +68,9 @@ const Stake = (props: Props) => {
       let _value = { ...value };
       _value = { ..._value, default: 25 };
       setValue(_value);
+      setIsPercent(true);
     },
-    [value]
+    [value, isPercent]
   );
 
   const handkeChangeInputPercent2 = useCallback(
@@ -61,8 +78,9 @@ const Stake = (props: Props) => {
       let _value = { ...value };
       _value = { ..._value, default: 50 };
       setValue(_value);
+      setIsPercent(true);
     },
-    [value]
+    [value, isPercent]
   );
 
   const handkeChangeInputPercent3 = useCallback(
@@ -70,8 +88,9 @@ const Stake = (props: Props) => {
       let _value = { ...value };
       _value = { ..._value, default: 75 };
       setValue(_value);
+      setIsPercent(true);
     },
-    [value]
+    [value, isPercent]
   );
 
   const handkeChangeInputPercent4 = useCallback(
@@ -79,21 +98,13 @@ const Stake = (props: Props) => {
       let _value = { ...value };
       _value = { ..._value, default: 100 };
       setValue(_value);
+      setIsPercent(true);
     },
-    [value]
+    [value, isPercent]
   );
 
   const handleNextStep = () => {
-    if (value.default === 0) {
-      dispatch(
-        openSnackbar({
-          message: 'Please enter the wallet balance you want to stake',
-          variant: SnackbarVariant.ERROR
-        })
-      );
-    } else {
-      handleNext();
-    }
+    handleNext();
   };
   useEffect(() => {
     if (value.default === value.value1) {
@@ -118,12 +129,31 @@ const Stake = (props: Props) => {
     }
   }, [value.default]);
 
+  const validateNumberField = (myNumber: any) => {
+    const numberRegEx = /^\d+(\.)?(\.\d{1,4})?$/;
+    return numberRegEx.test(String(myNumber));
+  };
+
+  const handleChangeBalanceValue = (event: any) => {
+    const { value } = event.target;
+    const isValid = !value || validateNumberField(value);
+    console.log(isValid);
+    if (isValid) {
+      setBalanceValue({ ...balanceValue, default: value, isValid });
+      setIsPercent(false);
+    }
+  };
+
   return (
     <React.Fragment>
       <DialogTitle className={cx('title-dialog')}>
         <Typography className={cx('text-stake')}>Stake</Typography>
         <CloseIcon
-          onClick={handleCloseModal}
+          onClick={() => {
+            handleCloseModal();
+            setBalanceValue({ ...balanceValue, default: '' });
+            setValue({ ...value, default: 0 });
+          }}
           style={{ color: 'var(--text-color-balance)', cursor: 'pointer' }}
         />
       </DialogTitle>
@@ -134,7 +164,7 @@ const Stake = (props: Props) => {
             disabled
             disableUnderline
             className={cx('input')}
-            value={`${value.default}%`}
+            value={`${value.default ? value.default : 0} %`}
             size="small"
             onChange={handleChangeValue}
           />
@@ -147,30 +177,27 @@ const Stake = (props: Props) => {
           <Box className={cx('dialog-content__percent')}>
             <span
               onClick={handleChangeInputPercent}
-              className={cx('percent-number', { 'percent-number-active': isActivePercent1 })}
-            >
+              className={cx('percent-number', { 'percent-number-active': isActivePercent1 })}>
               {valueText(value.value1)}
             </span>
             <span
               onClick={handkeChangeInputPercent2}
-              className={cx('percent-number', { 'percent-number-active': isActivePercent2 })}
-            >
+              className={cx('percent-number', { 'percent-number-active': isActivePercent2 })}>
               {valueText(value.value2)}
             </span>
             <span
               onClick={handkeChangeInputPercent3}
-              className={cx('percent-number', { 'percent-number-active': isActivePercent3 })}
-            >
+              className={cx('percent-number', { 'percent-number-active': isActivePercent3 })}>
               {valueText(value.value3)}
             </span>
             <span
               onClick={handkeChangeInputPercent4}
-              className={cx('percent-number', { 'percent-number-active': isActivePercent4 })}
-            >
+              className={cx('percent-number', { 'percent-number-active': isActivePercent4 })}>
               {value.all ? 'All' : 0}
             </span>
           </Box>
         </Box>
+
         <Box className={cx('balance')}>
           <Box className={cx('balance__wallet-balance')}>
             <Typography className={cx('title')}>
@@ -180,16 +207,28 @@ const Stake = (props: Props) => {
             <span className={cx('token')}>XCN</span>
           </Box>
           <Box className={cx('balance__stake-balance')}>
-            <Typography className={cx('title')}>
+            <Box className={cx('title')}>
               Stake Balance:{' '}
-              {format(
-                new BigNumber(value.default)
-                  .multipliedBy(new BigNumber(walletValue))
-                  .div(new BigNumber('100'))
-                  .toFixed(4)
-                  .toString()
-              )}
-            </Typography>
+              <Input
+                type="text"
+                value={
+                  isPercent
+                    ? format(
+                        new BigNumber(value.default)
+                          .multipliedBy(new BigNumber(walletValue))
+                          .div(new BigNumber('100'))
+                          .toFixed(4)
+                          .toString()
+                      )
+                    : balanceValue.default
+                }
+                onChange={handleChangeBalanceValue}
+                placeholder="0.0000"
+                disableUnderline
+                size="small"
+              />
+            </Box>
+
             <span className={cx('token')}>XCN</span>
           </Box>
         </Box>
@@ -198,8 +237,7 @@ const Stake = (props: Props) => {
         <Button
           onClick={handleNextStep}
           className={cx('button-stake')}
-          disabled={new BigNumber(walletValue).lte(0)}
-        >
+          disabled={new BigNumber(walletValue).lte(0)}>
           Stake
         </Button>
       </DialogActions>

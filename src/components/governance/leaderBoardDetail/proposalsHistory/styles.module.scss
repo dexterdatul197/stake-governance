@@ -6,7 +6,7 @@
   box-shadow: 0px 4px 30px rgba(0, 28, 78, 0.05);
   border-radius: 14px;
   margin-top: 37px;
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 844px) {
     padding: 20px 19px 19px 19px;
   }
   &__title {
@@ -15,7 +15,7 @@
     color: var(--text-table);
     padding-bottom: 29px;
     display: block;
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 844px) {
       padding-bottom: 26px;
       font-size: 16px;
     }

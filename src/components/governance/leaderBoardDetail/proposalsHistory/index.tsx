@@ -54,7 +54,7 @@ const HistoryDetail = (props: Props) => {
     page: 1,
     limit: 5
   });
-  const isMobile = useMobile(820);
+  const isMobile = useMobile(844);
   const history = useHistory();
 
   useEffect(() => {

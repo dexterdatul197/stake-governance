@@ -61,7 +61,7 @@ const Proposals: React.FC = () => {
     page: 1,
     limit: 5
   });
-  const isMobile = useIsMobile(576);
+  const isMobile = useIsMobile(844);
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setCurrentPage(newPage);
