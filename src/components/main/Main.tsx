@@ -65,13 +65,11 @@ const Main: React.FC = () => {
 
   const getCurrencies = useCallback(async () => {
     const coinGeckoCurrencies = await coinGeckoClient.simpleSupportedCurrencies();
-    console.log(coinGeckoCurrencies);
     const res = coinGeckoCurrencies
       .filter((item) => {
         return item === 'usd' || item === 'eur' || item === 'xcn' || item === 'chn';
       })
       .map((item) => {
-        console.log(item);
         return item.toUpperCase();
       });
     setCurrencies(res);

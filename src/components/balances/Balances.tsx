@@ -1,3 +1,4 @@
+import { BigNumber } from '@0x/utils';
 import { Box, Button } from '@material-ui/core';
 import { useWeb3React } from '@web3-react/core';
 import classNames from 'classnames/bind';
@@ -17,7 +18,9 @@ import Modal from './StakeModal';
 import TableComponent from './Table';
 import CardComponent from './TableOnMobile';
 import ModalWithDraw from './WithDrawModal';
+import Web3 from 'web3';
 
+const web3 = new Web3();
 const commaNumber = require('comma-number');
 const format = commaNumber.bindWith(',', '.');
 
@@ -82,6 +85,7 @@ const Balances: React.FC = () => {
   const [updateSmartContract, setUpdateSmartContract] = useState(false);
   const [chnToken, setChntoken] = useState(0);
   const [claimLoading, setClaimLoading] = useState(false);
+  const [apy, setApy] = useState(0);
 
   const handleActiveClass = () => {
     dispatch({ type: 'OPEN_STAKE' });
@@ -106,23 +110,31 @@ const Balances: React.FC = () => {
   const handleClaim = async () => {
     setClaimLoading(true);
     const contract = await claimContract();
-    contract.claimReward(0)
-    .then(async (res: any) => {
-      await res.wait();
-      const connectedAddress = currentAddress(wallet);
-      const contract = await stakingToken();
-      const getValueEarned = await contract.pendingReward(0, connectedAddress);
-      const formatValueEarned = ethers.utils.formatEther(getValueEarned);
-      setEarn(parseFloat(formatValueEarned));
-      dispatchSystem(openSnackbar({message: 'Claim success!', variant: SnackbarVariant.SUCCESS}));
-      setClaimLoading(false);
-    })
-    .catch((error: any) => {
-      if (error.code === 4001) {
-        dispatchSystem(openSnackbar({message: 'User denied transaction signature!', variant: SnackbarVariant.ERROR}));
-      }
-      setClaimLoading(false);
-    });
+    contract
+      .claimReward(0)
+      .then(async (res: any) => {
+        await res.wait();
+        const connectedAddress = currentAddress(wallet);
+        const contract = await stakingToken();
+        const getValueEarned = await contract.pendingReward(0, connectedAddress);
+        const formatValueEarned = ethers.utils.formatEther(getValueEarned);
+        setEarn(parseFloat(formatValueEarned));
+        dispatchSystem(
+          openSnackbar({ message: 'Claim success!', variant: SnackbarVariant.SUCCESS })
+        );
+        setClaimLoading(false);
+      })
+      .catch((error: any) => {
+        if (error.code === 4001) {
+          dispatchSystem(
+            openSnackbar({
+              message: 'User denied transaction signature!',
+              variant: SnackbarVariant.ERROR
+            })
+          );
+        }
+        setClaimLoading(false);
+      });
   };
 
   const getValueBalance = useCallback(async () => {
@@ -159,6 +171,28 @@ const Balances: React.FC = () => {
   }, [wallet, earn, stake]);
 
   useEffect(() => {
+    const getContract = async () => {
+      try {
+        const contract = await stakingToken();
+        const connectedAddress = currentAddress(wallet);
+        const getTotalStakeAmount = await contract.getStakingAmount(0, connectedAddress);
+        const getRewardPerBlock = await contract.rewardPerBlock();
+        const fomartNumber = ethers.utils.formatEther(getTotalStakeAmount);
+        const formatReward = ethers.utils.formatEther(getRewardPerBlock);
+        const APY = new BigNumber(formatReward)
+          .multipliedBy(6400)
+          .multipliedBy(365)
+          .dividedBy(fomartNumber);
+        console.log(APY);
+        setApy(Number(APY));
+      } catch (error) {
+        console.log('error: ', error);
+      }
+    };
+    getContract();
+  }, [wallet]);
+
+  useEffect(() => {
     getValueBalance();
   }, [getValueBalance, updateSmartContract, connector]);
 
@@ -192,6 +226,11 @@ const Balances: React.FC = () => {
                 <span className={cx('earn__value')}>{currencyFormatter(Number(earn))}</span>
                 <span className={cx('earn__token')}>XCN</span>
               </Box>
+              <Box className={cx('apy')}>
+                <span className={cx('apy__title')}>APY:</span>
+                <span className={cx('apy__value')}>{apy}%</span>
+                <span className={cx('apy__percent')}></span>
+              </Box>
             </Box>
 
             <Box className={`${cx('switcher')}`}>
@@ -215,7 +254,10 @@ const Balances: React.FC = () => {
               </Button>
             </Box>
             <Box className={cx('btn-claim')}>
-              <Button className={cx('switcher_claim')} onClick={handleClaim} disabled={claimLoading || earn === 0.0}>
+              <Button
+                className={cx('switcher_claim')}
+                onClick={handleClaim}
+                disabled={claimLoading || earn === 0.0}>
                 {claimLoading ? (
                   <img
                     src={loadingSvg}
