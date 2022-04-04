@@ -144,7 +144,7 @@ const Main: React.FC = () => {
               id="combo-box-demo"
             />
           </div>
-          <div className={cx('securing-chain')}>Securing chain governance</div>
+          <div className={cx('securing-chain')}>Securing Chain Governance</div>
           {tvlData.length > 0 && ohclData.length > 0 ? (
             <AreaChart tvlData={tvlData} ohclData={ohclData} />
           ) : (
