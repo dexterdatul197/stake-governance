@@ -181,7 +181,6 @@ const Balances: React.FC = () => {
         const formatReward = ethers.utils.formatEther(getRewardPerBlock);
         const APY = new BigNumber(formatReward).multipliedBy(6400).multipliedBy(365);
         const TotalApy = Number(fomartNumber) === 0 ? 0 : new BigNumber(APY).div(fomartNumber);
-        console.log(TotalApy)
         setApy(Number(TotalApy));
       } catch (error) {
         console.log('error: ', error);

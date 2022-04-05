@@ -28,6 +28,8 @@ interface Props {
   setBalanceValue: (value: any) => void;
   isPercent: boolean;
   setIsPercent: any;
+  valueBalance: any;
+  setValueBalance: any;
 }
 
 const Stake = (props: Props) => {
@@ -41,7 +43,9 @@ const Stake = (props: Props) => {
     setBalanceValue,
     balanceValue,
     isPercent,
-    setIsPercent
+    setIsPercent,
+    valueBalance,
+    setValueBalance
   } = props;
 
   const [isActivePercent1, setIsActivePercent1] = useState(false);
@@ -58,7 +62,7 @@ const Stake = (props: Props) => {
     },
     [value, isPercent]
   );
-
+  console.log('??', new BigNumber(valueBalance).comparedTo(walletValue));
   const valueText = (value: any) => {
     return `${value}%`;
   };
@@ -69,6 +73,13 @@ const Stake = (props: Props) => {
       _value = { ..._value, default: 25 };
       setValue(_value);
       setIsPercent(true);
+      setValueBalance(
+        format(
+          new BigNumber(_value.default)
+            .multipliedBy(new BigNumber(walletValue))
+            .div(new BigNumber('100'))
+        )
+      );
     },
     [value, isPercent]
   );
@@ -79,6 +90,13 @@ const Stake = (props: Props) => {
       _value = { ..._value, default: 50 };
       setValue(_value);
       setIsPercent(true);
+      setValueBalance(
+        format(
+          new BigNumber(_value.default)
+            .multipliedBy(new BigNumber(walletValue))
+            .div(new BigNumber('100'))
+        )
+      );
     },
     [value, isPercent]
   );
@@ -89,6 +107,13 @@ const Stake = (props: Props) => {
       _value = { ..._value, default: 75 };
       setValue(_value);
       setIsPercent(true);
+      setValueBalance(
+        format(
+          new BigNumber(_value.default)
+            .multipliedBy(new BigNumber(walletValue))
+            .div(new BigNumber('100'))
+        )
+      );
     },
     [value, isPercent]
   );
@@ -99,6 +124,13 @@ const Stake = (props: Props) => {
       _value = { ..._value, default: 100 };
       setValue(_value);
       setIsPercent(true);
+      setValueBalance(
+        format(
+          new BigNumber(_value.default)
+            .multipliedBy(new BigNumber(walletValue))
+            .div(new BigNumber('100'))
+        )
+      );
     },
     [value, isPercent]
   );
@@ -140,8 +172,8 @@ const Stake = (props: Props) => {
     console.log(isValid);
     if (isValid) {
       setBalanceValue({ ...balanceValue, default: value, isValid });
-      setIsPercent(false);
     }
+    setValueBalance(value);
   };
 
   return (
@@ -211,17 +243,7 @@ const Stake = (props: Props) => {
               Stake Balance:{' '}
               <Input
                 type="text"
-                value={
-                  isPercent
-                    ? format(
-                        new BigNumber(value.default)
-                          .multipliedBy(new BigNumber(walletValue))
-                          .div(new BigNumber('100'))
-                          .toFixed(4)
-                          .toString()
-                      )
-                    : balanceValue.default
-                }
+                value={valueBalance}
                 onChange={handleChangeBalanceValue}
                 placeholder="0.0000"
                 disableUnderline
@@ -237,7 +259,10 @@ const Stake = (props: Props) => {
         <Button
           onClick={handleNextStep}
           className={cx('button-stake')}
-          disabled={new BigNumber(walletValue).lte(0)}>
+          disabled={
+            new BigNumber(walletValue).lte(0) ||
+            new BigNumber(valueBalance).comparedTo(walletValue) === 1
+          }>
           Stake
         </Button>
       </DialogActions>
