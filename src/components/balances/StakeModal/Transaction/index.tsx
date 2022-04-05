@@ -31,6 +31,7 @@ interface Props {
   balanceValue?: any;
   isPercent: boolean;
   valueBalance: any;
+  setValueBalance:any
 }
 
 const MAX_INT = '115792089237316195423570985008687907853269984665640564039457584007913129639935';
@@ -46,7 +47,8 @@ const Transaction = (props: Props) => {
     chnToken,
     balanceValue,
     isPercent,
-    valueBalance
+    valueBalance,
+    setValueBalance
   } = props;
 
   const wallet = useAppSelector((state: any) => state.wallet);
@@ -54,7 +56,6 @@ const Transaction = (props: Props) => {
   const dispatch = useAppDispatch();
   const [done, setDone] = useState(false);
   const [progress, setProgress] = useState(false);
-
   const amount = new BigNumber(value.default).multipliedBy(
     web3.utils.fromWei(chnToken.toString(), 'ether')
   );
@@ -115,7 +116,7 @@ const Transaction = (props: Props) => {
     } else {
       if (valueBalance) {
         contract
-          .stake(0, web3.utils.toWei(String(valueBalance), 'ether'))
+          .stake(0, web3.utils.toWei(valueBalance.replaceAll(',', ''), 'ether'))
           .then(async (res: any) => {
             await res.wait();
             handleCloseModal();
@@ -179,6 +180,7 @@ const Transaction = (props: Props) => {
       handleCloseModal();
       setTimeout(() => {
         handleBack();
+        setValueBalance(0)
       }, 500);
     }, 1000);
   };
@@ -186,6 +188,7 @@ const Transaction = (props: Props) => {
     handleCloseModal();
     setTimeout(() => {
       handleBack();
+      setValueBalance(0)
     }, 300);
   };
 

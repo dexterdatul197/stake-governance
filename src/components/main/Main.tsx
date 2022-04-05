@@ -83,7 +83,7 @@ const Main: React.FC = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const getTotalSupply = async () => {
     const getOHCL = await coinGeckoClient.coinIdOHLC({
-      id: 'chain',
+      id: 'chain-2',
       vs_currency: `${selectedCrc}`,
       days: 30
     });

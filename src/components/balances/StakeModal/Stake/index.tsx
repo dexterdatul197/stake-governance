@@ -52,6 +52,7 @@ const Stake = (props: Props) => {
   const [isActivePercent2, setIsActivePercent2] = useState(false);
   const [isActivePercent3, setIsActivePercent3] = useState(false);
   const [isActivePercent4, setIsActivePercent4] = useState(false);
+  const [inputNumber, setInputNumber] = useState('');
   const dispatch = useAppDispatch();
   const handleChangeValue = useCallback(
     (event: any) => {
@@ -59,10 +60,18 @@ const Stake = (props: Props) => {
       _value = { ..._value, default: event.target.value };
       setValue(_value);
       setIsPercent(true);
+      setValueBalance(
+        format(
+          new BigNumber(_value.default)
+            .multipliedBy(new BigNumber(walletValue))
+            .div(new BigNumber('100'))
+            .toFixed(4)
+            .toString()
+        )
+      );
     },
     [value, isPercent]
   );
-  console.log('??', new BigNumber(valueBalance).comparedTo(walletValue));
   const valueText = (value: any) => {
     return `${value}%`;
   };
@@ -78,6 +87,8 @@ const Stake = (props: Props) => {
           new BigNumber(_value.default)
             .multipliedBy(new BigNumber(walletValue))
             .div(new BigNumber('100'))
+            .toFixed(4)
+            .toString()
         )
       );
     },
@@ -95,6 +106,8 @@ const Stake = (props: Props) => {
           new BigNumber(_value.default)
             .multipliedBy(new BigNumber(walletValue))
             .div(new BigNumber('100'))
+            .toFixed(4)
+            .toString()
         )
       );
     },
@@ -112,6 +125,8 @@ const Stake = (props: Props) => {
           new BigNumber(_value.default)
             .multipliedBy(new BigNumber(walletValue))
             .div(new BigNumber('100'))
+            .toFixed(4)
+            .toString()
         )
       );
     },
@@ -129,6 +144,8 @@ const Stake = (props: Props) => {
           new BigNumber(_value.default)
             .multipliedBy(new BigNumber(walletValue))
             .div(new BigNumber('100'))
+            .toFixed(4)
+            .toString()
         )
       );
     },
@@ -167,13 +184,17 @@ const Stake = (props: Props) => {
   };
 
   const handleChangeBalanceValue = (event: any) => {
-    const { value } = event.target;
-    const isValid = !value || validateNumberField(value);
-    console.log(isValid);
+    let { value } = event.target;
+
+    let _value = value.replaceAll(',', '');
+    _value = parseFloat(_value);
+    //check valib o day check them dieu kien lon hon nua
+    const isValid = validateNumberField(_value);
     if (isValid) {
-      setBalanceValue({ ...balanceValue, default: value, isValid });
+      setValueBalance(format(_value));
+    } else {
+      setValueBalance('');
     }
-    setValueBalance(value);
   };
 
   return (
@@ -185,6 +206,7 @@ const Stake = (props: Props) => {
             handleCloseModal();
             setBalanceValue({ ...balanceValue, default: '' });
             setValue({ ...value, default: 0 });
+            setValueBalance(0);
           }}
           style={{ color: 'var(--text-color-balance)', cursor: 'pointer' }}
         />
@@ -248,6 +270,7 @@ const Stake = (props: Props) => {
                 placeholder="0.0000"
                 disableUnderline
                 size="small"
+                inputRef={validateNumberField}
               />
             </Box>
 
@@ -261,7 +284,8 @@ const Stake = (props: Props) => {
           className={cx('button-stake')}
           disabled={
             new BigNumber(walletValue).lte(0) ||
-            new BigNumber(valueBalance).comparedTo(walletValue) === 1
+            valueBalance === '0' ||
+            valueBalance.replaceAll(',', '') > walletValue
           }>
           Stake
         </Button>

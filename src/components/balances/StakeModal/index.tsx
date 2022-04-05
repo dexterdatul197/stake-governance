@@ -25,7 +25,7 @@ const Modal = memo((props: Props) => {
     isValid: true
   });
   const [isPercent, setIsPercent] = useState(false);
-  const [valueBalance, setValueBalance] = useState(0);
+  const [valueBalance, setValueBalance] = useState("0");
   const [value, setValue] = useState({
     default: 0,
     value1: 25,
@@ -65,6 +65,7 @@ const Modal = memo((props: Props) => {
             balanceValue={balanceValue}
             isPercent={isPercent}
             valueBalance={valueBalance}
+            setValueBalance={setValueBalance}
           />
         );
     }
