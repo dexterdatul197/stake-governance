@@ -16,7 +16,6 @@ export function useInactiveListener(suppress = false): void {
   }));
 
   const dispatch = useDispatch();
-
   useEffect(() => {
     if (error) {
       if (error instanceof UnsupportedChainIdError) {
@@ -38,11 +37,12 @@ export function useInactiveListener(suppress = false): void {
     console.log('disconnected');
     dispatch(setEthereumAddress(''));
     dispatch(setWalletName(''));
-    removeManyItemsInLS('walletconnect');
-    removeManyItemsInLS('walletlink'); // coinbase
+    // removeManyItemsInLS('walletconnect');
+    // removeManyItemsInLS('walletlink'); // coinbase
   };
 
   useEffect(() => {
+    console.log('value conditional: ', active, walletName, address, connector);
     if (active && walletName && address && connector) {
       connector.getProvider().then((provider: any) => {
         const handleChainChanged = (chainId: string) => {

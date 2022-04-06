@@ -23,7 +23,7 @@ import LeaderBoardDetail from './components/governance/leaderBoardDetail';
 
 const App: React.FC = () => {
   const context = useWeb3React<Web3>();
-  const { connector } = context;
+  const { connector ,account} = context;
   // handle logic to recognize the connector currently being activated
   const [activatingConnector, setActivatingConnector] = React.useState<any>();
 
@@ -44,8 +44,9 @@ const App: React.FC = () => {
 
   const triedEager = useEagerConnect();
 
-  useInactiveListener(!triedEager);
-  useInitial();
+
+  useInactiveListener(!triedEager || !!activatingConnector);
+  // useInitial();
 
   return (
     <div className="App">

@@ -28,6 +28,8 @@ interface Props {
   setBalanceValue: (value: any) => void;
   isPercent: boolean;
   setIsPercent: any;
+  valueBalance: any;
+  setValueBalance: any;
 }
 
 const Stake = (props: Props) => {
@@ -41,13 +43,16 @@ const Stake = (props: Props) => {
     setBalanceValue,
     balanceValue,
     isPercent,
-    setIsPercent
+    setIsPercent,
+    valueBalance,
+    setValueBalance
   } = props;
 
   const [isActivePercent1, setIsActivePercent1] = useState(false);
   const [isActivePercent2, setIsActivePercent2] = useState(false);
   const [isActivePercent3, setIsActivePercent3] = useState(false);
   const [isActivePercent4, setIsActivePercent4] = useState(false);
+  const [inputNumber, setInputNumber] = useState('');
   const dispatch = useAppDispatch();
   const handleChangeValue = useCallback(
     (event: any) => {
@@ -55,10 +60,18 @@ const Stake = (props: Props) => {
       _value = { ..._value, default: event.target.value };
       setValue(_value);
       setIsPercent(true);
+      setValueBalance(
+        format(
+          new BigNumber(_value.default)
+            .multipliedBy(new BigNumber(walletValue))
+            .div(new BigNumber('100'))
+            .toFixed(4)
+            .toString()
+        )
+      );
     },
     [value, isPercent]
   );
-
   const valueText = (value: any) => {
     return `${value}%`;
   };
@@ -69,6 +82,15 @@ const Stake = (props: Props) => {
       _value = { ..._value, default: 25 };
       setValue(_value);
       setIsPercent(true);
+      setValueBalance(
+        format(
+          new BigNumber(_value.default)
+            .multipliedBy(new BigNumber(walletValue))
+            .div(new BigNumber('100'))
+            .toFixed(4)
+            .toString()
+        )
+      );
     },
     [value, isPercent]
   );
@@ -79,6 +101,15 @@ const Stake = (props: Props) => {
       _value = { ..._value, default: 50 };
       setValue(_value);
       setIsPercent(true);
+      setValueBalance(
+        format(
+          new BigNumber(_value.default)
+            .multipliedBy(new BigNumber(walletValue))
+            .div(new BigNumber('100'))
+            .toFixed(4)
+            .toString()
+        )
+      );
     },
     [value, isPercent]
   );
@@ -89,6 +120,15 @@ const Stake = (props: Props) => {
       _value = { ..._value, default: 75 };
       setValue(_value);
       setIsPercent(true);
+      setValueBalance(
+        format(
+          new BigNumber(_value.default)
+            .multipliedBy(new BigNumber(walletValue))
+            .div(new BigNumber('100'))
+            .toFixed(4)
+            .toString()
+        )
+      );
     },
     [value, isPercent]
   );
@@ -99,6 +139,15 @@ const Stake = (props: Props) => {
       _value = { ..._value, default: 100 };
       setValue(_value);
       setIsPercent(true);
+      setValueBalance(
+        format(
+          new BigNumber(_value.default)
+            .multipliedBy(new BigNumber(walletValue))
+            .div(new BigNumber('100'))
+            .toFixed(4)
+            .toString()
+        )
+      );
     },
     [value, isPercent]
   );
@@ -130,18 +179,25 @@ const Stake = (props: Props) => {
   }, [value.default]);
 
   const validateNumberField = (myNumber: any) => {
-    const numberRegEx = /^\d+(\.)?(\.\d{1,4})?$/;
-    return numberRegEx.test(String(myNumber));
+    return typeof myNumber === 'number'
   };
 
   const handleChangeBalanceValue = (event: any) => {
-    const { value } = event.target;
-    const isValid = !value || validateNumberField(value);
-    console.log(isValid);
-    if (isValid) {
-      setBalanceValue({ ...balanceValue, default: value, isValid });
-      setIsPercent(false);
+    let { value } = event.target;
+
+    let _value = value.replaceAll(',', '');
+    //check valib o day check them dieu kien lon hon nua
+    _value = parseFloat(_value);
+    const isValid = validateNumberField(_value);
+    if(_value > walletValue){
+
     }
+    if (isValid && _value > 0) {
+      setValueBalance(format(_value));
+    }else {
+      setValueBalance('0');
+    }
+
   };
 
   return (
@@ -153,6 +209,7 @@ const Stake = (props: Props) => {
             handleCloseModal();
             setBalanceValue({ ...balanceValue, default: '' });
             setValue({ ...value, default: 0 });
+            setValueBalance('0');
           }}
           style={{ color: 'var(--text-color-balance)', cursor: 'pointer' }}
         />
@@ -211,21 +268,12 @@ const Stake = (props: Props) => {
               Stake Balance:{' '}
               <Input
                 type="text"
-                value={
-                  isPercent
-                    ? format(
-                        new BigNumber(value.default)
-                          .multipliedBy(new BigNumber(walletValue))
-                          .div(new BigNumber('100'))
-                          .toFixed(4)
-                          .toString()
-                      )
-                    : balanceValue.default
-                }
+                value={valueBalance ? valueBalance : 0}
                 onChange={handleChangeBalanceValue}
                 placeholder="0.0000"
                 disableUnderline
                 size="small"
+                inputRef={validateNumberField}
               />
             </Box>
 
@@ -237,7 +285,11 @@ const Stake = (props: Props) => {
         <Button
           onClick={handleNextStep}
           className={cx('button-stake')}
-          disabled={new BigNumber(walletValue).lte(0)}>
+          disabled={
+            new BigNumber(walletValue).lte(0) ||
+            valueBalance === '0' ||
+            valueBalance?.replaceAll(',', '') > walletValue
+          }>
           Stake
         </Button>
       </DialogActions>

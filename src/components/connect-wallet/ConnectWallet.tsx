@@ -16,12 +16,13 @@ const cx = classnames.bind(styles);
 
 const ConnectWallet: React.FC = () => {
   const isMobile = useIsMobile(844);
-  const { deactivate } = useWeb3React<Web3>();
+  const { deactivate, account } = useWeb3React<Web3>();
   const history = useHistory();
   const dispatch = useDispatch();
   const handleOpenConnectWalletDialog = () => {
     dispatch(setOpenConnectDialog(true));
   };
+  const walletConnect = localStorage.getItem('walletconnect');
   const wallet = useAppSelector((state) => state.wallet);
   const ref = useRef<any>();
   const [openDropdown, setOpenDropdown] = useState(false);
@@ -34,15 +35,17 @@ const ConnectWallet: React.FC = () => {
   };
   useOnClickOutside(ref, handleCloseDropdown);
 
-  const handleUpdateAddress = useCallback(() => {
-    const address = wallet.ethereumAddress.slice(0, 4) + '...' + wallet.ethereumAddress.slice(-4);
-    setAddress(address);
-  }, [address, wallet]);
+
+
+  // const handleUpdateAddress = useCallback(() => {
+  //   const address = wallet.ethereumAddress.slice(0, 4) + '...' + wallet.ethereumAddress.slice(-4);
+  //   setAddress(address);
+  // }, [address, wallet]);
 
   useEffect(() => {
     handleCloseDropdown();
-    handleUpdateAddress();
-  }, [handleUpdateAddress]);
+    // handleUpdateAddress();
+  }, []);
 
   const handleLogout = async () => {
     deactivate();
@@ -60,16 +63,32 @@ const ConnectWallet: React.FC = () => {
       {wallet.ethereumAddress ? (
         <>
           <div
-            className={cx('button-logout', 'center-items', `${address ? 'btn-address-style' : ''}`)}
+            className={cx(
+              'button-logout',
+              'center-items',
+              `${
+                wallet.ethereumAddress.slice(0, 4) + '...' + wallet.ethereumAddress.slice(-4)
+                  ? 'btn-address-style'
+                  : ''
+              }`
+            )}
             onClick={handleOpenDropdown}>
-            <span className={cx('button__text')}>{address.toLowerCase()}</span>
+            <span className={cx('button__text')}>
+              {wallet.ethereumAddress.slice(0, 4) +
+                '...' +
+                wallet.ethereumAddress.slice(-4).toLowerCase()}
+            </span>
           </div>
           <div
             onClick={handleLogout}
             className={cx(
               'btn-logout',
               `${openDropdown ? 'show-btn' : ''}`,
-              `${address ? 'btn-address-style' : ''}`
+              `${
+                wallet.ethereumAddress.slice(0, 4) + '...' + wallet.ethereumAddress.slice(-4)
+                  ? 'btn-address-style'
+                  : ''
+              }`
             )}
             ref={ref}>
             <span className={cx('button__text')}>Logout</span>

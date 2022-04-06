@@ -15,10 +15,11 @@ export const useInitial = () => {
     wallet: state.wallet
   }));
   const dispatch = useDispatch();
+  const infoConnectWallet = localStorage.getItem('walletconnect');
+  const addressCoinbaseWallet = localStorage.getItem(KEY_ADDRESS_COINBASE);
 
   const checkConnectionWalletLinkCoinbase = () => {
     const timer = setInterval(() => {
-      const addressCoinbaseWallet = localStorage.getItem(KEY_ADDRESS_COINBASE);
       if (!addressCoinbaseWallet) {
         clearInterval(timer);
         removeManyItemsInLS('walletlink'); // coinbase
@@ -29,9 +30,6 @@ export const useInitial = () => {
   };
 
   useEffect(() => {
-    const infoConnectWallet = localStorage.getItem('walletconnect');
-    const addressCoinbaseWallet = localStorage.getItem(KEY_ADDRESS_COINBASE);
-
     // wallet-connect
     if (wallet.walletName === WALLET_NAMES.WALLET_CONNECT && infoConnectWallet) {
       const { connected, accounts } = JSON.parse(infoConnectWallet);
@@ -47,7 +45,7 @@ export const useInitial = () => {
       checkConnectionWalletLinkCoinbase();
       dispatch(setEthereumAddress(addressCoinbaseWallet as string));
     }
-  }, [wallet.walletName]);
+  }, [wallet.walletName && infoConnectWallet && addressCoinbaseWallet]);
 
   return undefined;
 };

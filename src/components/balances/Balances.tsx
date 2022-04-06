@@ -181,14 +181,13 @@ const Balances: React.FC = () => {
         const formatReward = ethers.utils.formatEther(getRewardPerBlock);
         const APY = new BigNumber(formatReward).multipliedBy(6400).multipliedBy(365);
         const TotalApy = Number(fomartNumber) === 0 ? 0 : new BigNumber(APY).div(fomartNumber);
-        console.log(TotalApy)
         setApy(Number(TotalApy));
       } catch (error) {
         console.log('error: ', error);
       }
     };
     getContract();
-  }, [wallet, apy]);
+  }, [wallet, apy, updateSmartContract]);
 
   useEffect(() => {
     getValueBalance();
@@ -226,7 +225,9 @@ const Balances: React.FC = () => {
               </Box>
               <Box className={cx('apy')}>
                 <span className={cx('apy__title')}>APY:</span>
-                <span className={cx('apy__value')}>{apy ? apy : 0}%</span>
+                <span title={apy.toString() + '%'} className={cx('apy__value')}>
+                  {apy ? apy.toFixed(4).toString() : 0}%
+                </span>
                 <span className={cx('apy__percent')}></span>
               </Box>
             </Box>
