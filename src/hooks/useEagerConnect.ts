@@ -7,40 +7,35 @@ import { WALLET_NAMES } from 'src/components/connect-wallet/redux/wallet';
 import { COINBASE_ADDRESS_KEY } from './useInactiveListener';
 
 export function useEagerConnect(): boolean {
-  const { activate, active } = useWeb3React();
+  const { activate, active, account } = useWeb3React();
+  const [tried, setTried] = useState<boolean>(false);
 
   const { ethereumAddress, walletName } = useAppSelector((state) => ({
     ethereumAddress: state.wallet.ethereumAddress,
     walletName: state.wallet.walletName
   }));
-
-  const [tried, setTried] = useState<boolean>(false);
+  console.log(account, '----------------------');
 
   useEffect(() => {
-    const checkValidConfig = () => {
+    const checkIsValid = () => {
       if (walletName === WALLET_NAMES.WALLET_CONNECT && localStorage.getItem('walletconnect'))
-        return true;
-
-      if (walletName === WALLET_NAMES.COINBASE && localStorage.getItem(COINBASE_ADDRESS_KEY))
         return true;
 
       if (walletName === WALLET_NAMES.METAMASK) return true;
     };
-
-    injectedConnector.isAuthorized().then((isAuthorized: boolean) => {
-      const isValid = checkValidConfig();
-      console.log(isAuthorized,'isAuthor')
+    injectedConnector.isAuthorized().then((isAuthorized: Boolean) => {
+      const isValid = checkIsValid();
       if (isValid) {
         const connector = CONNECTORS[walletName as string];
-        activate(connector, undefined, true).catch((err) => {
-          console.log('activate connector', err);
+        activate(connector, undefined, true).catch((e: any) => {
+          console.log('e', e);
           setTried(true);
         });
       } else {
         setTried(true);
       }
     });
-  }, [ethereumAddress, walletName]);
+  }, [walletName, ethereumAddress]);
 
   // wait until we get confirmation of a connection to flip the flag
   useEffect(() => {

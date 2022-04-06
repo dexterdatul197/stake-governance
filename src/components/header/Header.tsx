@@ -50,15 +50,6 @@ const Header: React.FC = () => {
     }
   }, [account]);
 
-  useEffect(() => {
-    if (walletConnect) {
-      const walletValue = JSON.parse(walletConnect as any);
-      const { connected, accounts } = walletValue;
-      if (connected) {
-        dispatch(setEthereumAddress(accounts[0]));
-      }
-    }
-  }, [walletConnect]);
 
   const isMobile = useIsMobile(844);
   return (
