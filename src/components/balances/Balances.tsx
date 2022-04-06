@@ -225,7 +225,9 @@ const Balances: React.FC = () => {
               </Box>
               <Box className={cx('apy')}>
                 <span className={cx('apy__title')}>APY:</span>
-                <span className={cx('apy__value')}>{apy ? apy : 0}%</span>
+                <span title={apy.toString() + '%'} className={cx('apy__value')}>
+                  {apy ? apy.toFixed(4).toString() : 0}%
+                </span>
                 <span className={cx('apy__percent')}></span>
               </Box>
             </Box>

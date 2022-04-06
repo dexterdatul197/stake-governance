@@ -179,22 +179,25 @@ const Stake = (props: Props) => {
   }, [value.default]);
 
   const validateNumberField = (myNumber: any) => {
-    const numberRegEx = /^\d+(\.)?(\.\d{1,4})?$/;
-    return numberRegEx.test(String(myNumber));
+    return typeof myNumber === 'number'
   };
 
   const handleChangeBalanceValue = (event: any) => {
     let { value } = event.target;
 
     let _value = value.replaceAll(',', '');
-    _value = parseFloat(_value);
     //check valib o day check them dieu kien lon hon nua
+    _value = parseFloat(_value);
     const isValid = validateNumberField(_value);
-    if (isValid) {
-      setValueBalance(format(_value));
-    } else {
-      setValueBalance('');
+    if(_value > walletValue){
+
     }
+    if (isValid && _value > 0) {
+      setValueBalance(format(_value));
+    }else {
+      setValueBalance('0');
+    }
+
   };
 
   return (
@@ -206,7 +209,7 @@ const Stake = (props: Props) => {
             handleCloseModal();
             setBalanceValue({ ...balanceValue, default: '' });
             setValue({ ...value, default: 0 });
-            setValueBalance(0);
+            setValueBalance('0');
           }}
           style={{ color: 'var(--text-color-balance)', cursor: 'pointer' }}
         />
@@ -265,7 +268,7 @@ const Stake = (props: Props) => {
               Stake Balance:{' '}
               <Input
                 type="text"
-                value={valueBalance}
+                value={valueBalance ? valueBalance : 0}
                 onChange={handleChangeBalanceValue}
                 placeholder="0.0000"
                 disableUnderline

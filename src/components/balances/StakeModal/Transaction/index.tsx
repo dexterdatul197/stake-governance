@@ -180,7 +180,7 @@ const Transaction = (props: Props) => {
       handleCloseModal();
       setTimeout(() => {
         handleBack();
-        setValueBalance(0)
+        setValueBalance("")
       }, 500);
     }, 1000);
   };
@@ -188,7 +188,7 @@ const Transaction = (props: Props) => {
     handleCloseModal();
     setTimeout(() => {
       handleBack();
-      setValueBalance(0)
+      setValueBalance("")
     }, 300);
   };
 
