@@ -108,7 +108,7 @@ const ConnectWalletPage: React.FC = () => {
   };
 
   // Connect Wallet connect
-  const handleConnectWalletConnect = async () => {
+  const handleConnectWalletConnect = () => {
     try {
       if (walletconnect && walletconnect.walletConnectProvider) {
         walletconnect.walletConnectProvider = undefined;
@@ -117,15 +117,15 @@ const ConnectWalletPage: React.FC = () => {
         dispatch(setWalletName('WALLET_CONNECT'));
         handleCloseConnectDialog();
       });
-    } catch (error: any) {
-      console.log('handleConnectWalletConnect', error);
+    } catch (error) {
+      console.log('error: ', error);
     }
   };
 
   // Connect Coinbase
   const handleConnectCoinBase = () => {
     try {
-      activate(walletLinkConnector, handleConnectError, false)
+      activate(walletLinkConnector, undefined, false)
         .then(() => {
           dispatch(setWalletName('COINBASE'));
         })

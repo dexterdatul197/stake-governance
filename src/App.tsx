@@ -20,13 +20,14 @@ import { useAppDispatch, useAppSelector } from './store/hooks';
 import { setTheme } from './store/theme';
 import LeaderBoard from './components/governance/leaderboard/LeaderBoard';
 import LeaderBoardDetail from './components/governance/leaderBoardDetail';
+import { setEthereumAddress } from './components/connect-wallet/redux/wallet';
 
 const App: React.FC = () => {
   const context = useWeb3React<Web3>();
-  const { connector ,account} = context;
+  const { connector, account } = context;
   // handle logic to recognize the connector currently being activated
   const [activatingConnector, setActivatingConnector] = React.useState<any>();
-
+  const walletconnect = localStorage.getItem('walletconnect');
   const dispatch = useAppDispatch();
   const theme = useAppSelector((state) => state.theme.themeMode);
   document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'light');
@@ -41,12 +42,13 @@ const App: React.FC = () => {
       setActivatingConnector(undefined);
     }
   }, [activatingConnector, connector]);
+  // const triedEager = useEagerConnect();
+
 
   const triedEager = useEagerConnect();
-
-
   useInactiveListener(!triedEager || !!activatingConnector);
-  // useInitial();
+  // useInactiveListener(!triedEager || !!activatingConnector);
+  useInitial();
 
   return (
     <div className="App">

@@ -35,8 +35,6 @@ export const useInitial = () => {
       const { connected, accounts } = JSON.parse(infoConnectWallet);
       if (connected) {
         dispatch(setEthereumAddress(accounts[0]));
-      } else {
-        localStorage.removeItem('walletconnect');
       }
     }
 
