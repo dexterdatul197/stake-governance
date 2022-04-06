@@ -116,7 +116,7 @@ const Transaction = (props: Props) => {
     } else {
       if (valueBalance) {
         contract
-          .stake(0, web3.utils.toWei(valueBalance.replaceAll(',', ''), 'ether'))
+          .stake(0, web3.utils.toWei(valueBalance?.replaceAll(',', ''), 'ether'))
           .then(async (res: any) => {
             await res.wait();
             handleCloseModal();

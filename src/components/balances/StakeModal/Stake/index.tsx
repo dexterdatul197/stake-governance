@@ -285,7 +285,7 @@ const Stake = (props: Props) => {
           disabled={
             new BigNumber(walletValue).lte(0) ||
             valueBalance === '0' ||
-            valueBalance.replaceAll(',', '') > walletValue
+            valueBalance?.replaceAll(',', '') > walletValue
           }>
           Stake
         </Button>

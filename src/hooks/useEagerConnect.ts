@@ -29,6 +29,7 @@ export function useEagerConnect(): boolean {
 
     injectedConnector.isAuthorized().then((isAuthorized: boolean) => {
       const isValid = checkValidConfig();
+      console.log(isAuthorized,'isAuthor')
       if (isValid) {
         const connector = CONNECTORS[walletName as string];
         activate(connector, undefined, true).catch((err) => {

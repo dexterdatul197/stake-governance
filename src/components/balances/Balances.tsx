@@ -187,7 +187,7 @@ const Balances: React.FC = () => {
       }
     };
     getContract();
-  }, [wallet, apy]);
+  }, [wallet, apy, updateSmartContract]);
 
   useEffect(() => {
     getValueBalance();
