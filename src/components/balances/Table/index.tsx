@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import {
+  CircularProgress,
   Table,
   TableBody,
   TableCell,
@@ -16,7 +17,7 @@ import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { getTransactionHistory } from 'src/apis/apis';
-import { ITransaction } from 'src/components/balances/Table/transaction.slice';
+import { ITransaction, setIsLoading } from 'src/components/balances/Table/transaction.slice';
 import eventBus from 'src/event/event-bus';
 import { sleep } from 'src/helpers/sleep';
 import { SocketEvent } from 'src/socket/SocketEvent';
@@ -34,6 +35,7 @@ const TableComponent = () => {
   const [order] = useState<Order>('asc');
   const [orderBy] = useState('id');
   const transactionData = useAppSelector((state) => state.transactions.transactions);
+  const isLoading = useAppSelector((state) => state.transactions.isLoading);
   const wallet = useAppSelector((state) => state.wallet);
 
   const [filter, setFilter] = useState({
@@ -59,6 +61,7 @@ const TableComponent = () => {
     });
   }, []);
   useEffect(() => {
+    dispatch(setIsLoading(false));
     dispatch(getTransactionHistory(filter));
   }, [filter]);
 
@@ -150,50 +153,72 @@ const TableComponent = () => {
           </TableRow>
         </TableHead>
         <TableBody className={cx('table-body')}>
-          {transactionData.data.map((row: ITransaction, index: number) => {
-            const labelId = `enhanced-table-checkbox-${index}`;
-            return (
-              <TableRow tabIndex={-1} key={row.id}>
-                <TableCell
-                  // component="th"
-                  id={labelId}
-                  // scope="row"
-                  align={'left'}
-                  className={cx('table-body__cell')}>
-                  {row.id}
-                </TableCell>
-                <TableCell align={'left'} className={cx('table-body__cell')}>
-                  <div className={cx('cell-hash')}>
-                    <div className={cx('hash')}>{get_ellipsis_mid(row.tx_hash)}</div>
-                    <img
-                      className={cx('icon-redirect')}
-                      onClick={() => {
-                        window.open(`${process.env.REACT_APP_EXPLORER + row.tx_hash}`);
-                      }}
-                      src={arrowRightUp}
-                      alt=""
-                    />
-                  </div>
-                </TableCell>
-                <TableCell align={'left'} className={cx('table-body__cell')}>
-                  <div className={cx('txt-type')}>{getTypeTxt(row.type)}</div>
-                </TableCell>
-                <TableCell align={'left'} className={cx('table-body__cell')}>
-                  {getAmount(row)}
-                  {/* {parseFloat(ethers.utils.formatEther((row.amount || '0') as string)).toFixed(4)} */}
-                </TableCell>
-                <TableCell align={'left'} className={cx('table-body__cell')}>
-                  {getReward(row)}
-                </TableCell>
-                <TableCell align={'left'} className={cx('table-body__cell')}>
-                  {moment(row.updated_at).format(FORMAT_DATE)}
-                </TableCell>
-                <TableCell align={'left'} className={cx('table-body__cell', 'completed')}>
-                  Completed
-                </TableCell>
-              </TableRow>
-            );
-          })}
+          {isLoading ? (
+            <TableRow>
+              <TableCell
+                style={{ paddingTop: '130px' }}
+                colSpan={7}
+                align="center"
+                className={cx('table-body__cell')}>
+                <CircularProgress size={40} />
+              </TableCell>
+            </TableRow>
+          ) : transactionData.data.length !== 0 ? (
+            transactionData.data.map((row: ITransaction, index: number) => {
+              const labelId = `enhanced-table-checkbox-${index}`;
+              return (
+                <TableRow tabIndex={-1} key={row.id}>
+                  <TableCell
+                    // component="th"
+                    id={labelId}
+                    // scope="row"
+                    align={'left'}
+                    className={cx('table-body__cell')}>
+                    {row.id}
+                  </TableCell>
+                  <TableCell align={'left'} className={cx('table-body__cell')}>
+                    <div className={cx('cell-hash')}>
+                      <div className={cx('hash')}>{get_ellipsis_mid(row.tx_hash)}</div>
+                      <img
+                        className={cx('icon-redirect')}
+                        onClick={() => {
+                          window.open(`${process.env.REACT_APP_EXPLORER + row.tx_hash}`);
+                        }}
+                        src={arrowRightUp}
+                        alt=""
+                      />
+                    </div>
+                  </TableCell>
+                  <TableCell align={'left'} className={cx('table-body__cell')}>
+                    <div className={cx('txt-type')}>{getTypeTxt(row.type)}</div>
+                  </TableCell>
+                  <TableCell align={'left'} className={cx('table-body__cell')}>
+                    {getAmount(row)}
+                    {/* {parseFloat(ethers.utils.formatEther((row.amount || '0') as string)).toFixed(4)} */}
+                  </TableCell>
+                  <TableCell align={'left'} className={cx('table-body__cell')}>
+                    {getReward(row)}
+                  </TableCell>
+                  <TableCell align={'left'} className={cx('table-body__cell')}>
+                    {moment(row.updated_at).format(FORMAT_DATE)}
+                  </TableCell>
+                  <TableCell align={'left'} className={cx('table-body__cell', 'completed')}>
+                    Completed
+                  </TableCell>
+                </TableRow>
+              );
+            })
+          ) : (
+            <TableRow>
+              <TableCell
+                style={{ paddingTop: '130px' }}
+                colSpan={7}
+                align="center"
+                className={cx('table-body__cell')}>
+                No Transaction History
+              </TableCell>
+            </TableRow>
+          )}
         </TableBody>
         <TableFooter className={cx('footer-wrapper')}>
           <TableRow>

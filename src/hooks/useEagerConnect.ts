@@ -22,6 +22,8 @@ export function useEagerConnect(): boolean {
         return true;
 
       if (walletName === WALLET_NAMES.METAMASK) return true;
+
+      if(walletName === WALLET_NAMES.COINBASE && localStorage.getItem(COINBASE_ADDRESS_KEY)) return true
     };
     injectedConnector.isAuthorized().then((isAuthorized: Boolean) => {
       const isValid = checkIsValid();

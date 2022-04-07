@@ -36,7 +36,7 @@ export function useInactiveListener(suppress = false): void {
   const handleDisconnect = () => {
     console.log('disconnected');
     dispatch(setEthereumAddress(''));
-    dispatch(setWalletName(''));
+    dispatch(setWalletName(''))
     removeManyItemsInLS('walletconnect');
     removeManyItemsInLS('walletlink'); // coinbase
   };
@@ -77,6 +77,9 @@ export function useInactiveListener(suppress = false): void {
     }
     if (walletName === 'WALLET_CONNECT' && !localStorage.getItem('walletconnect')) {
       handleDisconnect();
+    }
+    if(walletName === 'COINBASE' && !localStorage.getItem(COINBASE_ADDRESS_KEY)){
+      handleDisconnect()
     }
   }, [active, error, suppress, activate, address, walletName]);
 }

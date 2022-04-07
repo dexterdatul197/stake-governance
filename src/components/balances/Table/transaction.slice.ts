@@ -23,19 +23,28 @@ const initialState = {
       totalItem: 0,
       totalPage: 0
     }
-  }
+  },
+  isLoading: true
 };
 
 export const transactionHistorySlice = createSlice({
   name: 'transaction',
   initialState,
-  reducers: {},
+  reducers: {
+    setIsLoading: (state, action) => {
+      return {
+        ...state,
+        isLoading: action.payload
+      };
+    }
+  },
   extraReducers: {
     [getTransactionHistory.fulfilled.toString()]: (state, action) => {
       state.transactions = action.payload;
+      state.isLoading = false;
     }
   }
 });
-
+export const { setIsLoading } = transactionHistorySlice.actions;
 const { reducer: transactionReducer } = transactionHistorySlice;
 export default transactionReducer;
