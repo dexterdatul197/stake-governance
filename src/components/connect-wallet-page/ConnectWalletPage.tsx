@@ -79,7 +79,6 @@ const ConnectWalletPage: React.FC = () => {
   };
 
   const handleConnectError = (err: any) => {
-    console.log('login error: ', err, err instanceof UnsupportedChainIdError);
     if (err instanceof WCRejected) {
       handleCloseConnectDialog();
       dispatch(

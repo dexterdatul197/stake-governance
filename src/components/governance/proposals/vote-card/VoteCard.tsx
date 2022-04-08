@@ -2,7 +2,7 @@ import classNames from 'classnames/bind';
 import { BigNumber } from 'ethers';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { format } from 'src/helpers/common';
+import { commaFormat } from 'src/helpers/common';
 import { VoteData, VoteFormData } from 'src/interfaces/SFormData';
 import Web3 from 'web3';
 import styles from './VoteCard.module.scss';
@@ -21,7 +21,7 @@ const get_ellipsis_mid = (str: string) => {
 };
 
 const formatCardNumber = (num: string) => {
-  return format((+Web3.utils.fromWei(num)).toFixed(4));
+  return commaFormat((+Web3.utils.fromWei(num)).toFixed(4));
 };
 
 const VoteCard: React.FC<Props> = ({ voting, parrentCallback }) => {

@@ -1,11 +1,14 @@
-import React, { useEffect } from 'react';
 import { useWeb3React } from '@web3-react/core';
-import Web3 from 'web3';
+import React, { useEffect } from 'react';
 import { Route, Switch } from 'react-router-dom';
+import { BaseSocket } from 'src/socket/BaseSocket';
+import Web3 from 'web3';
 import Balances from './components/balances/Balances';
 import Footer from './components/footer/Footer';
 import CreateProposal from './components/governance/dialog/create-proposal/CreateProposal';
 import Governance from './components/governance/Governance';
+import LeaderBoard from './components/governance/leaderboard/LeaderBoard';
+import LeaderBoardDetail from './components/governance/leaderBoardDetail';
 import ProposalDetail from './components/governance/proposals/proposal-detail/ProposalDetail';
 import Header from './components/header/Header';
 import Main from './components/main/Main';
@@ -13,23 +16,17 @@ import CustomSnackbar from './components/snackbar/Snackbar';
 import { useEagerConnect } from './hooks/useEagerConnect';
 import { useInactiveListener } from './hooks/useInactiveListener';
 import { useInitial } from './hooks/useInitial';
-
-import './_app.scss';
-import { BaseSocket } from 'src/socket/BaseSocket';
-import { useAppDispatch, useAppSelector } from './store/hooks';
+import { useAppDispatch } from './store/hooks';
 import { setTheme } from './store/theme';
-import LeaderBoard from './components/governance/leaderboard/LeaderBoard';
-import LeaderBoardDetail from './components/governance/leaderBoardDetail';
-import { setEthereumAddress } from './components/connect-wallet/redux/wallet';
+import './_app.scss';
+
 
 const App: React.FC = () => {
   const context = useWeb3React<Web3>();
-  const { connector, account } = context;
+  const { connector } = context;
   // handle logic to recognize the connector currently being activated
   const [activatingConnector, setActivatingConnector] = React.useState<any>();
-  const walletconnect = localStorage.getItem('walletconnect');
   const dispatch = useAppDispatch();
-  const theme = useAppSelector((state) => state.theme.themeMode);
   document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'light');
   dispatch(setTheme(localStorage.getItem('theme') || 'light'));
 

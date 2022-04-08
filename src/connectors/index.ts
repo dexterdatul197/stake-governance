@@ -21,7 +21,6 @@ export const sleep = (ms = 1000) => new Promise((resolve) => setTimeout(resolve,
 export const createInstanceContract = async (address: string, abi: string) => {
   await sleep();
   const walletName = localStorage.getItem('walletName');
-  console.log('walletName: ',walletName)
   if (!walletName) throw Error('No provider');
   const provider = await CONNECTORS[walletName].getProvider();
   const web3Provider = await new providers.Web3Provider(provider);

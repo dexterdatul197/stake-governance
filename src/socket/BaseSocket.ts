@@ -16,12 +16,8 @@ export class BaseSocket {
   }
 
   public connect(): void {
-    // const accessToken = getCookieStorage('access_token');
     this.socket = io(`${process.env.REACT_APP_BASE_SOCKET}`, {
       transports: ['websocket']
-      // query: {
-      //   // authorization: accessToken,
-      // },
     });
     this.listenTransactionEvent();
     this.listenTVLDataEvent();
