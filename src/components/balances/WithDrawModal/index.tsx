@@ -235,8 +235,7 @@ const WithDraw = (props: Props) => {
           disabled={
             !value.isValid ||
             value.defaultValue > Number(new BigNumber(stake).toFixed(4)) ||
-            value.defaultValue === 0 ||
-            value.defaultValue.toString() < '1' ||
+            value.defaultValue.toString() === '0' ||
             value.defaultValue.toString() === '' ||
             done === true
           }

@@ -62,7 +62,7 @@ const ConnectWalletPage: React.FC = () => {
     }
     try {
       activate(injectedConnector).then(() => {
-        dispatch(setWalletName(WALLET_NAMES.METAMASK));
+        dispatch(setWalletName('METAMASK'));
       });
       switchNetwork(process.env.REACT_APP_CHAIN_ID || '');
     } catch (e: any) {
@@ -108,27 +108,27 @@ const ConnectWalletPage: React.FC = () => {
   };
 
   // Connect Wallet connect
-  const handleConnectWalletConnect = async () => {
+  const handleConnectWalletConnect = () => {
     try {
       if (walletconnect && walletconnect.walletConnectProvider) {
         walletconnect.walletConnectProvider = undefined;
       }
-      activate(walletconnect, handleConnectError, false).then(() => {
-        dispatch(setWalletName(WALLET_NAMES.WALLET_CONNECT));
+      activate(walletconnect, undefined, false).then(() => {
+        dispatch(setWalletName('WALLET_CONNECT'));
         handleCloseConnectDialog();
-        window.location.reload();
+        window.location.reload()
       });
-    } catch (error: any) {
-      console.log('handleConnectWalletConnect', error);
+    } catch (error) {
+      console.log('error: ', error);
     }
   };
 
   // Connect Coinbase
   const handleConnectCoinBase = () => {
     try {
-      activate(walletLinkConnector, handleConnectError, false)
+      activate(walletLinkConnector, undefined, false)
         .then(() => {
-          dispatch(setWalletName(WALLET_NAMES.COINBASE));
+          dispatch(setWalletName('COINBASE'));
         })
         .finally(() => {
           handleCloseConnectDialog();

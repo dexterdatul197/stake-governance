@@ -12,7 +12,9 @@ import { useAppSelector } from 'src/store/hooks';
 import { Card } from './card';
 import styles from './styles.module.scss';
 import { ITransaction } from './transaction.slice';
+import { setIsLoading } from 'src/components/balances/Table/transaction.slice';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { CircularProgress } from '@material-ui/core';
 
 const cx = classNames.bind(styles);
 
@@ -22,7 +24,7 @@ const CardComponent: FC = () => {
   const [limit, setLimit] = useState(20);
   const transactionData = useAppSelector((state) => state.transactions.transactions);
   const [hasMore, setHasMore] = useState(true);
-
+  const isLoading = useAppSelector((state) => state.transactions.isLoading);
   const [filter, setFilter] = useState({
     page: 1,
     limit: limit,
@@ -55,6 +57,7 @@ const CardComponent: FC = () => {
   useEffect(() => {
     if (transactionData.data.length > 0) {
       if (transactionData.metadata.totalItem === transactionData.data.length) {
+        dispatch(setIsLoading(false));
         setHasMore(false);
       }
     }
@@ -66,7 +69,11 @@ const CardComponent: FC = () => {
           dataLength={transactionData.data.length} //This is important field to render the next data
           next={fetchData}
           hasMore={hasMore}
-          loader={<h4 style={{ textAlign: 'center' }}>Loading...</h4>}
+          loader={
+            <h4 style={{ textAlign: 'center' }}>
+              {isLoading ? <CircularProgress /> : 'No History Transaction'}
+            </h4>
+          }
           endMessage={
             <p style={{ textAlign: 'center' }}>
               <b>Yay! You have seen it all</b>
@@ -82,9 +89,11 @@ const CardComponent: FC = () => {
           releaseToRefreshContent={
             <h3 style={{ textAlign: 'center' }}>&#8593; Release to refresh</h3>
           }>
-          {transactionData.data.map((item: ITransaction, index: number) => (
-            <Card transaction={item} key={item.id} />
-          ))}
+          {transactionData.data.length > 0
+            ? transactionData.data.map((item: ITransaction, index: number) => (
+                <Card transaction={item} key={item.id} />
+              ))
+            : ''}
         </InfiniteScroll>
       </div>
     </>

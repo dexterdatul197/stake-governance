@@ -28,7 +28,7 @@ const Header: React.FC = () => {
   const history = useHistory();
   const pathName = history.location.pathname;
   const dispatch = useDispatch();
-
+  const walletConnect = localStorage.getItem('walletconnect');
   const testRouter = () => {};
 
   const setGovernaneStyle = () => {};
@@ -49,6 +49,8 @@ const Header: React.FC = () => {
       localStorage.setItem('ethereumAddress', account as string);
     }
   }, [account]);
+
+
   const isMobile = useIsMobile(844);
   return (
     <div className={cx('header-parent')}>
@@ -63,8 +65,7 @@ const Header: React.FC = () => {
           onClick={testRouter}
           className={cx('link-style', {
             'link-style-border': '/stake' === pathName
-          })}
-        >
+          })}>
           Stake
         </Link>
         <Link
@@ -72,8 +73,7 @@ const Header: React.FC = () => {
           onClick={setGovernaneStyle}
           className={cx('link-style', {
             'link-style-border-right': '/governance' === pathName
-          })}
-        >
+          })}>
           Governance
         </Link>
       </div>
@@ -91,8 +91,7 @@ const Header: React.FC = () => {
               <div className={cx('footer-theme')}>
                 <span
                   className={cx('footer-theme__item', theme === THEME_MODE.LIGHT ? 'active' : '')}
-                  onClick={onSwitchTheme}
-                >
+                  onClick={onSwitchTheme}>
                   <img
                     className={cx('icon-theme')}
                     src={theme === THEME_MODE.LIGHT ? lightIcon : light_whiteIcon}
@@ -102,8 +101,7 @@ const Header: React.FC = () => {
                 </span>
                 <span
                   className={cx('footer-theme__item', theme === THEME_MODE.DARK ? 'active' : '')}
-                  onClick={onSwitchTheme}
-                >
+                  onClick={onSwitchTheme}>
                   <img
                     className={cx('icon-theme')}
                     src={theme === THEME_MODE.DARK ? dark_whiteIcon : darkIcon}

@@ -158,10 +158,8 @@ const Balances: React.FC = () => {
       const contract = await stakingToken();
       const getValueStake = await contract.userInfo(0, connectedAddress);
       const getValueEarned = await contract.pendingReward(0, connectedAddress);
-
       const formatValueStake = parseFloat(ethers.utils.formatEther(getValueStake.amount));
       const formatValueEarned = parseFloat(ethers.utils.formatEther(getValueEarned));
-
       dispatch(setVotingWeight(formatValueStake));
       setStake(formatValueStake);
       setEarn(formatValueEarned);
@@ -175,20 +173,19 @@ const Balances: React.FC = () => {
       try {
         const contract = await stakingToken();
         const connectedAddress = currentAddress(wallet);
-        const getTotalStakeAmount = await contract.getStakingAmount(0, connectedAddress);
+        const getTotalStakedAmount = await contract.poolInfo(0);
         const getRewardPerBlock = await contract.rewardPerBlock();
-        const fomartNumber = ethers.utils.formatEther(getTotalStakeAmount);
+        const formatTotalStaked = ethers.utils.formatEther(getTotalStakedAmount.totalAmountStake);
         const formatReward = ethers.utils.formatEther(getRewardPerBlock);
-        const APY = new BigNumber(formatReward).multipliedBy(6400).multipliedBy(365);
-        const TotalApy = Number(fomartNumber) === 0 ? 0 : new BigNumber(APY).div(fomartNumber);
-        console.log(TotalApy)
-        setApy(Number(TotalApy));
+        const APY = (parseFloat(formatReward) * 6400) / parseFloat(formatTotalStaked) + 1;
+        const totalAPY = (Math.pow(APY, 365) - 1) * 100;
+        setApy(totalAPY);
       } catch (error) {
-        console.log('error: ', error);
+        console.log('0.00013882438: ', error);
       }
     };
     getContract();
-  }, [wallet, apy]);
+  }, [wallet, apy, updateSmartContract]);
 
   useEffect(() => {
     getValueBalance();
@@ -226,7 +223,9 @@ const Balances: React.FC = () => {
               </Box>
               <Box className={cx('apy')}>
                 <span className={cx('apy__title')}>APY:</span>
-                <span className={cx('apy__value')}>{apy ? apy : 0}%</span>
+                <span title={apy.toString() + '%'} className={cx('apy__value')}>
+                  {apy ? apy.toFixed(4).toString() : 0}%
+                </span>
                 <span className={cx('apy__percent')}></span>
               </Box>
             </Box>
