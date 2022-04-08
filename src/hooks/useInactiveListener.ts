@@ -34,7 +34,6 @@ export function useInactiveListener(suppress = false): void {
   }, [error]);
 
   const handleDisconnect = () => {
-    console.log('disconnected');
     dispatch(setEthereumAddress(''));
     dispatch(setWalletName(''))
     removeManyItemsInLS('walletconnect');
@@ -45,7 +44,6 @@ export function useInactiveListener(suppress = false): void {
     if (active && walletName && address && connector) {
       connector.getProvider().then((provider: any) => {
         const handleChainChanged = (chainId: string) => {
-          console.log('listenned chainid', chainId);
           //eat errors
           activate(connector, undefined, true).catch((err: any) => {
             console.error('Failed to activate after chain changed', err);

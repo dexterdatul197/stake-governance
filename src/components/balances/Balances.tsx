@@ -291,6 +291,7 @@ const Balances: React.FC = () => {
             openWithdraw={isOpenWithdraw}
             handleCloseModalWithDraw={handleCloseModalWithDraw}
             handleUpdateSmartContract={handleUpdateSmartContract}
+            walletValue={walletValue}
           />
         </Box>
       )}

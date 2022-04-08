@@ -61,7 +61,14 @@ const BootstrapDialogTitle = (props: any) => {
 };
 
 const WithDraw = (props: Props) => {
-  const { openWithdraw, handleCloseModalWithDraw, earn, stake, handleUpdateSmartContract } = props;
+  const {
+    openWithdraw,
+    handleCloseModalWithDraw,
+    earn,
+    stake,
+    handleUpdateSmartContract,
+    walletValue
+  } = props;
   const wallet = useAppSelector((state: any) => state.wallet);
   const [value, setValue] = useState({
     defaultValue: 0,
@@ -198,7 +205,12 @@ const WithDraw = (props: Props) => {
       <DialogContent className={cx('dialog-content')}>
         <Box className={cx('dialog-content__title')}>
           <Typography className={cx('amount')}>Amount</Typography>
-          <Typography className={cx('available')}>Available</Typography>
+          <Typography className={cx('available')}>
+            <span style={{ color: 'var(--text-color-balance)', fontSize: '18px', fontWeight: 600 }}>
+              {currencyFormatter(Number(stake))}{' '}
+            </span>{' '}
+            <span>Available</span>
+          </Typography>
         </Box>
         <Box className={cx('dialog-content__children')}>
           <Box className={cx('main-left')}>
