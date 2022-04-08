@@ -85,11 +85,6 @@ export const stringToArr = (param: string) => {
   const sub = param.substring(param.indexOf('(')+1, param.indexOf(')'));
   return sub.split(',').map(item => item.trim());
 }
-const options = {
-  header: {
-    'X-CMC_PRO_API_KEY': `${process.env.REACT_APP_COINMARKETCAP_API_KEY}`
-  }
-}
 
 export const convertDateToString = (date: Date) => {
   return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
