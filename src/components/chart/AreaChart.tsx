@@ -1,20 +1,10 @@
-import { BigNumber } from '@0x/utils';
 import { ApexOptions } from 'apexcharts';
 import classNames from 'classnames/bind';
-import { CoinGeckoClient } from 'coingecko-api-v3';
 import React, { useEffect, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
-import eventBus from '../../event/event-bus';
-import { convertOHCL, convertToDate } from '../../helpers/common';
-import { TVLData, TVLDataRes } from '../../interfaces/SFormData';
-import { SocketEvent } from '../../socket/SocketEvent';
+import { convertToDate } from '../../helpers/common';
+import { TVLDataRes } from '../../interfaces/SFormData';
 import styles from './AreaChart.module.scss';
-
-const coinGeckoClient = new CoinGeckoClient({
-  timeout: 10000,
-  autoRetry: true
-});
-
 interface Props {
   tvlData?: TVLDataRes[];
   ohclData?: any[];
@@ -77,26 +67,16 @@ const AreaChart: React.FC<Props> = (props) => {
   });
 
   const chainPriceDataForChart = (data: any, tvlData: any) => {
-    const res = convertOHCL(data);
-    // const latestResData = tvlData[tvlData.length - 1];
-    // latestResData.tvl = latestTVL;
-
-    const categories: any = res.map((item: number[]) => convertToDate(item[0]));
-    const seriesPrice = res.map((item: number[]) => new BigNumber(item[2]).toFixed(4).toString());
-    let tvlFinally = tvlData.map((item: TVLData) => new BigNumber(item.tvl).toFixed(4).toString());
-
-    if (tvlFinally.length > seriesPrice.length) {
-      const indexRemove = tvlFinally.length - seriesPrice.length;
-      tvlFinally.splice(0, indexRemove);
-    }
+    const tvlDataArr = tvlData.map((item: any) => item.tvl);
+    const categories = tvlData.map((item: any) => convertToDate(item.timestamp))
     const series = [
       {
         name: 'Price',
-        data: seriesPrice
+        data: data
       },
       {
         name: 'TVL',
-        data: tvlFinally
+        data: tvlDataArr
       }
     ];
 

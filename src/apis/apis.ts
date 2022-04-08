@@ -55,3 +55,13 @@ export const getDataLeaderBoardDetail = async (address: any, page: number, limit
   );
   return res.data;
 };
+
+export const getCurrency = async () => {
+  const res = await axiosInstance(options).get('/staking/currencies');
+  return res.data;
+}
+
+export const getOHCL = async (param: {convert: string, startTime: string, endTime: string}) => {
+  const res = await axiosInstance(options).post('/staking/historycal-ohcl', param);
+  return res.data;
+}
