@@ -10,6 +10,7 @@ import { useDispatch } from 'react-redux';
 import { format } from 'util';
 import Web3 from 'web3';
 import { getCurrency, getOHCL, getTVLData } from '../../apis/apis';
+import { THEME_MODE } from '../../constant/constants';
 import {
   addMissingDataOHCL,
   convertDateToString, convertOHCLdata,
@@ -21,6 +22,8 @@ import { useAppSelector } from '../../store/hooks';
 import AreaChart from '../chart/AreaChart';
 import { setCurrencyList, setSelectedCurrency } from '../chart/redux/currency';
 import ConnectWalletPage from '../connect-wallet-page/ConnectWalletPage';
+import dark_logo from './../../assets/icon/CHN_light_logo.png';
+import logo from './../../assets/icon/CHN_dark_logo.png';
 import style from './Main.module.scss';
 const cx = classNames.bind(style);
 
@@ -63,6 +66,7 @@ const Main: React.FC = () => {
   const [tvlData, setTvlData] = useState<TVLDataRes[]>([]);
   const [ohclData, setOhclData] = useState<number[][]>([]);
   const selectedCrc = useAppSelector((state) => state.currency.selectedCurrency);
+  const theme = useAppSelector((state) => state.theme.themeMode);
 
   const getCurrencies = useCallback(async () => {
     const coinGeckoCurrencies = await getCurrency();
@@ -119,6 +123,15 @@ const Main: React.FC = () => {
     getCurrencies();
   }, [getCurrencies]);
 
+  const showIconCurrency = () => {
+    if (selectedCrc === 'usd') {
+      return '$'
+    }
+    if (selectedCrc === 'eur') {
+      return '€'
+    }
+  }
+
   return (
     <div className={cx('text-head')}>
       {wallet.openConnectDialog ? (
@@ -127,6 +140,7 @@ const Main: React.FC = () => {
         <>
           <div className={cx('text-head-child')}>
             <div className={cx('price')}>
+              {showIconCurrency()}
               {`${currencyFormatter(Number(totalSupply.replaceAll(',', '')))}`}
             </div>
             <Autocomplete

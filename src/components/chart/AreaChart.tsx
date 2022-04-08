@@ -1,8 +1,9 @@
+import { BigNumber } from '@0x/utils';
 import { ApexOptions } from 'apexcharts';
 import classNames from 'classnames/bind';
 import React, { useEffect, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
-import { convertToDate } from '../../helpers/common';
+import { commaFormat, convertToDate } from '../../helpers/common';
 import { TVLDataRes } from '../../interfaces/SFormData';
 import styles from './AreaChart.module.scss';
 interface Props {
@@ -68,7 +69,8 @@ const AreaChart: React.FC<Props> = (props) => {
 
   const chainPriceDataForChart = (data: any, tvlData: any) => {
     const tvlDataArr = tvlData.map((item: any) => item.tvl);
-    const categories = tvlData.map((item: any) => convertToDate(item.timestamp))
+    const categories = tvlData.map((item: any) => convertToDate(item.timestamp));
+    
     const series = [
       {
         name: 'Price',
@@ -89,7 +91,12 @@ const AreaChart: React.FC<Props> = (props) => {
         }
       },
       tooltip: {
-        shared: true
+        shared: true,
+        y: {
+          formatter: function (value, {series, seriesIndex, dataPoint, w}) {
+            return commaFormat(new BigNumber(value).toFixed(4));
+          }
+        }
       }
     });
     setSeries(series);

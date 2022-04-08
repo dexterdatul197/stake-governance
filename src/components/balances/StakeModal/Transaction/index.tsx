@@ -11,7 +11,7 @@ import {
 import CloseIcon from '@material-ui/icons/Close';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import React, { useCallback, useEffect, useState } from 'react';
-import { currentAddress, format } from '../../../../helpers/common';
+import { currentAddress, commaFormat } from '../../../../helpers/common';
 import { getCHNBalance, stakingToken } from '../../../../helpers/ContractService';
 import { useAppSelector, useAppDispatch } from '../../../../store/hooks';
 import { openSnackbar, SnackbarVariant } from '../../../../store/snackbar';

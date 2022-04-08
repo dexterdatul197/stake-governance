@@ -14,7 +14,7 @@ import classNames from 'classnames/bind';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { getDataLeaderBoard } from '../../../apis/apis';
-import { checkNotEmptyArr, format } from '../../../helpers/common';
+import { checkNotEmptyArr, commaFormat } from '../../../helpers/common';
 import useMobile from '../../../hooks/useMobile';
 import BackArrow from '../../back-arrow/BackArrow';
 import LeaderBoardMobile from '../leaderboardMobile';
@@ -55,7 +55,7 @@ const LeaderBoard: React.FC = () => {
                 <TableCell className={cx('table-row__table-cell')}>{rank}</TableCell>
                 <TableCell className={cx('table-row__table-cell')}>{address}</TableCell>
                 <TableCell align="right" className={cx('table-row__table-cell')}>
-                  {format(formatChnStake)}
+                  {commaFormat(formatChnStake)}
                 </TableCell>
                 <TableCell align="right" className={cx('table-row__table-cell')}>
                   {voteWeight} %

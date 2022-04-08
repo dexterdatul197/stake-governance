@@ -32,17 +32,17 @@ export const currentAddress = (wallet: WalletData) => {
   return allValue.filter((item) => typeof item === 'string' && item.length !== 0)[0] || '';
 };
 
-export const format = commaNumber.bindWith(',', '.');
+export const commaFormat = commaNumber.bindWith(',', '.');
 
 export const currencyFormatter = (labelValue: any) => {
   // Nine Zeroes for Billions
   return Math.abs(Number(labelValue)) >= 1.0e9
-    ? `${format(new BigNumber(`${Math.abs(Number(labelValue)) / 1.0e9}`).dp(2, 1))}B`
+    ? `${commaFormat(new BigNumber(`${Math.abs(Number(labelValue)) / 1.0e9}`).dp(2, 1))}B`
     : // Six Zeroes for Millions
     Math.abs(Number(labelValue)) >= 1.0e6
-    ? `${format(new BigNumber(`${Math.abs(Number(labelValue)) / 1.0e6}`).dp(2, 1))}M`
+    ? `${commaFormat(new BigNumber(`${Math.abs(Number(labelValue)) / 1.0e6}`).dp(2, 1))}M`
     : // Three Zeroes for Thousands
-      format(labelValue.toFixed(4));
+      commaFormat(labelValue.toFixed(4));
 };
 
 export const getStatus = (state: string) => {
