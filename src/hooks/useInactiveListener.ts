@@ -34,9 +34,8 @@ export function useInactiveListener(suppress = false): void {
   }, [error]);
 
   const handleDisconnect = () => {
-    console.log('disconnected');
     dispatch(setEthereumAddress(''));
-    dispatch(setWalletName(''));
+    dispatch(setWalletName(''))
     removeManyItemsInLS('walletconnect');
     removeManyItemsInLS('walletlink'); // coinbase
   };
@@ -45,7 +44,6 @@ export function useInactiveListener(suppress = false): void {
     if (active && walletName && address && connector) {
       connector.getProvider().then((provider: any) => {
         const handleChainChanged = (chainId: string) => {
-          console.log('listenned chainid', chainId);
           //eat errors
           activate(connector, undefined, true).catch((err: any) => {
             console.error('Failed to activate after chain changed', err);
@@ -77,6 +75,9 @@ export function useInactiveListener(suppress = false): void {
     }
     if (walletName === 'WALLET_CONNECT' && !localStorage.getItem('walletconnect')) {
       handleDisconnect();
+    }
+    if(walletName === 'COINBASE' && !localStorage.getItem(COINBASE_ADDRESS_KEY)){
+      handleDisconnect()
     }
   }, [active, error, suppress, activate, address, walletName]);
 }

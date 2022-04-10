@@ -4,7 +4,7 @@ import classNames from 'classnames/bind';
 import { ethers } from 'ethers';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { currentAddress, format } from '../../helpers/common';
+import { currentAddress, commaFormat } from '../../helpers/common';
 import { isConnected } from '../../helpers/connectWallet';
 import { getCHNBalance, stakingToken } from '../../helpers/ContractService';
 import { useAppSelector } from '../../store/hooks';

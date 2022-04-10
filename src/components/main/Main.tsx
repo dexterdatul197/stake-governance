@@ -7,14 +7,23 @@ import classNames from 'classnames/bind';
 import { CoinGeckoClient } from 'coingecko-api-v3';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { format } from 'util';
 import Web3 from 'web3';
-import { getTVLData } from '../../apis/apis';
-import { convertOHCL, currencyFormatter, dateBeforeMonth, format } from '../../helpers/common';
+import { getCurrency, getOHCL, getTVLData } from '../../apis/apis';
+import { THEME_MODE } from '../../constant/constants';
+import {
+  addMissingDataOHCL,
+  convertDateToString, convertOHCLdata,
+  currencyFormatter,
+  dateBeforeMonth
+} from '../../helpers/common';
 import { TVLDataRes } from '../../interfaces/SFormData';
 import { useAppSelector } from '../../store/hooks';
 import AreaChart from '../chart/AreaChart';
 import { setCurrencyList, setSelectedCurrency } from '../chart/redux/currency';
 import ConnectWalletPage from '../connect-wallet-page/ConnectWalletPage';
+import dark_logo from './../../assets/icon/CHN_light_logo.png';
+import logo from './../../assets/icon/CHN_dark_logo.png';
 import style from './Main.module.scss';
 const cx = classNames.bind(style);
 
@@ -45,11 +54,6 @@ const useStyles: any = makeStyles(() => ({
   }
 }));
 
-const coinGeckoClient = new CoinGeckoClient({
-  timeout: 10000,
-  autoRetry: true
-});
-
 const Main: React.FC = () => {
   const { account } = useWeb3React<Web3>();
   const classes = useStyles();
@@ -62,15 +66,20 @@ const Main: React.FC = () => {
   const [tvlData, setTvlData] = useState<TVLDataRes[]>([]);
   const [ohclData, setOhclData] = useState<number[][]>([]);
   const selectedCrc = useAppSelector((state) => state.currency.selectedCurrency);
+  const theme = useAppSelector((state) => state.theme.themeMode);
 
   const getCurrencies = useCallback(async () => {
-    const coinGeckoCurrencies = await coinGeckoClient.simpleSupportedCurrencies();
-    const res = coinGeckoCurrencies
-      .filter((item) => {
-        return item === 'usd' || item === 'eur' || item === 'xcn' || item === 'chn';
+    const coinGeckoCurrencies = await getCurrency();
+    const res = coinGeckoCurrencies.data
+      .filter((item: any) => {
+        return (
+          item.symbol === 'USD' ||
+          item.symbol === 'EUR' ||
+          (item.symbol === 'XCN' && item.slug === 'chain')
+        );
       })
-      .map((item) => {
-        return item.toUpperCase();
+      .map((item: any) => {
+        return item.symbol.toUpperCase();
       });
     setCurrencies(res);
     dispatch(setCurrencyList(res));
@@ -82,23 +91,27 @@ const Main: React.FC = () => {
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const getTotalSupply = async () => {
-    const getOHCL = await coinGeckoClient.coinIdOHLC({
-      id: `${process.env.REACT_APP_COINGECKO_ID || 'chain-2'}`,
-      vs_currency: `${selectedCrc}`,
-      days: 30
-    });
-    setOhclData(getOHCL);
-    const res = convertOHCL(getOHCL);
-    const latestOhcl = res[res.length - 1];
-
+    const startTime = dateBeforeMonth(new Date(), 1);
+    const endTime = new Date();
     const param = {
-      startTime: dateBeforeMonth(new Date(), 1).getTime(),
-      endTime: new Date().getTime()
+      startTime: convertDateToString(startTime),
+      endTime: convertDateToString(endTime),
+      convert: selectedCrc || 'usd'
     };
-    let tvlData = await getTVLData(param);
+    const ohclHistory = await getOHCL(param);
+    const paramTVL = {
+      startTime: startTime.getTime(),
+      endTime: endTime.getTime()
+    };
+    let tvlData = await getTVLData(paramTVL);
+    const ohclData = convertOHCLdata(ohclHistory?.data?.quotes, selectedCrc);
+
+    const addMissingData = addMissingDataOHCL(ohclData, startTime, endTime);
+    setOhclData(addMissingData);
     setTvlData(tvlData);
-    const lastTvlItem = tvlData[tvlData.length - 1];
-    const totalLock = new BigNumber(latestOhcl[2]).multipliedBy(new BigNumber(lastTvlItem.tvl));
+    const latestOHCL = ohclData[ohclData.length - 1].price;
+    const latestTVL = tvlData[tvlData.length - 1].tvl;
+    const totalLock = new BigNumber(latestOHCL).multipliedBy(new BigNumber(latestTVL));
     setTotalSupply(format(totalLock.toFixed(4).toString()));
   };
 
@@ -110,6 +123,15 @@ const Main: React.FC = () => {
     getCurrencies();
   }, [getCurrencies]);
 
+  const showIconCurrency = () => {
+    if (selectedCrc === 'usd') {
+      return '$'
+    }
+    if (selectedCrc === 'eur') {
+      return '€'
+    }
+  }
+
   return (
     <div className={cx('text-head')}>
       {wallet.openConnectDialog ? (
@@ -118,6 +140,7 @@ const Main: React.FC = () => {
         <>
           <div className={cx('text-head-child')}>
             <div className={cx('price')}>
+              {showIconCurrency()}
               {`${currencyFormatter(Number(totalSupply.replaceAll(',', '')))}`}
             </div>
             <Autocomplete

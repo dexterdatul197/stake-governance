@@ -14,7 +14,6 @@ export function useEagerConnect(): boolean {
     ethereumAddress: state.wallet.ethereumAddress,
     walletName: state.wallet.walletName
   }));
-  console.log(account, '----------------------');
 
   useEffect(() => {
     const checkIsValid = () => {
@@ -22,13 +21,14 @@ export function useEagerConnect(): boolean {
         return true;
 
       if (walletName === WALLET_NAMES.METAMASK) return true;
+
+      if(walletName === WALLET_NAMES.COINBASE && localStorage.getItem(COINBASE_ADDRESS_KEY)) return true
     };
     injectedConnector.isAuthorized().then((isAuthorized: Boolean) => {
       const isValid = checkIsValid();
       if (isValid) {
         const connector = CONNECTORS[walletName as string];
         activate(connector, undefined, true).catch((e: any) => {
-          console.log('e', e);
           setTried(true);
         });
       } else {
