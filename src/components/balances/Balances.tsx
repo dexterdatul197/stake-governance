@@ -179,6 +179,7 @@ const Balances: React.FC = () => {
         const formatReward = ethers.utils.formatEther(getRewardPerBlock);
         const APY = (parseFloat(formatReward) * 6400) / parseFloat(formatTotalStaked) + 1;
         const totalAPY = (Math.pow(APY, 365) - 1) * 100;
+        console.log(formatTotalStaked)
         setApy(totalAPY);
       } catch (error) {
         console.log('0.00013882438: ', error);
