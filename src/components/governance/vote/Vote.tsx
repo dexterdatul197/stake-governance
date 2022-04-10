@@ -66,7 +66,7 @@ const Vote: React.FC<Props> = (props) => {
       if (checkCHNamount < 0) {
         dispatch(
           openSnackbar({
-            message: `You can't create proposal. Your voting power should be ${commaFormat(
+            message: `You can't create proposal.Your voting power should be ${commaFormat(
               new BigNumber(proposalThreshold)
             )} XCN at least`,
             variant: SnackbarVariant.ERROR
