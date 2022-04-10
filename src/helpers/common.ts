@@ -42,7 +42,7 @@ export const currencyFormatter = (labelValue: any) => {
     Math.abs(Number(labelValue)) >= 1.0e6
     ? `${commaFormat(new BigNumber(`${Math.abs(Number(labelValue)) / 1.0e6}`).dp(2, 1))}M`
     : // Three Zeroes for Thousands
-      commaFormat(labelValue.toFixed(4));
+      commaFormat(labelValue.toFixed(2));
 };
 
 export const getStatus = (state: string) => {
@@ -94,7 +94,7 @@ export const convertOHCLdata = (data: Array<any>, selectedCurrency: string) => {
   return data.reduce((response, item) => {
     response.push(
       {
-        price: item?.quote[selectedCurrency.toUpperCase()].close,
+        price: item?.quote[selectedCurrency].close,
         time: item?.time_close
     });
     return response;

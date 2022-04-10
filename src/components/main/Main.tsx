@@ -55,7 +55,6 @@ const useStyles: any = makeStyles(() => ({
 }));
 
 const Main: React.FC = () => {
-  const { account } = useWeb3React<Web3>();
   const classes = useStyles();
   const [currencies, setCurrencies] = useState(['']);
   const { wallet } = useAppSelector((state) => ({
@@ -65,8 +64,6 @@ const Main: React.FC = () => {
   const [totalSupply, setTotalSupply] = useState('0');
   const [tvlData, setTvlData] = useState<TVLDataRes[]>([]);
   const [ohclData, setOhclData] = useState<number[][]>([]);
-  const selectedCrc = useAppSelector((state) => state.currency.selectedCurrency);
-  const theme = useAppSelector((state) => state.theme.themeMode);
 
   const getCurrencies = useCallback(async () => {
     const coinGeckoCurrencies = await getCurrency();
@@ -79,16 +76,25 @@ const Main: React.FC = () => {
         );
       })
       .map((item: any) => {
-        return item.symbol.toUpperCase();
+        return {
+          id: item.id,
+          symbol: item.symbol.toUpperCase()
+        };
       });
-    setCurrencies(res);
+    const currenciesSymbol = res.map((item: any) => item.symbol);
+    setCurrencies(currenciesSymbol);
     dispatch(setCurrencyList(res));
   }, [dispatch]);
+
+  useEffect(() => {
+    getCurrencies();
+  }, [getCurrencies]);
 
   const handleOnChangeSelectCurrency = (event: any, value: any) => {
     dispatch(setSelectedCurrency(value ? value.toLowerCase() : 'usd'));
   };
-
+  const currenciesList = useAppSelector((state) => state.currency.currenciesList);
+  const selectedCrc = useAppSelector((state) => state.currency.selectedCurrency);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const getTotalSupply = async () => {
     const startTime = dateBeforeMonth(new Date(), 1);
@@ -96,7 +102,7 @@ const Main: React.FC = () => {
     const param = {
       startTime: convertDateToString(startTime),
       endTime: convertDateToString(endTime),
-      convert: selectedCrc || 'usd'
+      convert: selectedCrc
     };
     const ohclHistory = await getOHCL(param);
     const paramTVL = {
@@ -104,24 +110,22 @@ const Main: React.FC = () => {
       endTime: endTime.getTime()
     };
     let tvlData = await getTVLData(paramTVL);
-    const ohclData = convertOHCLdata(ohclHistory?.data?.quotes, selectedCrc);
-
-    const addMissingData = addMissingDataOHCL(ohclData, startTime, endTime);
-    setOhclData(addMissingData);
-    setTvlData(tvlData);
-    const latestOHCL = ohclData[ohclData.length - 1].price;
-    const latestTVL = tvlData[tvlData.length - 1].tvl;
-    const totalLock = new BigNumber(latestOHCL).multipliedBy(new BigNumber(latestTVL));
-    setTotalSupply(format(totalLock.toFixed(4).toString()));
+    if (currenciesList.length) {
+      const selectedCrcId: any[] = currenciesList.filter((item: any) => item.symbol.toLowerCase() === selectedCrc.toLowerCase());
+      const ohclData = convertOHCLdata(ohclHistory?.data?.quotes, `${selectedCrcId[0].id}`);
+      const addMissingData = addMissingDataOHCL(ohclData, startTime, endTime);
+      setOhclData(addMissingData);
+      setTvlData(tvlData);
+      const latestOHCL = ohclData[ohclData.length - 1].price;
+      const latestTVL = tvlData[tvlData.length - 1].tvl;
+      const totalLock = new BigNumber(latestOHCL).multipliedBy(new BigNumber(latestTVL));
+      setTotalSupply(format(totalLock.toFixed(4).toString()));
+    }
   };
 
   useEffect(() => {
     getTotalSupply();
-  }, [selectedCrc]);
-
-  useEffect(() => {
-    getCurrencies();
-  }, [getCurrencies]);
+  }, [selectedCrc, currenciesList]);
 
   const showIconCurrency = () => {
     if (selectedCrc === 'usd') {
