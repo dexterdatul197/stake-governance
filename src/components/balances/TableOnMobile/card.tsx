@@ -71,7 +71,7 @@ export const Card: FC<CardProps> = (props) => {
       <div className={cx('card-items')}>
         <div>Status</div>
         <div className={cx('card-items-2')} style={{ color: 'rgba(114, 191, 101, 1)' }}>
-          Compeleted
+          Completed
         </div>
       </div>
     </div>
