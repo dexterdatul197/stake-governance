@@ -65,7 +65,6 @@ const Transaction = (props: Props) => {
   const handleConfirmTransaction = async () => {
     setProgress(true);
     const contract = await stakingToken();
-    if (isPercent) {
       if (value.default === 100) {
         contract
           .stake(0, web3.utils.toWei(String(formatAmount), 'ether'))
@@ -90,7 +89,30 @@ const Transaction = (props: Props) => {
           .finally(() => {
             handleCloseTransaction();
           });
-      } else {
+      }else if(valueBalance){
+        contract
+        .stake(0, web3.utils.toWei(valueBalance?.replaceAll(',', ''), 'ether'))
+        .then(async (res: any) => {
+          await res.wait();
+          handleCloseModal();
+          handleUpdateSmartContract();
+          setDone(true);
+          setProgress(false);
+          dispatch(
+            openSnackbar({
+              message: 'Staking success',
+              variant: SnackbarVariant.SUCCESS
+            })
+          );
+        })
+        .catch((e: any) => {
+          console.log(e);
+        })
+        .finally(() => {
+          handleCloseTransaction();
+        });
+      }
+       else {
         contract
           .stake(0, web3.utils.toWei(String(price), 'ether'))
           .then(async (res: any) => {
@@ -113,31 +135,7 @@ const Transaction = (props: Props) => {
             handleCloseTransaction();
           });
       }
-    } else {
-      if (valueBalance) {
-        contract
-          .stake(0, web3.utils.toWei(valueBalance?.replaceAll(',', ''), 'ether'))
-          .then(async (res: any) => {
-            await res.wait();
-            handleCloseModal();
-            handleUpdateSmartContract();
-            setDone(true);
-            setProgress(false);
-            dispatch(
-              openSnackbar({
-                message: 'Staking success',
-                variant: SnackbarVariant.SUCCESS
-              })
-            );
-          })
-          .catch((e: any) => {
-            console.log(e);
-          })
-          .finally(() => {
-            handleCloseTransaction();
-          });
-      }
-    }
+      
   };
 
   const handleConfirm = async () => {
