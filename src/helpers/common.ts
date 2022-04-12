@@ -1,5 +1,6 @@
 import { BigNumber } from '@0x/utils';
 import { WalletData } from './../interfaces/WalletData';
+import axiosInstance from '../config/config';
 const commaNumber = require('comma-number');
 const ethers = require('ethers');
 
@@ -31,17 +32,17 @@ export const currentAddress = (wallet: WalletData) => {
   return allValue.filter((item) => typeof item === 'string' && item.length !== 0)[0] || '';
 };
 
-export const format = commaNumber.bindWith(',', '.');
+export const commaFormat = commaNumber.bindWith(',', '.');
 
 export const currencyFormatter = (labelValue: any) => {
   // Nine Zeroes for Billions
   return Math.abs(Number(labelValue)) >= 1.0e9
-    ? `${format(new BigNumber(`${Math.abs(Number(labelValue)) / 1.0e9}`).dp(2, 1))}B`
+    ? `${commaFormat(new BigNumber(`${Math.abs(Number(labelValue)) / 1.0e9}`).dp(2, 1))}B`
     : // Six Zeroes for Millions
     Math.abs(Number(labelValue)) >= 1.0e6
-    ? `${format(new BigNumber(`${Math.abs(Number(labelValue)) / 1.0e6}`).dp(2, 1))}M`
+    ? `${commaFormat(new BigNumber(`${Math.abs(Number(labelValue)) / 1.0e6}`).dp(2, 1))}M`
     : // Three Zeroes for Thousands
-      format(labelValue.toFixed(4));
+      commaFormat(labelValue.toFixed(2));
 };
 
 export const getStatus = (state: string) => {
@@ -68,24 +69,6 @@ export const convertToDate = (param: number) => {
   ).getDate()}`;
 };
 
-export const convertOHCL = (data: any[]) => {
-  const res = data.reduce((res: any[], e: any) => {
-    const date = convertToDate(e[0]);
-    const existDate = res.filter((item: any) => convertToDate(item[0]) === date);
-    if (existDate.length === 0) {
-      res.push(e);
-    } else {
-      const childExistDate: any = existDate[0];
-      childExistDate[1] = Math.max(childExistDate[1], e[1]);
-      childExistDate[2] = Math.max(childExistDate[2], e[2]);
-      childExistDate[3] = Math.max(childExistDate[3], e[3]);
-      childExistDate[4] = Math.max(childExistDate[1], e[4]);
-    }
-    return res;
-  }, []);
-  return res;
-};
-
 export const checkNotEmptyArr = (array: any[]) => {
   return Array.isArray(array) && array.length > 0;
 };
@@ -101,4 +84,41 @@ export const removeManyItemsInLS = (key: string) => {
 export const stringToArr = (param: string) => {
   const sub = param.substring(param.indexOf('(')+1, param.indexOf(')'));
   return sub.split(',').map(item => item.trim());
+}
+
+export const convertDateToString = (date: Date) => {
+  return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+}
+
+export const convertOHCLdata = (data: Array<any>, selectedCurrency: string) => {
+  return data.reduce((response, item) => {
+    response.push(
+      {
+        price: item?.quote[selectedCurrency].close,
+        time: item?.time_close
+    });
+    return response;
+  }, []);
+}
+
+export const addMissingDataOHCL = (data: Array<any>, startDate: Date, endDate: Date) => {
+  let response: any[] = [];
+  let start = new Date(convertDateToEndDay(startDate)).getTime();
+  const end = new Date(convertDateToEndDay(endDate)).getTime();
+  const firstDataTime = new Date(data[0].time).getTime();
+  let endDataTime = new Date(data[data.length - 1].time).getTime();
+  
+  while (start < firstDataTime) {
+    response.push(0);
+    start += 24*60*60*1000;
+  }
+  response = response.concat(data.map((item: any) => item.price));
+  while (end > endDataTime) {
+    response.push(data[data.length - 1].price);
+    endDataTime += 24*60*60*1000;
+  }
+  return response;
+}
+export const convertDateToEndDay = (date: Date): string => {
+  return `${date.getFullYear()}-${date.getMonth()+1 < 10 ? `0${date.getMonth()+1}` : date.getMonth()+1}-${date.getDate() < 10 ? `0${date.getDate()}` : date.getDate()}T23:59:59.999Z`;
 }

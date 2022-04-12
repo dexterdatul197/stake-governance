@@ -11,7 +11,7 @@ import {
 import CloseIcon from '@material-ui/icons/Close';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import React, { useCallback, useEffect, useState } from 'react';
-import { currentAddress, format } from '../../../../helpers/common';
+import { currentAddress, commaFormat } from '../../../../helpers/common';
 import { getCHNBalance, stakingToken } from '../../../../helpers/ContractService';
 import { useAppSelector, useAppDispatch } from '../../../../store/hooks';
 import { openSnackbar, SnackbarVariant } from '../../../../store/snackbar';
@@ -146,7 +146,6 @@ const Transaction = (props: Props) => {
         currentAddress(wallet),
         process.env.REACT_APP_STAKE_TESTNET_ADDRESS
       );
-      console.log(handleConfirm._hex.toString() === '0x00');
       if (handleConfirm._hex.toString() === '0x00') {
         await contract
           .approve(process.env.REACT_APP_STAKE_TESTNET_ADDRESS, MAX_INT)

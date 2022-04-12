@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { getRank } from '../../../apis/apis';
-import { currentAddress, format } from '../../../helpers/common';
+import { currentAddress, commaFormat } from '../../../helpers/common';
 import { isConnected } from '../../../helpers/connectWallet';
 import { governance } from '../../../helpers/ContractService';
 import { useAppSelector } from '../../../store/hooks';
@@ -66,7 +66,7 @@ const Vote: React.FC<Props> = (props) => {
       if (checkCHNamount < 0) {
         dispatch(
           openSnackbar({
-            message: `You can't create proposal. Your voting power should be ${format(
+            message: `You can't create proposal.Your voting power should be ${commaFormat(
               new BigNumber(proposalThreshold)
             )} XCN at least`,
             variant: SnackbarVariant.ERROR
@@ -103,7 +103,7 @@ const Vote: React.FC<Props> = (props) => {
       <div className={cx('vote-title')}>Vote Weight</div>
       <div className={cx('vote-content')}>
         <div className={cx('vote-value')}>
-          <span className={cx('stake_value')}>{format(votingWeight)}</span>
+          <span className={cx('stake_value')}>{commaFormat(votingWeight)}</span>
           <span className={cx('stake_token')}>XCN</span>
         </div>
       </div>

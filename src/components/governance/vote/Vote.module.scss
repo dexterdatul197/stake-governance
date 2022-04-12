@@ -1,6 +1,6 @@
 :root {
   .governance-vote {
-    // width: 30%;
+    width: 30%;
     padding: 10px;
     background-color: var(--background-governance-color);
     border-radius: 20px;
@@ -8,11 +8,11 @@
     padding-bottom: 20px;
     height: fit-content;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    margin-right: 10px;
     @media screen and (max-width: 844px) {
       margin-bottom: 20px;
-    }
-    @media screen and (min-width: 844px) {
-      width: 30%;
+      width: 100%;
+      margin-right: 0px;
     }
   }
   .vote-title {
@@ -27,12 +27,12 @@
     line-height: 1.7;
   }
   .vote-value {
-      color: var(--color-text-white-blue);
-      font-size: 1.1em;
+    color: var(--color-text-white-blue);
+    font-size: 1.1em;
   }
   .create-proposal {
     padding: 10px 15px;
-    background: #107DEF;
+    background: #107def;
     border-radius: 15px;
     color: #fff;
     text-transform: capitalize;
@@ -45,31 +45,31 @@
     }
   }
   .create-proposal:hover {
-    background-color: #107DEF;
+    background-color: #107def;
   }
   .border-bottom {
-    border: dashed 1px #C4C4C4;
+    border: dashed 1px #c4c4c4;
     margin: 29px 0;
   }
   .rank {
-      margin-bottom: 20px;
-      font-size: 1.3em;
+    margin-bottom: 20px;
+    font-size: 1.3em;
   }
   .view-leader-board {
-      border-radius: 15px;
-      border: solid 1px var(--btn-hover-blue-green);
-      color: #107DEF;
-      margin: 0 auto;
-      cursor: pointer;
-      font-size: 18px;
-      width: 240px;
-      height: 65px;
-      line-height: 65px;
-      @media screen and (max-width: 844px) {
-        width: 190px;
-        height: 44px;
-        line-height: 44px;
-      }
+    border-radius: 15px;
+    border: solid 1px var(--btn-hover-blue-green);
+    color: #107def;
+    margin: 0 auto;
+    cursor: pointer;
+    font-size: 18px;
+    width: 240px;
+    height: 65px;
+    line-height: 65px;
+    @media screen and (max-width: 844px) {
+      width: 190px;
+      height: 44px;
+      line-height: 44px;
+    }
   }
   .stake_value {
     margin-right: 10px;

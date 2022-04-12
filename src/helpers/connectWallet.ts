@@ -40,28 +40,6 @@ export const connectMetaMask = async (): Promise<string> => {
 
 // Connect Trust wallet
 export const connectTrust = async () => {
-  // const connector = new WalletConnect({
-  //   bridge: `${process.env.REACT_APP_TRUST_BRIDGE}`,
-  //   qrcodeModal: QRCodeModal,
-  // });
-  // let accounts;
-  // if (!connector.connected) {
-  //   // create new session
-  //   connector.createSession();
-  // }
-  // connector.on("connect", (error, payload) => {
-  //   if (error) {
-  //     console.log('CONNECT TRUST ERROR: ', error);
-  //     const exception: UninstallExtensionException = {
-  //       walletType: SoftwareWalletType.TRUST,
-  //       message: MISSING_EXTENSION_ERROR,
-  //     };
-  //     throw exception;
-  //   }
-  //   // Get provided accounts and chainId
-  //   accounts = payload.params[0].accounts;
-  //   console.log('SERVICE: ', payload.params[0]);
-  // });
   const providerOptions = {
     walletconnect: {
       package: WalletConnectProvider,
@@ -71,9 +49,6 @@ export const connectTrust = async () => {
         },
         chainId: 56
       }
-      // display: {
-      //   name: "Mobile"
-      // },
     }
   };
   const web3Modal = new Web3Modal({

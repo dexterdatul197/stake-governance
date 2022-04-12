@@ -2,7 +2,7 @@ import { Box, Paper } from '@material-ui/core';
 import React, { useCallback, useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
 import styles from './styles.module.scss';
-import { checkNotEmptyArr, format } from '../../../helpers/common';
+import { checkNotEmptyArr, commaFormat } from '../../../helpers/common';
 import { getDataLeaderBoard } from '../../../apis/apis';
 import { BigNumber } from '@0x/utils';
 import { useHistory } from 'react-router-dom';
@@ -42,7 +42,7 @@ const TableMobile = (props: any) => {
                 </Box>
                 <Box className={cx('chn')}>
                   <span>XCN</span>
-                  <span> {format(Number(formatChnStake))}</span>
+                  <span> {commaFormat(Number(formatChnStake))}</span>
                 </Box>
                 <Box className={cx('vote-weight')}>
                   <span>Vote Weight</span>
