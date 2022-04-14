@@ -34,8 +34,7 @@ const TableMobile = (props: any) => {
                 key={id}
                 onClick={() =>
                   history.push(`/governance/leaderboard/leaderboard-detail/${address}`)
-                }
-              >
+                }>
                 <Box className={cx('txHash')}>
                   <span>{parentData + index + 1}</span>
                   <span>{address.substr(0, 19)}...</span>
@@ -46,7 +45,7 @@ const TableMobile = (props: any) => {
                 </Box>
                 <Box className={cx('vote-weight')}>
                   <span>Vote Weight</span>
-                  <span>{new BigNumber(voteWeight).multipliedBy(100).toFixed(4).toString()} %</span>
+                  <span>{new BigNumber(voteWeight).toFixed(4).toString()} %</span>
                 </Box>
                 <Box className={cx('proposal')}>
                   <span>Proposals Vote</span>
