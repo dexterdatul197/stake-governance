@@ -54,27 +54,29 @@ const Stake = (props: Props) => {
   const [isActivePercent4, setIsActivePercent4] = useState(false);
   const [inputNumber, setInputNumber] = useState('');
   const dispatch = useAppDispatch();
-  const handleChangeValue = useCallback(
-    (event: any) => {
-      let _value = { ...value };
-      _value = { ..._value, default: event.target.value };
-      setValue(_value);
-      setIsPercent(true);
-      setValueBalance(
-        format(
-          new BigNumber(_value.default)
-            .multipliedBy(new BigNumber(walletValue))
-            .div(new BigNumber('100'))
-            .toFixed(4)
-            .toString()
-        )
-      );
-    },
-    [value, isPercent]
-  );
+
+  let _value = { ...value };
+
+  const handleChangeValue = useCallback((event: any) => {
+    _value = { ..._value, default: event.target.value };
+
+    setValue(_value);
+    setIsPercent(true);
+    setValueBalance(
+      format(
+        new BigNumber(_value.default)
+          .multipliedBy(new BigNumber(walletValue))
+          .div(new BigNumber('100'))
+          .toFixed(4)
+          .toString()
+      )
+    );
+  }, []);
   const valueText = (value: any) => {
     return `${value}%`;
   };
+
+  const debounceFn = debounce(handleChangeValue,100)
 
   const handleChangeInputPercent = useCallback(
     (event: any) => {
@@ -179,7 +181,7 @@ const Stake = (props: Props) => {
   }, [value.default]);
 
   const validateNumberField = (myNumber: any) => {
-    return typeof myNumber === 'number'
+    return typeof myNumber === 'number';
   };
 
   const handleChangeBalanceValue = (event: any) => {
@@ -189,15 +191,13 @@ const Stake = (props: Props) => {
     //check valib o day check them dieu kien lon hon nua
     _value = parseFloat(_value);
     const isValid = validateNumberField(_value);
-    if(_value > walletValue){
-
+    if (_value > walletValue) {
     }
     if (isValid && _value > 0) {
       setValueBalance(format(_value));
-    }else {
+    } else {
       setValueBalance('0');
     }
-
   };
 
   return (
@@ -227,8 +227,8 @@ const Stake = (props: Props) => {
           />
           <Slider
             className={cx('slider')}
-            value={typeof value.default === 'number' ? value.default : 0}
-            onChange={handleChangeValue}
+            value={typeof _value.default === 'number' ? _value.default : 0}
+            onChange={debounceFn}
             getAriaValueText={valueText}
           />
           <Box className={cx('dialog-content__percent')}>
