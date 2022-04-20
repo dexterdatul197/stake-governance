@@ -128,6 +128,7 @@ const ConnectWalletPage: React.FC = () => {
     try {
       activate(injectedConnector).then(() => {
         dispatch(setWalletName('TRUST'));
+        handleCloseConnectDialog();
       });
     } catch (error) {
       console.log(error);
@@ -138,6 +139,7 @@ const ConnectWalletPage: React.FC = () => {
     try {
       activate(injectedConnector).then(() => {
         dispatch(setWalletName('COINBASE'));
+        handleCloseConnectDialog();
       });
     } catch (error) {
       console.log(error);
