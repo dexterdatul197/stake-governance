@@ -23,7 +23,7 @@ import { setTheme } from './store/theme';
 import { isMobile, browserName } from 'react-device-detect';
 import './_app.scss';
 import { injectedConnector } from './connectors/injectedConnector';
-import { setWalletName } from './components/connect-wallet/redux/wallet';
+import { setOpenConnectDialog, setWalletName } from './components/connect-wallet/redux/wallet';
 
 const App: React.FC = () => {
   const context = useWeb3React<Web3>();
@@ -46,6 +46,10 @@ const App: React.FC = () => {
     }
   }, [activatingConnector, connector]);
 
+  const handleCloseConnectDialog = () => {
+    dispatch(setOpenConnectDialog(false));
+  };
+
   const triedEager = useEagerConnect();
   useInactiveListener(!triedEager || !!activatingConnector);
   useInitial();
@@ -54,6 +58,7 @@ const App: React.FC = () => {
     try {
       activate(injectedConnector).then(() => {
         dispatch(setWalletName('TRUST'));
+        handleCloseConnectDialog()
       });
     } catch (error) {
       console.log(error);
