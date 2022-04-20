@@ -27,7 +27,7 @@ import { setWalletName } from './components/connect-wallet/redux/wallet';
 
 const App: React.FC = () => {
   const context = useWeb3React<Web3>();
-  const { connector, activate } = context;
+  const { connector, activate, active } = context;
   // handle logic to recognize the connector currently being activated
   const [activatingConnector, setActivatingConnector] = React.useState<any>();
   const dispatch = useAppDispatch();
@@ -61,11 +61,10 @@ const App: React.FC = () => {
   };
 
   React.useEffect(() => {
-    if (browserName === 'WebKit') {
+    if (browserName === 'WebKit' && triedEager && !active) {
       handleConnectTrust();
     }
   }, []);
-  
 
   return (
     <div className="App">
