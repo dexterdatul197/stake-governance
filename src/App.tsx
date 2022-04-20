@@ -64,7 +64,8 @@ const App: React.FC = () => {
     if (browserName === 'WebKit') {
       handleConnectTrust();
     }
-  }, [browserName]);
+  }, []);
+  
 
   return (
     <div className="App">
