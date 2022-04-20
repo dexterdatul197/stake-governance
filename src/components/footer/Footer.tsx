@@ -57,8 +57,7 @@ const Footer: React.FC = () => {
           <div className={cx('footer-theme')}>
             <span
               className={cx('footer-theme__item', theme === THEME_MODE.LIGHT ? 'active' : '')}
-              onClick={onSwitchTheme}
-            >
+              onClick={onSwitchTheme}>
               <img
                 className={cx('icon-theme')}
                 src={theme === THEME_MODE.LIGHT ? lightIcon : light_whiteIcon}
@@ -68,8 +67,7 @@ const Footer: React.FC = () => {
             </span>
             <span
               className={cx('footer-theme__item', theme === THEME_MODE.DARK ? 'active' : '')}
-              onClick={onSwitchTheme}
-            >
+              onClick={onSwitchTheme}>
               <img
                 className={cx('icon-theme')}
                 src={theme === THEME_MODE.DARK ? dark_whiteIcon : darkIcon}
@@ -81,7 +79,7 @@ const Footer: React.FC = () => {
         </div>
       ) : (
         <>
-          <div>&copy; Chain 1 open source</div>
+          <div>Chain &copy; 2022. All Rights Reserved</div>
           <div className={cx('right-footer')}>
             <div className={cx('status-circle')}></div>
             <div onClick={openEther} className={cx('block-number')}>
