@@ -15,7 +15,7 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
     connector: injectedConnector,
     name: 'METAMASK',
     href: null,
-    // mobile: true,
+    mobile: true,
   },
   TRUST: {
     connector: injectedConnector,
