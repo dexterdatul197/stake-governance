@@ -13,20 +13,23 @@ import ProposalDetail from './components/governance/proposals/proposal-detail/Pr
 import Header from './components/header/Header';
 import Main from './components/main/Main';
 import CustomSnackbar from './components/snackbar/Snackbar';
+import { walletconnect } from './connectors/walletconnectConnector';
 import { useEagerConnect } from './hooks/useEagerConnect';
 import { useInactiveListener } from './hooks/useInactiveListener';
 import { useInitial } from './hooks/useInitial';
+import useIsMobile from './hooks/useMobile';
 import { useAppDispatch } from './store/hooks';
 import { setTheme } from './store/theme';
 import './_app.scss';
 
-
 const App: React.FC = () => {
   const context = useWeb3React<Web3>();
-  const { connector } = context;
+  const { connector, activate } = context;
   // handle logic to recognize the connector currently being activated
   const [activatingConnector, setActivatingConnector] = React.useState<any>();
   const dispatch = useAppDispatch();
+  const isMobile = useIsMobile(844);
+  const infoConnectWallet = localStorage.getItem('walletconnect');
   document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'light');
   dispatch(setTheme(localStorage.getItem('theme') || 'light'));
 
@@ -41,7 +44,11 @@ const App: React.FC = () => {
   }, [activatingConnector, connector]);
   // const triedEager = useEagerConnect();
 
-
+  // React.useEffect(() => {
+  //   window.addEventListener('load', () => {
+  //     activate(walletconnect, undefined, false);
+  //   });
+  // }, []);
   const triedEager = useEagerConnect();
   useInactiveListener(!triedEager || !!activatingConnector);
   // useInactiveListener(!triedEager || !!activatingConnector);

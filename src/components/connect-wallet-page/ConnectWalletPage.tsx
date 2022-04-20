@@ -125,7 +125,7 @@ const ConnectWalletPage: React.FC = () => {
   // Connect Coinbase
   const handleConnectCoinBase = () => {
     try {
-      activate(walletLinkConnector, undefined, false)
+      activate(walletLinkConnector, handleConnectError, false)
         .then(() => {
           dispatch(setWalletName('COINBASE'));
         })

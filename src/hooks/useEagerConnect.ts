@@ -5,8 +5,10 @@ import { CONNECTORS } from '../connectors/index';
 import { injectedConnector } from '../connectors/injectedConnector';
 import { WALLET_NAMES } from 'src/components/connect-wallet/redux/wallet';
 import { COINBASE_ADDRESS_KEY } from './useInactiveListener';
+import useIsMobile from './useMobile';
 
 export function useEagerConnect(): boolean {
+  const isMobile = useIsMobile(844);
   const { activate, active, account } = useWeb3React();
   const [tried, setTried] = useState<boolean>(false);
 
@@ -22,17 +24,23 @@ export function useEagerConnect(): boolean {
 
       if (walletName === WALLET_NAMES.METAMASK) return true;
 
-      if(walletName === WALLET_NAMES.COINBASE && localStorage.getItem(COINBASE_ADDRESS_KEY)) return true
+      if (walletName === WALLET_NAMES.COINBASE && localStorage.getItem(COINBASE_ADDRESS_KEY))
+        return true;
     };
     injectedConnector.isAuthorized().then((isAuthorized: Boolean) => {
       const isValid = checkIsValid();
+      const connector = CONNECTORS[walletName as string];
       if (isValid) {
-        const connector = CONNECTORS[walletName as string];
         activate(connector, undefined, true).catch((e: any) => {
           setTried(true);
         });
       } else {
         setTried(true);
+      }
+      if (isMobile && window.ethereum) {
+        activate(connector, undefined, true).catch(() => {
+          setTried(true);
+        });
       }
     });
   }, [walletName, ethereumAddress]);
