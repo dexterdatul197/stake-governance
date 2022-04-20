@@ -35,8 +35,6 @@ const ConnectWallet: React.FC = () => {
   };
   useOnClickOutside(ref, handleCloseDropdown);
 
-
-
   // const handleUpdateAddress = useCallback(() => {
   //   const address = wallet.ethereumAddress.slice(0, 4) + '...' + wallet.ethereumAddress.slice(-4);
   //   setAddress(address);
@@ -48,7 +46,7 @@ const ConnectWallet: React.FC = () => {
   }, []);
 
   const handleLogout = async () => {
-    deactivate();
+    await deactivate();
     removeManyItemsInLS('walletconnect');
     removeManyItemsInLS('walletlink'); // coinbase
     removeManyItemsInLS('ethereumAddress');
