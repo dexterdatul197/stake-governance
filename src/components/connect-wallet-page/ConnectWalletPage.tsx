@@ -182,11 +182,7 @@ const ConnectWalletPage: React.FC = () => {
       : null;
   }, []);
 
-  useEffect(() => {
-    if(browserName === 'WebKit'){
-      handleConnectTrust()
-    }
-  },[browserName])
+ 
 
   return (
     <>
