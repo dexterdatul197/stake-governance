@@ -6,7 +6,7 @@ export const walletconnect = new WalletConnectConnector({
   bridge: 'https://uniswap.bridge.walletconnect.org',
   qrcode: true,
   qrcodeModalOptions: {
-    mobileLinks: ['rainbow', 'metamask', 'argent', 'trust', 'imtoken', 'pillar'],
+    // mobileLinks: ['rainbow', 'metamask', 'argent', 'trust', 'imtoken', 'pillar'],
     // desktopLinks: ['encrypted ink']
-  }
+  },
 });
