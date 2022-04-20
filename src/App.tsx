@@ -42,16 +42,9 @@ const App: React.FC = () => {
       setActivatingConnector(undefined);
     }
   }, [activatingConnector, connector]);
-  // const triedEager = useEagerConnect();
-
-  // React.useEffect(() => {
-  //   window.addEventListener('load', () => {
-  //     activate(walletconnect, undefined, false);
-  //   });
-  // }, []);
+  
   const triedEager = useEagerConnect();
   useInactiveListener(!triedEager || !!activatingConnector);
-  // useInactiveListener(!triedEager || !!activatingConnector);
   useInitial();
 
   return (

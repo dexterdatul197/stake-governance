@@ -22,7 +22,7 @@ export function useEagerConnect(): boolean {
       if (walletName === WALLET_NAMES.WALLET_CONNECT && localStorage.getItem('walletconnect'))
         return true;
 
-      if (walletName === WALLET_NAMES.METAMASK) return true;
+      if (walletName === WALLET_NAMES.METAMASK && walletName === WALLET_NAMES.TRUST) return true;
 
       if (walletName === WALLET_NAMES.COINBASE && localStorage.getItem(COINBASE_ADDRESS_KEY))
         return true;
