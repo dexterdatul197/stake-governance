@@ -1,45 +1,28 @@
-import Web3 from 'web3';
-import { useWeb3React, UnsupportedChainIdError } from '@web3-react/core';
-import {
-  UserRejectedRequestError as WCRejected,
-  WalletConnectConnector
-} from '@web3-react/walletconnect-connector';
-
-import { useHistory } from 'react-router-dom';
 import { Button } from '@material-ui/core';
-// import { isMobile } from 'react-device-detect';
-import CloseIcon from '@material-ui/icons/Close';
-import { Dialog, IconButton, TextField, Typography } from '@mui/material';
 import { Box } from '@mui/system';
+import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core';
+import { UserRejectedRequestError as WCRejected } from '@web3-react/walletconnect-connector';
 import classnames from 'classnames/bind';
-import React, { useState, useCallback, useEffect } from 'react';
-import { MISSING_EXTENSION_ERROR } from '../../constant/uninstallExtentionException';
-import { openSnackbar, SnackbarVariant, closeSnackbar } from '../../store/snackbar';
-import {
-  setEthereumAddress,
-  setOpenConnectDialog,
-  setWalletName,
-  WALLET_NAMES
-} from '../connect-wallet/redux/wallet';
-import { useAppDispatch, useAppSelector } from './../../store/hooks';
-import styles from './ConnectWalletPage.module.scss';
+import React, { useCallback } from 'react';
+import { isMobile, browserName } from 'react-device-detect';
+import { removeManyItemsInLS } from 'src/helpers/common';
+import Web3 from 'web3';
+import coinbase from '../../assets/icon/coinbase.svg';
 import metamask from '../../assets/icon/meta_mask.svg';
 import trust from '../../assets/icon/trust.svg';
-import coinbase from '../../assets/icon/coinbase.svg';
 import wallet_connect from '../../assets/icon/wallet_connect.svg';
-import { AbstractConnector } from 'web3-react-abstract-connector';
 import { injectedConnector } from '../../connectors/injectedConnector';
 import { switchNetwork } from '../../connectors/switchNetwork';
-import { walletLinkConnector } from '../../connectors/walletlinkConnector';
 import { walletconnect } from '../../connectors/walletconnectConnector';
-import { CONNECTORS } from '../../connectors';
-import bannerImg from '../../assets/imgs/bg-connect.png';
-import { removeManyItemsInLS } from 'src/helpers/common';
-import { SUPPORTED_WALLETS } from 'src/constant/connector';
-import useIsMobile from 'src/hooks/useMobile';
+import { walletLinkConnector } from '../../connectors/walletlinkConnector';
+import { MISSING_EXTENSION_ERROR } from '../../constant/uninstallExtentionException';
+import { closeSnackbar, openSnackbar, SnackbarVariant } from '../../store/snackbar';
+import { setOpenConnectDialog, setWalletName } from '../connect-wallet/redux/wallet';
+import { useAppDispatch } from './../../store/hooks';
+import styles from './ConnectWalletPage.module.scss';
+
 const cx = classnames.bind(styles);
 const ConnectWalletPage: React.FC = () => {
-  const isMobile = useIsMobile(844);
   const { connector, library, chainId, account, activate, deactivate, active, error } =
     useWeb3React<Web3>();
   const dispatch = useAppDispatch();
@@ -49,7 +32,6 @@ const ConnectWalletPage: React.FC = () => {
   };
 
   const windowObj = window as any;
-
   // Connect MetaMask
   const handleConnectMetaMask = async () => {
     if (isMobile && !windowObj?.ethereum?.isMetaMask) {
@@ -142,6 +124,26 @@ const ConnectWalletPage: React.FC = () => {
     }
   };
 
+  const handleConnectTrust = () => {
+    try {
+      activate(injectedConnector).then(() => {
+        dispatch(setWalletName('TRUST'));
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleConnectCoinBaseMobile = () => {
+    try {
+      activate(injectedConnector).then(() => {
+        dispatch(setWalletName('COINBASE'));
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const listIcon = [
     {
       icon: metamask,
@@ -151,12 +153,12 @@ const ConnectWalletPage: React.FC = () => {
     {
       icon: trust,
       title: 'Trust Wallet',
-      onClickFunc: handleConnectWalletConnect
+      onClickFunc: browserName === 'WebKit' ? handleConnectTrust : handleConnectWalletConnect
     },
     {
       icon: coinbase,
       title: 'Coinbase',
-      onClickFunc: handleConnectCoinBase
+      onClickFunc: browserName === 'Webkit' ? handleConnectCoinBaseMobile : handleConnectCoinBase
     },
     {
       icon: wallet_connect,
@@ -164,32 +166,6 @@ const ConnectWalletPage: React.FC = () => {
       onClickFunc: handleConnectWalletConnect
     }
   ];
-
-  const tryActivation = async (connector: AbstractConnector | undefined) => {
-    let name = '';
-    Object.keys(SUPPORTED_WALLETS).map((key) => {
-      if (connector === SUPPORTED_WALLETS[key].connector) {
-        return (name = SUPPORTED_WALLETS[key].name);
-      }
-      return true;
-    });
-    console.log(name);
-    if (connector instanceof WalletConnectConnector) {
-      connector.walletConnectProvider = undefined;
-    }
-    connector &&
-      activate(connector, undefined, true)
-        .then(async () => {
-          dispatch(setWalletName(name));
-          handleCloseConnectDialog();
-        })
-        .catch((error) => {
-          if (error instanceof UnsupportedChainIdError) {
-            activate(connector); // a little janky...can't use setError because the connector isn't set
-          } else {
-          }
-        });
-  };
 
   const renderData = useCallback((content) => {
     return content
@@ -206,56 +182,25 @@ const ConnectWalletPage: React.FC = () => {
       : null;
   }, []);
 
-  function getOption() {
-    return Object.keys(SUPPORTED_WALLETS).map((key, index) => {
-      const option = SUPPORTED_WALLETS[key];
-      if (isMobile) {
-        if (window?.web3 && window?.ethereum && option.mobile) {
-          return (
-            <div
-              key={index}
-              style={{
-                width: '300px',
-                margin: 'auto',
-                paddingBottom: '50px',
-                background: 'red',
-                cursor: 'pointer'
-              }}
-              onClick={() => {
-                option.connector !== connector && !option.href && tryActivation(option.connector);
-              }}>
-              {option.name}
-            </div>
-          );
-        }
-      return null;
-
-      }
-
-    });
-  }
-
   return (
     <>
       <div className={cx('title-connect')}>Connect your wallet</div>
 
-      {isMobile
-        ? getOption()
-        : listIcon.map((item, index) => {
-            const { icon, title, onClickFunc } = item;
-            const contents = [
-              {
-                icon: icon,
-                title: title,
-                onClickFunc: onClickFunc
-              }
-            ];
-            return (
-              <Box style={{ margin: '-24px', padding: '11px' }} key={title}>
-                {renderData(contents)}
-              </Box>
-            );
-          })}
+      {listIcon.map((item, index) => {
+        const { icon, title, onClickFunc } = item;
+        const contents = [
+          {
+            icon: icon,
+            title: title,
+            onClickFunc: onClickFunc
+          }
+        ];
+        return (
+          <Box style={{ margin: '-24px', padding: '11px' }} key={title}>
+            {renderData(contents)}
+          </Box>
+        );
+      })}
     </>
   );
 };
