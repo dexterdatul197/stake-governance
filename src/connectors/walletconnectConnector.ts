@@ -7,6 +7,6 @@ export const walletconnect = new WalletConnectConnector({
   qrcode: true,
   qrcodeModalOptions: {
     mobileLinks: ['rainbow', 'metamask', 'argent', 'trust', 'imtoken', 'pillar'],
-    desktopLinks: ['encrypted ink']
+    // desktopLinks: ['encrypted ink']
   }
 });
