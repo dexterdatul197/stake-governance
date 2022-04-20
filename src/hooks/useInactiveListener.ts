@@ -8,6 +8,12 @@ import { removeManyItemsInLS } from 'src/helpers/common';
 
 export const COINBASE_ADDRESS_KEY = '-walletlink:https://www.walletlink.org:Addresses';
 
+export interface EthereumProvider {
+  on?: (...args: any[]) => void;
+  removeListener?: (...args: any[]) => void;
+  autoRefreshOnNetworkChange?: boolean;
+}
+
 export function useInactiveListener(suppress = false): void {
   const { active, error, activate, library, account, connector } = useWeb3React();
   const { address, walletName } = useAppSelector((state) => ({
@@ -35,49 +41,50 @@ export function useInactiveListener(suppress = false): void {
 
   const handleDisconnect = () => {
     dispatch(setEthereumAddress(''));
-    dispatch(setWalletName(''))
+    dispatch(setWalletName(''));
     removeManyItemsInLS('walletconnect');
     removeManyItemsInLS('walletlink'); // coinbase
   };
 
   useEffect(() => {
-    if (active && walletName && address && connector) {
-      connector.getProvider().then((provider: any) => {
-        const handleChainChanged = (chainId: string) => {
-          //eat errors
-          activate(connector, undefined, true).catch((err: any) => {
-            console.error('Failed to activate after chain changed', err);
+    const ethereum = (window as any).ethereum as EthereumProvider;
+    if (ethereum && ethereum.on && !active && walletName && address && connector) {
+      // connector.getProvider().then((provider: any) => {
+      const handleChainChanged = (chainId: string) => {
+        //eat errors
+        activate(connector, undefined, true).catch((err: any) => {
+          console.error('Failed to activate after chain changed', err);
+        });
+      };
+      const handleAccountChanged = (account: string[]) => {
+        if (account.length > 0) {
+          activate(connector, undefined, true).catch((err) => {
+            console.error('Failed to activate after accounts changed', err);
           });
-        };
-        const handleAccountChanged = (account: string[]) => {
-          if (account.length > 0) {
-            activate(connector, undefined, true).catch((err) => {
-              console.error('Failed to activate after accounts changed', err);
-            });
-          } else {
-            dispatch(setEthereumAddress(''));
-            dispatch(setWalletName(''));
-          }
-        };
+        } else {
+          dispatch(setEthereumAddress(''));
+          dispatch(setWalletName(''));
+        }
+      };
 
-        provider.on('chainChanged', handleChainChanged);
-        provider.on('accountsChanged', handleAccountChanged);
-        provider.on('disconnect', handleDisconnect);
+      ethereum?.on('chainChanged', handleChainChanged);
+      ethereum?.on('accountsChanged', handleAccountChanged);
+      ethereum?.on('disconnect', handleDisconnect);
 
-        return () => {
-          if (provider?.removeListener) {
-            provider.removeListener('chainChanged', handleChainChanged);
-            provider.removeListener('accountsChanged', handleAccountChanged);
-            provider.removeListener('disconnect', handleDisconnect);
-          }
-        };
-      });
+      return () => {
+        if (ethereum?.removeListener) {
+          ethereum?.removeListener('chainChanged', handleChainChanged);
+          ethereum?.removeListener('accountsChanged', handleAccountChanged);
+          ethereum?.removeListener('disconnect', handleDisconnect);
+        }
+      };
+      // });
     }
     if (walletName === 'WALLET_CONNECT' && !localStorage.getItem('walletconnect')) {
       handleDisconnect();
     }
-    if(walletName === 'COINBASE' && !localStorage.getItem(COINBASE_ADDRESS_KEY)){
-      handleDisconnect()
+    if (walletName === 'COINBASE' && !localStorage.getItem(COINBASE_ADDRESS_KEY)) {
+      handleDisconnect();
     }
   }, [active, error, suppress, activate, address, walletName]);
 }

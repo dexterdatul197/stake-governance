@@ -8,10 +8,12 @@ interface IConnector {
   METAMASK: any;
   WALLET_CONNECT: any;
   COINBASE: any;
+  TRUST:any
 }
 
 export const CONNECTORS: IConnector = {
   METAMASK: injectedConnector,
+  TRUST:injectedConnector,
   WALLET_CONNECT: walletconnect,
   COINBASE: walletLinkConnector
 };
