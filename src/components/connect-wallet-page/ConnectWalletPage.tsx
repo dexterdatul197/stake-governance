@@ -126,7 +126,7 @@ const ConnectWalletPage: React.FC = () => {
 
   const handleConnectTrust = () => {
     try {
-      activate(injectedConnector).then(() => {
+      activate(injectedConnector, handleConnectError, false).then(() => {
         dispatch(setWalletName('TRUST'));
         handleCloseConnectDialog();
       });
@@ -137,7 +137,7 @@ const ConnectWalletPage: React.FC = () => {
 
   const handleConnectCoinBaseMobile = () => {
     try {
-      activate(injectedConnector).then(() => {
+      activate(injectedConnector, handleConnectError, false).then(() => {
         dispatch(setWalletName('COINBASE'));
         handleCloseConnectDialog();
       });
@@ -183,8 +183,6 @@ const ConnectWalletPage: React.FC = () => {
         })
       : null;
   }, []);
-
- 
 
   return (
     <>

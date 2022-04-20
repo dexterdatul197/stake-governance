@@ -1,9 +1,12 @@
-import { useWeb3React } from '@web3-react/core';
+import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core';
+import { UserRejectedRequestError as WCRejected } from '@web3-react/walletconnect-connector';
 import React, { useEffect } from 'react';
+import { browserName } from 'react-device-detect';
 import { Route, Switch } from 'react-router-dom';
 import { BaseSocket } from 'src/socket/BaseSocket';
 import Web3 from 'web3';
 import Balances from './components/balances/Balances';
+import { setOpenConnectDialog, setWalletName } from './components/connect-wallet/redux/wallet';
 import Footer from './components/footer/Footer';
 import CreateProposal from './components/governance/dialog/create-proposal/CreateProposal';
 import Governance from './components/governance/Governance';
@@ -13,17 +16,16 @@ import ProposalDetail from './components/governance/proposals/proposal-detail/Pr
 import Header from './components/header/Header';
 import Main from './components/main/Main';
 import CustomSnackbar from './components/snackbar/Snackbar';
-import { walletconnect } from './connectors/walletconnectConnector';
+import { injectedConnector } from './connectors/injectedConnector';
+import { removeManyItemsInLS } from './helpers/common';
 import { useEagerConnect } from './hooks/useEagerConnect';
 import { useInactiveListener } from './hooks/useInactiveListener';
 import { useInitial } from './hooks/useInitial';
 import useIsMobile from './hooks/useMobile';
 import { useAppDispatch } from './store/hooks';
+import { closeSnackbar, openSnackbar, SnackbarVariant } from './store/snackbar';
 import { setTheme } from './store/theme';
-import { isMobile, browserName } from 'react-device-detect';
 import './_app.scss';
-import { injectedConnector } from './connectors/injectedConnector';
-import { setOpenConnectDialog, setWalletName } from './components/connect-wallet/redux/wallet';
 
 const App: React.FC = () => {
   const context = useWeb3React<Web3>();
@@ -54,11 +56,38 @@ const App: React.FC = () => {
   useInactiveListener(!triedEager || !!activatingConnector);
   useInitial();
 
+  const handleConnectError = (err: any) => {
+    if (err instanceof WCRejected) {
+      handleCloseConnectDialog();
+      dispatch(
+        openSnackbar({
+          message: 'You declined the action in your wallet.',
+          variant: SnackbarVariant.ERROR
+        })
+      );
+      dispatch(setWalletName(''));
+      setTimeout(() => {
+        dispatch(closeSnackbar());
+      }, 3000);
+    } else if (err instanceof UnsupportedChainIdError) {
+      removeManyItemsInLS('walletconnect');
+      dispatch(
+        openSnackbar({
+          message: 'Please select the correct network.',
+          variant: SnackbarVariant.ERROR
+        })
+      );
+      setTimeout(() => {
+        dispatch(closeSnackbar());
+      }, 5000);
+    }
+  };
+
   const handleConnectTrust = () => {
     try {
-      activate(injectedConnector).then(() => {
+      activate(injectedConnector, handleConnectError, false).then(() => {
         dispatch(setWalletName('TRUST'));
-        handleCloseConnectDialog()
+        handleCloseConnectDialog();
       });
     } catch (error) {
       console.log(error);
@@ -69,7 +98,7 @@ const App: React.FC = () => {
     if (browserName === 'WebKit' && triedEager && !active) {
       handleConnectTrust();
     }
-  }, []);
+  }, [active, triedEager]);
 
   return (
     <div className="App">
