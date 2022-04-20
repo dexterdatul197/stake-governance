@@ -30,17 +30,20 @@ export function useEagerConnect(): boolean {
     injectedConnector.isAuthorized().then((isAuthorized: Boolean) => {
       const isValid = checkIsValid();
       const connector = CONNECTORS[walletName as string];
-      if (isValid) {
-        activate(connector, undefined, true).catch((e: any) => {
-          setTried(true);
-        });
-      } else {
-        setTried(true);
-      }
-      if (isMobile && window.ethereum) {
-        activate(connector, undefined, true).catch(() => {
-          setTried(true);
-        });
+      if (!active) {
+        if (isAuthorized) {
+          activate(connector, undefined, true).catch((e: any) => {
+            setTried(true);
+          });
+        } else {
+          if (isMobile && window.ethereum) {
+            activate(connector, undefined, true).catch(() => {
+              setTried(true);
+            });
+          } else {
+            setTried(true);
+          }
+        }
       }
     });
   }, [walletName, ethereumAddress]);
