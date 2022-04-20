@@ -7,12 +7,12 @@ import {
 
 import { useHistory } from 'react-router-dom';
 import { Button } from '@material-ui/core';
-import { isMobile } from 'react-device-detect';
+// import { isMobile } from 'react-device-detect';
 import CloseIcon from '@material-ui/icons/Close';
 import { Dialog, IconButton, TextField, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import classnames from 'classnames/bind';
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { MISSING_EXTENSION_ERROR } from '../../constant/uninstallExtentionException';
 import { openSnackbar, SnackbarVariant, closeSnackbar } from '../../store/snackbar';
 import {
@@ -39,6 +39,7 @@ import { SUPPORTED_WALLETS } from 'src/constant/connector';
 import useIsMobile from 'src/hooks/useMobile';
 const cx = classnames.bind(styles);
 const ConnectWalletPage: React.FC = () => {
+  const isMobile = useIsMobile(844);
   const { connector, library, chainId, account, activate, deactivate, active, error } =
     useWeb3React<Web3>();
   const dispatch = useAppDispatch();
@@ -172,14 +173,15 @@ const ConnectWalletPage: React.FC = () => {
       }
       return true;
     });
-
+    console.log(name);
     if (connector instanceof WalletConnectConnector) {
       connector.walletConnectProvider = undefined;
     }
     connector &&
       activate(connector, undefined, true)
         .then(async () => {
-          const walletAddress = await connector.getAccount();
+          dispatch(setWalletName(name));
+          handleCloseConnectDialog();
         })
         .catch((error) => {
           if (error instanceof UnsupportedChainIdError) {
@@ -205,46 +207,55 @@ const ConnectWalletPage: React.FC = () => {
   }, []);
 
   function getOption() {
-    const a = Object.keys(SUPPORTED_WALLETS).map((key) => {
+    return Object.keys(SUPPORTED_WALLETS).map((key, index) => {
       const option = SUPPORTED_WALLETS[key];
-      // if (isMobile) {
-      if (window.web3 && window.ethereum) {
-        return (
-          <div
-            style={{ width: '300px', margin: 'auto', paddingBottom: '50px', background: 'red',cursor:'pointer' }}
-            onClick={() => {
-              option.connector !== connector && tryActivation(option.connector);
-            }}>
-            CLick To Connect
-          </div>
-        );
+      if (isMobile) {
+        if (window?.web3 && window?.ethereum && option.mobile) {
+          return (
+            <div
+              key={index}
+              style={{
+                width: '300px',
+                margin: 'auto',
+                paddingBottom: '50px',
+                background: 'red',
+                cursor: 'pointer'
+              }}
+              onClick={() => {
+                option.connector !== connector && !option.href && tryActivation(option.connector);
+              }}>
+              {option.name}
+            </div>
+          );
+        }
+      return null;
+
       }
-      // return null;
-      // }
+
     });
-    console.log('RRRRRRRRRRR', a);
-    return a;
   }
+
   return (
     <>
       <div className={cx('title-connect')}>Connect your wallet</div>
-      <div>{getOption()}</div>
 
-      {listIcon.map((item, index) => {
-        const { icon, title, onClickFunc } = item;
-        const contents = [
-          {
-            icon: icon,
-            title: title,
-            onClickFunc: onClickFunc
-          }
-        ];
-        return (
-          <Box style={{ margin: '-24px', padding: '11px' }} key={title}>
-            {renderData(contents)}
-          </Box>
-        );
-      })}
+      {isMobile
+        ? getOption()
+        : listIcon.map((item, index) => {
+            const { icon, title, onClickFunc } = item;
+            const contents = [
+              {
+                icon: icon,
+                title: title,
+                onClickFunc: onClickFunc
+              }
+            ];
+            return (
+              <Box style={{ margin: '-24px', padding: '11px' }} key={title}>
+                {renderData(contents)}
+              </Box>
+            );
+          })}
     </>
   );
 };

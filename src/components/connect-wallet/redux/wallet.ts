@@ -7,7 +7,8 @@ const ethereumAddress = localStorage.getItem('ethereumAddress') || '';
 export const WALLET_NAMES = {
   METAMASK: 'METAMASK',
   WALLET_CONNECT: 'WALLET_CONNECT',
-  COINBASE: 'COINBASE'
+  COINBASE: 'COINBASE',
+  TRUST:'TRUST'
 };
 
 const initialState: WalletData = {
