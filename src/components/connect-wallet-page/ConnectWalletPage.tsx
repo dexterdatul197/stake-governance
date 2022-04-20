@@ -1,6 +1,9 @@
 import Web3 from 'web3';
 import { useWeb3React, UnsupportedChainIdError } from '@web3-react/core';
-import { UserRejectedRequestError as WCRejected } from '@web3-react/walletconnect-connector';
+import {
+  UserRejectedRequestError as WCRejected,
+  WalletConnectConnector
+} from '@web3-react/walletconnect-connector';
 
 import { useHistory } from 'react-router-dom';
 import { Button } from '@material-ui/core';
@@ -24,7 +27,7 @@ import metamask from '../../assets/icon/meta_mask.svg';
 import trust from '../../assets/icon/trust.svg';
 import coinbase from '../../assets/icon/coinbase.svg';
 import wallet_connect from '../../assets/icon/wallet_connect.svg';
-
+import { AbstractConnector } from 'web3-react-abstract-connector';
 import { injectedConnector } from '../../connectors/injectedConnector';
 import { switchNetwork } from '../../connectors/switchNetwork';
 import { walletLinkConnector } from '../../connectors/walletlinkConnector';
@@ -32,8 +35,9 @@ import { walletconnect } from '../../connectors/walletconnectConnector';
 import { CONNECTORS } from '../../connectors';
 import bannerImg from '../../assets/imgs/bg-connect.png';
 import { removeManyItemsInLS } from 'src/helpers/common';
+import { SUPPORTED_WALLETS } from 'src/constant/connector';
+import useIsMobile from 'src/hooks/useMobile';
 const cx = classnames.bind(styles);
-
 const ConnectWalletPage: React.FC = () => {
   const { connector, library, chainId, account, activate, deactivate, active, error } =
     useWeb3React<Web3>();
@@ -160,6 +164,31 @@ const ConnectWalletPage: React.FC = () => {
     }
   ];
 
+  const tryActivation = async (connector: AbstractConnector | undefined) => {
+    let name = '';
+    Object.keys(SUPPORTED_WALLETS).map((key) => {
+      if (connector === SUPPORTED_WALLETS[key].connector) {
+        return (name = SUPPORTED_WALLETS[key].name);
+      }
+      return true;
+    });
+
+    if (connector instanceof WalletConnectConnector) {
+      connector.walletConnectProvider = undefined;
+    }
+    connector &&
+      activate(connector, undefined, true)
+        .then(async () => {
+          const walletAddress = await connector.getAccount();
+        })
+        .catch((error) => {
+          if (error instanceof UnsupportedChainIdError) {
+            activate(connector); // a little janky...can't use setError because the connector isn't set
+          } else {
+          }
+        });
+  };
+
   const renderData = useCallback((content) => {
     return content
       ? content.map(({ icon, title, onClickFunc }: any) => {
@@ -175,13 +204,32 @@ const ConnectWalletPage: React.FC = () => {
       : null;
   }, []);
 
+  function getOption() {
+    const a = Object.keys(SUPPORTED_WALLETS).map((key) => {
+      const option = SUPPORTED_WALLETS[key];
+      // if (isMobile) {
+      if (window.web3 && window.ethereum) {
+        return (
+          <div
+            style={{ width: '300px', margin: 'auto', paddingBottom: '50px', background: 'red',cursor:'pointer' }}
+            onClick={() => {
+              option.connector !== connector && tryActivation(option.connector);
+            }}>
+            CLick To Connect
+          </div>
+        );
+      }
+      // return null;
+      // }
+    });
+    console.log('RRRRRRRRRRR', a);
+    return a;
+  }
   return (
     <>
-      <div className={cx('banner-connect')}>
-        <img src={bannerImg} alt="" />
-        <span>Hi! Welcome today!</span>
-      </div>
       <div className={cx('title-connect')}>Connect your wallet</div>
+      <div>{getOption()}</div>
+
       {listIcon.map((item, index) => {
         const { icon, title, onClickFunc } = item;
         const contents = [
