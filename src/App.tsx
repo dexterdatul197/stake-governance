@@ -95,7 +95,7 @@ const App: React.FC = () => {
   };
 
   React.useEffect(() => {
-    if (browserName === 'WebKit'  && !active) {
+    if (browserName === 'WebKit' && triedEager && !active) {
       handleConnectTrust();
     }
   }, [active, triedEager]);
