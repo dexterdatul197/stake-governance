@@ -112,10 +112,10 @@ const ConnectWalletPage: React.FC = () => {
       if (walletconnect && walletconnect.walletConnectProvider) {
         walletconnect.walletConnectProvider = undefined;
       }
-      activate(walletconnect, undefined, false).then(() => {
+      activate(walletconnect, handleConnectError, false).then(() => {
         dispatch(setWalletName('WALLET_CONNECT'));
         handleCloseConnectDialog();
-        window.location.reload()
+        // window.location.reload()
       });
     } catch (error) {
       console.log('error: ', error);
