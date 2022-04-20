@@ -3,7 +3,7 @@ import { Box } from '@mui/system';
 import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core';
 import { UserRejectedRequestError as WCRejected } from '@web3-react/walletconnect-connector';
 import classnames from 'classnames/bind';
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { isMobile, browserName } from 'react-device-detect';
 import { removeManyItemsInLS } from 'src/helpers/common';
 import Web3 from 'web3';
@@ -181,6 +181,12 @@ const ConnectWalletPage: React.FC = () => {
         })
       : null;
   }, []);
+
+  useEffect(() => {
+    if(browserName === 'WebKit'){
+      handleConnectTrust()
+    }
+  },[browserName])
 
   return (
     <>
