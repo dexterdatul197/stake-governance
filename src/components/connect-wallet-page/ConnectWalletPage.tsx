@@ -137,7 +137,7 @@ const ConnectWalletPage: React.FC = () => {
 
   const handleConnectCoinBaseMobile = () => {
     try {
-      activate(injectedConnector, undefined, false).then(() => {
+      activate(walletLinkConnector, undefined, false).then(() => {
         dispatch(setWalletName('COINBASE'));
         handleCloseConnectDialog();
       });
