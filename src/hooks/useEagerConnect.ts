@@ -31,18 +31,19 @@ export function useEagerConnect(): boolean {
       const isValid = checkIsValid();
       const connector = CONNECTORS[walletName as string];
       if (!active) {
-        if (isAuthorized) {
+        if (isValid) {
           activate(connector, undefined, true).catch((e: any) => {
             setTried(true);
           });
         } else {
-          if (isMobile && window.ethereum) {
-            activate(connector, undefined, true).catch(() => {
-              setTried(true);
-            });
-          } else {
-            setTried(true);
-          }
+          setTried(true)
+          // if (isMobile && window.ethereum) {
+          //   activate(connector, undefined, true).catch(() => {
+          //     setTried(true);
+          //   });
+          // } else {
+          //   setTried(true);
+          // }
         }
       }
     });

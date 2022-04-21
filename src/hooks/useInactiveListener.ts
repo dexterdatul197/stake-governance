@@ -1,10 +1,10 @@
-import { useAppSelector } from './../store/hooks';
-import { useDispatch } from 'react-redux';
-import { useWeb3React, UnsupportedChainIdError } from '@web3-react/core';
+import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core';
 import { useEffect } from 'react';
-import { openSnackbar, SnackbarVariant, closeSnackbar } from '../store/snackbar';
+import { useDispatch } from 'react-redux';
 import { setEthereumAddress, setWalletName } from 'src/components/connect-wallet/redux/wallet';
 import { removeManyItemsInLS } from 'src/helpers/common';
+import { closeSnackbar, openSnackbar, SnackbarVariant } from '../store/snackbar';
+import { useAppSelector } from './../store/hooks';
 
 export const COINBASE_ADDRESS_KEY = '-walletlink:https://www.walletlink.org:Addresses';
 
@@ -57,10 +57,15 @@ export function useInactiveListener(suppress = false): void {
         });
       };
       const handleAccountChanged = (account: string[]) => {
+        console.log(account[0]);
         if (account.length > 0) {
-          activate(connector, undefined, true).catch((err) => {
-            console.error('Failed to activate after accounts changed', err);
-          });
+          activate(connector, undefined, true)
+            .then(() => {
+              dispatch(setEthereumAddress(account[0]));
+            })
+            .catch((err) => {
+              console.error('Failed to activate after accounts changed', err);
+            });
         } else {
           dispatch(setEthereumAddress(''));
           dispatch(setWalletName(''));

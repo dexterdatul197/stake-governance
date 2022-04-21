@@ -3,6 +3,7 @@ import classnames from 'classnames/bind';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { walletconnect } from 'src/connectors/walletconnectConnector';
 import { removeManyItemsInLS } from 'src/helpers/common';
 import Web3 from 'web3';
 import { ReactComponent as ConectWalletIcon } from '../../assets/icon/wallet.svg';
@@ -35,8 +36,6 @@ const ConnectWallet: React.FC = () => {
   };
   useOnClickOutside(ref, handleCloseDropdown);
 
-
-
   // const handleUpdateAddress = useCallback(() => {
   //   const address = wallet.ethereumAddress.slice(0, 4) + '...' + wallet.ethereumAddress.slice(-4);
   //   setAddress(address);
@@ -50,10 +49,15 @@ const ConnectWallet: React.FC = () => {
   const handleLogout = async () => {
     deactivate();
     removeManyItemsInLS('walletconnect');
-    removeManyItemsInLS('walletlink'); // coinbase
-    removeManyItemsInLS('ethereumAddress');
+    removeManyItemsInLS('walletlink'); 
+    removeManyItemsInLS('ethereumAddress'); // coinbase
     dispatch(setEthereumAddress(''));
     dispatch(setWalletName(''));
+    if ((window as any)?.localStorage?.getItem('walletconnect')) {
+      walletconnect.close();
+      walletconnect.walletConnectProvider = null;
+    }
+    removeManyItemsInLS('-walletlink:https://www.walletlink.org:Addresses');
     history.push('/');
     setOpenDropdown(false);
   };
