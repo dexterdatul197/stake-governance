@@ -47,8 +47,8 @@ const ConnectWallet: React.FC = () => {
   }, []);
 
   const handleLogout = async () => {
-    await deactivate();
-    // removeManyItemsInLS('walletconnect');
+    deactivate();
+    removeManyItemsInLS('walletconnect');
     removeManyItemsInLS('walletlink'); // coinbase
     removeManyItemsInLS('ethereumAddress');
     dispatch(setEthereumAddress(''));
@@ -57,7 +57,7 @@ const ConnectWallet: React.FC = () => {
       walletconnect.close();
       walletconnect.walletConnectProvider = null;
     }
-    removeManyItemsInLS('-walletlink:https://www.walletlink.org:Addresses')
+    removeManyItemsInLS('-walletlink:https://www.walletlink.org:Addresses');
     history.push('/');
     setOpenDropdown(false);
   };
