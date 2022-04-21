@@ -3,6 +3,7 @@ import classnames from 'classnames/bind';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { walletconnect } from 'src/connectors/walletconnectConnector';
 import { removeManyItemsInLS } from 'src/helpers/common';
 import Web3 from 'web3';
 import { ReactComponent as ConectWalletIcon } from '../../assets/icon/wallet.svg';
@@ -47,11 +48,16 @@ const ConnectWallet: React.FC = () => {
 
   const handleLogout = async () => {
     await deactivate();
-    removeManyItemsInLS('walletconnect');
+    // removeManyItemsInLS('walletconnect');
     removeManyItemsInLS('walletlink'); // coinbase
     removeManyItemsInLS('ethereumAddress');
     dispatch(setEthereumAddress(''));
     dispatch(setWalletName(''));
+    if ((window as any)?.localStorage?.getItem('walletconnect')) {
+      walletconnect.close();
+      walletconnect.walletConnectProvider = null;
+    }
+    removeManyItemsInLS('-walletlink:https://www.walletlink.org:Addresses')
     history.push('/');
     setOpenDropdown(false);
   };
