@@ -50,7 +50,6 @@ const ConnectWallet: React.FC = () => {
     deactivate();
     removeManyItemsInLS('walletconnect');
     removeManyItemsInLS('walletlink'); // coinbase
-    removeManyItemsInLS('ethereumAddress');
     dispatch(setEthereumAddress(''));
     dispatch(setWalletName(''));
     if ((window as any)?.localStorage?.getItem('walletconnect')) {

@@ -17,7 +17,7 @@ import { walletconnect } from '../../connectors/walletconnectConnector';
 import { walletLinkConnector } from '../../connectors/walletlinkConnector';
 import { MISSING_EXTENSION_ERROR } from '../../constant/uninstallExtentionException';
 import { closeSnackbar, openSnackbar, SnackbarVariant } from '../../store/snackbar';
-import { setOpenConnectDialog, setWalletName } from '../connect-wallet/redux/wallet';
+import { setEthereumAddress, setOpenConnectDialog, setWalletName } from '../connect-wallet/redux/wallet';
 import { useAppDispatch } from './../../store/hooks';
 import styles from './ConnectWalletPage.module.scss';
 
@@ -26,7 +26,6 @@ const ConnectWalletPage: React.FC = () => {
   const { connector, library, chainId, account, activate, deactivate, active, error } =
     useWeb3React<Web3>();
   const dispatch = useAppDispatch();
-
   const handleCloseConnectDialog = () => {
     dispatch(setOpenConnectDialog(false));
   };

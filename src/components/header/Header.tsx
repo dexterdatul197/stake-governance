@@ -1,30 +1,28 @@
-import classnames from 'classnames/bind';
-import React, { useEffect, useState } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
-
-import Web3 from 'web3';
 import { useWeb3React } from '@web3-react/core';
+import classnames from 'classnames/bind';
+import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
+import Web3 from 'web3';
 import { THEME_MODE } from '../../constant/constants';
-import { isConnected } from '../../helpers/connectWallet';
+import useIsMobile from '../../hooks/useMobile';
 import { useAppSelector } from '../../store/hooks';
 import { setTheme } from '../../store/theme';
+import { setSelectedCurrency } from '../chart/redux/currency';
 import ConnectWallet from '../connect-wallet/ConnectWallet';
 import { setEthereumAddress, setOpenConnectDialog } from '../connect-wallet/redux/wallet';
+import logo from './../../assets/icon/CHN_dark_logo.png';
+import dark_logo from './../../assets/icon/CHN_light_logo.png';
 import dark_whiteIcon from './../../assets/icon/dark-white.svg';
 import darkIcon from './../../assets/icon/dark.svg';
 import light_whiteIcon from './../../assets/icon/light-white.svg';
 import lightIcon from './../../assets/icon/light.svg';
-import logo from './../../assets/icon/CHN_dark_logo.png';
-import dark_logo from './../../assets/icon/CHN_light_logo.png';
 import style from './Header.module.scss';
-import useIsMobile from '../../hooks/useMobile';
-import { setSelectedCurrency } from '../chart/redux/currency';
+
 const cx = classnames.bind(style);
 
 const Header: React.FC = () => {
-  const { account } = useWeb3React<Web3>();
+  const { account, active, connector } = useWeb3React<Web3>();
   const history = useHistory();
   const pathName = history.location.pathname;
   const dispatch = useDispatch();
@@ -43,12 +41,13 @@ const Header: React.FC = () => {
     dispatch(setTheme(newTheme));
   };
   const wallet = useAppSelector((state) => state.wallet);
-  // useEffect(() => {
-  //   if (account) {
-  //     dispatch(setEthereumAddress(account));
-  //     localStorage.setItem('ethereumAddress', account as string);
-  //   }
-  // }, [account]);
+
+  useEffect(() => {
+    if (active || connector) {
+      dispatch(setEthereumAddress(account));
+      localStorage.setItem('ethereumAddress', account as string);
+    }
+  }, [account, active, connector]);
 
   const isMobile = useIsMobile(844);
   return (
