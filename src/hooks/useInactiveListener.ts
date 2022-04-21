@@ -57,10 +57,15 @@ export function useInactiveListener(suppress = false): void {
         });
       };
       const handleAccountChanged = (account: string[]) => {
+        console.log(account[0]);
         if (account.length > 0) {
-          activate(connector, undefined, true).catch((err) => {
-            console.error('Failed to activate after accounts changed', err);
-          });
+          activate(connector, undefined, true)
+            .then(() => {
+              dispatch(setEthereumAddress(account[0]));
+            })
+            .catch((err) => {
+              console.error('Failed to activate after accounts changed', err);
+            });
         } else {
           dispatch(setEthereumAddress(''));
           dispatch(setWalletName(''));
