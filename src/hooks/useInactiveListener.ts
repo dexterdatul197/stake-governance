@@ -60,6 +60,7 @@ export function useInactiveListener(suppress = false): void {
         if (account.length > 0) {
           activate(connector, undefined, true).catch((err) => {
             console.error('Failed to activate after accounts changed', err);
+            dispatch(setEthereumAddress(account));
           });
         } else {
           dispatch(setEthereumAddress(''));

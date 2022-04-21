@@ -43,13 +43,12 @@ const Header: React.FC = () => {
     dispatch(setTheme(newTheme));
   };
   const wallet = useAppSelector((state) => state.wallet);
-  useEffect(() => {
-    if (account) {
-      dispatch(setEthereumAddress(account));
-      localStorage.setItem('ethereumAddress', account as string);
-    }
-  }, [account]);
-
+  // useEffect(() => {
+  //   if (account) {
+  //     dispatch(setEthereumAddress(account));
+  //     localStorage.setItem('ethereumAddress', account as string);
+  //   }
+  // }, [account]);
 
   const isMobile = useIsMobile(844);
   return (
