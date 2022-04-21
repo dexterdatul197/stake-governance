@@ -1,6 +1,7 @@
 import { useWeb3React } from '@web3-react/core';
 import classnames from 'classnames/bind';
 import React, { useEffect } from 'react';
+import { browserName } from 'react-device-detect';
 import { useDispatch } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import Web3 from 'web3';
@@ -43,11 +44,12 @@ const Header: React.FC = () => {
   const wallet = useAppSelector((state) => state.wallet);
 
   useEffect(() => {
-    if (active || connector) {
+    if (active || (connector && browserName !== 'WebKit')) {
       dispatch(setEthereumAddress(account));
       localStorage.setItem('ethereumAddress', account as string);
     }
   }, [account, active, connector]);
+
 
   const isMobile = useIsMobile(844);
   return (
