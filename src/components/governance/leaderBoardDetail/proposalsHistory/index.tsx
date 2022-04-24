@@ -104,7 +104,7 @@ const HistoryDetail = (props: Props) => {
   const renderData = useCallback((content, parentData) => {
     return checkNotEmptyArr(content)
       ? content.map((item: any, index: any) => {
-          const { title, forVotes, againstVotes, createdAt, state, support, id } = item;
+          const { title, forVotes, againstVotes, createdAt, state, support, id, description } = item;
           const total = new BigNumber(parseInt(forVotes)).plus(
             new BigNumber(parseInt(againstVotes))
           );
@@ -117,7 +117,7 @@ const HistoryDetail = (props: Props) => {
           return (
             <React.Fragment key={id}>
               <Box className={cx('history-content__main__column_1')}>
-                <span className={cx('title')}>{title ? title?.substr(0, 52): ''}...</span>
+                <span className={cx('title')}>{title ? title?.substr(0, 52): description ? description?.split('\n')[0] : ''}...</span>
                 <Box className={cx('text')}>
                   <span>{id}</span>
                   <span> {moment(createdAt).format('MMMM Do, YYYY')}</span>
@@ -156,7 +156,7 @@ const HistoryDetail = (props: Props) => {
       ) : checkNotEmptyArr(dataDetail) ? (
         dataDetail.map((item: any, index: any) => {
           const { proposal, voter } = item;
-          const { title, createdAt, state, forVotes, againstVotes, id } = proposal;
+          const { title, createdAt, state, forVotes, againstVotes, id, description } = proposal;
           const { support } = voter;
 
           const content = [
@@ -167,7 +167,8 @@ const HistoryDetail = (props: Props) => {
               state: state,
               forVotes: forVotes,
               againstVotes: againstVotes,
-              support: support
+              support: support,
+              description: description
             }
           ];
           return (

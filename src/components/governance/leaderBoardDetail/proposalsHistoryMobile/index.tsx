@@ -27,7 +27,7 @@ const MoBile = (props: Props) => {
   const renderData = useCallback((content) => {
     return checkNotEmptyArr(content)
       ? content.map((item: any, index: any) => {
-          const { title, forVotes, againstVotes, createdAt, state, support, id } = item;
+          const { title, forVotes, againstVotes, createdAt, state, support, id, description } = item;
           const total = new BigNumber(parseInt(forVotes)).plus(
             new BigNumber(parseInt(againstVotes))
           );
@@ -38,7 +38,7 @@ const MoBile = (props: Props) => {
             .toString(10);
           return (
             <Box className={cx('mobile-content')} key={index}>
-              <span className={cx('description')}>{title ? title.substr(52) : ''}...</span>
+              <span className={cx('description')}>{title ? title.substr(0, 52) : description ? description?.split('\n')[0] : ''}...</span>
               <Box className={cx('children-content')}>
                 <Box className={cx('date-complete')}>
                   <span className={cx('date')}>
@@ -67,7 +67,7 @@ const MoBile = (props: Props) => {
       {checkNotEmptyArr(dataDetail)
         ? dataDetail.map((item: any, index: any) => {
             const { proposal, voter } = item;
-            const { title, createdAt, state, forVotes, againstVotes, id } = proposal;
+            const { title, createdAt, state, forVotes, againstVotes, id, description } = proposal;
             const { support } = voter;
             const content = [
               {
@@ -77,7 +77,8 @@ const MoBile = (props: Props) => {
                 state: state,
                 forVotes: forVotes,
                 againstVotes: againstVotes,
-                support: support
+                support: support,
+                description: description
               }
             ];
             return (
