@@ -137,7 +137,6 @@
           color: var(--text-color-balance);
           flex: 1;
           margin-right: 15px;
-         
         }
         &__percent {
           font-size: 16px;
@@ -354,6 +353,7 @@
             flex: 1;
           }
         }
+
         .m-balance-key {
           color: var(--color-text-white-black);
           font-size: 24px;
@@ -547,6 +547,36 @@
             border-radius: 30px;
             text-align: center;
             line-height: 25px;
+            flex: 1;
+          }
+        }
+        .apy {
+          display: flex;
+          padding-bottom: 39px;
+          align-items: center;
+          &__title {
+            font-size: 14px;
+            display: block;
+            font-weight: 500;
+            color: var(--text-color-balance);
+            flex: 1;
+          }
+          &__value {
+            font-size: 16px;
+            display: block;
+            font-weight: 600;
+            color: var(--text-color-balance);
+            flex: 1;
+          }
+          &__percent {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-color-stake);
+            width: 92px;
+            height: 33px;
+            border-radius: 30px;
+            text-align: center;
+            line-height: 33px;
             flex: 1;
           }
         }
