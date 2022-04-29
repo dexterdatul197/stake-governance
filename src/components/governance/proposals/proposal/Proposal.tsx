@@ -60,7 +60,7 @@ const Proposal: React.FC<Props> = (props) => {
   return (
     <div className={cx('proposal-item')} onClick={() => redirectToProposalDetail(proposal.id)}>
       <div className={cx('row-content-left')}>
-        <div className={cx('proposal-title')}>{proposal.title}</div>
+        <div className={cx('proposal-title')}>{proposal.title ? proposal.title : proposal.description?.split('\n')[0]}</div>
         <div className={cx('proposal-id-time')}>
           <div className={cx('proposal-id')}>{proposal.id}</div>
           <div className={cx('proposal-time')}>
