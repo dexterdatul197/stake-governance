@@ -226,6 +226,8 @@ const Balances: React.FC = () => {
       if (error.code === '4001' || error.message) {
         setDisable(false);
       }
+    }finally{
+      setDisable(false)
     }
   };
   const handleCheckAllow = async () => {
