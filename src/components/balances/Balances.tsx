@@ -235,11 +235,12 @@ const Balances: React.FC = () => {
       await contract
         .allowance(currentAddress(wallet), process.env.REACT_APP_STAKE_TESTNET_ADDRESS)
         .then((res: any) => {
-          console.log(res._hex.toString() !== '0x00');
           if (res._hex.toString() !== '0x00') {
+            setDisable(true);
             setProgress(true);
           } else {
             setDisable(false);
+            setProgress(false);
           }
         });
     } catch (error) {
