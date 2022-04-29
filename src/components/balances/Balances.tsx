@@ -87,6 +87,7 @@ const Balances: React.FC = () => {
   const [apy, setApy] = useState(0);
   const [progress, setProgress] = useState(false);
   const [disable, setDisable] = useState(false);
+  const [spinner, setSpinner] = useState(false);
   const handleActiveClass = () => {
     dispatch({ type: 'OPEN_STAKE' });
   };
@@ -197,18 +198,19 @@ const Balances: React.FC = () => {
   const MAX_INT = '115792089237316195423570985008687907853269984665640564039457584007913129639935';
 
   const handleConfirm = async () => {
+    setDisable(true);
     try {
       const contract = await getCHNBalance();
       const handleConfirm = await contract.allowance(
         currentAddress(wallet),
         process.env.REACT_APP_STAKE_TESTNET_ADDRESS
       );
-
       if (handleConfirm._hex.toString() === '0x00') {
         await contract
           .approve(process.env.REACT_APP_STAKE_TESTNET_ADDRESS, MAX_INT)
           .then(async (res: any) => {
             await res.wait();
+            setProgress(true);
           })
           .catch((e: any) => console.log(e));
       } else {
@@ -219,30 +221,32 @@ const Balances: React.FC = () => {
           })
         );
       }
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      console.log({ error });
+      if (error.code === '4001' || error.message) {
+        setDisable(false);
+      }
     }
   };
   const handleCheckAllow = async () => {
+    setDisable(true);
     try {
       const contract = await getCHNBalance();
-      const handleConfirm = await contract.allowance(
-        currentAddress(wallet),
-        process.env.REACT_APP_STAKE_TESTNET_ADDRESS
-      );
-      if (handleConfirm._hex.toString() === '0x00') {
-        setProgress((prevProgress: any) => prevProgress);
-        setDisable(true);
-      } else {
-        setProgress((prevProgress: any) => !prevProgress);
-        setDisable(false);
-      }
+      await contract
+        .allowance(currentAddress(wallet), process.env.REACT_APP_STAKE_TESTNET_ADDRESS)
+        .then((res: any) => {
+          console.log(res._hex.toString() !== '0x00');
+          if (res._hex.toString() !== '0x00') {
+            setProgress(true);
+          } else {
+            setDisable(false);
+          }
+        });
     } catch (error) {
       console.log(error);
     }
   };
   useEffect(() => {
-    if (progress) return;
     handleCheckAllow();
   }, [wallet]);
   return (
@@ -289,16 +293,17 @@ const Balances: React.FC = () => {
                     'button-active': isActive,
                     'button-deactive': !isActive
                   })}>
-                  {disable ? <CircularProgress size={20} style={{color:"#fff"}}/> : 'Stake'}
+                  {spinner ? <CircularProgress size={20} style={{ color: '#fff' }} /> : 'Stake'}
                 </Button>
               ) : (
                 <Button
+                  disabled={disable}
                   onClick={handleConfirm}
                   className={cx('switcher_stake', {
                     'button-active': isActive,
                     'button-deactive': !isActive
                   })}>
-                  {!disable ? <CircularProgress size={20}  style={{color:"#fff"}} /> : 'Approve'}
+                  {disable ? <CircularProgress size={20} style={{ color: '#fff' }} /> : 'Approve'}
                 </Button>
               )}
 
