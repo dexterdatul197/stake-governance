@@ -1,24 +1,20 @@
 import { BigNumber } from '@0x/utils';
 import {
   Box,
-  Button,
-  DialogActions,
+  Button, CircularProgress, DialogActions,
   DialogContent,
   DialogTitle,
-  Typography,
-  CircularProgress
+  Typography
 } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import React, { useCallback, useEffect, useState } from 'react';
-import { currentAddress, commaFormat } from '../../../../helpers/common';
-import { getCHNBalance, stakingToken } from '../../../../helpers/ContractService';
-import { useAppSelector, useAppDispatch } from '../../../../store/hooks';
-import { openSnackbar, SnackbarVariant } from '../../../../store/snackbar';
-import { ReactComponent as DoneIcon } from '../../../../assets/icon/Done-icon.svg';
+import React, { useState } from 'react';
 import { setTimeout } from 'timers';
 import Web3 from 'web3';
-import { ContractFactory } from 'ethers';
+import { ReactComponent as DoneIcon } from '../../../../assets/icon/Done-icon.svg';
+import { stakingToken } from '../../../../helpers/ContractService';
+import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
+import { openSnackbar, SnackbarVariant } from '../../../../store/snackbar';
 
 interface Props {
   cx?: any;
@@ -31,10 +27,9 @@ interface Props {
   balanceValue?: any;
   isPercent: boolean;
   valueBalance: any;
-  setValueBalance:any
+  setValueBalance: any;
 }
 
-const MAX_INT = '115792089237316195423570985008687907853269984665640564039457584007913129639935';
 
 const Transaction = (props: Props) => {
   const {
@@ -65,32 +60,32 @@ const Transaction = (props: Props) => {
   const handleConfirmTransaction = async () => {
     setProgress(true);
     const contract = await stakingToken();
-      if (value.default === 100) {
-        contract
-          .stake(0, web3.utils.toWei(String(formatAmount), 'ether'))
-          .then(async (res: any) => {
-            await res.wait();
-            handleCloseModal();
-            handleUpdateSmartContract();
-            setDone(true);
-            setProgress(false);
+    if (value.default === 100) {
+      contract
+        .stake(0, web3.utils.toWei(String(formatAmount), 'ether'))
+        .then(async (res: any) => {
+          await res.wait();
+          handleCloseModal();
+          handleUpdateSmartContract();
+          setDone(true);
+          setProgress(false);
 
-            dispatch(
-              openSnackbar({
-                message: 'Staking success',
-                variant: SnackbarVariant.SUCCESS
-              })
-            );
-            handleUpdateSmartContract();
-          })
-          .catch((e: any) => {
-            console.log(e);
-          })
-          .finally(() => {
-            handleCloseTransaction();
-          });
-      }else if(valueBalance){
-        contract
+          dispatch(
+            openSnackbar({
+              message: 'Staking success',
+              variant: SnackbarVariant.SUCCESS
+            })
+          );
+          handleUpdateSmartContract();
+        })
+        .catch((e: any) => {
+          console.log(e);
+        })
+        .finally(() => {
+          handleCloseTransaction();
+        });
+    } else if (valueBalance) {
+      contract
         .stake(0, web3.utils.toWei(valueBalance?.replaceAll(',', ''), 'ether'))
         .then(async (res: any) => {
           await res.wait();
@@ -111,64 +106,28 @@ const Transaction = (props: Props) => {
         .finally(() => {
           handleCloseTransaction();
         });
-      }
-       else {
-        contract
-          .stake(0, web3.utils.toWei(String(price), 'ether'))
-          .then(async (res: any) => {
-            await res.wait();
-            handleCloseModal();
-            handleUpdateSmartContract();
-            setDone(true);
-            setProgress(false);
-            dispatch(
-              openSnackbar({
-                message: 'Staking success',
-                variant: SnackbarVariant.SUCCESS
-              })
-            );
-          })
-          .catch((e: any) => {
-            console.log(e);
-          })
-          .finally(() => {
-            handleCloseTransaction();
-          });
-      }
-      
-  };
-
-  const handleConfirm = async () => {
-    try {
-      setProgress(true);
-      const contract = await getCHNBalance();
-      const handleConfirm = await contract.allowance(
-        currentAddress(wallet),
-        process.env.REACT_APP_STAKE_TESTNET_ADDRESS
-      );
-      if (handleConfirm._hex.toString() === '0x00') {
-        await contract
-          .approve(process.env.REACT_APP_STAKE_TESTNET_ADDRESS, MAX_INT)
-          .then(async (res: any) => {
-            await res.wait();
-            handleConfirmTransaction();
-          })
-          .catch((e: any) => console.log(e))
-          .finally(() => {
-            handleCloseTransaction();
-          });
-      } else {
-        setProgress(false);
-        dispatch(
-          openSnackbar({
-            message: 'Please wait a moment',
-            variant: SnackbarVariant.SUCCESS
-          })
-        );
-        handleConfirmTransaction();
-      }
-    } catch (error) {
-      console.log(error);
+    } else {
+      contract
+        .stake(0, web3.utils.toWei(String(price), 'ether'))
+        .then(async (res: any) => {
+          await res.wait();
+          handleCloseModal();
+          handleUpdateSmartContract();
+          setDone(true);
+          setProgress(false);
+          dispatch(
+            openSnackbar({
+              message: 'Staking success',
+              variant: SnackbarVariant.SUCCESS
+            })
+          );
+        })
+        .catch((e: any) => {
+          console.log(e);
+        })
+        .finally(() => {
+          handleCloseTransaction();
+        });
     }
   };
 
@@ -177,7 +136,7 @@ const Transaction = (props: Props) => {
       handleCloseModal();
       setTimeout(() => {
         handleBack();
-        setValueBalance("")
+        setValueBalance('');
       }, 500);
     }, 1000);
   };
@@ -185,7 +144,7 @@ const Transaction = (props: Props) => {
     handleCloseModal();
     setTimeout(() => {
       handleBack();
-      setValueBalance("")
+      setValueBalance('');
     }, 300);
   };
 
@@ -222,7 +181,7 @@ const Transaction = (props: Props) => {
       <DialogActions className={cx('dialog-actions__transaction')}>
         <Button
           disabled={done || progress}
-          onClick={handleConfirm}
+          onClick={handleConfirmTransaction}
           className={cx('dialog-actions__transaction__confirm')}>
           Confirm
         </Button>

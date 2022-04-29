@@ -1,10 +1,10 @@
-import { BigNumber } from '@0x/utils';
-import { Box, Button } from '@material-ui/core';
+import { Box, Button, CircularProgress } from '@material-ui/core';
 import { useWeb3React } from '@web3-react/core';
 import classNames from 'classnames/bind';
 import { ethers } from 'ethers';
 import React, { useCallback, useEffect, useReducer, useState } from 'react';
 import loadingSvg from 'src/assets/icon/loading.svg';
+import Web3 from 'web3';
 import { currencyFormatter, currentAddress } from '../../helpers/common';
 import { isConnected } from '../../helpers/connectWallet';
 import { claimContract, getCHNBalance, stakingToken } from '../../helpers/ContractService';
@@ -18,7 +18,6 @@ import Modal from './StakeModal';
 import TableComponent from './Table';
 import CardComponent from './TableOnMobile';
 import ModalWithDraw from './WithDrawModal';
-import Web3 from 'web3';
 
 const web3 = new Web3();
 const commaNumber = require('comma-number');
@@ -86,7 +85,9 @@ const Balances: React.FC = () => {
   const [chnToken, setChntoken] = useState(0);
   const [claimLoading, setClaimLoading] = useState(false);
   const [apy, setApy] = useState(0);
-
+  const [progress, setProgress] = useState(false);
+  const [disable, setDisable] = useState(false);
+  const [spinner, setSpinner] = useState(false);
   const handleActiveClass = () => {
     dispatch({ type: 'OPEN_STAKE' });
   };
@@ -194,7 +195,60 @@ const Balances: React.FC = () => {
   useEffect(() => {
     getTotalStakeInPool();
   }, [getTotalStakeInPool, updateSmartContract, connector]);
+  const MAX_INT = '115792089237316195423570985008687907853269984665640564039457584007913129639935';
 
+  const handleConfirm = async () => {
+    setDisable(true);
+    try {
+      const contract = await getCHNBalance();
+      const handleConfirm = await contract.allowance(
+        currentAddress(wallet),
+        process.env.REACT_APP_STAKE_TESTNET_ADDRESS
+      );
+      if (handleConfirm._hex.toString() === '0x00') {
+        await contract
+          .approve(process.env.REACT_APP_STAKE_TESTNET_ADDRESS, MAX_INT)
+          .then(async (res: any) => {
+            await res.wait();
+            setProgress(true);
+          })
+          .catch((e: any) => console.log(e));
+      } else {
+        dispatch(
+          openSnackbar({
+            message: 'Please wait a moment',
+            variant: SnackbarVariant.SUCCESS
+          })
+        );
+      }
+    } catch (error: any) {
+      console.log({ error });
+      if (error.code === '4001' || error.message) {
+        setDisable(false);
+      }
+    }
+  };
+  const handleCheckAllow = async () => {
+    setDisable(true);
+    try {
+      const contract = await getCHNBalance();
+      await contract
+        .allowance(currentAddress(wallet), process.env.REACT_APP_STAKE_TESTNET_ADDRESS)
+        .then((res: any) => {
+          console.log(res._hex.toString() !== '0x00');
+          if (res._hex.toString() !== '0x00') {
+            setProgress(true);
+          } else {
+            setDisable(false);
+          }
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    handleCheckAllow();
+  }, [wallet]);
   return (
     <>
       {!wallet.ethereumAddress ? (
@@ -231,15 +285,28 @@ const Balances: React.FC = () => {
             </Box>
 
             <Box className={`${cx('switcher')}`}>
-              <Button
-                disabled={walletValue === 0.0}
-                onClick={handleActiveClass}
-                className={cx('switcher_stake', {
-                  'button-active': isActive,
-                  'button-deactive': !isActive
-                })}>
-                Stake
-              </Button>
+              {progress ? (
+                <Button
+                  disabled={walletValue === 0.0}
+                  onClick={handleActiveClass}
+                  className={cx('switcher_stake', {
+                    'button-active': isActive,
+                    'button-deactive': !isActive
+                  })}>
+                  {spinner ? <CircularProgress size={20} style={{ color: '#fff' }} /> : 'Stake'}
+                </Button>
+              ) : (
+                <Button
+                  disabled={disable}
+                  onClick={handleConfirm}
+                  className={cx('switcher_stake', {
+                    'button-active': isActive,
+                    'button-deactive': !isActive
+                  })}>
+                  {disable ? <CircularProgress size={20} style={{ color: '#fff' }} /> : 'Approve'}
+                </Button>
+              )}
+
               <Button
                 disabled={stake === 0.0}
                 onClick={handleActiveWithDraw}
