@@ -154,12 +154,12 @@ const ConnectWalletPage: React.FC = () => {
     {
       icon: trust,
       title: 'Trust Wallet',
-      onClickFunc: browserName === 'WebKit' ? handleConnectTrust : handleConnectWalletConnect
+      onClickFunc: handleConnectWalletConnect
     },
     {
       icon: coinbase,
       title: 'Coinbase',
-      onClickFunc: browserName === 'Webkit' ? handleConnectCoinBaseMobile : handleConnectCoinBase
+      onClickFunc: handleConnectCoinBase
     },
     {
       icon: wallet_connect,
