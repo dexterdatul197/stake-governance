@@ -1,10 +1,10 @@
-import { BigNumber } from '@0x/utils';
-import { Box, Button } from '@material-ui/core';
+import { Box, Button, CircularProgress } from '@material-ui/core';
 import { useWeb3React } from '@web3-react/core';
 import classNames from 'classnames/bind';
 import { ethers } from 'ethers';
 import React, { useCallback, useEffect, useReducer, useState } from 'react';
 import loadingSvg from 'src/assets/icon/loading.svg';
+import Web3 from 'web3';
 import { currencyFormatter, currentAddress } from '../../helpers/common';
 import { isConnected } from '../../helpers/connectWallet';
 import { claimContract, getCHNBalance, stakingToken } from '../../helpers/ContractService';
@@ -18,7 +18,6 @@ import Modal from './StakeModal';
 import TableComponent from './Table';
 import CardComponent from './TableOnMobile';
 import ModalWithDraw from './WithDrawModal';
-import Web3 from 'web3';
 
 const web3 = new Web3();
 const commaNumber = require('comma-number');
@@ -86,7 +85,8 @@ const Balances: React.FC = () => {
   const [chnToken, setChntoken] = useState(0);
   const [claimLoading, setClaimLoading] = useState(false);
   const [apy, setApy] = useState(0);
-
+  const [progress, setProgress] = useState(false);
+  const [disable, setDisable] = useState(false);
   const handleActiveClass = () => {
     dispatch({ type: 'OPEN_STAKE' });
   };
@@ -177,9 +177,8 @@ const Balances: React.FC = () => {
         const getRewardPerBlock = await contract.rewardPerBlock();
         const formatTotalStaked = ethers.utils.formatEther(getTotalStakedAmount.totalAmountStake);
         const formatReward = ethers.utils.formatEther(getRewardPerBlock);
-        const APY = (parseFloat(formatReward) * 6400) / parseFloat(formatTotalStaked) + 1;
-        const totalAPY = (Math.pow(APY, 365) - 1) * 100;
-        console.log(formatTotalStaked)
+        const totalAPY =
+          ((parseFloat(formatReward) * 6400 * 365) / parseFloat(formatTotalStaked)) * 100;
         setApy(totalAPY);
       } catch (error) {
         console.log('0.00013882438: ', error);
@@ -195,7 +194,57 @@ const Balances: React.FC = () => {
   useEffect(() => {
     getTotalStakeInPool();
   }, [getTotalStakeInPool, updateSmartContract, connector]);
+  const MAX_INT = '115792089237316195423570985008687907853269984665640564039457584007913129639935';
 
+  const handleConfirm = async () => {
+    try {
+      const contract = await getCHNBalance();
+      const handleConfirm = await contract.allowance(
+        currentAddress(wallet),
+        process.env.REACT_APP_STAKE_TESTNET_ADDRESS
+      );
+
+      if (handleConfirm._hex.toString() === '0x00') {
+        await contract
+          .approve(process.env.REACT_APP_STAKE_TESTNET_ADDRESS, MAX_INT)
+          .then(async (res: any) => {
+            await res.wait();
+          })
+          .catch((e: any) => console.log(e));
+      } else {
+        dispatch(
+          openSnackbar({
+            message: 'Please wait a moment',
+            variant: SnackbarVariant.SUCCESS
+          })
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const handleCheckAllow = async () => {
+    try {
+      const contract = await getCHNBalance();
+      const handleConfirm = await contract.allowance(
+        currentAddress(wallet),
+        process.env.REACT_APP_STAKE_TESTNET_ADDRESS
+      );
+      if (handleConfirm._hex.toString() === '0x00') {
+        setProgress((prevProgress: any) => prevProgress);
+        setDisable(true);
+      } else {
+        setProgress((prevProgress: any) => !prevProgress);
+        setDisable(false);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    if (progress) return;
+    handleCheckAllow();
+  }, [wallet]);
   return (
     <>
       {!wallet.ethereumAddress ? (
@@ -223,7 +272,7 @@ const Balances: React.FC = () => {
                 <span className={cx('earn__token')}>XCN</span>
               </Box>
               <Box className={cx('apy')}>
-                <span className={cx('apy__title')}>APY:</span>
+                <span className={cx('apy__title')}>APR:</span>
                 <span title={apy.toString() + '%'} className={cx('apy__value')}>
                   {apy ? apy.toFixed(4).toString() : 0}%
                 </span>
@@ -232,15 +281,27 @@ const Balances: React.FC = () => {
             </Box>
 
             <Box className={`${cx('switcher')}`}>
-              <Button
-                disabled={walletValue === 0.0}
-                onClick={handleActiveClass}
-                className={cx('switcher_stake', {
-                  'button-active': isActive,
-                  'button-deactive': !isActive
-                })}>
-                Stake
-              </Button>
+              {progress ? (
+                <Button
+                  disabled={walletValue === 0.0}
+                  onClick={handleActiveClass}
+                  className={cx('switcher_stake', {
+                    'button-active': isActive,
+                    'button-deactive': !isActive
+                  })}>
+                  {disable ? <CircularProgress size={20} style={{color:"#fff"}}/> : 'Stake'}
+                </Button>
+              ) : (
+                <Button
+                  onClick={handleConfirm}
+                  className={cx('switcher_stake', {
+                    'button-active': isActive,
+                    'button-deactive': !isActive
+                  })}>
+                  {!disable ? <CircularProgress size={20}  style={{color:"#fff"}} /> : 'Approve'}
+                </Button>
+              )}
+
               <Button
                 disabled={stake === 0.0}
                 onClick={handleActiveWithDraw}
