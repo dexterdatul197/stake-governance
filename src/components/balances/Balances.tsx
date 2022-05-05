@@ -1,4 +1,4 @@
-import { Box, Button, CircularProgress } from '@material-ui/core';
+import { Box, Button, CircularProgress } from '@mui/material';
 import { useWeb3React } from '@web3-react/core';
 import classNames from 'classnames/bind';
 import { ethers } from 'ethers';

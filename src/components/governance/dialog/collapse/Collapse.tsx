@@ -1,5 +1,5 @@
 /* eslint-disable array-callback-return */
-import { Button, Collapse } from '@material-ui/core';
+import { Button, Collapse } from '@mui/material';
 import classNames from 'classnames/bind';
 import React, { useEffect, useState } from 'react';
 import removeIcon from '../../../../assets/icon/trash.svg';

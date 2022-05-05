@@ -9,7 +9,7 @@ import {
   IconButton,
   Input,
   Typography
-} from '@material-ui/core';
+} from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import classNames from 'classnames/bind';
 import { useCallback, useEffect, useState } from 'react';

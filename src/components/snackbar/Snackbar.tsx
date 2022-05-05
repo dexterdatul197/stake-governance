@@ -1,6 +1,6 @@
 import React from 'react';
-import { Fade } from '@material-ui/core';
-import Snackbar from '@material-ui/core/Snackbar';
+import { Fade } from '@mui/material';
+import Snackbar from '@mui/material/Snackbar';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { closeSnackbar } from '../../store/snackbar';
 import { RootState } from '../../store/store';

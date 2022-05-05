@@ -1,5 +1,4 @@
-import { Button } from '@material-ui/core';
-import Box from '@mui/material/Box';
+import { Button, Box } from '@mui/material';
 import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core';
 import { UserRejectedRequestError as WCRejected } from '@web3-react/walletconnect-connector';
 import classnames from 'classnames/bind';

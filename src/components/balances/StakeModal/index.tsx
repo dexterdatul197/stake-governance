@@ -1,4 +1,4 @@
-import { Dialog } from '@material-ui/core';
+import { Dialog } from '@mui/material';
 import classNames from 'classnames/bind';
 import { memo, useState } from 'react';
 import { setTimeout } from 'timers';

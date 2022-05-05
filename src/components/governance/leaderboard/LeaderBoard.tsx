@@ -8,7 +8,7 @@ import {
   TableContainer,
   TableHead,
   TableRow
-} from '@material-ui/core';
+} from '@mui/material';
 import Skeleton from '@mui/material/Skeleton';
 import classNames from 'classnames/bind';
 import React, { useCallback, useEffect, useState } from 'react';

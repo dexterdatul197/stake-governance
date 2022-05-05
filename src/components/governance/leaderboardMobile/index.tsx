@@ -1,4 +1,4 @@
-import { Box, Paper } from '@material-ui/core';
+import { Box, Paper } from '@mui/material';
 import React, { useCallback, useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
 import styles from './styles.module.scss';

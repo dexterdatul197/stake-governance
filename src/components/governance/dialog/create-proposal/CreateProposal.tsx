@@ -1,5 +1,5 @@
-import { Button, Dialog, IconButton, Typography } from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
+import { Button, Dialog, IconButton, Typography } from '@mui/material';
+import { Close } from '@mui/icons-material';
 import Box from '@mui/material/Box';
 import classNames from 'classnames/bind';
 import MarkdownIt from 'markdown-it';
@@ -270,7 +270,7 @@ const CreateProposal: React.FC = () => {
             onClick={handleCloseConnectDialog}
             size={'small'}
             className={cx('close-button')}>
-            <CloseIcon />
+            <Close />
           </IconButton>
         </Typography>
       </Box>

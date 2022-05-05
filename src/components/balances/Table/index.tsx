@@ -9,7 +9,7 @@ import {
   TableHead,
   TablePagination,
   TableRow
-} from '@material-ui/core';
+} from '@mui/material';
 import BigNumber from 'bignumber.js';
 import classNames from 'classnames/bind';
 import { ethers } from 'ethers';

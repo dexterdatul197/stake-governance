@@ -21,7 +21,7 @@ import BackArrow from '../../../back-arrow/BackArrow';
 import ProposalHistory from '../proposal-history/ProposalHistory';
 import VoteCard from '../vote-card/VoteCard';
 import styles from './ProposalDetail.module.scss';
-import Button from '@material-ui/core/Button';
+import Button from '@mui/material/Button';
 import Icon from '@ant-design/icons/lib/components/Icon';
 import { isConnected } from '../../../../helpers/connectWallet';
 import { setVotingWeight } from '../../redux/Governance';

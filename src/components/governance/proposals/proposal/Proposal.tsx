@@ -1,5 +1,5 @@
 import Icon from '@ant-design/icons/lib/components/Icon';
-import { Button } from '@material-ui/core';
+import { Button } from '@mui/material';
 import classNames from 'classnames/bind';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';

@@ -8,8 +8,8 @@ import {
   Input,
   Slider,
   Typography
-} from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
+} from '@mui/material';
+import { Close } from '@mui/icons-material';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useAppDispatch } from '../../../../store/hooks';
 import { openSnackbar, SnackbarVariant } from '../../../../store/snackbar';
@@ -204,7 +204,7 @@ const Stake = (props: Props) => {
     <React.Fragment>
       <DialogTitle className={cx('title-dialog')}>
         <Typography className={cx('text-stake')}>Stake</Typography>
-        <CloseIcon
+        <Close
           onClick={() => {
             handleCloseModal();
             setBalanceValue({ ...balanceValue, default: '' });

@@ -1,4 +1,4 @@
-import { Box, Paper, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
+import { Box, Paper, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 import classNames from 'classnames/bind';
 import { useState, useEffect } from 'react';
 import BackArrow from '../../back-arrow/BackArrow';

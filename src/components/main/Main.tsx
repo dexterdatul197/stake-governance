@@ -1,6 +1,6 @@
 import { BigNumber } from '@0x/utils';
-import { Autocomplete, TextField } from '@material-ui/core';
-import { makeStyles } from '@material-ui/styles';
+import { Autocomplete, TextField } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import { CircularProgress } from '@mui/material';
 import { useWeb3React } from '@web3-react/core';
 import classNames from 'classnames/bind';

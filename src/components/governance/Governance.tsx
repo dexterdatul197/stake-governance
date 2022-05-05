@@ -1,5 +1,5 @@
 import { BigNumber } from '@0x/utils';
-import { CircularProgress } from '@material-ui/core';
+import { CircularProgress } from '@mui/material';
 import classNames from 'classnames/bind';
 import { ethers } from 'ethers';
 import React, { useEffect, useState } from 'react';

@@ -1,5 +1,5 @@
 import { BigNumber } from '@0x/utils';
-import { Box, TablePagination } from '@material-ui/core';
+import { Box, TablePagination } from '@mui/material';
 import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress';
 import { styled } from '@mui/material/styles';
 import classNames from 'classnames/bind';

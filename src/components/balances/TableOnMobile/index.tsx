@@ -14,7 +14,7 @@ import styles from './styles.module.scss';
 import { ITransaction } from './transaction.slice';
 import { setIsLoading } from 'src/components/balances/Table/transaction.slice';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { CircularProgress } from '@material-ui/core';
+import { CircularProgress } from '@mui/material';
 
 const cx = classNames.bind(styles);
 
