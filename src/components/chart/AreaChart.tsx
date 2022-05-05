@@ -110,7 +110,13 @@ const AreaChart: React.FC<Props> = (props) => {
   return (
     <div className={cx('area-chart')}>
       <div id="chart" style={{ height: 480 }}>
-        <ReactApexChart options={option} series={series} width="100%" type="line" height="100%" />
+        <ReactApexChart 
+          options={option} 
+          series={series} 
+          width="100%" 
+          type="line" 
+          height="100%" 
+        />
       </div>
     </div>
   );

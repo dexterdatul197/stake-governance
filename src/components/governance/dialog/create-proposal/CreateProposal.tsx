@@ -1,6 +1,6 @@
 import { Button, Dialog, IconButton, Typography } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
-import { Box } from '@material-ui/system';
+import Box from '@mui/material/Box';
 import classNames from 'classnames/bind';
 import MarkdownIt from 'markdown-it';
 import { useEffect, useState } from 'react';
