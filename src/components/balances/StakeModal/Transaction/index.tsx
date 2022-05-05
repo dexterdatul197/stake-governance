@@ -6,7 +6,7 @@ import {
   DialogTitle,
   Typography
 } from '@mui/material';
-import { Close } from '@mui/icons-material';
+import CloseIcon from '@mui/icons-material/Close';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import React, { useState } from 'react';
 import { setTimeout } from 'timers';
@@ -160,7 +160,7 @@ const Transaction = (props: Props) => {
             onClick={handleCloseModalTrans}
             className={cx('icon_left')}
             disabled={progress === true}>
-            <Close />
+            <CloseIcon />
           </Button>
         </Box>
       </DialogTitle>
