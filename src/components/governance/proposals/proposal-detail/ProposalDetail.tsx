@@ -8,7 +8,7 @@ import Web3 from 'web3';
 import { getProposalDetail, getVotes } from '../../../../apis/apis';
 import AddressArrowSVG from '../../../../assets/icon/AddressArrowSVG';
 import { currentAddress, getStatus } from '../../../../helpers/common';
-import ReactMarkdown from 'react-markdown'
+import ReactMarkdown from 'react-markdown';
 import {
   ethAddressPage,
   getCHNBalance,
